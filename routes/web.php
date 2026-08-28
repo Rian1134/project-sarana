@@ -55,4 +55,4 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
 });
 
-Route::view('/demo', 'demo');
+// Route::view('/demo', 'demo');
