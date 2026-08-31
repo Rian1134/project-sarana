@@ -4,22 +4,13 @@ use App\Http\Controllers\Admin\DataController as AdminDataController;
 use App\Http\Controllers\Admin\PeriodeLaporanController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\User\DataController as UserDataController;
 use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        if (Auth::user()->hasRole('admin')) {
-            return redirect()->route('sarana.index');
-        } elseif (Auth::user()->hasRole('user')) {
-            return redirect()->route('user.data.index');
-        }
-    }
-
-    return view('auth.login');
-});
+Route::get('/',[HomeController::class, 'index'])->name('home.index');
 
 Route::middleware('auth')->group(function () {
     // Admin routes
