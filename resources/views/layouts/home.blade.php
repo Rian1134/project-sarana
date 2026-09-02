@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Project-S - @yield('title', 'Sistem Data Sarana & Prasarana Sekolah')</title>
+    <title>Sapras - @yield('title', 'Sistem Data Sarana & Prasarana Sekolah')</title>
 
     @vite(['resources/css/app.css'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -31,7 +31,7 @@
                 <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-600 text-white">
                     <i class="bi bi-building"></i>
                 </span>
-                Project-S
+                Sapras
             </a>
         </x-slot:brand>
 
@@ -71,7 +71,7 @@
                     <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-green-600 text-white text-sm">
                         <i class="bi bi-building"></i>
                     </span>
-                    Project-S
+                    Sapras
                 </div>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
                     Sistem pendataan sarana &amp; prasarana sekolah — cepat, rapi, dan mudah dipantau.
@@ -96,7 +96,7 @@
         </div>
 
         <div class="border-t border-gray-100 dark:border-gray-800 py-4 text-center text-xs text-gray-400 dark:text-gray-600">
-            &copy; {{ date('Y') }} Project-S — Sistem Data Sarana &amp; Prasarana Sekolah.
+            &copy; {{ date('Y') }} Sapras — Sistem Data Sarana &amp; Prasarana Sekolah.
         </div>
     </footer>
 

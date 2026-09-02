@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App - @yield('title')</title>
+    <title>Sapras - @yield('title')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     {{-- Set dark mode SEBELUM CSS dimuat, supaya tidak ada "flash" warna terang sesaat.
@@ -112,7 +112,7 @@
                         </button>
                         <span class="flex items-center gap-1.5 font-semibold text-gray-800 dark:text-gray-100 truncate">
                             <i class="bi bi-building"></i>
-                            <span>Project-S</span>
+                            <span>Sapras</span>
                         </span>
                         <x-badge variant="primary" class="hidden sm:inline-flex">User</x-badge>
                         @hasSection('title')
@@ -195,7 +195,7 @@
             </main>
 
             <footer class="px-3 sm:px-4 lg:px-6 py-4 text-center text-xs text-gray-400 dark:text-gray-600 border-t border-gray-200 dark:border-gray-800">
-                &copy; {{ date('Y') }} Project-S — Sistem Data Sarana &amp; Prasarana Sekolah
+                &copy; {{ date('Y') }} Sapras — Sistem Data Sarana &amp; Prasarana Sekolah
             </footer>
         </div>
     </div>
