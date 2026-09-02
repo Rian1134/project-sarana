@@ -29,13 +29,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('ruang_kelas_barus', function (Blueprint $table) {
-            $table->integer('tahun_awal')->default(2020)->after('jumlah');
-            $table->integer('tahun_akhir')->default(2025)->after('tahun_awal');
+            $table->integer('tahun_awal')->default(2026)->after('jumlah');
+            $table->integer('tahun_akhir')->default(2030)->after('tahun_awal');
         });
 
         Schema::table('rehabilitasi_ruang_kelas', function (Blueprint $table) {
-            $table->integer('tahun_awal')->default(2020)->after('jumlah');
-            $table->integer('tahun_akhir')->default(2025)->after('tahun_awal');
+            $table->integer('tahun_awal')->default(2026)->after('jumlah');
+            $table->integer('tahun_akhir')->default(2030)->after('tahun_awal');
         });
     }
 };

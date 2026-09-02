@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -56,10 +57,11 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'role' => 'user', // Default role
             ]);
 
             $user->assignRole('user'); // role default
+
+            event(new Registered($user));
 
             // Login user setelah registrasi
             Auth::login($user);
@@ -69,7 +71,7 @@ class AuthController extends Controller
             }
 
             // Redirect ke halaman user data
-            return redirect()->route('user.data.index')
+            return redirect()->route('verification.notice')
                 ->with('success', 'Registrasi berhasil! Selamat datang ' . $user->name);
         } catch (\Exception $e) {
             // Jika terjadi error, kembalikan dengan pesan error
