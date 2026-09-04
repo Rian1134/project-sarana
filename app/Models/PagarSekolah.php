@@ -12,14 +12,14 @@ class PagarSekolah extends Model
     protected $table = 'pagar_sekolahs';
 
     protected $fillable = [
-        'sarana_id',
+        'profile_sekolah_id',
         'ada/tidak_ada',
         'kodisi'
     ];
 
     // Relasi belongsTo
-    public function sarana()
+    public function profileSekoh()
     {
-        return $this->belongsTo(Sarana::class);
+        return $this->belongsTo(ProfileSekolah::class);
     }
 }

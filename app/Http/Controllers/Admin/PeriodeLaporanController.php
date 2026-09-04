@@ -73,14 +73,14 @@ class PeriodeLaporanController extends Controller
 
             $pesan = empty($direset)
                 ? 'Tidak ada perubahan periode.'
-                : 'Periode ' . implode(' & ', $direset) . ' berhasil diperbarui. '
-                    . 'Jumlah data ' . implode(' & ', $direset) . ' di SEMUA sekolah sudah direset ke 0.';
+                : 'Periode '.implode(' & ', $direset).' berhasil diperbarui. '
+                    .'Jumlah data '.implode(' & ', $direset).' di SEMUA sekolah sudah direset ke 0.';
 
             return redirect()->route('sarana.index')->with('success', $pesan);
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal memperbarui periode: ' . $e->getMessage());
+                ->with('error', 'Gagal memperbarui periode: '.$e->getMessage());
         }
     }
 }

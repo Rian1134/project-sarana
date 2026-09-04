@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sarana extends Model
+class ProfileSekolah extends Model
 {
     use HasFactory;
 
@@ -15,6 +15,8 @@ class Sarana extends Model
         'alamat_sekolah',
         'nama_kepala_sekolah',
         'NIP',
+        'status_sekolah',
+        'akreditasi',
         'nomor_hp',
         'user_id',
     ];
@@ -142,6 +144,11 @@ class Sarana extends Model
     public function lapanganSekolah()
     {
         return $this->hasOne(LapanganSekolah::class);
+    }
+
+    public function chromebook()
+    {
+        return $this->hasOne(Chromebook::class);
     }
 
     public function user()

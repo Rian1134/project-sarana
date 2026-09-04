@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Profil Saya
+    Profil Sekolah
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
         <div class="flex flex-wrap items-center justify-between gap-3">
             <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                 <i class="bi bi-person-circle"></i>
-                Profil Saya
+                Profil Sekolah
             </h1>
             <a href="{{ route('user.profile.edit') }}" class="inline-flex">
                 <x-button variant="primary" size="sm">

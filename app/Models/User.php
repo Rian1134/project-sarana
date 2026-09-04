@@ -3,7 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Notifications\CustomVerifyEmail;
+// use App\Notifications\CustomVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -15,7 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable 
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable;
@@ -33,9 +33,9 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function sarana()
+    public function profileSekolah()
     {
-        return $this->hasOne(Sarana::class);
+        return $this->hasOne(ProfileSekolah::class);
     }
 
     /**
@@ -43,8 +43,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * (App\Notifications\CustomVerifyEmail -> App\Mail\VerifyEmailMail)
      * alih-alih email verifikasi bawaan Laravel yang polos.
      */
-    public function sendEmailVerificationNotification(): void
-    {
-        $this->notify(new CustomVerifyEmail);
-    }
+    // public function sendEmailVerificationNotification(): void
+    // {
+    //     $this->notify(new CustomVerifyEmail);
+    // }
 }

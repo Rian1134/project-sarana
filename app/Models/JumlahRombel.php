@@ -15,11 +15,11 @@ class JumlahRombel extends Model
         'vii',
         'viii',
         'ix',
-        'sarana_id',
+        'profile_sekolah_id',
     ];
 
     public function sarana()
     {
-        return $this->belongsTo(Sarana::class);
+        return $this->belongsTo(ProfileSekolah::class);
     }
 }

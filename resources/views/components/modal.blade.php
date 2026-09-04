@@ -25,7 +25,7 @@
 <div
     id="{{ $id }}"
     data-modal
-    class="hidden fixed inset-0 z-50 overflow-y-auto"
+    class="hidden fixed inset-0 z-99999 overflow-y-auto"
     role="dialog"
     aria-modal="true"
 >

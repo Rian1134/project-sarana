@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sapras - @yield('title')</title>
+    <title>Sarpras - @yield('title')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     {{-- Set dark mode SEBELUM CSS dimuat, supaya tidak ada "flash" warna terang sesaat.
@@ -24,7 +24,9 @@
 <body class="bg-gray-50 dark:bg-gray-900">
 
     {{-- Toast container — wajib ada agar showToast() dari JS berfungsi --}}
-    <div id="toast-container" class="fixed z-60 top-4 inset-x-4 sm:inset-x-auto sm:right-4 flex flex-col gap-2 sm:w-auto max-w-md sm:mx-0 mx-auto"></div>
+    <div id="toast-container"
+        class="fixed z-60 top-4 inset-x-4 sm:inset-x-auto sm:right-4 flex flex-col gap-2 sm:w-auto max-w-md sm:mx-0 mx-auto">
+    </div>
 
     {{-- ===== MODAL KONFIRMASI LOGOUT ===== --}}
     <x-modal id="logoutModal" size="sm" centered>
@@ -70,24 +72,27 @@
             <div class="flex items-center gap-3 border-b border-gray-200 dark:border-gray-700 pb-4 mb-3">
                 <x-avatar :name="Auth::user()->name ?? 'U'" size="md" />
                 <div class="min-w-0 flex-1" data-sidebar-label>
-                    <p class="truncate text-sm font-semibold text-gray-800 dark:text-gray-100">{{ Auth::user()->name }}</p>
-                    <p class="truncate text-xs text-gray-500 dark:text-gray-400">{{ ucfirst(Auth::user()->role ?? 'Pengguna') }}</p>
+                    <p class="truncate text-sm font-semibold text-gray-800 dark:text-gray-100">{{ Auth::user()->name }}
+                    </p>
+                    <p class="truncate text-xs text-gray-500 dark:text-gray-400">
+                        {{ ucfirst(Auth::user()->role ?? 'Pengguna') }}</p>
                 </div>
             </div>
 
             {{-- Menu utama — user hanya bisa akses data sarana sekolahnya sendiri. --}}
-            <a href="{{ route('user.data.index') }}"
-                class="sidebar-link {{ request()->routeIs('user.data.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
-                @if (request()->routeIs('user.data.*')) aria-current="page" @endif>
-                <i class="bi bi-grid-1x2-fill text-base shrink-0"></i>
-                <span data-sidebar-label>Sarana</span>
-            </a>
 
             <a href="{{ route('user.profile.index') }}"
                 class="sidebar-link {{ request()->routeIs('user.profile.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
                 @if (request()->routeIs('user.profile.*')) aria-current="page" @endif>
                 <i class="bi bi-person-fill text-base shrink-0"></i>
                 <span data-sidebar-label>Profil</span>
+            </a>
+
+            <a href="{{ route('user.data.index') }}"
+                class="sidebar-link {{ request()->routeIs('user.data.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
+                @if (request()->routeIs('user.data.*')) aria-current="page" @endif>
+                <i class="bi bi-grid-1x2-fill text-base shrink-0"></i>
+                <span data-sidebar-label>Sarana</span>
             </a>
 
             {{-- Logout — dengan modal konfirmasi, selalu menempel di bawah --}}
@@ -112,11 +117,12 @@
                         </button>
                         <span class="flex items-center gap-1.5 font-semibold text-gray-800 dark:text-gray-100 truncate">
                             <i class="bi bi-building"></i>
-                            <span>Sapras</span>
+                            <span>Sarpras</span>
                         </span>
                         <x-badge variant="primary" class="hidden sm:inline-flex">User</x-badge>
                         @hasSection('title')
-                            <span class="hidden md:flex items-center gap-2 text-gray-400 dark:text-gray-500 text-sm min-w-0">
+                            <span
+                                class="hidden md:flex items-center gap-2 text-gray-400 dark:text-gray-500 text-sm min-w-0">
                                 <span>/</span>
                                 <span class="truncate text-gray-600 dark:text-gray-300">@yield('title')</span>
                             </span>
@@ -125,6 +131,12 @@
                 </x-slot:brand>
 
                 <x-slot:actions>
+
+                    <a href="{{ route('panduan') }}"
+                        class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shrink-0">
+                        <i class="bi bi-question-circle-fill me-1"></i> Panduan
+                    </a>
+
                     {{-- Toggle dark mode --}}
                     <button data-theme-toggle aria-label="Ganti tema"
                         class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shrink-0">
@@ -132,10 +144,12 @@
                         <i class="bi bi-sun-fill hidden" data-theme-icon-light></i>
                     </button>
 
+
                     {{-- Info user & logout --}}
                     <x-dropdown align="right" width="sm">
                         <x-slot:trigger>
-                            <button class="inline-flex items-center gap-2 rounded-md px-1.5 sm:px-2 py-1.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <button
+                                class="inline-flex items-center gap-2 rounded-md px-1.5 sm:px-2 py-1.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <x-avatar :name="Auth::user()->name ?? 'U'" size="xs" />
                                 <span class="hidden sm:block max-w-32 truncate">{{ Auth::user()->name }}</span>
                                 <i class="bi bi-chevron-down text-xs hidden sm:inline"></i>
@@ -143,8 +157,10 @@
                         </x-slot:trigger>
 
                         <div class="px-3 py-2 sm:hidden">
-                            <p class="truncate text-sm font-semibold text-gray-800 dark:text-gray-100">{{ Auth::user()->name }}</p>
-                            <p class="truncate text-xs text-gray-500 dark:text-gray-400">{{ ucfirst(Auth::user()->role ?? 'Pengguna') }}</p>
+                            <p class="truncate text-sm font-semibold text-gray-800 dark:text-gray-100">
+                                {{ Auth::user()->name }}</p>
+                            <p class="truncate text-xs text-gray-500 dark:text-gray-400">
+                                {{ ucfirst(Auth::user()->role ?? 'Pengguna') }}</p>
                         </div>
                         <div class="border-t border-gray-200 dark:border-gray-700 my-1 sm:hidden"></div>
 
@@ -194,8 +210,9 @@
                 </div>
             </main>
 
-            <footer class="px-3 sm:px-4 lg:px-6 py-4 text-center text-xs text-gray-400 dark:text-gray-600 border-t border-gray-200 dark:border-gray-800">
-                &copy; {{ date('Y') }} Sapras — Sistem Data Sarana &amp; Prasarana Sekolah
+            <footer
+                class="px-3 sm:px-4 lg:px-6 py-4 text-center text-xs text-gray-400 dark:text-gray-600 border-t border-gray-200 dark:border-gray-800">
+                &copy; {{ date('Y') }} Sarpras — Sistem Data Sarana &amp; Prasarana Sekolah
             </footer>
         </div>
     </div>

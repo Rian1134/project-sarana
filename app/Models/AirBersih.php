@@ -12,13 +12,13 @@ class AirBersih extends Model
     protected $table = 'air_bersihs';
 
     protected $fillable = [
-        'sarana_id',
+        'profile_sekolah_id',
         'ada/tidak_ada',
         'kodisi'
     ];
 
-    public function sarana()
+    public function profileSekolah()
     {
-        return $this->belongsTo(Sarana::class);
+        return $this->belongsTo(ProfileSekolah::class);
     }
 }

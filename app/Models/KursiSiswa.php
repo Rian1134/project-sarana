@@ -12,13 +12,13 @@ class KursiSiswa extends Model
     protected $table = 'kursi_siswas';
 
     protected $fillable = [
-        'sarana_id',
-        'baik',
+        'profile_sekolah_id',
+        'bagus',
         'rusak'
     ];
 
-    public function sarana()
+    public function profileSekoh()
     {
-        return $this->belongsTo(Sarana::class);
+        return $this->belongsTo(ProfileSekolah::class);
     }
 }

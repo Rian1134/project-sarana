@@ -13,11 +13,11 @@ class RehabilitasiRuangKelas extends Model
 
     protected $fillable = [
         'jumlah',
-        'sarana_id',
+        'profile_sekolah_id',
     ];
 
-    public function sarana()
+    public function profileSekoh()
     {
-        return $this->belongsTo(Sarana::class);
+        return $this->belongsTo(ProfileSekolah::class);
     }
 }

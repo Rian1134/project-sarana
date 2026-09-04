@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
+// use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -12,8 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('sarana')->get();
-        return view('admin.user.index', compact('users')); // Kirim sebagai $users
+        $users = User::with('profileSekolah')->get();
+        return view('admin.user.index', compact('users'));
     }
 
     /**
@@ -21,7 +24,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::with('sarana')->find($id);
+        $user = User::with('profileSekolah')->find($id);
         
         if (!$user) {
             return redirect()->route('user.index')
@@ -36,18 +39,24 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
+        // Cegah menghapus diri sendiri
+        if (Auth::id() == $id) {
+            return redirect()->route('user.index')
+                ->with('error', 'Anda tidak dapat menghapus akun sendiri.');
+        }
+
         $user = User::find($id);
-        
+
         if (!$user) {
             return redirect()->route('user.index')
                 ->with('error', 'User tidak ditemukan.');
         }
-        
-        // Hapus data sarana yang dimiliki user
-        if ($user->sarana) {
-            $user->sarana->delete();
+
+        // Hapus data profileSekolah yang dimiliki user
+        if ($user->profileSekolah) {
+            $user->profileSekolah->delete();
         }
-        
+
         $user->delete();
 
         return redirect()->route('user.index')

@@ -12,13 +12,13 @@ class MejaSiswa extends Model
     protected $table = 'meja_siswas';
 
     protected $fillable = [
-        'sarana_id',
-        'baik',
-        'rusak'
+        'profile_sekolah_id',
+        'bagus',
+        'rusak',
     ];
 
-    public function sarana()
+    public function profileSekoh()
     {
-        return $this->belongsTo(Sarana::class);
+        return $this->belongsTo(ProfileSekolah::class);
     }
 }

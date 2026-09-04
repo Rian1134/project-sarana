@@ -12,13 +12,13 @@ class ToiletSiswa extends Model
     protected $table = 'toilet_siswas';
 
     protected $fillable = [
-        'baik',
+        'bagus',
         'rusak',
-        'sarana_id',
+        'profile_sekolah_id',
     ];
 
-    public function sarana()
+    public function profileSekoh()
     {
-        return $this->belongsTo(Sarana::class);
+        return $this->belongsTo(ProfileSekolah::class);
     }
 }

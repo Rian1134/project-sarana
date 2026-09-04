@@ -14,11 +14,11 @@ class LapanganSekolah extends Model
     protected $fillable = [
         'ada/tidak_ada',
         'kodisi',
-        'sarana_id',
+        'profile_sekolah_id',
     ];
 
-    public function sarana()
+    public function profileSekoh()
     {
-        return $this->belongsTo(Sarana::class);
+        return $this->belongsTo(ProfileSekolah::class);
     }
 }

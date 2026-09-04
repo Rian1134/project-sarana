@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sapras - @yield('title', 'Sistem Data Sarana & Prasarana Sekolah')</title>
+    <title>Sarpras - @yield('title', 'Sistem Data Sarana & Prasarana Sekolah')</title>
 
     @vite(['resources/css/app.css'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -27,34 +27,42 @@
     {{-- ===== NAVBAR PUBLIK ===== --}}
     <x-navbar fixed class="bg-white! dark:bg-gray-900! border-b border-gray-100 dark:border-gray-800 shadow-sm">
         <x-slot:brand>
-            <a href="{{ url('/') }}" class="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-gray-100">
+            <a href="{{ url('/') }}"
+                class="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-gray-100">
                 <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-600 text-white">
                     <i class="bi bi-building"></i>
                 </span>
-                Sapras
+                Sarpras
             </a>
         </x-slot:brand>
 
         <x-slot:menu>
             <a href="#tentang" class="nav-link">Tentang</a>
             <a href="#kontak" class="nav-link">Kontak</a>
+            <a href="{{ route('panduan') }}" class="nav-link">Panduan</a>
         </x-slot:menu>
 
         <x-slot:actions>
-            <button data-theme-toggle aria-label="Ganti tema" class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800">
+            <button data-theme-toggle aria-label="Ganti tema"
+                class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800">
                 <i class="bi bi-moon-stars-fill" data-theme-icon-dark></i>
                 <i class="bi bi-sun-fill hidden" data-theme-icon-light></i>
             </button>
-
-            <a href="{{ route('login') }}" class="hidden sm:inline-flex">
-                <x-button variant="light" size="sm">Login</x-button>
-            </a>
-            <a href="{{ route('auth.register') }}" class="inline-flex">
-                <x-button variant="success" size="sm">
-                    <span class="hidden sm:inline">Daftar Sekarang</span>
-                    <span class="sm:hidden">Daftar</span>
-                </x-button>
-            </a>
+            @if (Auth::check())
+                <a href="{{ url('/') }}" class="inline-flex">
+                    <x-button variant="light" size="sm">Kembali</x-button>
+                </a>
+            @else
+                <a href="{{ route('login') }}" class="hidden sm:inline-flex">
+                    <x-button variant="light" size="sm">Login</x-button>
+                </a>
+                <a href="{{ route('auth.register') }}" class="inline-flex">
+                    <x-button variant="success" size="sm">
+                        <span class="hidden sm:inline">Daftar Sekarang</span>
+                        <span class="sm:hidden">Daftar</span>
+                    </x-button>
+                </a>
+            @endif
         </x-slot:actions>
     </x-navbar>
 
@@ -71,7 +79,7 @@
                     <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-green-600 text-white text-sm">
                         <i class="bi bi-building"></i>
                     </span>
-                    Sapras
+                    Sarpras
                 </div>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
                     Sistem pendataan sarana &amp; prasarana sekolah — cepat, rapi, dan mudah dipantau.
@@ -81,8 +89,10 @@
             <div>
                 <p class="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Tautan</p>
                 <ul class="flex flex-col gap-1.5 text-sm text-gray-500 dark:text-gray-400">
-                    <li><a href="{{ route('login') }}" class="hover:text-green-600 dark:hover:text-green-400 transition-colors">Login</a></li>
-                    <li><a href="{{ route('auth.register') }}" class="hover:text-green-600 dark:hover:text-green-400 transition-colors">Daftar</a></li>
+                    <li><a href="{{ route('login') }}"
+                            class="hover:text-green-600 dark:hover:text-green-400 transition-colors">Login</a></li>
+                    <li><a href="{{ route('auth.register') }}"
+                            class="hover:text-green-600 dark:hover:text-green-400 transition-colors">Daftar</a></li>
                 </ul>
             </div>
 
@@ -90,13 +100,15 @@
                 <p class="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Kontak</p>
                 <ul class="flex flex-col gap-1.5 text-sm text-gray-500 dark:text-gray-400">
                     <li class="flex items-center gap-2"><i class="bi bi-envelope"></i> info@project-s.test</li>
-                    <li class="flex items-center gap-2"><i class="bi bi-telephone"></i> (0xx) xxx-xxxx</li>
+                    <li class="flex items-center gap-2"><a href="#"><i class="bi bi-whatsapp"></i> (0xx)
+                            xxx-xxxx</a></li>
                 </ul>
             </div>
         </div>
 
-        <div class="border-t border-gray-100 dark:border-gray-800 py-4 text-center text-xs text-gray-400 dark:text-gray-600">
-            &copy; {{ date('Y') }} Sapras — Sistem Data Sarana &amp; Prasarana Sekolah.
+        <div
+            class="border-t border-gray-100 dark:border-gray-800 py-4 text-center text-xs text-gray-400 dark:text-gray-600">
+            &copy; {{ date('Y') }} Sarpras — Sistem Data Sarana &amp; Prasarana Sekolah.
         </div>
     </footer>
 

@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Laptop extends Model
+class Chromebook extends Model
 {
     use HasFactory;
 
-    protected $table = 'laptops';
+    protected $table = 'chromebooks';
 
     protected $fillable = [
         'profile_sekolah_id',
         'bagus',
-        'rusak',
+        'rusak'
     ];
 
-    public function profileSekoh()
+    public function profileSekolah()
     {
         return $this->belongsTo(ProfileSekolah::class);
     }
