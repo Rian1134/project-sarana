@@ -84,7 +84,7 @@
             <a href="{{ route('user.profile.index') }}"
                 class="sidebar-link {{ request()->routeIs('user.profile.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
                 @if (request()->routeIs('user.profile.*')) aria-current="page" @endif>
-                <i class="bi bi-person-fill text-base shrink-0"></i>
+                <i class="bi bi-house-fill text-base shrink-0"></i>
                 <span data-sidebar-label>Profil</span>
             </a>
 
@@ -134,10 +134,11 @@
 
                     <a href="{{ route('panduan') }}"
                         class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shrink-0">
-                        <i class="bi bi-question-circle-fill me-1"></i> Panduan
+                        <span class="hidden sm:inline"> <i class="bi bi-question-circle-fill me-1"></i> Panduan </span>
+                        <span class="sm:hidden"> <i class="bi bi-question-circle-fill me-1"></i></span>
                     </a>
 
-                    {{-- Toggle dark mode --}}
+                    {{-- Toggle dark mode --}}  
                     <button data-theme-toggle aria-label="Ganti tema"
                         class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shrink-0">
                         <i class="bi bi-moon-stars-fill" data-theme-icon-dark></i>

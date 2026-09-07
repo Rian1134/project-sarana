@@ -178,7 +178,7 @@
                     <div class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
                         <div class="flex items-center gap-1.5 sm:gap-2 text-blue-700 dark:text-blue-400 font-semibold text-[10px] sm:text-sm">
                             <i class="bi bi-building-add text-sm sm:text-lg"></i>
-                            <span class="inline">D. RKB</span>
+                            <span class="inline">D. Pembangunan Ruang Kelas Baru (RKB) </span>
                         </div>
                     </div>
                     <div class="p-2 sm:p-3 text-center">
@@ -193,7 +193,7 @@
                     <div class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20">
                         <div class="flex items-center gap-1.5 sm:gap-2 text-orange-700 dark:text-orange-400 font-semibold text-[10px] sm:text-sm">
                             <i class="bi bi-tools text-sm sm:text-lg"></i>
-                            <span class="inline">E. Rehabilitasi</span>
+                            <span class="inline">E. Rehabilitasi Ruang Kelas</span>
                         </div>
                     </div>
                     <div class="p-2 sm:p-3 text-center">
