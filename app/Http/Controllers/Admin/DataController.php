@@ -302,6 +302,29 @@ class DataController extends Controller
             'lapangan_sekolah_tidak_ada' => $profileSekolahs->filter(function ($item) {
                 return $item->lapanganSekolah?->{'ada/tidak_ada'} == 'tidak_ada';
             })->count(),
+            // Akreditasi & Status
+            'akreditasi' => [
+                'A' => $profileSekolahs->filter(function ($item) {
+                    return $item->akreditasi == 'A';
+                })->count(),
+                'B' => $profileSekolahs->filter(function ($item) {
+                    return $item->akreditasi == 'B';
+                })->count(),
+                'C' => $profileSekolahs->filter(function ($item) {
+                    return $item->akreditasi == 'C';
+                })->count(),
+                'belum' => $profileSekolahs->filter(function ($item) {
+                    return $item->akreditasi == 'belum_terakreditasi' || $item->akreditasi == null;
+                })->count(),
+            ],
+            'status_sekolah' => [
+                'negeri' => $profileSekolahs->filter(function ($item) {
+                    return $item->status_sekolah == 'negeri';
+                })->count(),
+                'swasta' => $profileSekolahs->filter(function ($item) {
+                    return $item->status_sekolah == 'swasta';
+                })->count(),
+            ],
         ];
 
         $rkbPeriode = PeriodeLaporan::forKategori('rkb');
@@ -320,7 +343,7 @@ class DataController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi data
+        // Validasi data dengan tambahan status_sekolah dan akreditasi
         $request->validate([
             'nama_sekolah' => 'required|string|max:255',
             'NPSN' => 'required|string|unique:profile_sekolahs,NPSN|max:20',
@@ -328,6 +351,8 @@ class DataController extends Controller
             'nama_kepala_sekolah' => 'required|string|max:255',
             'NIP' => 'required|string|unique:profile_sekolahs,NIP|max:20',
             'nomor_hp' => 'required|string|unique:profile_sekolahs,nomor_hp|max:15',
+            'status_sekolah' => 'required|in:negeri,swasta',
+            'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
 
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
             'pagar_kondisi' => 'nullable|in:bagus,rusak,nihil',
@@ -397,6 +422,8 @@ class DataController extends Controller
                 'nama_kepala_sekolah' => $request->nama_kepala_sekolah,
                 'NIP' => $request->NIP,
                 'nomor_hp' => $request->nomor_hp,
+                'status_sekolah' => $request->status_sekolah,
+                'akreditasi' => $request->akreditasi,
                 'user_id' => Auth::id(), // <- TAMBAHKAN INI
             ]);
 
@@ -674,6 +701,8 @@ class DataController extends Controller
             'nama_kepala_sekolah' => 'required|string|max:255',
             'NIP' => 'required|string|max:20|unique:profile_sekolahs,NIP,'.$profileSekolah->id,
             'nomor_hp' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp,'.$profileSekolah->id,
+            'status_sekolah' => 'required|in:negeri,swasta',
+            'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
 
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
             'pagar_kondisi' => 'nullable|in:bagus,rusak,nihil',
@@ -742,6 +771,8 @@ class DataController extends Controller
                 'nama_kepala_sekolah' => $request->nama_kepala_sekolah,
                 'NIP' => $request->NIP,
                 'nomor_hp' => $request->nomor_hp,
+                'status_sekolah' => $request->status_sekolah,
+                'akreditasi' => $request->akreditasi,
                 // user_id tidak diupdate agar tetap dengan pembuat awal
             ]);
 

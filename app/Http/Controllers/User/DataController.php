@@ -33,12 +33,12 @@ use App\Models\ToiletSiswa;
 use App\Models\UnitKesehatanSekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class DataController extends Controller
 {
     public function index()
     {
-        // Ambil data user yang sedang login (max 1 data per user)
         $profileSekolah = ProfileSekolah::with([
             'pagarSekolah',
             'airBersih',
@@ -68,7 +68,6 @@ class DataController extends Controller
             'lapanganSekolah',
         ])->where('user_id', Auth::id())->first();
 
-        // dd(Auth::user());
         $rkbPeriode = PeriodeLaporan::forKategori('rkb');
         $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
 
@@ -77,13 +76,11 @@ class DataController extends Controller
 
     public function create()
     {
-        // Cek apakah user sudah punya data
         if (ProfileSekolah::where('user_id', Auth::id())->exists()) {
             return redirect()->route('user.data.index')
-                ->with('error', 'Anda sudah memiliki data. Tidak dapat membuat data baru karena maksimal 1 data per user.');
+                ->with('error', 'Anda sudah memiliki data. Maksimal 1 data per user.');
         }
 
-        // Ambil periode dari database
         $rkbPeriode = PeriodeLaporan::forKategori('rkb');
         $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
 
@@ -92,20 +89,20 @@ class DataController extends Controller
 
     public function store(Request $request)
     {
-        // Cek apakah user sudah punya data
         if (ProfileSekolah::where('user_id', Auth::id())->exists()) {
             return redirect()->route('user.data.index')
-                ->with('error', 'Anda sudah memiliki data. Tidak dapat membuat data baru.');
+                ->with('error', 'Anda sudah memiliki data. Maksimal 1 data per user.');
         }
 
-        // Validasi data
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nama_sekolah' => 'required|string|max:255',
             'NPSN' => 'required|string|unique:profile_sekolahs,NPSN|max:20',
             'alamat_sekolah' => 'required|string',
             'nama_kepala_sekolah' => 'required|string|max:255',
             'NIP' => 'required|string|unique:profile_sekolahs,NIP|max:20',
             'nomor_hp' => 'required|string|unique:profile_sekolahs,nomor_hp|max:15',
+            'status_sekolah' => 'required|in:negeri,swasta',
+            'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
 
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
             'pagar_kondisi' => 'nullable|in:bagus,rusak,nihil',
@@ -161,8 +158,13 @@ class DataController extends Controller
             'lapangan_sekolah_kondisi' => 'nullable|in:bagus,rusak,nihil',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         try {
-            // Simpan data sekolah dengan user_id dari user yang sedang login
             $profileSekolah = ProfileSekolah::create([
                 'nama_sekolah' => $request->nama_sekolah,
                 'NPSN' => $request->NPSN,
@@ -170,59 +172,53 @@ class DataController extends Controller
                 'nama_kepala_sekolah' => $request->nama_kepala_sekolah,
                 'NIP' => $request->NIP,
                 'nomor_hp' => $request->nomor_hp,
+                'status_sekolah' => $request->status_sekolah,
+                'akreditasi' => $request->akreditasi,
                 'user_id' => Auth::id(),
             ]);
 
-            // 1. Simpan Pagar Sekolah
             PagarSekolah::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->pagar_ada_tidak,
-                'kondisi' => $request->pagar_kondisi ?? 'nihil',
+                'kodisi' => $request->pagar_kondisi ?? 'nihil',
             ]);
 
-            // 2. Simpan Air Bersih
             AirBersih::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->air_ada_tidak,
-                'kondisi' => $request->air_kondisi ?? 'nihil',
+                'kodisi' => $request->air_kondisi ?? 'nihil',
             ]);
 
-            // 3. Simpan Kursi Siswa
             KursiSiswa::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'bagus' => $request->kursi_siswa_bagus,
                 'rusak' => $request->kursi_siswa_rusak,
             ]);
 
-            // 4. Simpan Meja Siswa
             MejaSiswa::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'bagus' => $request->meja_siswa_bagus,
                 'rusak' => $request->meja_siswa_rusak,
             ]);
 
-            // 5. Simpan Kursi Guru
             KursiGuru::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'bagus' => $request->kursi_guru_bagus,
                 'rusak' => $request->kursi_guru_rusak,
             ]);
 
-            // 6. Simpan Meja Guru
             MejaGuru::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'bagus' => $request->meja_guru_bagus,
                 'rusak' => $request->meja_guru_rusak,
             ]);
 
-            // 7. Simpan Laptop
             Laptop::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'bagus' => $request->laptop_bagus,
                 'rusak' => $request->laptop_rusak,
             ]);
 
-            // 8. Simpan Komputer
             Komputer::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'bagus' => $request->komputer_bagus,
@@ -235,7 +231,6 @@ class DataController extends Controller
                 'rusak' => $request->chromebook_rusak,
             ]);
 
-            // 9. Simpan Jumlah Siswa
             JumlahSiswa::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'vii' => $request->jumlah_siswa_vii,
@@ -243,7 +238,6 @@ class DataController extends Controller
                 'ix' => $request->jumlah_siswa_ix,
             ]);
 
-            // 10. Simpan Jumlah Rombel
             JumlahRombel::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'vii' => $request->jumlah_rombel_vii,
@@ -251,116 +245,143 @@ class DataController extends Controller
                 'ix' => $request->jumlah_rombel_ix,
             ]);
 
-            // 11. Simpan Ruang Kelas Baru
             RuangKelasBaru::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'jumlah' => $request->rkb_jumlah,
             ]);
 
-            // 12. Simpan Rehabilitasi Ruang Kelas
             RehabilitasiRuangKelas::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'jumlah' => $request->rehabilitasi_jumlah,
             ]);
 
-            // 13. Simpan Ruang Kelas
             RuangKelas::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'bagus' => $request->ruang_kelas_bagus,
                 'rusak' => $request->ruang_kelas_rusak,
             ]);
 
-            // 14. Simpan Toilet Siswa
             ToiletSiswa::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'bagus' => $request->toilet_siswa_bagus,
                 'rusak' => $request->toilet_siswa_rusak,
             ]);
 
-            // 15. Simpan Toilet Guru
             ToiletGuru::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'bagus' => $request->toilet_guru_bagus,
                 'rusak' => $request->toilet_guru_rusak,
             ]);
 
-            // 16. Simpan Ruang Perpustakaan
             RuangPerpustakaan::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->perpustakaan_ada_tidak,
-                'kondisi' => $request->perpustakaan_kondisi ?? 'nihil',
+                'kodisi' => $request->perpustakaan_kondisi ?? 'nihil',
             ]);
 
-            // 17. Simpan Ruang Kepala Sekolah
             RuangKepalaSekolah::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->kepala_sekolah_ada_tidak,
-                'kondisi' => $request->kepala_sekolah_kondisi ?? 'nihil',
+                'kodisi' => $request->kepala_sekolah_kondisi ?? 'nihil',
             ]);
 
-            // 18. Simpan Ruang Guru
             RuangGuru::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->ruang_guru_ada_tidak,
-                'kondisi' => $request->ruang_guru_kondisi ?? 'nihil',
+                'kodisi' => $request->ruang_guru_kondisi ?? 'nihil',
             ]);
 
-            // 19. Simpan Ruang Kantor TU
             RuangKantorTu::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->kantor_tu_ada_tidak,
-                'kondisi' => $request->kantor_tu_kondisi ?? 'nihil',
+                'kodisi' => $request->kantor_tu_kondisi ?? 'nihil',
             ]);
 
-            // 20. Simpan Lab IPA
             LabIpa::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->lab_ipa_ada_tidak,
-                'kondisi' => $request->lab_ipa_kondisi ?? 'nihil',
+                'kodisi' => $request->lab_ipa_kondisi ?? 'nihil',
             ]);
 
-            // 21. Simpan Lab Komputer
             LabKomputer::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->lab_komputer_ada_tidak,
-                'kondisi' => $request->lab_komputer_kondisi ?? 'nihil',
+                'kodisi' => $request->lab_komputer_kondisi ?? 'nihil',
             ]);
 
-            // 22. Simpan UKS
             UnitKesehatanSekolah::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->uks_ada_tidak,
-                'kondisi' => $request->uks_kondisi ?? 'nihil',
+                'kodisi' => $request->uks_kondisi ?? 'nihil',
             ]);
 
-            // 23. Simpan Rumah Dinas
             RumahDinas::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->rumah_dinas_ada_tidak,
-                'kondisi' => $request->rumah_dinas_kondisi ?? 'nihil',
+                'kodisi' => $request->rumah_dinas_kondisi ?? 'nihil',
             ]);
 
-            // 24. Simpan Rumah Ibadah
             RumahIbadah::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->rumah_ibadah_ada_tidak,
-                'kondisi' => $request->rumah_ibadah_kondisi ?? 'nihil',
+                'kodisi' => $request->rumah_ibadah_kondisi ?? 'nihil',
             ]);
 
-            // 25. Simpan Lapangan Sekolah
             LapanganSekolah::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->lapangan_sekolah_ada_tidak,
-                'kondisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
+                'kodisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
             ]);
 
             return redirect()->route('user.data.index')
-                ->with('success', 'Data ProfileSekolah berhasil ditambahkan!');
+                ->with('success', 'Data Sarana berhasil ditambahkan!');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal menyimpan data: '.$e->getMessage());
+                ->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
         }
+    }
+
+    public function show(ProfileSekolah $profileSekolah)
+    {
+        if ($profileSekolah->user_id !== Auth::id()) {
+            return redirect()->route('user.data.index')
+                ->with('error', 'Anda tidak memiliki akses untuk melihat data ini.');
+        }
+
+        $profileSekolah->load([
+            'pagarSekolah',
+            'airBersih',
+            'kursiSiswa',
+            'mejaSiswa',
+            'kursiGuru',
+            'mejaGuru',
+            'laptop',
+            'komputer',
+            'chromebook',
+            'jumlahSiswa',
+            'jumlahRombel',
+            'ruangKelasBaru',
+            'rehabilitasiRuangKelas',
+            'ruangKelas',
+            'toiletSiswa',
+            'toiletGuru',
+            'ruangPerpustakaan',
+            'ruangKepalaSekolah',
+            'ruangGuru',
+            'ruangKantorTu',
+            'labIpa',
+            'labKomputer',
+            'unitKesehatanSekolah',
+            'rumahDinas',
+            'rumahIbadah',
+            'lapanganSekolah',
+        ]);
+
+        $rkbPeriode = PeriodeLaporan::forKategori('rkb');
+        $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
+
+        return view('user.data.show', compact('profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
     }
 
     public function edit(ProfileSekolah $profileSekolah)
@@ -399,7 +420,6 @@ class DataController extends Controller
             'lapanganSekolah',
         ]);
 
-        // Ambil periode dari database
         $rkbPeriode = PeriodeLaporan::forKategori('rkb');
         $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
 
@@ -408,19 +428,20 @@ class DataController extends Controller
 
     public function update(Request $request, ProfileSekolah $profileSekolah)
     {
-        // User hanya bisa update data miliknya sendiri
         if ($profileSekolah->user_id !== Auth::id()) {
             return redirect()->route('user.data.index')
                 ->with('error', 'Anda tidak memiliki akses untuk mengupdate data ini.');
         }
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nama_sekolah' => 'required|string|max:255',
-            'NPSN' => 'required|string|max:20|unique:profile_sekolahs,NPSN,'.$profileSekolah->id,
+            'NPSN' => 'required|string|max:20|unique:profile_sekolahs,NPSN,' . $profileSekolah->id,
             'alamat_sekolah' => 'required|string',
             'nama_kepala_sekolah' => 'required|string|max:255',
-            'NIP' => 'required|string|max:20|unique:profile_sekolahs,NIP,'.$profileSekolah->id,
-            'nomor_hp' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp,'.$profileSekolah->id,
+            'NIP' => 'required|string|max:20|unique:profile_sekolahs,NIP,' . $profileSekolah->id,
+            'nomor_hp' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp,' . $profileSekolah->id,
+            'status_sekolah' => 'required|in:negeri,swasta',
+            'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
 
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
             'pagar_kondisi' => 'nullable|in:bagus,rusak,nihil',
@@ -476,8 +497,13 @@ class DataController extends Controller
             'lapangan_sekolah_kondisi' => 'nullable|in:bagus,rusak,nihil',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         try {
-            // Update data sekolah
             $profileSekolah->update([
                 'nama_sekolah' => $request->nama_sekolah,
                 'NPSN' => $request->NPSN,
@@ -485,14 +511,15 @@ class DataController extends Controller
                 'nama_kepala_sekolah' => $request->nama_kepala_sekolah,
                 'NIP' => $request->NIP,
                 'nomor_hp' => $request->nomor_hp,
+                'status_sekolah' => $request->status_sekolah,
+                'akreditasi' => $request->akreditasi,
             ]);
 
-            // Update atau create relasi
             PagarSekolah::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->pagar_ada_tidak,
-                    'kondisi' => $request->pagar_kondisi ?? 'nihil',
+                    'kodisi' => $request->pagar_kondisi ?? 'nihil',
                 ]
             );
 
@@ -500,7 +527,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->air_ada_tidak,
-                    'kondisi' => $request->air_kondisi ?? 'nihil',
+                    'kodisi' => $request->air_kondisi ?? 'nihil',
                 ]
             );
 
@@ -580,16 +607,12 @@ class DataController extends Controller
 
             RuangKelasBaru::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
-                [
-                    'jumlah' => $request->rkb_jumlah,
-                ]
+                ['jumlah' => $request->rkb_jumlah]
             );
 
             RehabilitasiRuangKelas::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
-                [
-                    'jumlah' => $request->rehabilitasi_jumlah,
-                ]
+                ['jumlah' => $request->rehabilitasi_jumlah]
             );
 
             RuangKelas::updateOrCreate(
@@ -620,7 +643,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->perpustakaan_ada_tidak,
-                    'kondisi' => $request->perpustakaan_kondisi ?? 'nihil',
+                    'kodisi' => $request->perpustakaan_kondisi ?? 'nihil',
                 ]
             );
 
@@ -628,7 +651,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->kepala_sekolah_ada_tidak,
-                    'kondisi' => $request->kepala_sekolah_kondisi ?? 'nihil',
+                    'kodisi' => $request->kepala_sekolah_kondisi ?? 'nihil',
                 ]
             );
 
@@ -636,7 +659,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->ruang_guru_ada_tidak,
-                    'kondisi' => $request->ruang_guru_kondisi ?? 'nihil',
+                    'kodisi' => $request->ruang_guru_kondisi ?? 'nihil',
                 ]
             );
 
@@ -644,7 +667,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->kantor_tu_ada_tidak,
-                    'kondisi' => $request->kantor_tu_kondisi ?? 'nihil',
+                    'kodisi' => $request->kantor_tu_kondisi ?? 'nihil',
                 ]
             );
 
@@ -652,7 +675,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->lab_ipa_ada_tidak,
-                    'kondisi' => $request->lab_ipa_kondisi ?? 'nihil',
+                    'kodisi' => $request->lab_ipa_kondisi ?? 'nihil',
                 ]
             );
 
@@ -660,7 +683,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->lab_komputer_ada_tidak,
-                    'kondisi' => $request->lab_komputer_kondisi ?? 'nihil',
+                    'kodisi' => $request->lab_komputer_kondisi ?? 'nihil',
                 ]
             );
 
@@ -668,7 +691,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->uks_ada_tidak,
-                    'kondisi' => $request->uks_kondisi ?? 'nihil',
+                    'kodisi' => $request->uks_kondisi ?? 'nihil',
                 ]
             );
 
@@ -676,7 +699,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->rumah_dinas_ada_tidak,
-                    'kondisi' => $request->rumah_dinas_kondisi ?? 'nihil',
+                    'kodisi' => $request->rumah_dinas_kondisi ?? 'nihil',
                 ]
             );
 
@@ -684,7 +707,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->rumah_ibadah_ada_tidak,
-                    'kondisi' => $request->rumah_ibadah_kondisi ?? 'nihil',
+                    'kodisi' => $request->rumah_ibadah_kondisi ?? 'nihil',
                 ]
             );
 
@@ -692,29 +715,27 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->lapangan_sekolah_ada_tidak,
-                    'kondisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
+                    'kodisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
                 ]
             );
 
             return redirect()->route('user.data.index')
-                ->with('success', 'Data ProfileSekolah berhasil diupdate!');
+                ->with('success', 'Data Sarana berhasil diupdate!');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal mengupdate data: '.$e->getMessage());
+                ->with('error', 'Gagal mengupdate data: ' . $e->getMessage());
         }
     }
 
     public function destroy(ProfileSekolah $profileSekolah)
     {
-        // User hanya bisa menghapus data miliknya sendiri
         if ($profileSekolah->user_id !== Auth::id()) {
             return redirect()->route('user.data.index')
                 ->with('error', 'Anda tidak memiliki akses untuk menghapus data ini.');
         }
 
         try {
-            // Hapus semua relasi
             $profileSekolah->pagarSekolah()->delete();
             $profileSekolah->airBersih()->delete();
             $profileSekolah->kursiSiswa()->delete();
@@ -742,14 +763,13 @@ class DataController extends Controller
             $profileSekolah->rumahIbadah()->delete();
             $profileSekolah->lapanganSekolah()->delete();
 
-            // Hapus data utama
             $profileSekolah->delete();
 
             return redirect()->route('user.data.index')
-                ->with('success', 'Data ProfileSekolah berhasil dihapus!');
+                ->with('success', 'Data Sarana berhasil dihapus!');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Gagal menghapus data: '.$e->getMessage());
+                ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
         }
     }
 }

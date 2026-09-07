@@ -14,7 +14,7 @@
                     <span class="sm:hidden">Sarana</span>
                 </h1>
                 <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">
-                    Kelola data profileSekolah prasarana sekolah Anda
+                    Kelola data sarana prasarana sekolah Anda
                 </p>
             </div>
             <div class="flex flex-wrap gap-1.5 sm:gap-2">
@@ -63,6 +63,29 @@
                         <div class="bg-gray-50 dark:bg-gray-700/30 p-2 sm:p-3 rounded-lg">
                             <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">NPSN</p>
                             <p class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">{{ $profileSekolah->NPSN }}</p>
+                        </div>
+                        <!-- Status Sekolah -->
+                        <div class="bg-gray-50 dark:bg-gray-700/30 p-2 sm:p-3 rounded-lg">
+                            <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Status Sekolah</p>
+                            <p class="text-xs sm:text-sm font-medium">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                    {{ $profileSekolah->status_sekolah == 'negeri' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' }}">
+                                    {{ ucfirst($profileSekolah->status_sekolah) }}
+                                </span>
+                            </p>
+                        </div>
+                        <!-- Akreditasi -->
+                        <div class="bg-gray-50 dark:bg-gray-700/30 p-2 sm:p-3 rounded-lg">
+                            <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Akreditasi</p>
+                            <p class="text-xs sm:text-sm font-medium">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                    {{ $profileSekolah->akreditasi == 'A' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 
+                                       ($profileSekolah->akreditasi == 'B' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' : 
+                                       ($profileSekolah->akreditasi == 'C' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' : 
+                                       'bg-gray-100 text-gray-800 dark:bg-gray-700/30 dark:text-gray-300')) }}">
+                                    {{ $profileSekolah->akreditasi == 'belum_terakreditasi' ? 'Belum Terakreditasi' : $profileSekolah->akreditasi }}
+                                </span>
+                            </p>
                         </div>
                         <div class="sm:col-span-2 bg-gray-50 dark:bg-gray-700/30 p-2 sm:p-3 rounded-lg">
                             <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Alamat Sekolah</p>
@@ -155,7 +178,7 @@
                     <div class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
                         <div class="flex items-center gap-1.5 sm:gap-2 text-blue-700 dark:text-blue-400 font-semibold text-[10px] sm:text-sm">
                             <i class="bi bi-building-add text-sm sm:text-lg"></i>
-                            <span class="inline">D. Pembangunan Ruang Kelas Baru (RKB) </span>
+                            <span class="inline">D. RKB</span>
                         </div>
                     </div>
                     <div class="p-2 sm:p-3 text-center">
@@ -170,7 +193,7 @@
                     <div class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20">
                         <div class="flex items-center gap-1.5 sm:gap-2 text-orange-700 dark:text-orange-400 font-semibold text-[10px] sm:text-sm">
                             <i class="bi bi-tools text-sm sm:text-lg"></i>
-                            <span class="inline">E. Rehabilitasi Ruang Kelas</span>
+                            <span class="inline">E. Rehabilitasi</span>
                         </div>
                     </div>
                     <div class="p-2 sm:p-3 text-center">
@@ -410,7 +433,7 @@
                                 Yakin ingin menghapus data?
                             </h4>
                             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 wrap-break-word">
-                                Data profileSekolah <strong class="text-gray-700 dark:text-gray-300">{{ $profileSekolah->nama_sekolah }}</strong> akan dihapus permanen.
+                                Data sarana <strong class="text-gray-700 dark:text-gray-300">{{ $profileSekolah->nama_sekolah }}</strong> akan dihapus permanen.
                             </p>
                         </div>
                         <div class="flex flex-wrap justify-end gap-2 p-3 sm:p-4 border-t dark:border-gray-700">
@@ -445,7 +468,7 @@
                         Belum Ada Data Sarana
                     </h3>
                     <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-6 max-w-md mx-auto px-2">
-                        Anda belum memiliki data profileSekolah prasarana sekolah. Mulai dengan menambahkan data sekarang.
+                        Anda belum memiliki data sarana prasarana sekolah. Mulai dengan menambahkan data sekarang.
                     </p>
                     <a href="{{ route('user.data.create') }}" 
                        class="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl">

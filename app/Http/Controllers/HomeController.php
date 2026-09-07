@@ -12,7 +12,7 @@ class HomeController extends Controller
             if (Auth::user()->hasRole('admin')) {
                 return redirect()->route('sarana.index');
             } elseif (Auth::user()->hasRole('user')) {
-                return redirect()->route('user.data.index');
+                return redirect()->route('user.profile.index');
             }
         }
 

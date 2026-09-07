@@ -89,6 +89,30 @@
                             required
                             :value="old('nomor_hp')"
                         />
+
+                        <!-- Status Sekolah -->
+                        <div>
+                            <x-form.select
+                                name="status_sekolah"
+                                label="Status Sekolah"
+                                placeholder="-- Pilih Status --"
+                                :options="['negeri' => 'Negeri', 'swasta' => 'Swasta']"
+                                :value="old('status_sekolah')"
+                                required
+                            />
+                        </div>
+
+                        <!-- Akreditasi -->
+                        <div>
+                            <x-form.select
+                                name="akreditasi"
+                                label="Akreditasi"
+                                placeholder="-- Pilih Akreditasi --"
+                                :options="['A' => 'A (Unggul)', 'B' => 'B (Baik)', 'C' => 'C (Cukup)', 'belum_terakreditasi' => 'Belum Terakreditasi']"
+                                :value="old('akreditasi')"
+                                required
+                            />
+                        </div>
                     </div>
                 </x-card>
 
@@ -764,7 +788,7 @@
             function setupConditionAuto(radioName, selectId) {
                 const radios = document.querySelectorAll(`input[name="${radioName}"]`);
                 const select = document.querySelector(`select[name="${selectId}"]`);
-                if (!select || radios.length === 0) return; // jaga-jaga elemen belum ada / id salah ketik
+                if (!select || radios.length === 0) return;
 
                 radios.forEach(radio => {
                     radio.addEventListener('change', function() {
@@ -788,7 +812,7 @@
                 }
             }
 
-            // Setup untuk Pagar dan Air Bersih
+            // Setup untuk semua fasilitas
             setupConditionAuto('perpustakaan_ada_tidak', 'perpustakaan_kondisi');
             setupConditionAuto('kepala_sekolah_ada_tidak', 'kepala_sekolah_kondisi');
             setupConditionAuto('ruang_guru_ada_tidak', 'ruang_guru_kondisi');

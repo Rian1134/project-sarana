@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProfileSekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,8 +18,38 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
+        
+        // Ambil data sekolah yang terhubung dengan user
+        $profileSekolah = ProfileSekolah::with([
+            'pagarSekolah',
+            'airBersih',
+            'kursiSiswa',
+            'mejaSiswa',
+            'kursiGuru',
+            'mejaGuru',
+            'laptop',
+            'komputer',
+            'chromebook',
+            'jumlahSiswa',
+            'jumlahRombel',
+            'ruangKelasBaru',
+            'rehabilitasiRuangKelas',
+            'ruangKelas',
+            'toiletSiswa',
+            'toiletGuru',
+            'ruangPerpustakaan',
+            'ruangKepalaSekolah',
+            'ruangGuru',
+            'ruangKantorTu',
+            'labIpa',
+            'labKomputer',
+            'unitKesehatanSekolah',
+            'rumahDinas',
+            'rumahIbadah',
+            'lapanganSekolah',
+        ])->where('user_id', $user->id)->first();
 
-        return view('user.profile.index', compact('user'));
+        return view('user.profile.index', compact('user', 'profileSekolah'));
     }
 
     /**
@@ -62,6 +93,14 @@ class ProfileController extends Controller
                 ->withInput()
                 ->with('error', 'Gagal memperbarui profil: '.$e->getMessage());
         }
+    }
+
+    /**
+     * Tampilkan halaman form ubah password.
+     */
+    public function changePassword()
+    {
+        return view('user.profile.change-password');
     }
 
     /**
