@@ -106,22 +106,22 @@ class DataController extends Controller
             'website' => 'required|string',
 
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
-            'pagar_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'pagar_kondisi' => 'nullable|in:baik,rusak,nihil',
             'air_ada_tidak' => 'required|in:ada,tidak_ada',
-            'air_kondisi' => 'nullable|in:bagus,rusak,nihil',
-            'kursi_siswa_bagus' => 'required|integer|min:0',
+            'air_kondisi' => 'nullable|in:baik,rusak,nihil',
+            'kursi_siswa_baik' => 'required|integer|min:0',
             'kursi_siswa_rusak' => 'required|integer|min:0',
-            'meja_siswa_bagus' => 'required|integer|min:0',
+            'meja_siswa_baik' => 'required|integer|min:0',
             'meja_siswa_rusak' => 'required|integer|min:0',
-            'kursi_guru_bagus' => 'required|integer|min:0',
+            'kursi_guru_baik' => 'required|integer|min:0',
             'kursi_guru_rusak' => 'required|integer|min:0',
-            'meja_guru_bagus' => 'required|integer|min:0',
+            'meja_guru_baik' => 'required|integer|min:0',
             'meja_guru_rusak' => 'required|integer|min:0',
-            'laptop_bagus' => 'required|integer|min:0',
+            'laptop_baik' => 'required|integer|min:0',
             'laptop_rusak' => 'required|integer|min:0',
-            'komputer_bagus' => 'required|integer|min:0',
+            'komputer_baik' => 'required|integer|min:0',
             'komputer_rusak' => 'required|integer|min:0',
-            'chromebook_bagus' => 'required|integer|min:0',
+            'chromebook_baik' => 'required|integer|min:0',
             'chromebook_rusak' => 'required|integer|min:0',
             'jumlah_siswa_vii' => 'required|integer|min:0',
             'jumlah_siswa_viii' => 'required|integer|min:0',
@@ -131,32 +131,32 @@ class DataController extends Controller
             'jumlah_rombel_ix' => 'required|integer|min:0',
             'rkb_jumlah' => 'required|integer|min:0',
             'rehabilitasi_jumlah' => 'required|integer|min:0',
-            'ruang_kelas_bagus' => 'required|integer|min:0',
+            'ruang_kelas_baik' => 'required|integer|min:0',
             'ruang_kelas_rusak' => 'required|integer|min:0',
-            'toilet_siswa_bagus' => 'required|integer|min:0',
+            'toilet_siswa_baik' => 'required|integer|min:0',
             'toilet_siswa_rusak' => 'required|integer|min:0',
-            'toilet_guru_bagus' => 'required|integer|min:0',
+            'toilet_guru_baik' => 'required|integer|min:0',
             'toilet_guru_rusak' => 'required|integer|min:0',
             'perpustakaan_ada_tidak' => 'required|in:ada,tidak_ada',
-            'perpustakaan_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'perpustakaan_kondisi' => 'nullable|in:baik,rusak,nihil',
             'kepala_sekolah_ada_tidak' => 'required|in:ada,tidak_ada',
-            'kepala_sekolah_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'kepala_sekolah_kondisi' => 'nullable|in:baik,rusak,nihil',
             'ruang_guru_ada_tidak' => 'required|in:ada,tidak_ada',
-            'ruang_guru_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'ruang_guru_kondisi' => 'nullable|in:baik,rusak,nihil',
             'kantor_tu_ada_tidak' => 'required|in:ada,tidak_ada',
-            'kantor_tu_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'kantor_tu_kondisi' => 'nullable|in:baik,rusak,nihil',
             'lab_ipa_ada_tidak' => 'required|in:ada,tidak_ada',
-            'lab_ipa_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'lab_ipa_kondisi' => 'nullable|in:baik,rusak,nihil',
             'lab_komputer_ada_tidak' => 'required|in:ada,tidak_ada',
-            'lab_komputer_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'lab_komputer_kondisi' => 'nullable|in:baik,rusak,nihil',
             'uks_ada_tidak' => 'required|in:ada,tidak_ada',
-            'uks_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'uks_kondisi' => 'nullable|in:baik,rusak,nihil',
             'rumah_dinas_ada_tidak' => 'required|in:ada,tidak_ada',
-            'rumah_dinas_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'rumah_dinas_kondisi' => 'nullable|in:baik,rusak,nihil',
             'rumah_ibadah_ada_tidak' => 'required|in:ada,tidak_ada',
-            'rumah_ibadah_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'rumah_ibadah_kondisi' => 'nullable|in:baik,rusak,nihil',
             'lapangan_sekolah_ada_tidak' => 'required|in:ada,tidak_ada',
-            'lapangan_sekolah_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'lapangan_sekolah_kondisi' => 'nullable|in:baik,rusak,nihil',
         ]);
 
         if ($validator->fails()) {
@@ -193,43 +193,43 @@ class DataController extends Controller
 
             KursiSiswa::create([
                 'profile_sekolah_id' => $profileSekolah->id,
-                'bagus' => $request->kursi_siswa_bagus,
+                'baik' => $request->kursi_siswa_baik,
                 'rusak' => $request->kursi_siswa_rusak,
             ]);
 
             MejaSiswa::create([
                 'profile_sekolah_id' => $profileSekolah->id,
-                'bagus' => $request->meja_siswa_bagus,
+                'baik' => $request->meja_siswa_baik,
                 'rusak' => $request->meja_siswa_rusak,
             ]);
 
             KursiGuru::create([
                 'profile_sekolah_id' => $profileSekolah->id,
-                'bagus' => $request->kursi_guru_bagus,
+                'baik' => $request->kursi_guru_baik,
                 'rusak' => $request->kursi_guru_rusak,
             ]);
 
             MejaGuru::create([
                 'profile_sekolah_id' => $profileSekolah->id,
-                'bagus' => $request->meja_guru_bagus,
+                'baik' => $request->meja_guru_baik,
                 'rusak' => $request->meja_guru_rusak,
             ]);
 
             Laptop::create([
                 'profile_sekolah_id' => $profileSekolah->id,
-                'bagus' => $request->laptop_bagus,
+                'baik' => $request->laptop_baik,
                 'rusak' => $request->laptop_rusak,
             ]);
 
             Komputer::create([
                 'profile_sekolah_id' => $profileSekolah->id,
-                'bagus' => $request->komputer_bagus,
+                'baik' => $request->komputer_baik,
                 'rusak' => $request->komputer_rusak,
             ]);
 
             Chromebook::create([
                 'profile_sekolah_id' => $profileSekolah->id,
-                'bagus' => $request->chromebook_bagus,
+                'baik' => $request->chromebook_baik,
                 'rusak' => $request->chromebook_rusak,
             ]);
 
@@ -259,19 +259,19 @@ class DataController extends Controller
 
             RuangKelas::create([
                 'profile_sekolah_id' => $profileSekolah->id,
-                'bagus' => $request->ruang_kelas_bagus,
+                'baik' => $request->ruang_kelas_baik,
                 'rusak' => $request->ruang_kelas_rusak,
             ]);
 
             ToiletSiswa::create([
                 'profile_sekolah_id' => $profileSekolah->id,
-                'bagus' => $request->toilet_siswa_bagus,
+                'baik' => $request->toilet_siswa_baik,
                 'rusak' => $request->toilet_siswa_rusak,
             ]);
 
             ToiletGuru::create([
                 'profile_sekolah_id' => $profileSekolah->id,
-                'bagus' => $request->toilet_guru_bagus,
+                'baik' => $request->toilet_guru_baik,
                 'rusak' => $request->toilet_guru_rusak,
             ]);
 
@@ -335,12 +335,12 @@ class DataController extends Controller
                 'kodisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
             ]);
 
-            return redirect()->route('user.data.index')
+            return redirect()->route('user.profile.index')
                 ->with('success', 'Data Sarana berhasil ditambahkan!');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
+                ->with('error', 'Gagal menyimpan data: '.$e->getMessage());
         }
     }
 
@@ -437,32 +437,32 @@ class DataController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nama_sekolah' => 'required|string|max:255',
-            'NPSN' => 'required|string|max:20|unique:profile_sekolahs,NPSN,' . $profileSekolah->id,
+            'NPSN' => 'required|string|max:20|unique:profile_sekolahs,NPSN,'.$profileSekolah->id,
             'alamat_sekolah' => 'required|string',
             'nama_kepala_sekolah' => 'required|string|max:255',
-            'NIP' => 'required|string|max:20|unique:profile_sekolahs,NIP,' . $profileSekolah->id,
-            'nomor_hp' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp,' . $profileSekolah->id,
+            'NIP' => 'required|string|max:20|unique:profile_sekolahs,NIP,'.$profileSekolah->id,
+            'nomor_hp' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp,'.$profileSekolah->id,
             'status_sekolah' => 'required|in:negeri,swasta',
             'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
             'website' => 'required|string',
 
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
-            'pagar_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'pagar_kondisi' => 'nullable|in:baik,rusak,nihil',
             'air_ada_tidak' => 'required|in:ada,tidak_ada',
-            'air_kondisi' => 'nullable|in:bagus,rusak,nihil',
-            'kursi_siswa_bagus' => 'required|integer|min:0',
+            'air_kondisi' => 'nullable|in:baik,rusak,nihil',
+            'kursi_siswa_baik' => 'required|integer|min:0',
             'kursi_siswa_rusak' => 'required|integer|min:0',
-            'meja_siswa_bagus' => 'required|integer|min:0',
+            'meja_siswa_baik' => 'required|integer|min:0',
             'meja_siswa_rusak' => 'required|integer|min:0',
-            'kursi_guru_bagus' => 'required|integer|min:0',
+            'kursi_guru_baik' => 'required|integer|min:0',
             'kursi_guru_rusak' => 'required|integer|min:0',
-            'meja_guru_bagus' => 'required|integer|min:0',
+            'meja_guru_baik' => 'required|integer|min:0',
             'meja_guru_rusak' => 'required|integer|min:0',
-            'laptop_bagus' => 'required|integer|min:0',
+            'laptop_baik' => 'required|integer|min:0',
             'laptop_rusak' => 'required|integer|min:0',
-            'komputer_bagus' => 'required|integer|min:0',
+            'komputer_baik' => 'required|integer|min:0',
             'komputer_rusak' => 'required|integer|min:0',
-            'chromebook_bagus' => 'required|integer|min:0',
+            'chromebook_baik' => 'required|integer|min:0',
             'chromebook_rusak' => 'required|integer|min:0',
             'jumlah_siswa_vii' => 'required|integer|min:0',
             'jumlah_siswa_viii' => 'required|integer|min:0',
@@ -472,32 +472,32 @@ class DataController extends Controller
             'jumlah_rombel_ix' => 'required|integer|min:0',
             'rkb_jumlah' => 'required|integer|min:0',
             'rehabilitasi_jumlah' => 'required|integer|min:0',
-            'ruang_kelas_bagus' => 'required|integer|min:0',
+            'ruang_kelas_baik' => 'required|integer|min:0',
             'ruang_kelas_rusak' => 'required|integer|min:0',
-            'toilet_siswa_bagus' => 'required|integer|min:0',
+            'toilet_siswa_baik' => 'required|integer|min:0',
             'toilet_siswa_rusak' => 'required|integer|min:0',
-            'toilet_guru_bagus' => 'required|integer|min:0',
+            'toilet_guru_baik' => 'required|integer|min:0',
             'toilet_guru_rusak' => 'required|integer|min:0',
             'perpustakaan_ada_tidak' => 'required|in:ada,tidak_ada',
-            'perpustakaan_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'perpustakaan_kondisi' => 'nullable|in:baik,rusak,nihil',
             'kepala_sekolah_ada_tidak' => 'required|in:ada,tidak_ada',
-            'kepala_sekolah_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'kepala_sekolah_kondisi' => 'nullable|in:baik,rusak,nihil',
             'ruang_guru_ada_tidak' => 'required|in:ada,tidak_ada',
-            'ruang_guru_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'ruang_guru_kondisi' => 'nullable|in:baik,rusak,nihil',
             'kantor_tu_ada_tidak' => 'required|in:ada,tidak_ada',
-            'kantor_tu_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'kantor_tu_kondisi' => 'nullable|in:baik,rusak,nihil',
             'lab_ipa_ada_tidak' => 'required|in:ada,tidak_ada',
-            'lab_ipa_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'lab_ipa_kondisi' => 'nullable|in:baik,rusak,nihil',
             'lab_komputer_ada_tidak' => 'required|in:ada,tidak_ada',
-            'lab_komputer_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'lab_komputer_kondisi' => 'nullable|in:baik,rusak,nihil',
             'uks_ada_tidak' => 'required|in:ada,tidak_ada',
-            'uks_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'uks_kondisi' => 'nullable|in:baik,rusak,nihil',
             'rumah_dinas_ada_tidak' => 'required|in:ada,tidak_ada',
-            'rumah_dinas_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'rumah_dinas_kondisi' => 'nullable|in:baik,rusak,nihil',
             'rumah_ibadah_ada_tidak' => 'required|in:ada,tidak_ada',
-            'rumah_ibadah_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'rumah_ibadah_kondisi' => 'nullable|in:baik,rusak,nihil',
             'lapangan_sekolah_ada_tidak' => 'required|in:ada,tidak_ada',
-            'lapangan_sekolah_kondisi' => 'nullable|in:bagus,rusak,nihil',
+            'lapangan_sekolah_kondisi' => 'nullable|in:baik,rusak,nihil',
         ]);
 
         if ($validator->fails()) {
@@ -538,7 +538,7 @@ class DataController extends Controller
             KursiSiswa::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
-                    'bagus' => $request->kursi_siswa_bagus,
+                    'baik' => $request->kursi_siswa_baik,
                     'rusak' => $request->kursi_siswa_rusak,
                 ]
             );
@@ -546,7 +546,7 @@ class DataController extends Controller
             MejaSiswa::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
-                    'bagus' => $request->meja_siswa_bagus,
+                    'baik' => $request->meja_siswa_baik,
                     'rusak' => $request->meja_siswa_rusak,
                 ]
             );
@@ -554,7 +554,7 @@ class DataController extends Controller
             KursiGuru::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
-                    'bagus' => $request->kursi_guru_bagus,
+                    'baik' => $request->kursi_guru_baik,
                     'rusak' => $request->kursi_guru_rusak,
                 ]
             );
@@ -562,7 +562,7 @@ class DataController extends Controller
             MejaGuru::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
-                    'bagus' => $request->meja_guru_bagus,
+                    'baik' => $request->meja_guru_baik,
                     'rusak' => $request->meja_guru_rusak,
                 ]
             );
@@ -570,7 +570,7 @@ class DataController extends Controller
             Laptop::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
-                    'bagus' => $request->laptop_bagus,
+                    'baik' => $request->laptop_baik,
                     'rusak' => $request->laptop_rusak,
                 ]
             );
@@ -578,7 +578,7 @@ class DataController extends Controller
             Komputer::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
-                    'bagus' => $request->komputer_bagus,
+                    'baik' => $request->komputer_baik,
                     'rusak' => $request->komputer_rusak,
                 ]
             );
@@ -586,7 +586,7 @@ class DataController extends Controller
             Chromebook::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
-                    'bagus' => $request->chromebook_bagus,
+                    'baik' => $request->chromebook_baik,
                     'rusak' => $request->chromebook_rusak,
                 ]
             );
@@ -622,7 +622,7 @@ class DataController extends Controller
             RuangKelas::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
-                    'bagus' => $request->ruang_kelas_bagus,
+                    'baik' => $request->ruang_kelas_baik,
                     'rusak' => $request->ruang_kelas_rusak,
                 ]
             );
@@ -630,7 +630,7 @@ class DataController extends Controller
             ToiletSiswa::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
-                    'bagus' => $request->toilet_siswa_bagus,
+                    'baik' => $request->toilet_siswa_baik,
                     'rusak' => $request->toilet_siswa_rusak,
                 ]
             );
@@ -638,7 +638,7 @@ class DataController extends Controller
             ToiletGuru::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
-                    'bagus' => $request->toilet_guru_bagus,
+                    'baik' => $request->toilet_guru_baik,
                     'rusak' => $request->toilet_guru_rusak,
                 ]
             );
@@ -723,19 +723,19 @@ class DataController extends Controller
                 ]
             );
 
-            return redirect()->route('user.data.index')
+            return redirect()->route('user.profile.index')
                 ->with('success', 'Data Sarana berhasil diupdate!');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal mengupdate data: ' . $e->getMessage());
+                ->with('error', 'Gagal mengupdate data: '.$e->getMessage());
         }
     }
 
     public function destroy(ProfileSekolah $profileSekolah)
     {
         if ($profileSekolah->user_id !== Auth::id()) {
-            return redirect()->route('user.data.index')
+            return redirect()->route('user.profile.index')
                 ->with('error', 'Anda tidak memiliki akses untuk menghapus data ini.');
         }
 
@@ -769,11 +769,11 @@ class DataController extends Controller
 
             $profileSekolah->delete();
 
-            return redirect()->route('user.data.index')
+            return redirect()->route('user.profile.index')
                 ->with('success', 'Data Sarana berhasil dihapus!');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+                ->with('error', 'Gagal menghapus data: '.$e->getMessage());
         }
     }
 }

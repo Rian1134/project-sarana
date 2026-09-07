@@ -32,7 +32,7 @@ class PeriodeLaporan extends Model
     {
         return static::firstOrCreate(
             ['kategori' => $kategori],
-            ['tahun_awal' => 2020, 'tahun_akhir' => 2025]
+            ['tahun_awal' => 2026, 'tahun_akhir' => 2030]
         );
     }
 

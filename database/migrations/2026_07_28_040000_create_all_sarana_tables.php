@@ -41,7 +41,7 @@ return new class extends Migration
         Schema::create('pagar_sekolahs', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -53,7 +53,7 @@ return new class extends Migration
         Schema::create('air_bersihs', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -64,7 +64,7 @@ return new class extends Migration
         // ============================================
         Schema::create('kursi_siswas', function (Blueprint $table) {
             $table->id();
-            $table->integer('bagus')->default(0);
+            $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
@@ -76,7 +76,7 @@ return new class extends Migration
         // ============================================
         Schema::create('meja_siswas', function (Blueprint $table) {
             $table->id();
-            $table->integer('bagus')->default(0);
+            $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
@@ -88,7 +88,7 @@ return new class extends Migration
         // ============================================
         Schema::create('kursi_gurus', function (Blueprint $table) {
             $table->id();
-            $table->integer('bagus')->default(0);
+            $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
@@ -100,7 +100,7 @@ return new class extends Migration
         // ============================================
         Schema::create('meja_gurus', function (Blueprint $table) {
             $table->id();
-            $table->integer('bagus')->default(0);
+            $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
@@ -112,7 +112,7 @@ return new class extends Migration
         // ============================================
         Schema::create('laptops', function (Blueprint $table) {
             $table->id();
-            $table->integer('bagus')->default(0);
+            $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
@@ -124,7 +124,7 @@ return new class extends Migration
         // ============================================
         Schema::create('komputers', function (Blueprint $table) {
             $table->id();
-            $table->integer('bagus')->default(0);
+            $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
@@ -184,7 +184,7 @@ return new class extends Migration
         // ============================================
         Schema::create('ruang_kelas', function (Blueprint $table) {
             $table->id();
-            $table->integer('bagus')->default(0);
+            $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
@@ -196,7 +196,7 @@ return new class extends Migration
         // ============================================
         Schema::create('toilet_siswas', function (Blueprint $table) {
             $table->id();
-            $table->integer('bagus')->default(0);
+            $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
@@ -208,7 +208,7 @@ return new class extends Migration
         // ============================================
         Schema::create('toilet_gurus', function (Blueprint $table) {
             $table->id();
-            $table->integer('bagus')->default(0);
+            $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
@@ -221,7 +221,7 @@ return new class extends Migration
         Schema::create('ruang_perpustakaans', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -233,7 +233,7 @@ return new class extends Migration
         Schema::create('ruang_kepala_sekolahs', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -245,7 +245,7 @@ return new class extends Migration
         Schema::create('ruang_gurus', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -257,7 +257,7 @@ return new class extends Migration
         Schema::create('ruang_kantor_tus', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -269,7 +269,7 @@ return new class extends Migration
         Schema::create('lab_ipas', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -281,7 +281,7 @@ return new class extends Migration
         Schema::create('lab_komputers', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -293,7 +293,7 @@ return new class extends Migration
         Schema::create('unit_kesehatan_sekolahs', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -305,7 +305,7 @@ return new class extends Migration
         Schema::create('rumah_dinas', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -317,7 +317,7 @@ return new class extends Migration
         Schema::create('rumah_ibadahs', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -329,7 +329,7 @@ return new class extends Migration
         Schema::create('lapangan_sekolahs', function (Blueprint $table) {
             $table->id();
             $table->enum('ada/tidak_ada', ['ada', 'tidak_ada']);
-            $table->enum('kodisi', ['bagus', 'rusak', 'nihil']);
+            $table->enum('kodisi', ['baik', 'rusak', 'nihil']);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
@@ -337,7 +337,7 @@ return new class extends Migration
 
         Schema::create('chromebooks', function (Blueprint $table) {
             $table->id();
-            $table->integer('bagus')->default(0);
+            $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');

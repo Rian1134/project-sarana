@@ -12,7 +12,7 @@ class RuangKelas extends Model
     protected $table = 'ruang_kelas';
 
     protected $fillable = [
-        'bagus',
+        'baik',
         'rusak',
         'profile_sekolah_id',
     ];

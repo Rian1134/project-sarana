@@ -13,7 +13,7 @@ class MejaGuru extends Model
 
     protected $fillable = [
         'profile_sekolah_id',
-        'bagus',
+        'baik',
         'rusak'
     ];
 

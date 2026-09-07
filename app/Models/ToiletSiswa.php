@@ -12,7 +12,7 @@ class ToiletSiswa extends Model
     protected $table = 'toilet_siswas';
 
     protected $fillable = [
-        'bagus',
+        'baik',
         'rusak',
         'profile_sekolah_id',
     ];

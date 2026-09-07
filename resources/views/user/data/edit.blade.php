@@ -204,8 +204,8 @@
                     </div>
                     <div class="p-3 sm:p-4">
                         <div class="grid grid-cols-1 gap-2 sm:gap-4">
-                            <x-form.input name="ruang_kelas_bagus" label="Baik" type="number" min="0" required
-                                :value="old('ruang_kelas_bagus', $profileSekolah->ruangKelas?->bagus ?? 0)" />
+                            <x-form.input name="ruang_kelas_baik" label="Baik" type="number" min="0" required
+                                :value="old('ruang_kelas_baik', $profileSekolah->ruangKelas?->bagus ?? 0)" />
                             <x-form.input name="ruang_kelas_rusak" label="Rusak" type="number" min="0" required
                                 :value="old('ruang_kelas_rusak', $profileSekolah->ruangKelas?->rusak ?? 0)" />
                         </div>
@@ -226,8 +226,8 @@
                         </div>
                         <div class="p-3 sm:p-4">
                             <div class="grid grid-cols-1 gap-2">
-                                <x-form.input name="toilet_siswa_bagus" label="Baik" type="number" min="0"
-                                    required :value="old('toilet_siswa_bagus', $profileSekolah->toiletSiswa?->bagus ?? 0)" />
+                                <x-form.input name="toilet_siswa_baik" label="Baik" type="number" min="0"
+                                    required :value="old('toilet_siswa_baik', $profileSekolah->toiletSiswa?->bagus ?? 0)" />
                                 <x-form.input name="toilet_siswa_rusak" label="Rusak" type="number" min="0"
                                     required :value="old('toilet_siswa_rusak', $profileSekolah->toiletSiswa?->rusak ?? 0)" />
                             </div>
@@ -246,8 +246,8 @@
                         </div>
                         <div class="p-3 sm:p-4">
                             <div class="grid grid-cols-1 gap-2">
-                                <x-form.input name="toilet_guru_bagus" label="Baik" type="number" min="0"
-                                    required :value="old('toilet_guru_bagus', $profileSekolah->toiletGuru?->bagus ?? 0)" />
+                                <x-form.input name="toilet_guru_baik" label="Baik" type="number" min="0"
+                                    required :value="old('toilet_guru_baik', $profileSekolah->toiletGuru?->bagus ?? 0)" />
                                 <x-form.input name="toilet_guru_rusak" label="Rusak" type="number" min="0"
                                     required :value="old('toilet_guru_rusak', $profileSekolah->toiletGuru?->rusak ?? 0)" />
                             </div>
@@ -291,7 +291,7 @@
 
                             <x-form.select name="perpustakaan_kondisi" label="Kondisi" :options="[
                                 '' => '-- Pilih --',
-                                'bagus' => 'Bagus',
+                                'baik' => 'Baik',
                                 'rusak' => 'Rusak',
                                 'nihil' => 'Nihil',
                             ]"
@@ -336,7 +336,7 @@
 
                             <x-form.select name="kepala_sekolah_kondisi" label="Kondisi" :options="[
                                 '' => '-- Pilih --',
-                                'bagus' => 'Bagus',
+                                'baik' => 'Baik',
                                 'rusak' => 'Rusak',
                                 'nihil' => 'Nihil',
                             ]"
@@ -381,7 +381,7 @@
 
                             <x-form.select name="ruang_guru_kondisi" label="Kondisi" :options="[
                                 '' => '-- Pilih --',
-                                'bagus' => 'Bagus',
+                                'baik' => 'Baik',
                                 'rusak' => 'Rusak',
                                 'nihil' => 'Nihil',
                             ]"
@@ -426,7 +426,7 @@
 
                             <x-form.select name="kantor_tu_kondisi" label="Kondisi" :options="[
                                 '' => '-- Pilih --',
-                                'bagus' => 'Bagus',
+                                'baik' => 'Baik',
                                 'rusak' => 'Rusak',
                                 'nihil' => 'Nihil',
                             ]"
@@ -473,7 +473,7 @@
 
                                 <x-form.select name="lab_ipa_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
-                                    'bagus' => 'Bagus',
+                                    'baik' => 'Baik',
                                     'rusak' => 'Rusak',
                                     'nihil' => 'Nihil',
                                 ]"
@@ -518,7 +518,7 @@
 
                                 <x-form.select name="lab_komputer_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
-                                    'bagus' => 'Bagus',
+                                    'baik' => 'Baik',
                                     'rusak' => 'Rusak',
                                     'nihil' => 'Nihil',
                                 ]"
@@ -564,7 +564,7 @@
 
                             <x-form.select name="uks_kondisi" label="Kondisi" :options="[
                                 '' => '-- Pilih --',
-                                'bagus' => 'Bagus',
+                                'baik' => 'Baik',
                                 'rusak' => 'Rusak',
                                 'nihil' => 'Nihil',
                             ]" :value="old('uks_kondisi', $profileSekolah->unitKesehatanSekolah?->kodisi)" />
@@ -610,7 +610,7 @@
 
                                 <x-form.select name="rumah_dinas_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
-                                    'bagus' => 'Bagus',
+                                    'baik' => 'Baik',
                                     'rusak' => 'Rusak',
                                     'nihil' => 'Nihil',
                                 ]"
@@ -655,7 +655,7 @@
 
                                 <x-form.select name="rumah_ibadah_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
-                                    'bagus' => 'Bagus',
+                                    'baik' => 'Baik',
                                     'rusak' => 'Rusak',
                                     'nihil' => 'Nihil',
                                 ]"
@@ -700,7 +700,7 @@
 
                                 <x-form.select name="lapangan_sekolah_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
-                                    'bagus' => 'Bagus',
+                                    'baik' => 'Baik',
                                     'rusak' => 'Rusak',
                                     'nihil' => 'Nihil',
                                 ]"
@@ -751,7 +751,7 @@
 
                                 <x-form.select name="pagar_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
-                                    'bagus' => 'Bagus',
+                                    'baik' => 'Baik',
                                     'rusak' => 'Rusak',
                                     'nihil' => 'Nihil',
                                 ]"
@@ -796,7 +796,7 @@
 
                                 <x-form.select name="air_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
-                                    'bagus' => 'Bagus',
+                                    'baik' => 'Baik',
                                     'rusak' => 'Rusak',
                                     'nihil' => 'Nihil',
                                 ]" :value="old('air_kondisi', $profileSekolah->airBersih?->kodisi)" />
@@ -825,9 +825,9 @@
                                     <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Kursi Siswa
                                     </div>
                                     <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="kursi_siswa_bagus" label="Baik" type="number"
+                                        <x-form.input name="kursi_siswa_baik" label="Baik" type="number"
                                             min="0" required :value="old(
-                                                'kursi_siswa_bagus',
+                                                'kursi_siswa_baik',
                                                 $profileSekolah->kursiSiswa?->bagus ?? 0,
                                             )" />
                                         <x-form.input name="kursi_siswa_rusak" label="Rusak" type="number"
@@ -843,8 +843,8 @@
                                     <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Meja Siswa
                                     </div>
                                     <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="meja_siswa_bagus" label="Baik" type="number"
-                                            min="0" required :value="old('meja_siswa_bagus', $profileSekolah->mejaSiswa?->bagus ?? 0)" />
+                                        <x-form.input name="meja_siswa_baik" label="Baik" type="number"
+                                            min="0" required :value="old('meja_siswa_baik', $profileSekolah->mejaSiswa?->bagus ?? 0)" />
                                         <x-form.input name="meja_siswa_rusak" label="Rusak" type="number"
                                             min="0" required :value="old('meja_siswa_rusak', $profileSekolah->mejaSiswa?->rusak ?? 0)" />
                                     </div>
@@ -855,8 +855,8 @@
                                     <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Kursi Guru
                                     </div>
                                     <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="kursi_guru_bagus" label="Baik" type="number"
-                                            min="0" required :value="old('kursi_guru_bagus', $profileSekolah->kursiGuru?->bagus ?? 0)" />
+                                        <x-form.input name="kursi_guru_baik" label="Baik" type="number"
+                                            min="0" required :value="old('kursi_guru_baik', $profileSekolah->kursiGuru?->bagus ?? 0)" />
                                         <x-form.input name="kursi_guru_rusak" label="Rusak" type="number"
                                             min="0" required :value="old('kursi_guru_rusak', $profileSekolah->kursiGuru?->rusak ?? 0)" />
                                     </div>
@@ -867,8 +867,8 @@
                                     <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Meja Guru
                                     </div>
                                     <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="meja_guru_bagus" label="Baik" type="number"
-                                            min="0" required :value="old('meja_guru_bagus', $profileSekolah->mejaGuru?->bagus ?? 0)" />
+                                        <x-form.input name="meja_guru_baik" label="Baik" type="number"
+                                            min="0" required :value="old('meja_guru_baik', $profileSekolah->mejaGuru?->bagus ?? 0)" />
                                         <x-form.input name="meja_guru_rusak" label="Rusak" type="number"
                                             min="0" required :value="old('meja_guru_rusak', $profileSekolah->mejaGuru?->rusak ?? 0)" />
                                     </div>
@@ -894,8 +894,8 @@
                                 <div class="col-span-2">
                                     <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Laptop</div>
                                     <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="laptop_bagus" label="Baik" type="number" min="0"
-                                            required :value="old('laptop_bagus', $profileSekolah->laptop?->bagus ?? 0)" />
+                                        <x-form.input name="laptop_baik" label="Baik" type="number" min="0"
+                                            required :value="old('laptop_baik', $profileSekolah->laptop?->bagus ?? 0)" />
                                         <x-form.input name="laptop_rusak" label="Rusak" type="number" min="0"
                                             required :value="old('laptop_rusak', $profileSekolah->laptop?->rusak ?? 0)" />
                                     </div>
@@ -905,8 +905,8 @@
                                 <div class="col-span-2">
                                     <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Komputer</div>
                                     <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="komputer_bagus" label="Baik" type="number" min="0"
-                                            required :value="old('komputer_bagus', $profileSekolah->komputer?->bagus ?? 0)" />
+                                        <x-form.input name="komputer_baik" label="Baik" type="number" min="0"
+                                            required :value="old('komputer_baik', $profileSekolah->komputer?->bagus ?? 0)" />
                                         <x-form.input name="komputer_rusak" label="Rusak" type="number" min="0"
                                             required :value="old('komputer_rusak', $profileSekolah->komputer?->rusak ?? 0)" />
                                     </div>
@@ -917,9 +917,9 @@
                                     <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Chromebook
                                     </div>
                                     <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="chromebook_bagus" label="Baik" type="number"
+                                        <x-form.input name="chromebook_baik" label="Baik" type="number"
                                             min="0" required :value="old(
-                                                'chromebook_bagus',
+                                                'chromebook_baik',
                                                 $profileSekolah->chromebook?->bagus ?? 0,
                                             )" />
                                         <x-form.input name="chromebook_rusak" label="Rusak" type="number"
