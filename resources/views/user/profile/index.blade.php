@@ -29,20 +29,6 @@
                     </a>
                 </div>
             </div>
-
-            <!-- Pesan Sukses & Error -->
-            @if (session('success'))
-                <x-alert type="success" dismissible icon>
-                    {{ session('success') }}
-                </x-alert>
-            @endif
-
-            @if (session('error'))
-                <x-alert type="danger" dismissible icon>
-                    {{ session('error') }}
-                </x-alert>
-            @endif
-
             <!-- ============================================================
                      Profil User (kiri) & Data Sekolah (kanan)
                      ============================================================ -->

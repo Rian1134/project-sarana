@@ -23,26 +23,6 @@
                 </a>
             </div>
 
-            <!-- Pesan Error -->
-            @if (session('error'))
-                <x-alert type="danger" dismissible icon>
-                    {{ session('error') }}
-                </x-alert>
-            @endif
-
-            @if ($errors->any())
-                <x-alert type="danger" dismissible icon>
-                    <div class="flex flex-col gap-1">
-                        <strong><i class="bi bi-exclamation-triangle-fill"></i> Terjadi Kesalahan!</strong>
-                        <ul class="list-disc list-inside text-sm">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </x-alert>
-            @endif
-
             <!-- Form Ubah Password -->
             <x-card>
                 <x-slot:header>
