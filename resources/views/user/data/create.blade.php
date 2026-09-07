@@ -113,6 +113,14 @@
                                 required
                             />
                         </div>
+
+                        <!-- website -->
+                        <x-form.input
+                            name="website"
+                            label="Website"
+                            placeholder="Masukkan website https://... (jika ada)"
+                            :value="old('website')"
+                        />
                     </div>
                 </x-card>
 

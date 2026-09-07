@@ -103,6 +103,7 @@ class DataController extends Controller
             'nomor_hp' => 'required|string|unique:profile_sekolahs,nomor_hp|max:15',
             'status_sekolah' => 'required|in:negeri,swasta',
             'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
+            'website' => 'required|string',
 
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
             'pagar_kondisi' => 'nullable|in:bagus,rusak,nihil',
@@ -174,6 +175,7 @@ class DataController extends Controller
                 'nomor_hp' => $request->nomor_hp,
                 'status_sekolah' => $request->status_sekolah,
                 'akreditasi' => $request->akreditasi,
+                'website' => $request->website,
                 'user_id' => Auth::id(),
             ]);
 
@@ -342,47 +344,47 @@ class DataController extends Controller
         }
     }
 
-    public function show(ProfileSekolah $profileSekolah)
-    {
-        if ($profileSekolah->user_id !== Auth::id()) {
-            return redirect()->route('user.data.index')
-                ->with('error', 'Anda tidak memiliki akses untuk melihat data ini.');
-        }
+    // public function show(ProfileSekolah $profileSekolah)
+    // {
+    //     if ($profileSekolah->user_id !== Auth::id()) {
+    //         return redirect()->route('user.data.index')
+    //             ->with('error', 'Anda tidak memiliki akses untuk melihat data ini.');
+    //     }
 
-        $profileSekolah->load([
-            'pagarSekolah',
-            'airBersih',
-            'kursiSiswa',
-            'mejaSiswa',
-            'kursiGuru',
-            'mejaGuru',
-            'laptop',
-            'komputer',
-            'chromebook',
-            'jumlahSiswa',
-            'jumlahRombel',
-            'ruangKelasBaru',
-            'rehabilitasiRuangKelas',
-            'ruangKelas',
-            'toiletSiswa',
-            'toiletGuru',
-            'ruangPerpustakaan',
-            'ruangKepalaSekolah',
-            'ruangGuru',
-            'ruangKantorTu',
-            'labIpa',
-            'labKomputer',
-            'unitKesehatanSekolah',
-            'rumahDinas',
-            'rumahIbadah',
-            'lapanganSekolah',
-        ]);
+    //     $profileSekolah->load([
+    //         'pagarSekolah',
+    //         'airBersih',
+    //         'kursiSiswa',
+    //         'mejaSiswa',
+    //         'kursiGuru',
+    //         'mejaGuru',
+    //         'laptop',
+    //         'komputer',
+    //         'chromebook',
+    //         'jumlahSiswa',
+    //         'jumlahRombel',
+    //         'ruangKelasBaru',
+    //         'rehabilitasiRuangKelas',
+    //         'ruangKelas',
+    //         'toiletSiswa',
+    //         'toiletGuru',
+    //         'ruangPerpustakaan',
+    //         'ruangKepalaSekolah',
+    //         'ruangGuru',
+    //         'ruangKantorTu',
+    //         'labIpa',
+    //         'labKomputer',
+    //         'unitKesehatanSekolah',
+    //         'rumahDinas',
+    //         'rumahIbadah',
+    //         'lapanganSekolah',
+    //     ]);
 
-        $rkbPeriode = PeriodeLaporan::forKategori('rkb');
-        $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
+    //     $rkbPeriode = PeriodeLaporan::forKategori('rkb');
+    //     $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
 
-        return view('user.data.show', compact('profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
-    }
+    //     return view('user.data.show', compact('profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
+    // }
 
     public function edit(ProfileSekolah $profileSekolah)
     {
@@ -442,6 +444,7 @@ class DataController extends Controller
             'nomor_hp' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp,' . $profileSekolah->id,
             'status_sekolah' => 'required|in:negeri,swasta',
             'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
+            'website' => 'required|string',
 
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
             'pagar_kondisi' => 'nullable|in:bagus,rusak,nihil',
@@ -513,6 +516,7 @@ class DataController extends Controller
                 'nomor_hp' => $request->nomor_hp,
                 'status_sekolah' => $request->status_sekolah,
                 'akreditasi' => $request->akreditasi,
+                'website' => $request->website,
             ]);
 
             PagarSekolah::updateOrCreate(

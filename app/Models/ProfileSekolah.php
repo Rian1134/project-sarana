@@ -17,6 +17,7 @@ class ProfileSekolah extends Model
         'NIP',
         'status_sekolah',
         'akreditasi',
+        'website',
         'nomor_hp',
         'user_id',
     ];

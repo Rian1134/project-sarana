@@ -24,14 +24,18 @@
             </div>
 
             <!-- Form -->
-            <form action="{{ route('user.data.update', $profileSekolah->id) }}" method="POST" id="profileSekolahForm" class="flex flex-col gap-3 sm:gap-4">
+            <form action="{{ route('user.data.update', $profileSekolah->id) }}" method="POST" id="profileSekolahForm"
+                class="flex flex-col gap-3 sm:gap-4">
                 @csrf
                 @method('PUT')
 
                 <!-- A. Data Sekolah -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
+                        <div
+                            class="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-building"></i>
                             <span>A. Data Sekolah</span>
                         </div>
@@ -62,35 +66,37 @@
 
                             <!-- Status Sekolah -->
                             <div>
-                                <x-form.select
-                                    name="status_sekolah"
-                                    label="Status Sekolah"
-                                    placeholder="-- Pilih Status --"
-                                    :options="['negeri' => 'Negeri', 'swasta' => 'Swasta']"
-                                    :value="old('status_sekolah', $profileSekolah->status_sekolah)"
-                                    required
-                                />
+                                <x-form.select name="status_sekolah" label="Status Sekolah" placeholder="-- Pilih Status --"
+                                    :options="['negeri' => 'Negeri', 'swasta' => 'Swasta']" :value="old('status_sekolah', $profileSekolah->status_sekolah)" required />
                             </div>
 
                             <!-- Akreditasi -->
                             <div>
-                                <x-form.select
-                                    name="akreditasi"
-                                    label="Akreditasi"
-                                    placeholder="-- Pilih Akreditasi --"
-                                    :options="['A' => 'A (Unggul)', 'B' => 'B (Baik)', 'C' => 'C (Cukup)', 'belum_terakreditasi' => 'Belum Terakreditasi']"
-                                    :value="old('akreditasi', $profileSekolah->akreditasi)"
-                                    required
-                                />
+                                <x-form.select name="akreditasi" label="Akreditasi" placeholder="-- Pilih Akreditasi --"
+                                    :options="[
+                                        'A' => 'A (Unggul)',
+                                        'B' => 'B (Baik)',
+                                        'C' => 'C (Cukup)',
+                                        'belum_terakreditasi' => 'Belum Terakreditasi',
+                                    ]" :value="old('akreditasi', $profileSekolah->akreditasi)" required />
+                            </div>
+
+                            <!-- Website -->
+                            <div class="sm:col-span-2">
+                                <x-form.input name="website" label="Website"
+                                    placeholder="Masukkan website https://... (jika ada)" :value="old('website', $profileSekolah->website)" />
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- B. Jumlah Siswa -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
-                        <div class="flex items-center gap-2 text-green-700 dark:text-green-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+                        <div
+                            class="flex items-center gap-2 text-green-700 dark:text-green-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-mortarboard"></i>
                             <span>B. Jumlah Siswa</span>
                         </div>
@@ -108,9 +114,12 @@
                 </div>
 
                 <!-- C. Jumlah Rombongan Belajar -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20">
-                        <div class="flex items-center gap-2 text-purple-700 dark:text-purple-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20">
+                        <div
+                            class="flex items-center gap-2 text-purple-700 dark:text-purple-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-diagram-3"></i>
                             <span>C. Jumlah Rombongan Belajar</span>
                         </div>
@@ -119,8 +128,8 @@
                         <div class="grid grid-cols-1 gap-2 sm:gap-4">
                             <x-form.input name="jumlah_rombel_vii" label="Kelas VII" type="number" min="0" required
                                 :value="old('jumlah_rombel_vii', $profileSekolah->jumlahRombel?->vii ?? 0)" />
-                            <x-form.input name="jumlah_rombel_viii" label="Kelas VIII" type="number" min="0" required
-                                :value="old('jumlah_rombel_viii', $profileSekolah->jumlahRombel?->viii ?? 0)" />
+                            <x-form.input name="jumlah_rombel_viii" label="Kelas VIII" type="number" min="0"
+                                required :value="old('jumlah_rombel_viii', $profileSekolah->jumlahRombel?->viii ?? 0)" />
                             <x-form.input name="jumlah_rombel_ix" label="Kelas IX" type="number" min="0" required
                                 :value="old('jumlah_rombel_ix', $profileSekolah->jumlahRombel?->ix ?? 0)" />
                         </div>
@@ -128,9 +137,12 @@
                 </div>
 
                 <!-- D. RKB (Ruang Kelas Baru) -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
-                        <div class="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
+                        <div
+                            class="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-building-add"></i>
                             <span class="inline">D. Pembangunan Ruang Kelas Baru (RKB)</span>
                         </div>
@@ -139,7 +151,8 @@
                         <div class="grid grid-cols-1 gap-2 sm:gap-4 items-end">
                             <x-form.input name="rkb_jumlah" label="Jumlah" type="number" min="0" required
                                 :value="old('rkb_jumlah', $profileSekolah->ruangKelasBaru?->jumlah ?? 0)" />
-                            <div class="sm:col-span-2 flex flex-wrap items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 pb-1.5">
+                            <div
+                                class="sm:col-span-2 flex flex-wrap items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 pb-1.5">
                                 <i class="bi bi-calendar-range"></i>
                                 Periode pelaporan:
                                 <x-badge variant="secondary">{{ $rkbPeriode->label() }}</x-badge>
@@ -150,9 +163,12 @@
                 </div>
 
                 <!-- E. Rehabilitasi Ruang Kelas -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20">
-                        <div class="flex items-center gap-2 text-orange-700 dark:text-orange-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20">
+                        <div
+                            class="flex items-center gap-2 text-orange-700 dark:text-orange-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-tools"></i>
                             <span class="inline">E. Rehabilitasi Ruang</span>
                         </div>
@@ -160,8 +176,12 @@
                     <div class="p-3 sm:p-4">
                         <div class="grid grid-cols-1 gap-2 sm:gap-4 items-end">
                             <x-form.input name="rehabilitasi_jumlah" label="Jumlah" type="number" min="0"
-                                required :value="old('rehabilitasi_jumlah', $profileSekolah->rehabilitasiRuangKelas?->jumlah ?? 0)" />
-                            <div class="sm:col-span-2 flex flex-wrap items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 pb-1.5">
+                                required :value="old(
+                                    'rehabilitasi_jumlah',
+                                    $profileSekolah->rehabilitasiRuangKelas?->jumlah ?? 0,
+                                )" />
+                            <div
+                                class="sm:col-span-2 flex flex-wrap items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 pb-1.5">
                                 <i class="bi bi-calendar-range"></i>
                                 Periode pelaporan:
                                 <x-badge variant="secondary">{{ $rehabilitasiPeriode->label() }}</x-badge>
@@ -172,9 +192,12 @@
                 </div>
 
                 <!-- F. Ruang Kelas -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-sky-50 dark:from-blue-900/20 dark:to-sky-900/20">
-                        <div class="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-sky-50 dark:from-blue-900/20 dark:to-sky-900/20">
+                        <div
+                            class="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-door-closed"></i>
                             <span>F. Ruang Kelas</span>
                         </div>
@@ -191,9 +214,12 @@
 
                 <!-- G. Toilet Siswa & H. Toilet Guru -->
                 <div class="grid grid-cols-1 gap-3 sm:gap-4">
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-cyan-50 to-teal-50 dark:from-cyan-900/20 dark:to-teal-900/20">
-                            <div class="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-cyan-50 to-teal-50 dark:from-cyan-900/20 dark:to-teal-900/20">
+                            <div
+                                class="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-droplet-half"></i>
                                 <span class="inline">G. Toilet Siswa</span>
                             </div>
@@ -208,9 +234,12 @@
                         </div>
                     </div>
 
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20">
-                            <div class="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20">
+                            <div
+                                class="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-droplet"></i>
                                 <span class="inline">H. Toilet Guru</span>
                             </div>
@@ -227,9 +256,12 @@
                 </div>
 
                 <!-- I. Ruang Perpustakaan -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20">
-                        <div class="flex items-center gap-2 text-yellow-700 dark:text-yellow-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20">
+                        <div
+                            class="flex items-center gap-2 text-yellow-700 dark:text-yellow-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-book"></i>
                             <span>I. Ruang Perpustakaan</span>
                         </div>
@@ -242,25 +274,39 @@
                                 </label>
                                 <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                     <x-form.radio name="perpustakaan_ada_tidak" value="ada" label="Ada"
-                                        :checked="old('perpustakaan_ada_tidak', $profileSekolah->ruangPerpustakaan?->{'ada/tidak_ada'}) == 'ada'" />
+                                        :checked="old(
+                                            'perpustakaan_ada_tidak',
+                                            $profileSekolah->ruangPerpustakaan?->{'ada/tidak_ada'},
+                                        ) == 'ada'" />
                                     <x-form.radio name="perpustakaan_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                        :checked="old('perpustakaan_ada_tidak', $profileSekolah->ruangPerpustakaan?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                        :checked="old(
+                                            'perpustakaan_ada_tidak',
+                                            $profileSekolah->ruangPerpustakaan?->{'ada/tidak_ada'},
+                                        ) == 'tidak_ada'" />
                                 </div>
                                 @error('perpustakaan_ada_tidak')
                                     <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            <x-form.select name="perpustakaan_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                            <x-form.select name="perpustakaan_kondisi" label="Kondisi" :options="[
+                                '' => '-- Pilih --',
+                                'bagus' => 'Bagus',
+                                'rusak' => 'Rusak',
+                                'nihil' => 'Nihil',
+                            ]"
                                 :value="old('perpustakaan_kondisi', $profileSekolah->ruangPerpustakaan?->kodisi)" />
                         </div>
                     </div>
                 </div>
 
                 <!-- J. Ruang Kepala Sekolah -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20">
-                        <div class="flex items-center gap-2 text-pink-700 dark:text-pink-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20">
+                        <div
+                            class="flex items-center gap-2 text-pink-700 dark:text-pink-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-person-workspace"></i>
                             <span>J. Ruang Kepala Sekolah</span>
                         </div>
@@ -273,25 +319,39 @@
                                 </label>
                                 <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                     <x-form.radio name="kepala_sekolah_ada_tidak" value="ada" label="Ada"
-                                        :checked="old('kepala_sekolah_ada_tidak', $profileSekolah->ruangKepalaSekolah?->{'ada/tidak_ada'}) == 'ada'" />
+                                        :checked="old(
+                                            'kepala_sekolah_ada_tidak',
+                                            $profileSekolah->ruangKepalaSekolah?->{'ada/tidak_ada'},
+                                        ) == 'ada'" />
                                     <x-form.radio name="kepala_sekolah_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                        :checked="old('kepala_sekolah_ada_tidak', $profileSekolah->ruangKepalaSekolah?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                        :checked="old(
+                                            'kepala_sekolah_ada_tidak',
+                                            $profileSekolah->ruangKepalaSekolah?->{'ada/tidak_ada'},
+                                        ) == 'tidak_ada'" />
                                 </div>
                                 @error('kepala_sekolah_ada_tidak')
                                     <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            <x-form.select name="kepala_sekolah_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                            <x-form.select name="kepala_sekolah_kondisi" label="Kondisi" :options="[
+                                '' => '-- Pilih --',
+                                'bagus' => 'Bagus',
+                                'rusak' => 'Rusak',
+                                'nihil' => 'Nihil',
+                            ]"
                                 :value="old('kepala_sekolah_kondisi', $profileSekolah->ruangKepalaSekolah?->kodisi)" />
                         </div>
                     </div>
                 </div>
 
                 <!-- K. Ruang Guru -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20">
-                        <div class="flex items-center gap-2 text-indigo-700 dark:text-indigo-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20">
+                        <div
+                            class="flex items-center gap-2 text-indigo-700 dark:text-indigo-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-easel2"></i>
                             <span>K. Ruang Guru</span>
                         </div>
@@ -304,25 +364,39 @@
                                 </label>
                                 <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                     <x-form.radio name="ruang_guru_ada_tidak" value="ada" label="Ada"
-                                        :checked="old('ruang_guru_ada_tidak', $profileSekolah->ruangGuru?->{'ada/tidak_ada'}) == 'ada'" />
+                                        :checked="old(
+                                            'ruang_guru_ada_tidak',
+                                            $profileSekolah->ruangGuru?->{'ada/tidak_ada'},
+                                        ) == 'ada'" />
                                     <x-form.radio name="ruang_guru_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                        :checked="old('ruang_guru_ada_tidak', $profileSekolah->ruangGuru?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                        :checked="old(
+                                            'ruang_guru_ada_tidak',
+                                            $profileSekolah->ruangGuru?->{'ada/tidak_ada'},
+                                        ) == 'tidak_ada'" />
                                 </div>
                                 @error('ruang_guru_ada_tidak')
                                     <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            <x-form.select name="ruang_guru_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                            <x-form.select name="ruang_guru_kondisi" label="Kondisi" :options="[
+                                '' => '-- Pilih --',
+                                'bagus' => 'Bagus',
+                                'rusak' => 'Rusak',
+                                'nihil' => 'Nihil',
+                            ]"
                                 :value="old('ruang_guru_kondisi', $profileSekolah->ruangGuru?->kodisi)" />
                         </div>
                     </div>
                 </div>
 
                 <!-- L. Ruang Kantor/Tata Usaha -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20">
-                        <div class="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20">
+                        <div
+                            class="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-briefcase"></i>
                             <span>L. Ruang Kantor/Tata Usaha</span>
                         </div>
@@ -335,16 +409,27 @@
                                 </label>
                                 <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                     <x-form.radio name="kantor_tu_ada_tidak" value="ada" label="Ada"
-                                        :checked="old('kantor_tu_ada_tidak', $profileSekolah->ruangKantorTu?->{'ada/tidak_ada'}) == 'ada'" />
+                                        :checked="old(
+                                            'kantor_tu_ada_tidak',
+                                            $profileSekolah->ruangKantorTu?->{'ada/tidak_ada'},
+                                        ) == 'ada'" />
                                     <x-form.radio name="kantor_tu_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                        :checked="old('kantor_tu_ada_tidak', $profileSekolah->ruangKantorTu?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                        :checked="old(
+                                            'kantor_tu_ada_tidak',
+                                            $profileSekolah->ruangKantorTu?->{'ada/tidak_ada'},
+                                        ) == 'tidak_ada'" />
                                 </div>
                                 @error('kantor_tu_ada_tidak')
                                     <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            <x-form.select name="kantor_tu_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                            <x-form.select name="kantor_tu_kondisi" label="Kondisi" :options="[
+                                '' => '-- Pilih --',
+                                'bagus' => 'Bagus',
+                                'rusak' => 'Rusak',
+                                'nihil' => 'Nihil',
+                            ]"
                                 :value="old('kantor_tu_kondisi', $profileSekolah->ruangKantorTu?->kodisi)" />
                         </div>
                     </div>
@@ -352,9 +437,12 @@
 
                 <!-- M. Lab IPA & N. Lab Komputer -->
                 <div class="grid grid-cols-1 gap-3 sm:gap-4">
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20">
-                            <div class="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20">
+                            <div
+                                class="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-flask"></i>
                                 <span class="inline">M. Lab IPA</span>
                             </div>
@@ -362,29 +450,44 @@
                         <div class="p-3 sm:p-4">
                             <div class="grid grid-cols-1 gap-2">
                                 <div>
-                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <label
+                                        class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Keberadaan <span class="text-red-600">*</span>
                                     </label>
                                     <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                         <x-form.radio name="lab_ipa_ada_tidak" value="ada" label="Ada"
-                                            :checked="old('lab_ipa_ada_tidak', $profileSekolah->labIpa?->{'ada/tidak_ada'}) == 'ada'" />
+                                            :checked="old(
+                                                'lab_ipa_ada_tidak',
+                                                $profileSekolah->labIpa?->{'ada/tidak_ada'},
+                                            ) == 'ada'" />
                                         <x-form.radio name="lab_ipa_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                            :checked="old('lab_ipa_ada_tidak', $profileSekolah->labIpa?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                            :checked="old(
+                                                'lab_ipa_ada_tidak',
+                                                $profileSekolah->labIpa?->{'ada/tidak_ada'},
+                                            ) == 'tidak_ada'" />
                                     </div>
                                     @error('lab_ipa_ada_tidak')
                                         <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <x-form.select name="lab_ipa_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                <x-form.select name="lab_ipa_kondisi" label="Kondisi" :options="[
+                                    '' => '-- Pilih --',
+                                    'bagus' => 'Bagus',
+                                    'rusak' => 'Rusak',
+                                    'nihil' => 'Nihil',
+                                ]"
                                     :value="old('lab_ipa_kondisi', $profileSekolah->labIpa?->kodisi)" />
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20">
-                            <div class="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20">
+                            <div
+                                class="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-pc-display-horizontal"></i>
                                 <span class="inline">N. Lab Komputer</span>
                             </div>
@@ -392,21 +495,33 @@
                         <div class="p-3 sm:p-4">
                             <div class="grid grid-cols-1 gap-2">
                                 <div>
-                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <label
+                                        class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Keberadaan <span class="text-red-600">*</span>
                                     </label>
                                     <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                         <x-form.radio name="lab_komputer_ada_tidak" value="ada" label="Ada"
-                                            :checked="old('lab_komputer_ada_tidak', $profileSekolah->labKomputer?->{'ada/tidak_ada'}) == 'ada'" />
+                                            :checked="old(
+                                                'lab_komputer_ada_tidak',
+                                                $profileSekolah->labKomputer?->{'ada/tidak_ada'},
+                                            ) == 'ada'" />
                                         <x-form.radio name="lab_komputer_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                            :checked="old('lab_komputer_ada_tidak', $profileSekolah->labKomputer?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                            :checked="old(
+                                                'lab_komputer_ada_tidak',
+                                                $profileSekolah->labKomputer?->{'ada/tidak_ada'},
+                                            ) == 'tidak_ada'" />
                                     </div>
                                     @error('lab_komputer_ada_tidak')
                                         <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <x-form.select name="lab_komputer_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                <x-form.select name="lab_komputer_kondisi" label="Kondisi" :options="[
+                                    '' => '-- Pilih --',
+                                    'bagus' => 'Bagus',
+                                    'rusak' => 'Rusak',
+                                    'nihil' => 'Nihil',
+                                ]"
                                     :value="old('lab_komputer_kondisi', $profileSekolah->labKomputer?->kodisi)" />
                             </div>
                         </div>
@@ -414,9 +529,12 @@
                 </div>
 
                 <!-- O. UKS -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                    <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20">
-                        <div class="flex items-center gap-2 text-rose-700 dark:text-rose-400 font-semibold text-xs sm:text-sm">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20">
+                        <div
+                            class="flex items-center gap-2 text-rose-700 dark:text-rose-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-heart-pulse"></i>
                             <span>O. UKS</span>
                         </div>
@@ -429,26 +547,39 @@
                                 </label>
                                 <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                     <x-form.radio name="uks_ada_tidak" value="ada" label="Ada"
-                                        :checked="old('uks_ada_tidak', $profileSekolah->unitKesehatanSekolah?->{'ada/tidak_ada'}) == 'ada'" />
+                                        :checked="old(
+                                            'uks_ada_tidak',
+                                            $profileSekolah->unitKesehatanSekolah?->{'ada/tidak_ada'},
+                                        ) == 'ada'" />
                                     <x-form.radio name="uks_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                        :checked="old('uks_ada_tidak', $profileSekolah->unitKesehatanSekolah?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                        :checked="old(
+                                            'uks_ada_tidak',
+                                            $profileSekolah->unitKesehatanSekolah?->{'ada/tidak_ada'},
+                                        ) == 'tidak_ada'" />
                                 </div>
                                 @error('uks_ada_tidak')
                                     <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            <x-form.select name="uks_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
-                                :value="old('uks_kondisi', $profileSekolah->unitKesehatanSekolah?->kodisi)" />
+                            <x-form.select name="uks_kondisi" label="Kondisi" :options="[
+                                '' => '-- Pilih --',
+                                'bagus' => 'Bagus',
+                                'rusak' => 'Rusak',
+                                'nihil' => 'Nihil',
+                            ]" :value="old('uks_kondisi', $profileSekolah->unitKesehatanSekolah?->kodisi)" />
                         </div>
                     </div>
                 </div>
 
                 <!-- P. Rumah Dinas & Q. Rumah Ibadah & R. Lapangan Sekolah -->
                 <div class="grid grid-cols-1 gap-3 sm:gap-4">
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20">
-                            <div class="flex items-center gap-2 text-teal-700 dark:text-teal-400 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20">
+                            <div
+                                class="flex items-center gap-2 text-teal-700 dark:text-teal-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-house-door"></i>
                                 <span class="inline">P. Rumah Dinas</span>
                             </div>
@@ -456,29 +587,44 @@
                         <div class="p-3 sm:p-4">
                             <div class="grid grid-cols-1 gap-2">
                                 <div>
-                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <label
+                                        class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Keberadaan <span class="text-red-600">*</span>
                                     </label>
                                     <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                         <x-form.radio name="rumah_dinas_ada_tidak" value="ada" label="Ada"
-                                            :checked="old('rumah_dinas_ada_tidak', $profileSekolah->rumahDinas?->{'ada/tidak_ada'}) == 'ada'" />
+                                            :checked="old(
+                                                'rumah_dinas_ada_tidak',
+                                                $profileSekolah->rumahDinas?->{'ada/tidak_ada'},
+                                            ) == 'ada'" />
                                         <x-form.radio name="rumah_dinas_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                            :checked="old('rumah_dinas_ada_tidak', $profileSekolah->rumahDinas?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                            :checked="old(
+                                                'rumah_dinas_ada_tidak',
+                                                $profileSekolah->rumahDinas?->{'ada/tidak_ada'},
+                                            ) == 'tidak_ada'" />
                                     </div>
                                     @error('rumah_dinas_ada_tidak')
                                         <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <x-form.select name="rumah_dinas_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                <x-form.select name="rumah_dinas_kondisi" label="Kondisi" :options="[
+                                    '' => '-- Pilih --',
+                                    'bagus' => 'Bagus',
+                                    'rusak' => 'Rusak',
+                                    'nihil' => 'Nihil',
+                                ]"
                                     :value="old('rumah_dinas_kondisi', $profileSekolah->rumahDinas?->kodisi)" />
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20">
-                            <div class="flex items-center gap-2 text-violet-700 dark:text-violet-400 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20">
+                            <div
+                                class="flex items-center gap-2 text-violet-700 dark:text-violet-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-building"></i>
                                 <span class="hidden sm:inline">Q. Rumah Ibadah</span>
                             </div>
@@ -486,29 +632,44 @@
                         <div class="p-3 sm:p-4">
                             <div class="grid grid-cols-1 gap-2">
                                 <div>
-                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <label
+                                        class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Keberadaan <span class="text-red-600">*</span>
                                     </label>
                                     <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                         <x-form.radio name="rumah_ibadah_ada_tidak" value="ada" label="Ada"
-                                            :checked="old('rumah_ibadah_ada_tidak', $profileSekolah->rumahIbadah?->{'ada/tidak_ada'}) == 'ada'" />
+                                            :checked="old(
+                                                'rumah_ibadah_ada_tidak',
+                                                $profileSekolah->rumahIbadah?->{'ada/tidak_ada'},
+                                            ) == 'ada'" />
                                         <x-form.radio name="rumah_ibadah_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                            :checked="old('rumah_ibadah_ada_tidak', $profileSekolah->rumahIbadah?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                            :checked="old(
+                                                'rumah_ibadah_ada_tidak',
+                                                $profileSekolah->rumahIbadah?->{'ada/tidak_ada'},
+                                            ) == 'tidak_ada'" />
                                     </div>
                                     @error('rumah_ibadah_ada_tidak')
                                         <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <x-form.select name="rumah_ibadah_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                <x-form.select name="rumah_ibadah_kondisi" label="Kondisi" :options="[
+                                    '' => '-- Pilih --',
+                                    'bagus' => 'Bagus',
+                                    'rusak' => 'Rusak',
+                                    'nihil' => 'Nihil',
+                                ]"
                                     :value="old('rumah_ibadah_kondisi', $profileSekolah->rumahIbadah?->kodisi)" />
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-lime-50 to-green-50 dark:from-lime-900/20 dark:to-green-900/20">
-                            <div class="flex items-center gap-2 text-lime-700 dark:text-lime-400 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-lime-50 to-green-50 dark:from-lime-900/20 dark:to-green-900/20">
+                            <div
+                                class="flex items-center gap-2 text-lime-700 dark:text-lime-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-flag"></i>
                                 <span class="hidden sm:inline">R. Lapangan Sekolah</span>
                             </div>
@@ -516,22 +677,37 @@
                         <div class="p-3 sm:p-4">
                             <div class="grid grid-cols-1 gap-2">
                                 <div>
-                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <label
+                                        class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Keberadaan <span class="text-red-600">*</span>
                                     </label>
                                     <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                         <x-form.radio name="lapangan_sekolah_ada_tidak" value="ada" label="Ada"
-                                            :checked="old('lapangan_sekolah_ada_tidak', $profileSekolah->lapanganSekolah?->{'ada/tidak_ada'}) == 'ada'" />
-                                        <x-form.radio name="lapangan_sekolah_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                            :checked="old('lapangan_sekolah_ada_tidak', $profileSekolah->lapanganSekolah?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                            :checked="old(
+                                                'lapangan_sekolah_ada_tidak',
+                                                $profileSekolah->lapanganSekolah?->{'ada/tidak_ada'},
+                                            ) == 'ada'" />
+                                        <x-form.radio name="lapangan_sekolah_ada_tidak" value="tidak_ada"
+                                            label="Tidak Ada" :checked="old(
+                                                'lapangan_sekolah_ada_tidak',
+                                                $profileSekolah->lapanganSekolah?->{'ada/tidak_ada'},
+                                            ) == 'tidak_ada'" />
                                     </div>
                                     @error('lapangan_sekolah_ada_tidak')
                                         <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <x-form.select name="lapangan_sekolah_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
-                                    :value="old('lapangan_sekolah_kondisi', $profileSekolah->lapanganSekolah?->kodisi)" />
+                                <x-form.select name="lapangan_sekolah_kondisi" label="Kondisi" :options="[
+                                    '' => '-- Pilih --',
+                                    'bagus' => 'Bagus',
+                                    'rusak' => 'Rusak',
+                                    'nihil' => 'Nihil',
+                                ]"
+                                    :value="old(
+                                        'lapangan_sekolah_kondisi',
+                                        $profileSekolah->lapanganSekolah?->kodisi,
+                                    )" />
                             </div>
                         </div>
                     </div>
@@ -539,9 +715,12 @@
 
                 <!-- S. Pagar & T. Air -->
                 <div class="grid grid-cols-1 gap-3 sm:gap-4">
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-gray-100 to-slate-100 dark:from-gray-700/50 dark:to-slate-700/50">
-                            <div class="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-gray-100 to-slate-100 dark:from-gray-700/50 dark:to-slate-700/50">
+                            <div
+                                class="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-border-all"></i>
                                 <span>S. Pagar Sekolah</span>
                             </div>
@@ -549,29 +728,44 @@
                         <div class="p-3 sm:p-4">
                             <div class="grid grid-cols-1 gap-2">
                                 <div>
-                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <label
+                                        class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Keberadaan <span class="text-red-600">*</span>
                                     </label>
                                     <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                         <x-form.radio name="pagar_ada_tidak" value="ada" label="Ada"
-                                            :checked="old('pagar_ada_tidak', $profileSekolah->pagarSekolah?->{'ada/tidak_ada'}) == 'ada'" />
+                                            :checked="old(
+                                                'pagar_ada_tidak',
+                                                $profileSekolah->pagarSekolah?->{'ada/tidak_ada'},
+                                            ) == 'ada'" />
                                         <x-form.radio name="pagar_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                            :checked="old('pagar_ada_tidak', $profileSekolah->pagarSekolah?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                            :checked="old(
+                                                'pagar_ada_tidak',
+                                                $profileSekolah->pagarSekolah?->{'ada/tidak_ada'},
+                                            ) == 'tidak_ada'" />
                                     </div>
                                     @error('pagar_ada_tidak')
                                         <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <x-form.select name="pagar_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                <x-form.select name="pagar_kondisi" label="Kondisi" :options="[
+                                    '' => '-- Pilih --',
+                                    'bagus' => 'Bagus',
+                                    'rusak' => 'Rusak',
+                                    'nihil' => 'Nihil',
+                                ]"
                                     :value="old('pagar_kondisi', $profileSekolah->pagarSekolah?->kodisi)" />
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-sky-50 dark:from-blue-900/20 dark:to-sky-900/20">
-                            <div class="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-sky-50 dark:from-blue-900/20 dark:to-sky-900/20">
+                            <div
+                                class="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-droplet"></i>
                                 <span>T. Air Bersih</span>
                             </div>
@@ -579,22 +773,33 @@
                         <div class="p-3 sm:p-4">
                             <div class="grid grid-cols-1 gap-2">
                                 <div>
-                                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <label
+                                        class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         Keberadaan <span class="text-red-600">*</span>
                                     </label>
                                     <div class="flex flex-wrap gap-3 sm:gap-4 mt-1">
                                         <x-form.radio name="air_ada_tidak" value="ada" label="Ada"
-                                            :checked="old('air_ada_tidak', $profileSekolah->airBersih?->{'ada/tidak_ada'}) == 'ada'" />
+                                            :checked="old(
+                                                'air_ada_tidak',
+                                                $profileSekolah->airBersih?->{'ada/tidak_ada'},
+                                            ) == 'ada'" />
                                         <x-form.radio name="air_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                            :checked="old('air_ada_tidak', $profileSekolah->airBersih?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                            :checked="old(
+                                                'air_ada_tidak',
+                                                $profileSekolah->airBersih?->{'ada/tidak_ada'},
+                                            ) == 'tidak_ada'" />
                                     </div>
                                     @error('air_ada_tidak')
                                         <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <x-form.select name="air_kondisi" label="Kondisi" :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
-                                    :value="old('air_kondisi', $profileSekolah->airBersih?->kodisi)" />
+                                <x-form.select name="air_kondisi" label="Kondisi" :options="[
+                                    '' => '-- Pilih --',
+                                    'bagus' => 'Bagus',
+                                    'rusak' => 'Rusak',
+                                    'nihil' => 'Nihil',
+                                ]" :value="old('air_kondisi', $profileSekolah->airBersih?->kodisi)" />
                             </div>
                         </div>
                     </div>
@@ -603,9 +808,12 @@
                 <!-- U-Z: Furniture & Elektronik -->
                 <div class="grid grid-cols-1 gap-3 sm:gap-4">
                     <!-- Furniture -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20">
-                            <div class="flex items-center gap-2 text-yellow-700 dark:text-yellow-400 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20">
+                            <div
+                                class="flex items-center gap-2 text-yellow-700 dark:text-yellow-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-table"></i>
                                 <span>Furniture</span>
                             </div>
@@ -614,18 +822,26 @@
                             <div class="grid grid-cols-1 gap-2 sm:gap-3">
                                 <!-- Kursi Siswa -->
                                 <div class="col-span-2">
-                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Kursi Siswa</div>
+                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Kursi Siswa
+                                    </div>
                                     <div class="grid grid-cols-1 gap-2">
                                         <x-form.input name="kursi_siswa_bagus" label="Baik" type="number"
-                                            min="0" required :value="old('kursi_siswa_bagus', $profileSekolah->kursiSiswa?->bagus ?? 0)" />
+                                            min="0" required :value="old(
+                                                'kursi_siswa_bagus',
+                                                $profileSekolah->kursiSiswa?->bagus ?? 0,
+                                            )" />
                                         <x-form.input name="kursi_siswa_rusak" label="Rusak" type="number"
-                                            min="0" required :value="old('kursi_siswa_rusak', $profileSekolah->kursiSiswa?->rusak ?? 0)" />
+                                            min="0" required :value="old(
+                                                'kursi_siswa_rusak',
+                                                $profileSekolah->kursiSiswa?->rusak ?? 0,
+                                            )" />
                                     </div>
                                 </div>
 
                                 <!-- Meja Siswa -->
                                 <div class="col-span-2">
-                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Meja Siswa</div>
+                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Meja Siswa
+                                    </div>
                                     <div class="grid grid-cols-1 gap-2">
                                         <x-form.input name="meja_siswa_bagus" label="Baik" type="number"
                                             min="0" required :value="old('meja_siswa_bagus', $profileSekolah->mejaSiswa?->bagus ?? 0)" />
@@ -636,7 +852,8 @@
 
                                 <!-- Kursi Guru -->
                                 <div class="col-span-2">
-                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Kursi Guru</div>
+                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Kursi Guru
+                                    </div>
                                     <div class="grid grid-cols-1 gap-2">
                                         <x-form.input name="kursi_guru_bagus" label="Baik" type="number"
                                             min="0" required :value="old('kursi_guru_bagus', $profileSekolah->kursiGuru?->bagus ?? 0)" />
@@ -647,10 +864,11 @@
 
                                 <!-- Meja Guru -->
                                 <div class="col-span-2">
-                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Meja Guru</div>
+                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Meja Guru
+                                    </div>
                                     <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="meja_guru_bagus" label="Baik" type="number" min="0"
-                                            required :value="old('meja_guru_bagus', $profileSekolah->mejaGuru?->bagus ?? 0)" />
+                                        <x-form.input name="meja_guru_bagus" label="Baik" type="number"
+                                            min="0" required :value="old('meja_guru_bagus', $profileSekolah->mejaGuru?->bagus ?? 0)" />
                                         <x-form.input name="meja_guru_rusak" label="Rusak" type="number"
                                             min="0" required :value="old('meja_guru_rusak', $profileSekolah->mejaGuru?->rusak ?? 0)" />
                                     </div>
@@ -660,9 +878,12 @@
                     </div>
 
                     <!-- Elektronik -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
-                            <div class="flex items-center gap-2 text-purple-700 dark:text-purple-400 font-semibold text-xs sm:text-sm">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        <div
+                            class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+                            <div
+                                class="flex items-center gap-2 text-purple-700 dark:text-purple-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-laptop"></i>
                                 <span>Elektronik</span>
                             </div>
@@ -693,12 +914,19 @@
 
                                 <!-- Chromebook -->
                                 <div class="col-span-2">
-                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Chromebook</div>
+                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Chromebook
+                                    </div>
                                     <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="chromebook_bagus" label="Baik" type="number" min="0"
-                                            required :value="old('chromebook_bagus', $profileSekolah->chromebook?->bagus ?? 0)" />
-                                        <x-form.input name="chromebook_rusak" label="Rusak" type="number" min="0"
-                                            required :value="old('chromebook_rusak', $profileSekolah->chromebook?->rusak ?? 0)" />
+                                        <x-form.input name="chromebook_bagus" label="Baik" type="number"
+                                            min="0" required :value="old(
+                                                'chromebook_bagus',
+                                                $profileSekolah->chromebook?->bagus ?? 0,
+                                            )" />
+                                        <x-form.input name="chromebook_rusak" label="Rusak" type="number"
+                                            min="0" required :value="old(
+                                                'chromebook_rusak',
+                                                $profileSekolah->chromebook?->rusak ?? 0,
+                                            )" />
                                     </div>
                                 </div>
                             </div>
@@ -707,10 +935,12 @@
                 </div>
 
                 <!-- Tombol Aksi -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                     <div class="p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex flex-wrap gap-2">
-                            <x-button type="button" variant="warning" size="md" data-modal-open="confirmEditModal">
+                            <x-button type="button" variant="warning" size="md"
+                                data-modal-open="confirmEditModal">
                                 <i class="bi bi-save me-1"></i>
                                 <span class="hidden sm:inline">Update Data</span>
                                 <span class="sm:hidden">Update</span>
