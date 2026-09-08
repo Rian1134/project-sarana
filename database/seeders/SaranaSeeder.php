@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Sarana;
+use App\Models\ProfileSekolah;
 use App\Models\JumlahSiswa;
 use App\Models\JumlahRombel;
 use App\Models\RuangKelasBaru;
@@ -29,6 +29,7 @@ use App\Models\MejaSiswa;
 use App\Models\MejaGuru;
 use App\Models\Laptop;
 use App\Models\Komputer;
+use App\Models\Chromebook;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Faker\Factory as Faker;
@@ -42,8 +43,16 @@ class SaranaSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        // Buat user admin
-        $admin = User::find(1);
+        // Cari user admin atau buat jika belum ada
+        $admin = User::first();
+        if (!$admin) {
+            $admin = User::create([
+                'name' => 'Administrator',
+                'email' => 'admin@sekolah.test',
+                'password' => Hash::make('password'),
+            ]);
+            $admin->assignRole('admin');
+        }
 
         // Buat 25 user untuk masing-masing sekolah
         $users = [];
@@ -79,6 +88,10 @@ class SaranaSeeder extends Seeder
             'Drs. Mathias Kogoya, M.Pd.'
         ];
 
+        // Status sekolah dan akreditasi
+        $statusSekolah = ['negeri', 'swasta'];
+        $akreditasi = ['A', 'B', 'C', 'belum_terakreditasi'];
+
         $dataSekolah = [];
 
         for ($i = 0; $i < 25; $i++) {
@@ -93,30 +106,32 @@ class SaranaSeeder extends Seeder
             $rombelIx = ceil($siswaIx / 32);
 
             // Generate ruang kelas (5-15)
-            $ruangKelasBaik = $faker->numberBetween(5, 15);
+            $ruangKelasBagus = $faker->numberBetween(5, 15);
             $ruangKelasRusak = $faker->numberBetween(0, 3);
 
             // Generate toilet
-            $toiletSiswaBaik = $faker->numberBetween(3, 10);
+            $toiletSiswaBagus = $faker->numberBetween(3, 10);
             $toiletSiswaRusak = $faker->numberBetween(0, 3);
-            $toiletGuruBaik = $faker->numberBetween(1, 4);
+            $toiletGuruBagus = $faker->numberBetween(1, 4);
             $toiletGuruRusak = $faker->numberBetween(0, 2);
 
             // Generate furniture
-            $kursiSiswaBaik = $faker->numberBetween(150, 400);
+            $kursiSiswaBagus = $faker->numberBetween(150, 400);
             $kursiSiswaRusak = $faker->numberBetween(5, 30);
-            $mejaSiswaBaik = $faker->numberBetween(60, 150);
+            $mejaSiswaBagus = $faker->numberBetween(60, 150);
             $mejaSiswaRusak = $faker->numberBetween(2, 15);
-            $kursiGuruBaik = $faker->numberBetween(20, 50);
+            $kursiGuruBagus = $faker->numberBetween(20, 50);
             $kursiGuruRusak = $faker->numberBetween(1, 8);
-            $mejaGuruBaik = $faker->numberBetween(15, 35);
+            $mejaGuruBagus = $faker->numberBetween(15, 35);
             $mejaGuruRusak = $faker->numberBetween(1, 5);
 
             // Generate elektronik
-            $laptopBaik = $faker->numberBetween(5, 20);
+            $laptopBagus = $faker->numberBetween(5, 20);
             $laptopRusak = $faker->numberBetween(0, 4);
-            $komputerBaik = $faker->numberBetween(5, 25);
+            $komputerBagus = $faker->numberBetween(5, 25);
             $komputerRusak = $faker->numberBetween(0, 5);
+            $chromebookBagus = $faker->numberBetween(5, 25);
+            $chromebookRusak = $faker->numberBetween(0, 5);
 
             // Generate kondisi fasilitas (ada/tidak_ada)
             $statusOptions = ['ada', 'tidak_ada'];
@@ -160,12 +175,14 @@ class SaranaSeeder extends Seeder
             $airKondisi = $airStatus == 'ada' ? $faker->randomElement(['baik', 'rusak']) : 'nihil';
 
             $dataSekolah[] = [
-                'nama_sekolah' => 'SMP Negeri ' . ($i + 1) . ' ' . $kota[$i],
+                'nama_sekolah' => $faker->randomElement(['SMP Negeri ', 'SMP Swasta ']) . ($i + 1) . ' ' . $kota[$i],
                 'NPSN' => '20100' . str_pad($i + 1, 3, '0', STR_PAD_LEFT),
                 'alamat_sekolah' => 'Jl. ' . $faker->streetName() . ' No. ' . $faker->numberBetween(1, 100) . ', ' . $kota[$i],
                 'nama_kepala_sekolah' => $kepalaSekolah[$i],
-                'NIP' => '196' . $faker->numberBetween(5, 7) . $faker->randomNumber(2) . '19' . $faker->numberBetween(88, 10) . '03' . str_pad($i + 1, 3, '0', STR_PAD_LEFT),
+                'NIP' => '196' . $faker->numberBetween(5, 7) . $faker->randomNumber(2) . '19' . $faker->numberBetween(88, 99) . '03' . str_pad($i + 1, 3, '0', STR_PAD_LEFT),
                 'nomor_hp' => '08' . $faker->numberBetween(100000000, 999999999),
+                'status_sekolah' => $faker->randomElement($statusSekolah),
+                'akreditasi' => $faker->randomElement($akreditasi),
                 'user_id' => $users[$i]->id,
                 'jumlah_siswa' => [
                     'vii' => $siswaVii,
@@ -180,15 +197,15 @@ class SaranaSeeder extends Seeder
                 'ruang_kelas_baru' => $faker->numberBetween(0, 4),
                 'rehabilitasi_ruang_kelas' => $faker->numberBetween(0, 3),
                 'ruang_kelas' => [
-                    'baik' => $ruangKelasBaik,
+                    'baik' => $ruangKelasBagus,
                     'rusak' => $ruangKelasRusak
                 ],
                 'toilet_siswa' => [
-                    'baik' => $toiletSiswaBaik,
+                    'baik' => $toiletSiswaBagus,
                     'rusak' => $toiletSiswaRusak
                 ],
                 'toilet_guru' => [
-                    'baik' => $toiletGuruBaik,
+                    'baik' => $toiletGuruBagus,
                     'rusak' => $toiletGuruRusak
                 ],
                 'ruang_perpustakaan' => [
@@ -240,47 +257,53 @@ class SaranaSeeder extends Seeder
                     'kodisi' => $airKondisi
                 ],
                 'kursi_siswa' => [
-                    'baik' => $kursiSiswaBaik,
+                    'baik' => $kursiSiswaBagus,
                     'rusak' => $kursiSiswaRusak
                 ],
                 'meja_siswa' => [
-                    'baik' => $mejaSiswaBaik,
+                    'baik' => $mejaSiswaBagus,
                     'rusak' => $mejaSiswaRusak
                 ],
                 'kursi_guru' => [
-                    'baik' => $kursiGuruBaik,
+                    'baik' => $kursiGuruBagus,
                     'rusak' => $kursiGuruRusak
                 ],
                 'meja_guru' => [
-                    'baik' => $mejaGuruBaik,
+                    'baik' => $mejaGuruBagus,
                     'rusak' => $mejaGuruRusak
                 ],
                 'laptop' => [
-                    'baik' => $laptopBaik,
+                    'baik' => $laptopBagus,
                     'rusak' => $laptopRusak
                 ],
                 'komputer' => [
-                    'baik' => $komputerBaik,
+                    'baik' => $komputerBagus,
                     'rusak' => $komputerRusak
+                ],
+                'chromebook' => [
+                    'baik' => $chromebookBagus,
+                    'rusak' => $chromebookRusak
                 ],
             ];
         }
 
         foreach ($dataSekolah as $data) {
-            // 1. Create Sarana
-            $sarana = Sarana::create([
+            // 1. Create ProfileSekolah
+            $profile_sekolah = ProfileSekolah::create([
                 'nama_sekolah' => $data['nama_sekolah'],
                 'NPSN' => $data['NPSN'],
                 'alamat_sekolah' => $data['alamat_sekolah'],
                 'nama_kepala_sekolah' => $data['nama_kepala_sekolah'],
                 'NIP' => $data['NIP'],
                 'nomor_hp' => $data['nomor_hp'],
+                'status_sekolah' => $data['status_sekolah'],
+                'akreditasi' => $data['akreditasi'],
                 'user_id' => $data['user_id'],
             ]);
 
             // 2. Jumlah Siswa
             JumlahSiswa::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'vii' => $data['jumlah_siswa']['vii'],
                 'viii' => $data['jumlah_siswa']['viii'],
                 'ix' => $data['jumlah_siswa']['ix'],
@@ -288,7 +311,7 @@ class SaranaSeeder extends Seeder
 
             // 3. Jumlah Rombel
             JumlahRombel::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'vii' => $data['jumlah_rombel']['vii'],
                 'viii' => $data['jumlah_rombel']['viii'],
                 'ix' => $data['jumlah_rombel']['ix'],
@@ -296,162 +319,172 @@ class SaranaSeeder extends Seeder
 
             // 4. Ruang Kelas Baru
             RuangKelasBaru::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'jumlah' => $data['ruang_kelas_baru'],
             ]);
 
             // 5. Rehabilitasi Ruang Kelas
             RehabilitasiRuangKelas::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'jumlah' => $data['rehabilitasi_ruang_kelas'],
             ]);
 
             // 6. Ruang Kelas
             RuangKelas::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'baik' => $data['ruang_kelas']['baik'],
                 'rusak' => $data['ruang_kelas']['rusak'],
             ]);
 
             // 7. Toilet Siswa
             ToiletSiswa::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'baik' => $data['toilet_siswa']['baik'],
                 'rusak' => $data['toilet_siswa']['rusak'],
             ]);
 
             // 8. Toilet Guru
             ToiletGuru::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'baik' => $data['toilet_guru']['baik'],
                 'rusak' => $data['toilet_guru']['rusak'],
             ]);
 
             // 9. Ruang Perpustakaan
             RuangPerpustakaan::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['ruang_perpustakaan']['ada/tidak_ada'],
                 'kodisi' => $data['ruang_perpustakaan']['kodisi'],
             ]);
 
             // 10. Ruang Kepala Sekolah
             RuangKepalaSekolah::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['ruang_kepala_sekolah']['ada/tidak_ada'],
                 'kodisi' => $data['ruang_kepala_sekolah']['kodisi'],
             ]);
 
             // 11. Ruang Guru
             RuangGuru::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['ruang_guru']['ada/tidak_ada'],
                 'kodisi' => $data['ruang_guru']['kodisi'],
             ]);
 
             // 12. Ruang Kantor/TU
             RuangKantorTu::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['ruang_kantor_tu']['ada/tidak_ada'],
                 'kodisi' => $data['ruang_kantor_tu']['kodisi'],
             ]);
 
             // 13. Lab IPA
             LabIpa::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['lab_ipa']['ada/tidak_ada'],
                 'kodisi' => $data['lab_ipa']['kodisi'],
             ]);
 
             // 14. Lab Komputer
             LabKomputer::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['lab_komputer']['ada/tidak_ada'],
                 'kodisi' => $data['lab_komputer']['kodisi'],
             ]);
 
             // 15. UKS
             UnitKesehatanSekolah::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['uks']['ada/tidak_ada'],
                 'kodisi' => $data['uks']['kodisi'],
             ]);
 
             // 16. Rumah Dinas
             RumahDinas::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['rumah_dinas']['ada/tidak_ada'],
                 'kodisi' => $data['rumah_dinas']['kodisi'],
             ]);
 
             // 17. Rumah Ibadah
             RumahIbadah::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['rumah_ibadah']['ada/tidak_ada'],
                 'kodisi' => $data['rumah_ibadah']['kodisi'],
             ]);
 
             // 18. Lapangan Sekolah
             LapanganSekolah::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['lapangan_sekolah']['ada/tidak_ada'],
                 'kodisi' => $data['lapangan_sekolah']['kodisi'],
             ]);
 
             // 19. Pagar Sekolah
             PagarSekolah::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['pagar_sekolah']['ada/tidak_ada'],
                 'kodisi' => $data['pagar_sekolah']['kodisi'],
             ]);
 
             // 20. Air Bersih
             AirBersih::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'ada/tidak_ada' => $data['air_bersih']['ada/tidak_ada'],
                 'kodisi' => $data['air_bersih']['kodisi'],
             ]);
 
             // 21. Kursi Siswa
             KursiSiswa::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'baik' => $data['kursi_siswa']['baik'],
                 'rusak' => $data['kursi_siswa']['rusak'],
             ]);
 
             // 22. Meja Siswa
             MejaSiswa::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'baik' => $data['meja_siswa']['baik'],
                 'rusak' => $data['meja_siswa']['rusak'],
             ]);
 
             // 23. Kursi Guru
             KursiGuru::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'baik' => $data['kursi_guru']['baik'],
                 'rusak' => $data['kursi_guru']['rusak'],
             ]);
 
             // 24. Meja Guru
             MejaGuru::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'baik' => $data['meja_guru']['baik'],
                 'rusak' => $data['meja_guru']['rusak'],
             ]);
 
             // 25. Laptop
             Laptop::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'baik' => $data['laptop']['baik'],
                 'rusak' => $data['laptop']['rusak'],
             ]);
 
             // 26. Komputer
             Komputer::create([
-                'sarana_id' => $sarana->id,
+                'profile_sekolah_id' => $profile_sekolah->id,
                 'baik' => $data['komputer']['baik'],
                 'rusak' => $data['komputer']['rusak'],
             ]);
+
+            // 27. Chromebook
+            Chromebook::create([
+                'profile_sekolah_id' => $profile_sekolah->id,
+                'baik' => $data['chromebook']['baik'],
+                'rusak' => $data['chromebook']['rusak'],
+            ]);
         }
+
+        $this->command->info('Seeder Sarana berhasil dijalankan!');
+        $this->command->info('Total data sekolah: ' . count($dataSekolah));
     }
 }

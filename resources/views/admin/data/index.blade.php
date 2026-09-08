@@ -53,6 +53,88 @@
     </div>
 
     {{-- ============================================================
+         GRAFIK RINGKASAN (agregat seluruh sekolah)
+         ============================================================ --}}
+    @php
+        $chartSiswaRombel = [
+            'vii' => [
+                $profileSekolahs->sum(fn ($item) => $item->jumlahSiswa?->vii ?? 0),
+                $profileSekolahs->sum(fn ($item) => $item->jumlahRombel?->vii ?? 0),
+            ],
+            'viii' => [
+                $profileSekolahs->sum(fn ($item) => $item->jumlahSiswa?->viii ?? 0),
+                $profileSekolahs->sum(fn ($item) => $item->jumlahRombel?->viii ?? 0),
+            ],
+            'ix' => [
+                $profileSekolahs->sum(fn ($item) => $item->jumlahSiswa?->ix ?? 0),
+                $profileSekolahs->sum(fn ($item) => $item->jumlahRombel?->ix ?? 0),
+            ],
+        ];
+
+        $chartRuangKelas = [
+            $profileSekolahs->sum(fn ($item) => $item->ruangKelas?->baik ?? 0),
+            $profileSekolahs->sum(fn ($item) => $item->ruangKelas?->rusak ?? 0),
+        ];
+
+        $fasilitasRelasi = [
+            'ruangPerpustakaan', 'ruangKepalaSekolah', 'ruangGuru', 'ruangKantorTu',
+            'labIpa', 'labKomputer', 'unitKesehatanSekolah', 'rumahDinas',
+            'rumahIbadah', 'lapanganSekolah', 'pagarSekolah', 'airBersih',
+        ];
+        $countFasilitasBaik = 0;
+        $countFasilitasRusak = 0;
+        $countFasilitasNihil = 0;
+        foreach ($profileSekolahs as $item) {
+            foreach ($fasilitasRelasi as $rel) {
+                $kondisiFasilitas = $item->$rel?->kodisi ?? null;
+                if ($kondisiFasilitas === 'baik') {
+                    $countFasilitasBaik++;
+                } elseif ($kondisiFasilitas === 'rusak') {
+                    $countFasilitasRusak++;
+                } else {
+                    $countFasilitasNihil++;
+                }
+            }
+        }
+        $chartFasilitas = [$countFasilitasBaik, $countFasilitasRusak, $countFasilitasNihil];
+    @endphp
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2 mb-4">
+                <i class="bi bi-bar-chart-fill"></i> Grafik Ringkasan ({{ $profileSekolahs->count() }} Sekolah)
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
+                        Total Siswa & Rombel per Tingkat
+                    </p>
+                    <div class="h-56 sm:h-64">
+                        <canvas id="adminChartSiswaRombel"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
+                        Total Kondisi Ruang Kelas
+                    </p>
+                    <div class="h-56 sm:h-64">
+                        <canvas id="adminChartRuangKelas"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
+                        Total Kondisi Fasilitas (Baik/Rusak/Nihil)
+                    </p>
+                    <div class="h-56 sm:h-64">
+                        <canvas id="adminChartFasilitas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ============================================================
          CARD & TABEL UTAMA
          ============================================================ --}}
     <div class="card">
@@ -71,12 +153,12 @@
                     <tr class="bg-gray-800 text-white text-center">
                         {{-- DATA SEKOLAH (7 kolom) --}}
                         <x-table.heading rowspan="3" class="text-white! align-middle w-7 px-1 py-1">No</x-table.heading>
-                        <x-table.heading rowspan="3" class="text-white! align-middle min-w-25 px-1 py-1">Nama
+                        <x-table.heading rowspan="3" class="text-white! align-middle min-w-40 px-1 py-1">Nama
                             Sekolah</x-table.heading>
                         <x-table.heading rowspan="3"
                             class="text-white! align-middle min-w-17.5 px-1 py-1">NPSN</x-table.heading>
                         <x-table.heading rowspan="3"
-                            class="text-white! align-middle min-w-30 px-1 py-1">Alamat</x-table.heading>
+                            class="text-white! align-middle min-w-56 px-1 py-1">Alamat</x-table.heading>
                         <x-table.heading rowspan="3" class="text-white! align-middle min-w-22.5 px-1 py-1">Kepala
                             Sekolah</x-table.heading>
                         <x-table.heading rowspan="3"
@@ -117,11 +199,11 @@
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Ruang Kelas</x-table.heading>
 
                         {{-- URUTAN 6: TOILET SISWA (3 kolom) --}}
-                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Toilet
+                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Toilet / Jamban
                             Siswa</x-table.heading>
 
                         {{-- URUTAN 7: TOILET GURU (3 kolom) --}}
-                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Toilet Guru</x-table.heading>
+                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Toilet / Jamban Guru</x-table.heading>
 
                         {{-- URUTAN 8: R. PERPUSTAKAAN (2 kolom) --}}
                         <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R.
@@ -135,14 +217,14 @@
                         <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Guru</x-table.heading>
 
                         {{-- URUTAN 11: R. KANTOR/TU (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R.
-                            Kantor/TU</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Kantor /
+                            Tata Usaha</x-table.heading>
 
                         {{-- URUTAN 12: LAB IPA (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Lab IPA</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Laboratorium IPA</x-table.heading>
 
                         {{-- URUTAN 13: LAB KOMPUTER (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Lab
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Laboratorium
                             Komputer</x-table.heading>
 
                         {{-- URUTAN 14: UKS (2 kolom) --}}
@@ -160,10 +242,12 @@
                             Sekolah</x-table.heading>
 
                         {{-- URUTAN 18: PAGAR (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-12.5 px-1 py-1">Pagar</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Pagar
+                            Sekolah</x-table.heading>
 
                         {{-- URUTAN 19: AIR (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-12.5 px-1 py-1">Air</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-20 px-1 py-1">Persediaan
+                            Air Bersih</x-table.heading>
 
                         {{-- URUTAN 20: KURSI SISWA (3 kolom) --}}
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Kursi Siswa</x-table.heading>
@@ -241,62 +325,62 @@
 
                         {{-- URUTAN 8: R. PERPUSTAKAAN --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 9: R. KEPALA SEKOLAH --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 10: R. GURU --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 11: R. KANTOR/TU --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 12: LAB IPA --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 13: LAB KOMPUTER --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 14: UKS --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 15: RUMAH DINAS --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 16: RUMAH IBADAH --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 17: LAPANGAN SEKOLAH --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 18: PAGAR --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 19: AIR --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak Ada</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
                         {{-- URUTAN 20: KURSI SISWA --}}
@@ -1037,7 +1121,11 @@
                              DATA SEKOLAH (7 kolom)
                              ============================================================ --}}
                         <x-table.cell class="text-center font-bold">{{ $loop->iteration }}</x-table.cell>
-                        <x-table.cell>{{ $item->nama_sekolah }}</x-table.cell>
+                        <x-table.cell>
+                            <a class="link" href="{{ route('user.show', $item->user_id) }}" >
+                                {{ $item->nama_sekolah }}
+                            </a>
+                        </x-table.cell>
                         <x-table.cell class="text-center">{{ $item->NPSN }}</x-table.cell>
                         <x-table.cell>{{ Str::limit($item->alamat_sekolah, 25) }}</x-table.cell>
                         <x-table.cell>{{ $item->nama_kepala_sekolah }}</x-table.cell>
@@ -1283,3 +1371,81 @@
     @endforeach
 
 @endsection
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new Chart(document.getElementById('adminChartSiswaRombel'), {
+                type: 'bar',
+                data: {
+                    labels: ['VII', 'VIII', 'IX'],
+                    datasets: [
+                        {
+                            label: 'Siswa',
+                            data: [
+                                {{ $chartSiswaRombel['vii'][0] }},
+                                {{ $chartSiswaRombel['viii'][0] }},
+                                {{ $chartSiswaRombel['ix'][0] }},
+                            ],
+                            backgroundColor: '#22c55e',
+                            borderRadius: 4,
+                        },
+                        {
+                            label: 'Rombel',
+                            data: [
+                                {{ $chartSiswaRombel['vii'][1] }},
+                                {{ $chartSiswaRombel['viii'][1] }},
+                                {{ $chartSiswaRombel['ix'][1] }},
+                            ],
+                            backgroundColor: '#8b5cf6',
+                            borderRadius: 4,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+                },
+            });
+
+            new Chart(document.getElementById('adminChartRuangKelas'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Baik', 'Rusak'],
+                    datasets: [{
+                        data: @json($chartRuangKelas),
+                        backgroundColor: ['#0ea5e9', '#f43f5e'],
+                        borderWidth: 0,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: { legend: { position: 'bottom' } },
+                },
+            });
+
+            new Chart(document.getElementById('adminChartFasilitas'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Baik', 'Rusak', 'Nihil'],
+                    datasets: [{
+                        data: @json($chartFasilitas),
+                        backgroundColor: ['#22c55e', '#f59e0b', '#9ca3af'],
+                        borderWidth: 0,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: { legend: { position: 'bottom' } },
+                },
+            });
+        });
+    </script>
+@endpush

@@ -404,3 +404,7 @@ table.border-collapse th,
 table.border-collapse td {
     @apply border border-gray-200 dark:border-gray-700;
 }
+
+.link{
+    @apply text-indigo-700 hover:text-indigo-700/95 active:text-indigo-700/50 dark:text-indigo-300;
+}
