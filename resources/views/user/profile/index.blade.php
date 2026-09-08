@@ -513,7 +513,7 @@
                                             {{ $chartRuangKelas[0] }}</p>
                                     </div>
                                     <div
-                                        class="bg-rose-50 dark:bg-rose-900/20 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
+                                        class="bg-rose-50 dark:bg-red-900/20 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
                                         <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Rusak</p>
                                         <p class="text-xl sm:text-4xl font-bold text-gray-900 dark:text-white">
                                             {{ $chartRuangKelas[1] }}</p>

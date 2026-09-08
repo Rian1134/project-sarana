@@ -277,7 +277,7 @@
                             <div class="bg-green-50 dark:bg-green-900/20 p-2 sm:p-3 rounded-lg text-center">
                                 <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Baik</p>
                                 <p class="text-lg sm:text-2xl font-bold text-green-600 dark:text-green-400">
-                                    {{ $profileSekolah->ruangKelas?->bagus ?? 0 }}</p>
+                                    {{ $profileSekolah->ruangKelas?->baik ?? 0 }}</p>
                             </div>
                             <div class="bg-red-50 dark:bg-red-900/20 p-2 sm:p-3 rounded-lg text-center">
                                 <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Rusak</p>
@@ -289,7 +289,7 @@
                             <div class="flex justify-between items-center">
                                 <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total Ruang Kelas</span>
                                 <span class="text-base sm:text-lg font-bold text-blue-600 dark:text-blue-400">
-                                    {{ ($profileSekolah->ruangKelas?->bagus ?? 0) + ($profileSekolah->ruangKelas?->rusak ?? 0) }}
+                                    {{ ($profileSekolah->ruangKelas?->baik ?? 0) + ($profileSekolah->ruangKelas?->rusak ?? 0) }}
                                 </span>
                             </div>
                         </div>
@@ -313,7 +313,7 @@
                                 <div class="bg-green-50 dark:bg-green-900/20 p-1.5 sm:p-2 rounded-lg text-center">
                                     <p class="text-[8px] sm:text-xs text-gray-500 dark:text-gray-400">Baik</p>
                                     <p class="text-base sm:text-xl font-bold text-green-600 dark:text-green-400">
-                                        {{ $profileSekolah->toiletSiswa?->bagus ?? 0 }}</p>
+                                        {{ $profileSekolah->toiletSiswa?->baik ?? 0 }}</p>
                                 </div>
                                 <div class="bg-red-50 dark:bg-red-900/20 p-1.5 sm:p-2 rounded-lg text-center">
                                     <p class="text-[8px] sm:text-xs text-gray-500 dark:text-gray-400">Rusak</p>
@@ -338,7 +338,7 @@
                                 <div class="bg-green-50 dark:bg-green-900/20 p-1.5 sm:p-2 rounded-lg text-center">
                                     <p class="text-[8px] sm:text-xs text-gray-500 dark:text-gray-400">Baik</p>
                                     <p class="text-base sm:text-xl font-bold text-green-600 dark:text-green-400">
-                                        {{ $profileSekolah->toiletGuru?->bagus ?? 0 }}</p>
+                                        {{ $profileSekolah->toiletGuru?->baik ?? 0 }}</p>
                                 </div>
                                 <div class="bg-red-50 dark:bg-red-900/20 p-1.5 sm:p-2 rounded-lg text-center">
                                     <p class="text-[8px] sm:text-xs text-gray-500 dark:text-gray-400">Rusak</p>
@@ -462,9 +462,9 @@
                                 class="flex justify-between items-center p-1.5 sm:p-2 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
                                 <span class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Kursi Siswa</span>
                                 <span class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ ($profileSekolah->kursiSiswa?->bagus ?? 0) + ($profileSekolah->kursiSiswa?->rusak ?? 0) }}
+                                    {{ ($profileSekolah->kursiSiswa?->baik ?? 0) + ($profileSekolah->kursiSiswa?->rusak ?? 0) }}
                                     <span class="text-[8px] sm:text-[10px] font-normal text-gray-500 dark:text-gray-400">
-                                        (B: {{ $profileSekolah->kursiSiswa?->bagus ?? 0 }} | R:
+                                        (B: {{ $profileSekolah->kursiSiswa?->baik ?? 0 }} | R:
                                         {{ $profileSekolah->kursiSiswa?->rusak ?? 0 }})
                                     </span>
                                 </span>
@@ -473,9 +473,9 @@
                                 class="flex justify-between items-center p-1.5 sm:p-2 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
                                 <span class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Meja Siswa</span>
                                 <span class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ ($profileSekolah->mejaSiswa?->bagus ?? 0) + ($profileSekolah->mejaSiswa?->rusak ?? 0) }}
+                                    {{ ($profileSekolah->mejaSiswa?->baik ?? 0) + ($profileSekolah->mejaSiswa?->rusak ?? 0) }}
                                     <span class="text-[8px] sm:text-[10px] font-normal text-gray-500 dark:text-gray-400">
-                                        (B: {{ $profileSekolah->mejaSiswa?->bagus ?? 0 }} | R:
+                                        (B: {{ $profileSekolah->mejaSiswa?->baik ?? 0 }} | R:
                                         {{ $profileSekolah->mejaSiswa?->rusak ?? 0 }})
                                     </span>
                                 </span>
@@ -484,9 +484,9 @@
                                 class="flex justify-between items-center p-1.5 sm:p-2 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
                                 <span class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Kursi Guru</span>
                                 <span class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ ($profileSekolah->kursiGuru?->bagus ?? 0) + ($profileSekolah->kursiGuru?->rusak ?? 0) }}
+                                    {{ ($profileSekolah->kursiGuru?->baik ?? 0) + ($profileSekolah->kursiGuru?->rusak ?? 0) }}
                                     <span class="text-[8px] sm:text-[10px] font-normal text-gray-500 dark:text-gray-400">
-                                        (B: {{ $profileSekolah->kursiGuru?->bagus ?? 0 }} | R:
+                                        (B: {{ $profileSekolah->kursiGuru?->baik ?? 0 }} | R:
                                         {{ $profileSekolah->kursiGuru?->rusak ?? 0 }})
                                     </span>
                                 </span>
@@ -495,9 +495,9 @@
                                 class="flex justify-between items-center p-1.5 sm:p-2 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
                                 <span class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Meja Guru</span>
                                 <span class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ ($profileSekolah->mejaGuru?->bagus ?? 0) + ($profileSekolah->mejaGuru?->rusak ?? 0) }}
+                                    {{ ($profileSekolah->mejaGuru?->baik ?? 0) + ($profileSekolah->mejaGuru?->rusak ?? 0) }}
                                     <span class="text-[8px] sm:text-[10px] font-normal text-gray-500 dark:text-gray-400">
-                                        (B: {{ $profileSekolah->mejaGuru?->bagus ?? 0 }} | R:
+                                        (B: {{ $profileSekolah->mejaGuru?->baik ?? 0 }} | R:
                                         {{ $profileSekolah->mejaGuru?->rusak ?? 0 }})
                                     </span>
                                 </span>
@@ -521,9 +521,9 @@
                                 class="flex justify-between items-center p-1.5 sm:p-2 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
                                 <span class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Laptop</span>
                                 <span class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ ($profileSekolah->laptop?->bagus ?? 0) + ($profileSekolah->laptop?->rusak ?? 0) }}
+                                    {{ ($profileSekolah->laptop?->baik ?? 0) + ($profileSekolah->laptop?->rusak ?? 0) }}
                                     <span class="text-[8px] sm:text-[10px] font-normal text-gray-500 dark:text-gray-400">
-                                        (B: {{ $profileSekolah->laptop?->bagus ?? 0 }} | R:
+                                        (B: {{ $profileSekolah->laptop?->baik ?? 0 }} | R:
                                         {{ $profileSekolah->laptop?->rusak ?? 0 }})
                                     </span>
                                 </span>
@@ -532,9 +532,9 @@
                                 class="flex justify-between items-center p-1.5 sm:p-2 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
                                 <span class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Komputer</span>
                                 <span class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ ($profileSekolah->komputer?->bagus ?? 0) + ($profileSekolah->komputer?->rusak ?? 0) }}
+                                    {{ ($profileSekolah->komputer?->baik ?? 0) + ($profileSekolah->komputer?->rusak ?? 0) }}
                                     <span class="text-[8px] sm:text-[10px] font-normal text-gray-500 dark:text-gray-400">
-                                        (B: {{ $profileSekolah->komputer?->bagus ?? 0 }} | R:
+                                        (B: {{ $profileSekolah->komputer?->baik ?? 0 }} | R:
                                         {{ $profileSekolah->komputer?->rusak ?? 0 }})
                                     </span>
                                 </span>
@@ -543,9 +543,9 @@
                                 class="flex justify-between items-center p-1.5 sm:p-2 bg-gray-50 dark:bg-gray-700/30 rounded-lg">
                                 <span class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Chromebook</span>
                                 <span class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ ($profileSekolah->chromebook?->bagus ?? 0) + ($profileSekolah->chromebook?->rusak ?? 0) }}
+                                    {{ ($profileSekolah->chromebook?->baik ?? 0) + ($profileSekolah->chromebook?->rusak ?? 0) }}
                                     <span class="text-[8px] sm:text-[10px] font-normal text-gray-500 dark:text-gray-400">
-                                        (B: {{ $profileSekolah->chromebook?->bagus ?? 0 }} | R:
+                                        (B: {{ $profileSekolah->chromebook?->baik ?? 0 }} | R:
                                         {{ $profileSekolah->chromebook?->rusak ?? 0 }})
                                     </span>
                                 </span>

@@ -92,7 +92,7 @@
                 class="sidebar-link {{ request()->routeIs('user.data.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
                 @if (request()->routeIs('user.data.*')) aria-current="page" @endif>
                 <i class="bi bi-grid-1x2-fill text-base shrink-0"></i>
-                <span data-sidebar-label>Sarana</span>
+                <span data-sidebar-label>Status</span>
             </a>
 
             {{-- Logout — dengan modal konfirmasi, selalu menempel di bawah --}}
