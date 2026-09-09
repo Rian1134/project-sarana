@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\LogsSaranaActivity;
+use App\Traits\RecordsSaranaSnapshot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PeriodeLaporan extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsSaranaActivity, RecordsSaranaSnapshot;
 
     protected $fillable = [
         'kategori',

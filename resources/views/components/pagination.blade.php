@@ -6,7 +6,7 @@
     - paginator : instance Illuminate\Pagination\LengthAwarePaginator (wajib)
 
     Contoh:
-    {{-- di controller: $users = User::paginate(10); --}}
+    di controller: $users = User::paginate(10);
     <x-pagination :paginator="$users" />
 --}}
 @props([

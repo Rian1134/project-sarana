@@ -58,28 +58,37 @@
     @php
         $chartSiswaRombel = [
             'vii' => [
-                $profileSekolahs->sum(fn ($item) => $item->jumlahSiswa?->vii ?? 0),
-                $profileSekolahs->sum(fn ($item) => $item->jumlahRombel?->vii ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahSiswa?->vii ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahRombel?->vii ?? 0),
             ],
             'viii' => [
-                $profileSekolahs->sum(fn ($item) => $item->jumlahSiswa?->viii ?? 0),
-                $profileSekolahs->sum(fn ($item) => $item->jumlahRombel?->viii ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahSiswa?->viii ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahRombel?->viii ?? 0),
             ],
             'ix' => [
-                $profileSekolahs->sum(fn ($item) => $item->jumlahSiswa?->ix ?? 0),
-                $profileSekolahs->sum(fn ($item) => $item->jumlahRombel?->ix ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahSiswa?->ix ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahRombel?->ix ?? 0),
             ],
         ];
 
         $chartRuangKelas = [
-            $profileSekolahs->sum(fn ($item) => $item->ruangKelas?->baik ?? 0),
-            $profileSekolahs->sum(fn ($item) => $item->ruangKelas?->rusak ?? 0),
+            $profileSekolahs->sum(fn($item) => $item->ruangKelas?->baik ?? 0),
+            $profileSekolahs->sum(fn($item) => $item->ruangKelas?->rusak ?? 0),
         ];
 
         $fasilitasRelasi = [
-            'ruangPerpustakaan', 'ruangKepalaSekolah', 'ruangGuru', 'ruangKantorTu',
-            'labIpa', 'labKomputer', 'unitKesehatanSekolah', 'rumahDinas',
-            'rumahIbadah', 'lapanganSekolah', 'pagarSekolah', 'airBersih',
+            'ruangPerpustakaan',
+            'ruangKepalaSekolah',
+            'ruangGuru',
+            'ruangKantorTu',
+            'labIpa',
+            'labKomputer',
+            'unitKesehatanSekolah',
+            'rumahDinas',
+            'rumahIbadah',
+            'lapanganSekolah',
+            'pagarSekolah',
+            'airBersih',
         ];
         $countFasilitasBaik = 0;
         $countFasilitasRusak = 0;
@@ -188,12 +197,16 @@
                             Belajar</x-table.heading>
 
                         {{-- URUTAN 3: RKB (RUANG KELAS BARU) (1 kolom) --}}
-                        <x-table.heading colspan="1" class="text-white! min-w-16 px-1 py-1">RKB
-                            ({{ $rkbPeriode->label() }})</x-table.heading>
+                        <x-table.heading colspan="1" class="text-white! min-w-16 px-1 py-1">
+                            Pembangunan Ruang Kelas Baru (RKB) dari
+                            ({{ $rkbPeriode->label() }})
+                        </x-table.heading>
 
                         {{-- URUTAN 4: REHABILITASI RUANG KELAS (1 kolom) --}}
-                        <x-table.heading colspan="1" class="text-white! min-w-16 px-1 py-1">Rehabilitasi
-                            ({{ $rehabilitasiPeriode->label() }})</x-table.heading>
+                        <x-table.heading colspan="1" class="text-white! min-w-16 px-1 py-1">
+                            Rehabilitasi Ruang Kelas dari
+                            ({{ $rehabilitasiPeriode->label() }})
+                        </x-table.heading>
 
                         {{-- URUTAN 5: RUANG KELAS (3 kolom) --}}
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Ruang Kelas</x-table.heading>
@@ -203,7 +216,8 @@
                             Siswa</x-table.heading>
 
                         {{-- URUTAN 7: TOILET GURU (3 kolom) --}}
-                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Toilet / Jamban Guru</x-table.heading>
+                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Toilet / Jamban
+                            Guru</x-table.heading>
 
                         {{-- URUTAN 8: R. PERPUSTAKAAN (2 kolom) --}}
                         <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R.
@@ -221,7 +235,8 @@
                             Tata Usaha</x-table.heading>
 
                         {{-- URUTAN 12: LAB IPA (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Laboratorium IPA</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Laboratorium
+                            IPA</x-table.heading>
 
                         {{-- URUTAN 13: LAB KOMPUTER (2 kolom) --}}
                         <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Laboratorium
@@ -231,7 +246,8 @@
                         <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">UKS</x-table.heading>
 
                         {{-- URUTAN 15: RUMAH DINAS (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Rumah Dinas</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Rumah
+                            Dinas</x-table.heading>
 
                         {{-- URUTAN 16: RUMAH IBADAH (2 kolom) --}}
                         <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Rumah
@@ -250,10 +266,12 @@
                             Air Bersih</x-table.heading>
 
                         {{-- URUTAN 20: KURSI SISWA (3 kolom) --}}
-                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Kursi Siswa</x-table.heading>
+                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Kursi
+                            Siswa</x-table.heading>
 
                         {{-- URUTAN 21: MEJA SISWA (3 kolom) --}}
-                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Meja Siswa</x-table.heading>
+                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Meja
+                            Siswa</x-table.heading>
 
                         {{-- URUTAN 22: KURSI GURU (3 kolom) --}}
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Kursi
@@ -265,12 +283,12 @@
                         {{-- URUTAN 24: LAPTOP (3 kolom) --}}
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Laptop</x-table.heading>
 
-                        {{-- URUTAN 25: KOMPUTER (3 kolom) --}}
-                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Komputer</x-table.heading>
-
-                        {{-- URUTAN 26: KOMPUTER (3 kolom) --}}
+                        {{-- URUTAN 25: CHROMEBOOK (3 kolom) --}}
                         <x-table.heading colspan="3"
                             class="text-white! min-w-16 px-1 py-1">Chromebook</x-table.heading>
+
+                        {{-- URUTAN 26: KOMPUTER (3 kolom) --}}
+                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Komputer</x-table.heading>
                     </tr>
 
                     {{-- ============================================================
@@ -418,19 +436,20 @@
                         <x-table.heading
                             class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
 
-                        {{-- URUTAN 25: KOMPUTER --}}
+                        {{-- URUTAN 25: CHROMEBOOK --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
                             class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
 
-                        {{-- URUTAN 26: CHROMEBOOK --}}
+                        {{-- URUTAN 26: KOMPUTER --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
                             class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+
                     </tr>
 
                     {{-- ============================================================
@@ -499,9 +518,9 @@
 
                         {{-- URUTAN 5: RUANG KELAS --}}
 
-                        {{-- BAGUS --}}
+                        {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->ruangKelas?->bagus ?? 0) }}
+                            {{ $profileSekolahs->sum(fn($item) => $item->ruangKelas?->baik ?? 0) }}
                         </x-table.cell>
 
                         {{-- RUSAK --}}
@@ -511,14 +530,14 @@
 
                         {{-- TOTAL --}}
                         <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->ruangKelas?->bagus ?? 0) + ($item->ruangKelas?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->ruangKelas?->baik ?? 0) + ($item->ruangKelas?->rusak ?? 0)) }}
                         </x-table.cell>
 
                         {{-- URUTAN 6: TOILET SISWA --}}
 
-                        {{-- BAGUS --}}
+                        {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->toiletSiswa?->bagus ?? 0) + ($item->ruangKelas?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->toiletSiswa?->baik ?? 0) + ($item->ruangKelas?->rusak ?? 0)) }}
                         </x-table.cell>
 
                         {{-- RUSAK --}}
@@ -528,14 +547,14 @@
 
                         {{-- TOTAL --}}
                         <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->toiletSiswa?->bagus ?? 0) + ($item->toiletSiswa?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->toiletSiswa?->baik ?? 0) + ($item->toiletSiswa?->rusak ?? 0)) }}
                         </x-table.cell>
 
                         {{-- URUTAN 7: TOILET GURU --}}
 
-                        {{-- BAGUS --}}
+                        {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->toiletGuru?->bagus ?? 0) + ($item->ruangKelas?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->toiletGuru?->baik ?? 0) + ($item->ruangKelas?->rusak ?? 0)) }}
                         </x-table.cell>
 
                         {{-- RUSAK --}}
@@ -545,7 +564,7 @@
 
                         {{-- TOTAL --}}
                         <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->toiletGuru?->bagus ?? 0) + ($item->toiletGuru?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->toiletGuru?->baik ?? 0) + ($item->toiletGuru?->rusak ?? 0)) }}
                         </x-table.cell>
 
                         {{-- URUTAN 8: R. PERPUSTAKAAN --}}
@@ -561,7 +580,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangPerpustakaan?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangPerpustakaan?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangPerpustakaan?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -579,7 +598,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangKepalaSekolah?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangKepalaSekolah?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangKepalaSekolah?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -597,7 +616,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangGuru?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangGuru?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangGuru?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -615,7 +634,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangKantorTu?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangKantorTu?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangKantorTu?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -632,7 +651,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -650,7 +669,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -668,7 +687,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->uks?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->uks?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->uks?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -685,7 +704,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->rumahDinas?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->rumahDinas?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->rumahDinas?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -703,7 +722,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->rumahIbadah?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->rumahIbadah?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->rumahIbadah?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -721,7 +740,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->lapanganSekolah?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->lapanganSekolah?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->lapanganSekolah?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -739,7 +758,7 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->pagarSekolah?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->pagarSekolah?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->pagarSekolah?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
@@ -757,16 +776,16 @@
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->airBersih?->kodisi ?? null) === 'bagus')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->airBersih?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->airBersih?->kodisi ?? null) === 'rusak')->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 20: KURSI SISWA --}}
 
-                        {{-- BAGUS --}}
+                        {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->kusriSiswa?->bagus ?? 0) }}
+                            {{ $profileSekolahs->sum(fn($item) => $item->kusriSiswa?->baik ?? 0) }}
                         </x-table.cell>
 
                         {{-- RUSAK --}}
@@ -775,14 +794,14 @@
                         </x-table.cell>
 
                         <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->kursiSiswa?->bagus ?? 0) + ($item->kursiSiswa?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->kursiSiswa?->baik ?? 0) + ($item->kursiSiswa?->rusak ?? 0)) }}
                         </x-table.cell>
 
                         {{-- URUTAN 21: MEJA SISWA --}}
 
-                        {{-- BAGUS --}}
+                        {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->mejaSiswa?->bagus ?? 0) }}
+                            {{ $profileSekolahs->sum(fn($item) => $item->mejaSiswa?->baik ?? 0) }}
                         </x-table.cell>
 
                         {{-- RUSAK --}}
@@ -791,13 +810,13 @@
                         </x-table.cell>
 
                         <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->mejaSiswa?->bagus ?? 0) + ($item->mejaSiswa?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->mejaSiswa?->baik ?? 0) + ($item->mejaSiswa?->rusak ?? 0)) }}
                         </x-table.cell>
 
                         {{-- URUTAN 22: KURSI GURU --}}
-                        {{-- BAGUS --}}
+                        {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->kursiGuru?->bagus ?? 0) }}
+                            {{ $profileSekolahs->sum(fn($item) => $item->kursiGuru?->baik ?? 0) }}
                         </x-table.cell>
 
                         {{-- RUSAK --}}
@@ -806,14 +825,14 @@
                         </x-table.cell>
 
                         <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->kursiGuru?->bagus ?? 0) + ($item->kursiGuru?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->kursiGuru?->baik ?? 0) + ($item->kursiGuru?->rusak ?? 0)) }}
                         </x-table.cell>
 
                         {{-- URUTAN 23: MEJA GURU --}}
 
-                        {{-- BAGUS --}}
+                        {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->mejaGuru?->bagus ?? 0) }}
+                            {{ $profileSekolahs->sum(fn($item) => $item->mejaGuru?->baik ?? 0) }}
                         </x-table.cell>
 
                         {{-- RUSAK --}}
@@ -822,14 +841,14 @@
                         </x-table.cell>
 
                         <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->mejaGuru?->bagus ?? 0) + ($item->mejaGuru?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->mejaGuru?->baik ?? 0) + ($item->mejaGuru?->rusak ?? 0)) }}
                         </x-table.cell>
 
                         {{-- URUTAN 24: LAPTOP --}}
 
-                        {{-- BAGUS --}}
+                        {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->laptop?->bagus ?? 0) }}
+                            {{ $profileSekolahs->sum(fn($item) => $item->laptop?->baik ?? 0) }}
                         </x-table.cell>
 
                         {{-- RUSAK --}}
@@ -838,14 +857,30 @@
                         </x-table.cell>
 
                         <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->laptop?->bagus ?? 0) + ($item->laptop?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->laptop?->baik ?? 0) + ($item->laptop?->rusak ?? 0)) }}
                         </x-table.cell>
 
-                        {{-- URUTAN 25: KOMPUTER --}}
+                        {{-- URUTAN 25: Chromebook --}}
 
-                        {{-- BAGUS --}}
+                        {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->komputer?->bagus ?? 0) }}
+                            {{ $profileSekolahs->sum(fn($item) => $item->chromebook?->baik ?? 0) }}
+                        </x-table.cell>
+
+                        {{-- RUSAK --}}
+                        <x-table.cell class="text-center font-bold">
+                            {{ $profileSekolahs->sum(fn($item) => $item->chromebook?->rusak ?? 0) }}
+                        </x-table.cell>
+
+                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                            {{ $profileSekolahs->sum(fn($item) => ($item->chromebook?->baik ?? 0) + ($item->chromebook?->rusak ?? 0)) }}
+                        </x-table.cell>
+
+                        {{-- URUTAN 26: KOMPUTER --}}
+
+                        {{-- baik --}}
+                        <x-table.cell class="text-center font-bold">
+                            {{ $profileSekolahs->sum(fn($item) => $item->komputer?->baik ?? 0) }}
                         </x-table.cell>
 
                         {{-- RUSAK --}}
@@ -854,23 +889,7 @@
                         </x-table.cell>
 
                         <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->komputer?->bagus ?? 0) + ($item->komputer?->rusak ?? 0)) }}
-                        </x-table.cell>
-
-                        {{-- URUTAN 26: Chromebook --}}
-
-                        {{-- BAGUS --}}
-                        <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->laptop?->bagus ?? 0) }}
-                        </x-table.cell>
-
-                        {{-- RUSAK --}}
-                        <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->laptop?->rusak ?? 0) }}
-                        </x-table.cell>
-
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->chromebook?->bagus ?? 0) + ($item->komputer?->rusak ?? 0)) }}
+                            {{ $profileSekolahs->sum(fn($item) => ($item->komputer?->baik ?? 0) + ($item->komputer?->rusak ?? 0)) }}
                         </x-table.cell>
 
                         <x-table.cell></x-table.cell>
@@ -903,13 +922,13 @@
                         // 4. REHABILITASI RUANG KELAS
 
                         // 5. RUANG KELAS
-                        $jmlRuangKelas = ($item->ruangKelas?->bagus ?? 0) + ($item->ruangKelas?->rusak ?? 0);
+                        $jmlRuangKelas = ($item->ruangKelas?->baik ?? 0) + ($item->ruangKelas?->rusak ?? 0);
 
                         // 6. TOILET SISWA
-                        $jmlToiletSiswa = ($item->toiletSiswa?->bagus ?? 0) + ($item->toiletSiswa?->rusak ?? 0);
+                        $jmlToiletSiswa = ($item->toiletSiswa?->baik ?? 0) + ($item->toiletSiswa?->rusak ?? 0);
 
                         // 7. TOILET GURU
-                        $jmlToiletGuru = ($item->toiletGuru?->bagus ?? 0) + ($item->toiletGuru?->rusak ?? 0);
+                        $jmlToiletGuru = ($item->toiletGuru?->baik ?? 0) + ($item->toiletGuru?->rusak ?? 0);
 
                         // 8. R. PERPUSTAKAAN
                         $ruangPerpustakaanStatus = $item->ruangPerpustakaan?->{'ada/tidak_ada'} ?? '-';
@@ -921,7 +940,7 @@
                                     : 'light');
                         $ruangPerpustakaanKondisi = $item->ruangPerpustakaan?->kodisi ?? '-';
                         $ruangPerpustakaanKondisiBadge =
-                            $ruangPerpustakaanKondisi == 'bagus'
+                            $ruangPerpustakaanKondisi == 'baik'
                                 ? 'success'
                                 : ($ruangPerpustakaanKondisi == 'rusak'
                                     ? 'warning'
@@ -937,7 +956,7 @@
                                     : 'light');
                         $ruangKepalaSekolahKondisi = $item->ruangKepalaSekolah?->kodisi ?? '-';
                         $ruangKepalaSekolahKondisiBadge =
-                            $ruangKepalaSekolahKondisi == 'bagus'
+                            $ruangKepalaSekolahKondisi == 'baik'
                                 ? 'success'
                                 : ($ruangKepalaSekolahKondisi == 'rusak'
                                     ? 'warning'
@@ -953,7 +972,7 @@
                                     : 'light');
                         $ruangGuruKondisi = $item->ruangGuru?->kodisi ?? '-';
                         $ruangGuruKondisiBadge =
-                            $ruangGuruKondisi == 'bagus'
+                            $ruangGuruKondisi == 'baik'
                                 ? 'success'
                                 : ($ruangGuruKondisi == 'rusak'
                                     ? 'warning'
@@ -969,7 +988,7 @@
                                     : 'light');
                         $ruangKantorTuKondisi = $item->ruangKantorTu?->kodisi ?? '-';
                         $ruangKantorTuKondisiBadge =
-                            $ruangKantorTuKondisi == 'bagus'
+                            $ruangKantorTuKondisi == 'baik'
                                 ? 'success'
                                 : ($ruangKantorTuKondisi == 'rusak'
                                     ? 'warning'
@@ -981,7 +1000,7 @@
                             $labIpaStatus == 'ada' ? 'success' : ($labIpaStatus == 'tidak_ada' ? 'danger' : 'light');
                         $labIpaKondisi = $item->labIpa?->kodisi ?? '-';
                         $labIpaKondisiBadge =
-                            $labIpaKondisi == 'bagus' ? 'success' : ($labIpaKondisi == 'rusak' ? 'warning' : 'light');
+                            $labIpaKondisi == 'baik' ? 'success' : ($labIpaKondisi == 'rusak' ? 'warning' : 'light');
 
                         // 13. LAB KOMPUTER
                         $labKomputerStatus = $item->labKomputer?->{'ada/tidak_ada'} ?? '-';
@@ -993,7 +1012,7 @@
                                     : 'light');
                         $labKomputerKondisi = $item->labKomputer?->kodisi ?? '-';
                         $labKomputerKondisiBadge =
-                            $labKomputerKondisi == 'bagus'
+                            $labKomputerKondisi == 'baik'
                                 ? 'success'
                                 : ($labKomputerKondisi == 'rusak'
                                     ? 'warning'
@@ -1009,7 +1028,7 @@
                                     : 'light');
                         $unitKesehatanSekolahKondisi = $item->unitKesehatanSekolah?->kodisi ?? '-';
                         $unitKesehatanSekolahKondisiBadge =
-                            $unitKesehatanSekolahKondisi == 'bagus'
+                            $unitKesehatanSekolahKondisi == 'baik'
                                 ? 'success'
                                 : ($unitKesehatanSekolahKondisi == 'rusak'
                                     ? 'warning'
@@ -1025,7 +1044,7 @@
                                     : 'light');
                         $rumahDinasKondisi = $item->rumahDinas?->kodisi ?? '-';
                         $rumahDinasKondisiBadge =
-                            $rumahDinasKondisi == 'bagus'
+                            $rumahDinasKondisi == 'baik'
                                 ? 'success'
                                 : ($rumahDinasKondisi == 'rusak'
                                     ? 'warning'
@@ -1041,7 +1060,7 @@
                                     : 'light');
                         $rumahIbadahKondisi = $item->rumahIbadah?->kodisi ?? '-';
                         $rumahIbadahKondisiBadge =
-                            $rumahIbadahKondisi == 'bagus'
+                            $rumahIbadahKondisi == 'baik'
                                 ? 'success'
                                 : ($rumahIbadahKondisi == 'rusak'
                                     ? 'warning'
@@ -1057,7 +1076,7 @@
                                     : 'light');
                         $lapanganSekolahKondisi = $item->lapanganSekolah?->kodisi ?? '-';
                         $lapanganSekolahKondisiBadge =
-                            $lapanganSekolahKondisi == 'bagus'
+                            $lapanganSekolahKondisi == 'baik'
                                 ? 'success'
                                 : ($lapanganSekolahKondisi == 'rusak'
                                     ? 'warning'
@@ -1073,7 +1092,7 @@
                                     : 'light');
                         $pagarSekolahKondisi = $item->pagarSekolah?->kodisi ?? '-';
                         $pagarSekolahKondisiBadge =
-                            $pagarSekolahKondisi == 'bagus'
+                            $pagarSekolahKondisi == 'baik'
                                 ? 'success'
                                 : ($pagarSekolahKondisi == 'rusak'
                                     ? 'warning'
@@ -1089,32 +1108,32 @@
                                     : 'light');
                         $airBersihKondisi = $item->airBersih?->kodisi ?? '-';
                         $airBersihKondisiBadge =
-                            $airBersihKondisi == 'bagus'
+                            $airBersihKondisi == 'baik'
                                 ? 'success'
                                 : ($airBersihKondisi == 'rusak'
                                     ? 'warning'
                                     : 'light');
 
                         // 20. KURSI SISWA
-                        $jmlKursiSiswa = ($item->kursiSiswa?->bagus ?? 0) + ($item->kursiSiswa?->rusak ?? 0);
+                        $jmlKursiSiswa = ($item->kursiSiswa?->baik ?? 0) + ($item->kursiSiswa?->rusak ?? 0);
 
                         // 21. MEJA SISWA
-                        $jmlMejaSiswa = ($item->mejaSiswa?->bagus ?? 0) + ($item->mejaSiswa?->rusak ?? 0);
+                        $jmlMejaSiswa = ($item->mejaSiswa?->baik ?? 0) + ($item->mejaSiswa?->rusak ?? 0);
 
                         // 22. KURSI GURU
-                        $jmlKursiGuru = ($item->kursiGuru?->bagus ?? 0) + ($item->kursiGuru?->rusak ?? 0);
+                        $jmlKursiGuru = ($item->kursiGuru?->baik ?? 0) + ($item->kursiGuru?->rusak ?? 0);
 
                         // 23. MEJA GURU
-                        $jmlMejaGuru = ($item->mejaGuru?->bagus ?? 0) + ($item->mejaGuru?->rusak ?? 0);
+                        $jmlMejaGuru = ($item->mejaGuru?->baik ?? 0) + ($item->mejaGuru?->rusak ?? 0);
 
                         // 24. LAPTOP
-                        $jmlLaptop = ($item->laptop?->bagus ?? 0) + ($item->laptop?->rusak ?? 0);
+                        $jmlLaptop = ($item->laptop?->baik ?? 0) + ($item->laptop?->rusak ?? 0);
 
-                        // 25. KOMPUTER
-                        $jmlKomputer = ($item->komputer?->bagus ?? 0) + ($item->komputer?->rusak ?? 0);
+                        // 25. CHROMEBOOK
+                        $jmlChromebook = ($item->chromebook?->baik ?? 0) + ($item->chromebook?->rusak ?? 0);
 
                         // 26. KOMPUTER
-                        $jmlChromebook = ($item->chromebook?->bagus ?? 0) + ($item->chromebook?->rusak ?? 0);
+                        $jmlKomputer = ($item->komputer?->baik ?? 0) + ($item->komputer?->rusak ?? 0);
                     @endphp
                     <x-table.row data-sarana-row>
                         {{-- ============================================================
@@ -1122,7 +1141,7 @@
                              ============================================================ --}}
                         <x-table.cell class="text-center font-bold">{{ $loop->iteration }}</x-table.cell>
                         <x-table.cell>
-                            <a class="link" href="{{ route('user.show', $item->user_id) }}" >
+                            <a class="link" href="{{ route('user.show', $item->user_id) }}">
                                 {{ $item->nama_sekolah }}
                             </a>
                         </x-table.cell>
@@ -1155,19 +1174,19 @@
                             class="text-center font-bold">{{ $item->rehabilitasiRuangKelas?->jumlah ?? 0 }}</x-table.cell>
 
                         {{-- URUTAN 5: RUANG KELAS (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->ruangKelas?->bagus ?? 0 }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->ruangKelas?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->ruangKelas?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
                             class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlRuangKelas }}</x-table.cell>
 
                         {{-- URUTAN 6: TOILET SISWA (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->toiletSiswa?->bagus ?? 0 }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->toiletSiswa?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->toiletSiswa?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
                             class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlToiletSiswa }}</x-table.cell>
 
                         {{-- URUTAN 7: TOILET GURU (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->toiletGuru?->bagus ?? 0 }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->toiletGuru?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->toiletGuru?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
                             class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlToiletGuru }}</x-table.cell>
@@ -1245,46 +1264,46 @@
                                 class="text-[9px]">{{ $airBersihKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 20: KURSI SISWA (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->kursiSiswa?->bagus ?? 0 }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->kursiSiswa?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->kursiSiswa?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
                             class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlKursiSiswa }}</x-table.cell>
 
                         {{-- URUTAN 21: MEJA SISWA (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->mejaSiswa?->bagus ?? 0 }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->mejaSiswa?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->mejaSiswa?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
                             class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlMejaSiswa }}</x-table.cell>
 
                         {{-- URUTAN 22: KURSI GURU (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->kursiGuru?->bagus ?? 0 }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->kursiGuru?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->kursiGuru?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
                             class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlKursiGuru }}</x-table.cell>
 
                         {{-- URUTAN 23: MEJA GURU (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->mejaGuru?->bagus ?? 0 }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->mejaGuru?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->mejaGuru?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
                             class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlMejaGuru }}</x-table.cell>
 
                         {{-- URUTAN 24: LAPTOP (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->laptop?->bagus ?? 0 }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->laptop?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->laptop?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
                             class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlLaptop }}</x-table.cell>
 
-                        {{-- URUTAN 25: KOMPUTER (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->komputer?->bagus ?? 0 }}</x-table.cell>
-                        <x-table.cell class="text-center">{{ $item->komputer?->rusak ?? 0 }}</x-table.cell>
-                        <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlKomputer }}</x-table.cell>
-
-                        {{-- URUTAN 26: KOMPUTER (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->chromebook?->bagus ?? 0 }}</x-table.cell>
+                        {{-- URUTAN 25: CHROMEBOOK (3 kolom) --}}
+                        <x-table.cell class="text-center">{{ $item->chromebook?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->chromebook?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
                             class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlChromebook }}</x-table.cell>
+
+                        {{-- URUTAN 26: KOMPUTER (3 kolom) --}}
+                        <x-table.cell class="text-center">{{ $item->komputer?->baik ?? 0 }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->komputer?->rusak ?? 0 }}</x-table.cell>
+                        <x-table.cell
+                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlKomputer }}</x-table.cell>
 
                         {{-- ============================================================
                              AKSI (Tombol Lihat, Edit, Hapus)
@@ -1375,13 +1394,12 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             new Chart(document.getElementById('adminChartSiswaRombel'), {
                 type: 'bar',
                 data: {
                     labels: ['VII', 'VIII', 'IX'],
-                    datasets: [
-                        {
+                    datasets: [{
                             label: 'Siswa',
                             data: [
                                 {{ $chartSiswaRombel['vii'][0] }},
@@ -1406,8 +1424,19 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom' } },
-                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    },
                 },
             });
 
@@ -1425,7 +1454,11 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     cutout: '65%',
-                    plugins: { legend: { position: 'bottom' } },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
                 },
             });
 
@@ -1443,7 +1476,11 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     cutout: '65%',
-                    plugins: { legend: { position: 'bottom' } },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
                 },
             });
         });

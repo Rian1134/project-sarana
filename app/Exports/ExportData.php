@@ -3,25 +3,30 @@
 namespace App\Exports;
 
 use App\Models\PeriodeLaporan;
-use App\Models\Sarana;
+use App\Models\ProfileSekolah;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 /**
  * ExportData
  *
  * Export sarana & prasarana ke Excel dengan bentuk tabel PERSIS mengikuti
- * template "Data Keadaan Sarana Prasarana Sekolah Tingkat SMP" (73 kolom,
- * A s.d BU), yaitu:
+ * template "Data Keadaan ProfileSekolah Prasarana Sekolah Tingkat SMP" (73 kolom,
+ * A s.d BX), yaitu:
  *
  *  - Baris 1-2  : Judul laporan (judul + "DI KABUPATEN LAHAT TAHUN <tahun>")
  *  - Baris 3    : kosong (pemisah)
@@ -36,11 +41,36 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
  *  - F: NIP
  *  - G: Nomor HP
  *
- * Sehingga total kolom menjadi 73 (A s.d BU)
+ * Sehingga total kolom menjadi 76 (A s.d BX)
  */
-class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, WithEvents, WithMapping, WithStyles
+class ExportData extends DefaultValueBinder implements FromCollection, ShouldAutoSize, WithColumnWidths, WithCustomValueBinder, WithEvents, WithMapping, WithStyles
 {
-    protected $saranas;
+    /**
+     * Kolom yang HARUS selalu ditulis sebagai teks, bukan angka.
+     * NPSN (C) dan NIP (F) berupa angka panjang (14-18 digit) — kalau
+     * dibiarkan dideteksi sebagai numeric oleh PhpSpreadsheet, Excel akan
+     * membulatkannya ke notasi ilmiah (mis. 1.9657E+14) DAN sebagian
+     * digit di belakang benar-benar hilang karena presisi float cuma
+     * ~15 digit. Nomor HP (G) juga rawan kehilangan angka 0 di depan.
+     */
+    private const TEXT_COLUMNS = ['C', 'F', 'G'];
+
+    /**
+     * Override default value binder: paksa kolom di TEXT_COLUMNS
+     * ditulis sebagai string, sebelum sempat dideteksi jadi angka.
+     */
+    public function bindValue(Cell $cell, $value): bool
+    {
+        if (in_array($cell->getColumn(), self::TEXT_COLUMNS, true) && $value !== null && $value !== '') {
+            $cell->setValueExplicit((string) $value, DataType::TYPE_STRING);
+
+            return true;
+        }
+
+        return parent::bindValue($cell, $value);
+    }
+
+    protected $profile_sekolahs;
 
     // ================================================================
     // WARNA HEADER (SEMUA HIJAU MUDA)
@@ -55,7 +85,7 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
      */
     public function __construct(?int $saranaId = null)
     {
-        $query = Sarana::with([
+        $query = ProfileSekolah::with([
             'jumlahSiswa',
             'jumlahRombel',
             'ruangKelasBaru',
@@ -81,22 +111,23 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
             'mejaGuru',
             'laptop',
             'komputer',
+            'chromebook',
         ]);
 
         if ($saranaId) {
             $query->where('id', $saranaId);
         }
 
-        $this->saranas = $query->get();
+        $this->profile_sekolahs = $query->get();
     }
 
     public function collection()
     {
-        return $this->saranas;
+        return $this->profile_sekolahs;
     }
 
     /**
-     * MAPPING DATA KE 73 KOLOM (A - BU), MENGIKUTI URUTAN TEMPLATE EXCEL:
+     * MAPPING DATA KE 76 KOLOM (A - BX), MENGIKUTI URUTAN TEMPLATE EXCEL:
      *
      * A     = No
      * B     = Nama Sekolah
@@ -129,9 +160,10 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
      * BF-BH = Meja Siswa (Baik, Rusak, Jumlah)
      * BI-BK = Kursi Guru (Baik, Rusak, Jumlah)
      * BL-BN = Meja Guru (Baik, Rusak, Jumlah)
-     * BO-BQ = Laptop/Chromebook (Baik, Rusak, Jumlah)
-     * BR-BT = Komputer/PC (Baik, Rusak, Jumlah)
-     * BU    = Keterangan / Catatan
+     * BO-BQ = Laptop (Baik, Rusak, Jumlah)
+     * BR-BT = Chromebook (Baik, Rusak, Jumlah)
+     * BU-BW = Komputer/PC (Baik, Rusak, Jumlah)
+     * BX    = Keterangan / Catatan
      */
     public function map($item): array
     {
@@ -264,14 +296,21 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
         $jmlLaptop   = $laptopBaik + $laptopRusak;
 
         // ============================================================
-        // 25. KOMPUTER (BR-BT)
+        // 25. CHROMEBOOK (BR-BT)
+        // ============================================================
+        $chromebookBaik = $item->chromebook?->baik ?? 0;
+        $chromebookRusak = $item->chromebook?->rusak ?? 0;
+        $jmlChromebook   = $chromebookBaik + $chromebookRusak;
+
+        // ============================================================
+        // 26. KOMPUTER (BU-BW)
         // ============================================================
         $komputerBaik = $item->komputer?->baik ?? 0;
         $komputerRusak = $item->komputer?->rusak ?? 0;
         $jmlKomputer   = $komputerBaik + $komputerRusak;
 
         // ============================================================
-        // OUTPUT 73 KOLOM (A - BU)
+        // OUTPUT 76 KOLOM (A - BX)
         // ============================================================
         return [
             // === IDENTITAS (A-G) ===
@@ -334,11 +373,14 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
             // === 24. LAPTOP (BO-BQ) ===
             $laptopBaik, $laptopRusak, $jmlLaptop,
 
-            // === 25. KOMPUTER (BR-BT) ===
+            // === 25. CHROMEBOOK (BR-BT) ===
+            $chromebookBaik, $chromebookRusak, $jmlChromebook,
+
+            // === 26. KOMPUTER (BU-BW) ===
             $komputerBaik, $komputerRusak, $jmlKomputer,
 
-            // === 26. KETERANGAN / CATATAN (BU) ===
-            $item->keterangan ?? '',                 // BU
+            // === 27. KETERANGAN / CATATAN (BX) ===
+            $item->keterangan ?? '',                 // BX
         ];
     }
 
@@ -393,6 +435,11 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                 $rkbPeriode   = PeriodeLaporan::forKategori('rkb');
                 $rehabPeriode = PeriodeLaporan::forKategori('rehabilitasi');
                 $tahunSekarang = date('Y');
+
+                
+                $sheet->getStyle('C:C')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
+                $sheet->getStyle('F:F')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
+                $sheet->getStyle('G:G')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
 
                 // ============================================================
                 // SISIPKAN 6 BARIS DI ATAS: 2 baris judul, 1 baris kosong,
@@ -461,8 +508,8 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                 $sheet->mergeCells('U4:U6');
                 $sheet->setCellValue('U4', "Rehabilitasi Ruang Kelas Dari Tahun {$rehabPeriode->label()}");
 
-                // --- Grup besar "Ruang / Bangunan Gedung Sekolah" (V-BT) ---
-                $sheet->mergeCells('V4:BT4');
+                // --- Grup besar "Ruang / Bangunan Gedung Sekolah" (V-BW) ---
+                $sheet->mergeCells('V4:BW4');
                 $sheet->setCellValue('V4', 'Ruang / Bangunan Gedung Sekolah');
 
                 // Sub kategori baris 5 (colspan 2 atau 3, tergantung kategori)
@@ -486,8 +533,9 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                     'BF5:BH5' => 'Meja Siswa',
                     'BI5:BK5' => 'Kursi Guru',
                     'BL5:BN5' => 'Meja Guru',
-                    'BO5:BQ5' => 'Laptop / Chromebook',
-                    'BR5:BT5' => 'Komputer / PC',
+                    'BO5:BQ5' => 'Laptop',
+                    'BR5:BT5' => 'Chromebook',
+                    'BU5:BW5' => 'Komputer / PC',
                 ];
 
                 foreach ($subKategori as $range => $label) {
@@ -496,9 +544,9 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                     $sheet->setCellValue($startCell, $label);
                 }
 
-                // --- Keterangan / Catatan (BU), rowspan 4-6 ---
-                $sheet->mergeCells('BU4:BU6');
-                $sheet->setCellValue('BU4', 'Keterangan / Catatan');
+                // --- Keterangan / Catatan (BX), rowspan 4-6 ---
+                $sheet->mergeCells('BX4:BX6');
+                $sheet->setCellValue('BX4', 'Keterangan / Catatan');
 
                 // ============================================================
                 // BARIS 6: DETAIL (Baik/Rusak/Jumlah, VII/VIII/IX, Ada/Kondisi)
@@ -528,6 +576,7 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                     'BL' => 'Baik', 'BM' => 'Rusak', 'BN' => 'Jumlah',
                     'BO' => 'Baik', 'BP' => 'Rusak', 'BQ' => 'Jumlah',
                     'BR' => 'Baik', 'BS' => 'Rusak', 'BT' => 'Jumlah',
+                    'BU' => 'Baik', 'BV' => 'Rusak', 'BW' => 'Jumlah',
                 ];
 
                 foreach ($detailHeaders as $col => $label) {
@@ -556,14 +605,14 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                     ],
                 ];
 
-                // Apply ke seluruh header (A4:BU6)
-                $sheet->getStyle('A4:BU6')->applyFromArray($baseHeaderStyle);
+                // Apply ke seluruh header (A4:BX6)
+                $sheet->getStyle('A4:BX6')->applyFromArray($baseHeaderStyle);
 
                 // Highlight kolom "Jumlah" & "Kondisi" di baris detail (baris 6) dengan warna oranye
                 $highlightCols = [
                     'X', 'AA', 'AD',
                     'AF', 'AH', 'AJ', 'AL', 'AN', 'AP', 'AR', 'AT', 'AV', 'AX', 'AZ', 'BB',
-                    'BE', 'BH', 'BK', 'BN', 'BQ', 'BT',
+                    'BE', 'BH', 'BK', 'BN', 'BQ', 'BT', 'BW',
                 ];
                 foreach ($highlightCols as $col) {
                     $sheet->getStyle($col.'6')->applyFromArray([
@@ -580,7 +629,7 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                 $highestRow = $sheet->getHighestRow();
 
                 if ($highestRow >= 7) {
-                    $sheet->getStyle('A7:BU'.$highestRow)->applyFromArray([
+                    $sheet->getStyle('A7:BX'.$highestRow)->applyFromArray([
                         'borders' => [
                             'allBorders' => [
                                 'borderStyle' => Border::BORDER_THIN,
@@ -605,7 +654,7 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                         ]);
                     }
 
-                    // Center semua kolom data (H-BU)
+                    // Center semua kolom data (H-BX)
                     $dataColumns = [
                         'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
                         'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -614,7 +663,7 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                         'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY',
                         'AZ', 'BA', 'BB', 'BC', 'BD', 'BE', 'BF', 'BG',
                         'BH', 'BI', 'BJ', 'BK', 'BL', 'BM', 'BN', 'BO',
-                        'BP', 'BQ', 'BR', 'BS', 'BT', 'BU',
+                        'BP', 'BQ', 'BR', 'BS', 'BT', 'BU', 'BV', 'BW', 'BX',
                     ];
 
                     foreach ($dataColumns as $col) {
@@ -649,7 +698,7 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                     'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
                     'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD',
                     'BC', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BK',
-                    'BL', 'BM', 'BN', 'BO', 'BP', 'BQ', 'BR', 'BS', 'BT',
+                    'BL', 'BM', 'BN', 'BO', 'BP', 'BQ', 'BR', 'BS', 'BT', 'BU', 'BV', 'BW',
                 ];
                 foreach ($sumColumns as $col) {
                     $sum = 0;
@@ -688,10 +737,10 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                     $sheet->setCellValue($col.$footerRow, $count);
                 }
 
-                // T, U (RKB/Rehabilitasi teks) & BU (Keterangan) dibiarkan kosong di baris total
+                // T, U (RKB/Rehabilitasi teks) & BX (Keterangan) dibiarkan kosong di baris total
 
                 // Styling baris total
-                $sheet->getStyle('A'.$footerRow.':BU'.$footerRow)->applyFromArray([
+                $sheet->getStyle('A'.$footerRow.':BX'.$footerRow)->applyFromArray([
                     'font' => ['bold' => true, 'size' => 13],
                     'fill' => [
                         'fillType' => Fill::FILL_SOLID,
@@ -727,7 +776,7 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
                 $sheet->getColumnDimension('G')->setWidth(15);
                 $sheet->getColumnDimension('T')->setWidth(18);
                 $sheet->getColumnDimension('U')->setWidth(17);
-                $sheet->getColumnDimension('BU')->setWidth(13);
+                $sheet->getColumnDimension('BX')->setWidth(13);
 
                 $sheet->freezePane('A7');
             },
@@ -751,7 +800,7 @@ class ExportData implements FromCollection, ShouldAutoSize, WithColumnWidths, Wi
             'G' => 15,
             'T' => 18,
             'U' => 17,
-            'BU' => 13,
+            'BX' => 13,
         ];
     }
 }

@@ -9,16 +9,19 @@
         <div>
             <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Data User</h1>
         </div>
+        <div>
+            <x-button href="{{ route('user.create') }}" variant="primary" class="gap-1">
+                <i class="bi bi-plus-circle"></i> Tambah User
+            </x-button>
+        </div>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-
-            <x-table bordered class="text-[11px]">
-
+    <x-card>
+        <div class="p-4">
+            <x-table bordered hover>
                 <x-slot:head>
-                    <tr class="bg-gray-800 text-white text-center">
-                        <x-table.heading class="text-white!">No</x-table.heading>
+                    <tr class="bg-gray-800 text-white">
+                        <x-table.heading class="text-white! text-center">No</x-table.heading>
                         <x-table.heading class="text-white!">Nama</x-table.heading>
                         <x-table.heading class="text-white!">Email</x-table.heading>
                         <x-table.heading class="text-white!">Role</x-table.heading>
@@ -27,59 +30,70 @@
                 </x-slot:head>
 
                 <tbody>
-                    {{-- PERBAIKAN: Gunakan $users bukan $user, dan $item di dalam loop --}}
                     @forelse ($users as $no => $item)
                         <x-table.row>
-                            <x-table.cell class="text-center font-bold">{{ $no + 1 }}</x-table.cell>
+                            <x-table.cell class="text-center font-bold">
+                                {{ $no }}
+                            </x-table.cell>
                             <x-table.cell>{{ $item->name }}</x-table.cell>
                             <x-table.cell>{{ $item->email }}</x-table.cell>
                             <x-table.cell>
                                 @if($item->getRoleNames()->isNotEmpty())
-                                    <span class="badge badge-primary">
+                                    <x-badge variant="primary">
                                         {{ $item->getRoleNames()->first() }}
-                                    </span>
+                                    </x-badge>
                                 @else
-                                    <span class="badge badge-secondary">User</span>
+                                    <x-badge variant="secondary">User</x-badge>
                                 @endif
                             </x-table.cell>
                             <x-table.cell class="text-center">
                                 <div class="flex justify-center gap-1">
-                                    {{-- Tombol Lihat Detail - Menggunakan tag a --}}
-                                    <a href="{{ route('user.show', $item->id) }}" 
-                                       class="btn btn-info btn-xs p-1.5!" 
-                                       title="Lihat Detail">
+                                    <x-button 
+                                        href="{{ route('user.show', $item->id) }}" 
+                                        variant="info" 
+                                        size="xs" 
+                                        class="p-1.5"
+                                        title="Lihat Detail"
+                                    >
                                         <i class="bi bi-eye-fill"></i>
-                                    </a>
+                                    </x-button>
                                     
-                                    {{-- Tombol Hapus - Menggunakan tag a dengan data-modal-open --}}
-                                    <a href="#" 
-                                       class="btn btn-danger btn-xs p-1.5!" 
-                                       title="Hapus Data"
-                                       data-modal-open="deleteModal{{ $item->id }}">
+                                    <x-button 
+                                        href="{{ route('user.edit', $item->id) }}" 
+                                        variant="warning" 
+                                        size="xs" 
+                                        class="p-1.5"
+                                        title="Edit Data"
+                                    >
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </x-button>
+                                    
+                                    <x-button 
+                                        variant="danger" 
+                                        size="xs" 
+                                        class="p-1.5"
+                                        data-modal-open="deleteModal{{ $item->id }}"
+                                        title="Hapus Data"
+                                    >
                                         <i class="bi bi-trash-fill"></i>
-                                    </a>
+                                    </x-button>
                                 </div>
                             </x-table.cell>
                         </x-table.row>
                     @empty
-                        <tr>
-                            <td colspan="5" class="text-center py-8 text-gray-500 dark:text-gray-400">
-                                <i class="bi bi-inbox text-3xl block mb-2"></i>
-                                Belum ada data user.
-                            </td>
-                        </tr>
+                        <x-table.empty colspan="5" message="Belum ada data user." />
                     @endforelse
                 </tbody>
-
             </x-table>
 
             {{-- PAGINATION --}}
             @if (method_exists($users, 'links'))
-                <x-pagination :paginator="$users" class="mt-3" />
+                <div class="mt-4">
+                    <x-pagination :paginator="$users" />
+                </div>
             @endif
-
         </div>
-    </div>
+    </x-card>
 
     <!-- ===== MODAL DELETE (Loop) ===== -->
     @foreach ($users as $item)
@@ -87,7 +101,7 @@
             <x-slot:header>
                 <div class="flex items-center gap-2 text-red-600">
                     <i class="bi bi-exclamation-triangle-fill text-xl"></i>
-                    <span>Konfirmasi Hapus</span>
+                    <span class="font-semibold">Konfirmasi Hapus</span>
                 </div>
             </x-slot:header>
 
@@ -108,46 +122,18 @@
 
             <x-slot:footer>
                 <div class="flex flex-wrap justify-end gap-2 w-full">
-                    <x-button variant="secondary" data-modal-close>
-                        <i class="bi bi-x-circle me-1"></i> Batal
+                    <x-button variant="secondary" data-modal-close class="gap-1">
+                        <i class="bi bi-x-circle"></i> Batal
                     </x-button>
                     <form action="{{ route('user.destroy', $item->id) }}" method="POST" class="inline">
                         @csrf
                         @method('DELETE')
-                        <x-button variant="danger" type="submit">
-                            <i class="bi bi-trash me-1"></i> Ya, Hapus
+                        <x-button variant="danger" type="submit" class="gap-1">
+                            <i class="bi bi-trash"></i> Ya, Hapus
                         </x-button>
                     </form>
                 </div>
             </x-slot:footer>
         </x-modal>
     @endforeach
-
-    <style>
-        /* Style untuk badge role */
-        .badge-primary {
-            background-color: #dbeafe;
-            color: #1e40af;
-            padding: 4px 10px;
-            border-radius: 9999px;
-            font-size: 10px;
-            font-weight: 500;
-        }
-        .dark .badge-primary {
-            background-color: rgba(59, 130, 246, 0.3);
-            color: #93c5fd;
-        }
-        .badge-secondary {
-            background-color: #e5e7eb;
-            color: #374151;
-            padding: 4px 10px;
-            border-radius: 9999px;
-            font-size: 10px;
-            font-weight: 500;
-        }
-        .dark .badge-secondary {
-            background-color: rgba(55, 65, 81, 0.5);
-            color: #9ca3af;
-        }
-    </style>
 @endsection

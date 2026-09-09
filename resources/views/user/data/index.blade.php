@@ -117,7 +117,7 @@
                             <div class="sm:col-span-2 bg-gray-50 dark:bg-gray-700/30 p-2 sm:p-3 rounded-lg">
                                 <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">Alamat Sekolah</p>
                                 <p
-                                    class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white break-words hyphens-auto">
+                                    class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white wrap-break-word hyphens-auto">
                                     {{ $profileSekolah->alamat_sekolah }}
                                 </p>
                             </div>
