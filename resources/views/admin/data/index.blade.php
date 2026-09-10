@@ -1310,7 +1310,7 @@
                              ============================================================ --}}
                         <x-table.cell class="text-center">
                             <div class="flex justify-center gap-1">
-                                <x-button href="{{ route('sarana.show', $item->id) }}" variant="info" size="xs"
+                                <x-button href="{{ route('user.show', $item->user_id) }}" variant="info" size="xs"
                                     class="p-1.5!" title="Lihat Detail">
                                     <i class="bi bi-eye-fill"></i>
                                 </x-button>

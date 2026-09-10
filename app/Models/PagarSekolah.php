@@ -20,7 +20,7 @@ class PagarSekolah extends Model
     ];
 
     // Relasi belongsTo
-    public function profileSekoh()
+    public function profileSekolah()
     {
         return $this->belongsTo(ProfileSekolah::class);
     }

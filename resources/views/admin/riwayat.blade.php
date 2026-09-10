@@ -7,7 +7,7 @@
         <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">
             Riwayat Perubahan — {{ $profileSekolah->nama_sekolah }}
         </h1>
-        <a href="{{ route('sarana.show', $profileSekolah->id) }}" class="text-sm link">
+        <a href="{{ route('user.show', $profileSekolah->user_id) }}" class="text-sm link">
             <i class="bi bi-arrow-left"></i> Kembali ke Detail Sekolah
         </a>
     </div>

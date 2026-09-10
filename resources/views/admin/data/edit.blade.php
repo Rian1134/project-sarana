@@ -96,6 +96,24 @@
                         placeholder="Masukkan NIP" 
                         value="{{ old('NIP', $profileSekolah->NIP) }}"
                     />
+
+                    <x-form.select
+                        name="status_sekolah"
+                        label="Status Sekolah"
+                        required
+                        placeholder="-- Pilih Status Sekolah --"
+                        :options="['negeri' => 'Negeri', 'swasta' => 'Swasta']"
+                        value="{{ old('status_sekolah', $profileSekolah->status_sekolah) }}"
+                    />
+
+                    <x-form.select
+                        name="akreditasi"
+                        label="Akreditasi"
+                        required
+                        placeholder="-- Pilih Akreditasi --"
+                        :options="['A' => 'A', 'B' => 'B', 'C' => 'C', 'belum_terakreditasi' => 'Belum Terakreditasi']"
+                        value="{{ old('akreditasi', $profileSekolah->akreditasi) }}"
+                    />
                 </div>
             </x-card>
 
@@ -238,11 +256,11 @@
 
                 <div class="grid grid-cols-2 gap-2 sm:gap-4">
                     <x-form.input 
-                        name="ruang_kelas_bagus" 
-                        label="Bagus" 
+                        name="ruang_kelas_baik" 
+                        label="Baik" 
                         type="number" 
                         required 
-                        value="{{ old('ruang_kelas_bagus', $profileSekolah->ruangKelas?->bagus ?? 0) }}" 
+                        value="{{ old('ruang_kelas_baik', $profileSekolah->ruangKelas?->baik ?? 0) }}" 
                         min="0"
                     />
                     <x-form.input 
@@ -268,11 +286,11 @@
 
                     <div class="grid grid-cols-2 gap-2">
                         <x-form.input 
-                            name="toilet_siswa_bagus" 
-                            label="Bagus" 
+                            name="toilet_siswa_baik" 
+                            label="Baik" 
                             type="number" 
                             required 
-                            value="{{ old('toilet_siswa_bagus', $profileSekolah->toiletSiswa?->bagus ?? 0) }}" 
+                            value="{{ old('toilet_siswa_baik', $profileSekolah->toiletSiswa?->baik ?? 0) }}" 
                             min="0"
                         />
                         <x-form.input 
@@ -296,11 +314,11 @@
 
                     <div class="grid grid-cols-2 gap-2">
                         <x-form.input 
-                            name="toilet_guru_bagus" 
-                            label="Bagus" 
+                            name="toilet_guru_baik" 
+                            label="Baik" 
                             type="number" 
                             required 
-                            value="{{ old('toilet_guru_bagus', $profileSekolah->toiletGuru?->bagus ?? 0) }}" 
+                            value="{{ old('toilet_guru_baik', $profileSekolah->toiletGuru?->baik ?? 0) }}" 
                             min="0"
                         />
                         <x-form.input 
@@ -351,7 +369,7 @@
                     <x-form.select 
                         name="perpustakaan_kondisi" 
                         label="Kondisi" 
-                        :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                        :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                         value="{{ old('perpustakaan_kondisi', $profileSekolah->ruangPerpustakaan?->kodisi) }}"
                     />
                 </div>
@@ -393,7 +411,7 @@
                     <x-form.select 
                         name="kepala_sekolah_kondisi" 
                         label="Kondisi" 
-                        :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                        :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                         value="{{ old('kepala_sekolah_kondisi', $profileSekolah->ruangKepalaSekolah?->kodisi) }}"
                     />
                 </div>
@@ -435,7 +453,7 @@
                     <x-form.select 
                         name="ruang_guru_kondisi" 
                         label="Kondisi" 
-                        :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                        :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                         value="{{ old('ruang_guru_kondisi', $profileSekolah->ruangGuru?->kodisi) }}"
                     />
                 </div>
@@ -477,7 +495,7 @@
                     <x-form.select 
                         name="kantor_tu_kondisi" 
                         label="Kondisi" 
-                        :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                        :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                         value="{{ old('kantor_tu_kondisi', $profileSekolah->ruangKantorTu?->kodisi) }}"
                     />
                 </div>
@@ -520,7 +538,7 @@
                         <x-form.select 
                             name="lab_ipa_kondisi" 
                             label="Kondisi" 
-                            :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                            :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                             value="{{ old('lab_ipa_kondisi', $profileSekolah->labIpa?->kodisi) }}"
                         />
                     </div>
@@ -561,7 +579,7 @@
                         <x-form.select 
                             name="lab_komputer_kondisi" 
                             label="Kondisi" 
-                            :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                            :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                             value="{{ old('lab_komputer_kondisi', $profileSekolah->labKomputer?->kodisi) }}"
                         />
                     </div>
@@ -604,7 +622,7 @@
                     <x-form.select 
                         name="uks_kondisi" 
                         label="Kondisi" 
-                        :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                        :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                         value="{{ old('uks_kondisi', $profileSekolah->unitKesehatanSekolah?->kodisi) }}"
                     />
                 </div>
@@ -647,7 +665,7 @@
                         <x-form.select 
                             name="rumah_dinas_kondisi" 
                             label="Kondisi" 
-                            :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                            :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                             value="{{ old('rumah_dinas_kondisi', $profileSekolah->rumahDinas?->kodisi) }}"
                         />
                     </div>
@@ -688,7 +706,7 @@
                         <x-form.select 
                             name="rumah_ibadah_kondisi" 
                             label="Kondisi" 
-                            :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                            :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                             value="{{ old('rumah_ibadah_kondisi', $profileSekolah->rumahIbadah?->kodisi) }}"
                         />
                     </div>
@@ -729,7 +747,7 @@
                         <x-form.select 
                             name="lapangan_sekolah_kondisi" 
                             label="Kondisi" 
-                            :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                            :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                             value="{{ old('lapangan_sekolah_kondisi', $profileSekolah->lapanganSekolah?->kodisi) }}"
                         />
                     </div>
@@ -773,7 +791,7 @@
                         <x-form.select 
                             name="pagar_kondisi" 
                             label="Kondisi" 
-                            :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                            :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                             value="{{ old('pagar_kondisi', $profileSekolah->pagarSekolah?->kodisi) }}"
                         />
                     </div>
@@ -814,7 +832,7 @@
                         <x-form.select 
                             name="air_kondisi" 
                             label="Kondisi" 
-                            :options="['' => '-- Pilih --', 'bagus' => 'Bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
+                            :options="['' => '-- Pilih --', 'baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']" 
                             value="{{ old('air_kondisi', $profileSekolah->airBersih?->kodisi) }}"
                         />
                     </div>
@@ -834,11 +852,11 @@
 
                     <div class="grid grid-cols-2 gap-2 sm:gap-3">
                         <x-form.input 
-                            name="kursi_siswa_bagus" 
-                            label="Kursi Siswa Bagus" 
+                            name="kursi_siswa_baik" 
+                            label="Kursi Siswa Baik" 
                             type="number" 
                             required 
-                            value="{{ old('kursi_siswa_bagus', $profileSekolah->kursiSiswa?->bagus ?? 0) }}" 
+                            value="{{ old('kursi_siswa_baik', $profileSekolah->kursiSiswa?->baik ?? 0) }}" 
                             min="0"
                         />
                         <x-form.input 
@@ -850,11 +868,11 @@
                             min="0"
                         />
                         <x-form.input 
-                            name="meja_siswa_bagus" 
-                            label="Meja Siswa Bagus" 
+                            name="meja_siswa_baik" 
+                            label="Meja Siswa Baik" 
                             type="number" 
                             required 
-                            value="{{ old('meja_siswa_bagus', $profileSekolah->mejaSiswa?->bagus ?? 0) }}" 
+                            value="{{ old('meja_siswa_baik', $profileSekolah->mejaSiswa?->baik ?? 0) }}" 
                             min="0"
                         />
                         <x-form.input 
@@ -866,11 +884,11 @@
                             min="0"
                         />
                         <x-form.input 
-                            name="kursi_guru_bagus" 
-                            label="Kursi Guru Bagus" 
+                            name="kursi_guru_baik" 
+                            label="Kursi Guru Baik" 
                             type="number" 
                             required 
-                            value="{{ old('kursi_guru_bagus', $profileSekolah->kursiGuru?->bagus ?? 0) }}" 
+                            value="{{ old('kursi_guru_baik', $profileSekolah->kursiGuru?->baik ?? 0) }}" 
                             min="0"
                         />
                         <x-form.input 
@@ -882,11 +900,11 @@
                             min="0"
                         />
                         <x-form.input 
-                            name="meja_guru_bagus" 
-                            label="Meja Guru Bagus" 
+                            name="meja_guru_baik" 
+                            label="Meja Guru Baik" 
                             type="number" 
                             required 
-                            value="{{ old('meja_guru_bagus', $profileSekolah->mejaGuru?->bagus ?? 0) }}" 
+                            value="{{ old('meja_guru_baik', $profileSekolah->mejaGuru?->baik ?? 0) }}" 
                             min="0"
                         />
                         <x-form.input 
@@ -911,11 +929,11 @@
 
                     <div class="grid grid-cols-2 gap-2 sm:gap-3">
                         <x-form.input 
-                            name="laptop_bagus" 
-                            label="Laptop Bagus" 
+                            name="laptop_baik" 
+                            label="Laptop Baik" 
                             type="number" 
                             required 
-                            value="{{ old('laptop_bagus', $profileSekolah->laptop?->bagus ?? 0) }}" 
+                            value="{{ old('laptop_baik', $profileSekolah->laptop?->baik ?? 0) }}" 
                             min="0"
                         />
                         <x-form.input 
@@ -927,11 +945,11 @@
                             min="0"
                         />
                         <x-form.input 
-                            name="komputer_bagus" 
-                            label="Komputer Bagus" 
+                            name="komputer_baik" 
+                            label="Komputer Baik" 
                             type="number" 
                             required 
-                            value="{{ old('komputer_bagus', $profileSekolah->komputer?->bagus ?? 0) }}" 
+                            value="{{ old('komputer_baik', $profileSekolah->komputer?->baik ?? 0) }}" 
                             min="0"
                         />
                         <x-form.input 
@@ -944,11 +962,11 @@
                         />
 
                         <x-form.input 
-                            name="chromebook_bagus" 
-                            label="Chromebook Bagus" 
+                            name="chromebook_baik" 
+                            label="Chromebook Baik" 
                             type="number" 
                             required 
-                            value="{{ old('chromebook_bagus', $profileSekolah->chromebook?->bagus ?? 0) }}" 
+                            value="{{ old('chromebook_baik', $profileSekolah->chromebook?->baik ?? 0) }}" 
                             min="0"
                         />
                         <x-form.input 

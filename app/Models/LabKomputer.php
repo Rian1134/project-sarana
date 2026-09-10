@@ -19,7 +19,7 @@ class LabKomputer extends Model
         'profile_sekolah_id',
     ];
 
-    public function profileSekoh()
+    public function profileSekolah()
     {
         return $this->belongsTo(ProfileSekolah::class);
     }

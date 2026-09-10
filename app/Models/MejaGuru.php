@@ -19,7 +19,7 @@ class MejaGuru extends Model
         'rusak'
     ];
 
-    public function profileSekoh()
+    public function profileSekolah()
     {
         return $this->belongsTo(ProfileSekolah::class);
     }

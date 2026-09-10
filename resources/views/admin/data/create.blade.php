@@ -84,6 +84,24 @@
                             required
                             :value="old('nomor_hp')"
                         />
+
+                        <x-form.select
+                            name="status_sekolah"
+                            label="Status Sekolah"
+                            placeholder="-- Pilih Status Sekolah --"
+                            required
+                            :options="['negeri' => 'Negeri', 'swasta' => 'Swasta']"
+                            :value="old('status_sekolah')"
+                        />
+
+                        <x-form.select
+                            name="akreditasi"
+                            label="Akreditasi"
+                            placeholder="-- Pilih Akreditasi --"
+                            required
+                            :options="['A' => 'A', 'B' => 'B', 'C' => 'C', 'belum_terakreditasi' => 'Belum Terakreditasi']"
+                            :value="old('akreditasi')"
+                        />
                     </div>
                 </x-card>
 
