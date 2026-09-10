@@ -1037,7 +1037,7 @@ class DataController extends Controller
     public function export_excel(Request $request)
     {
         try {
-            $fileName = 'data_sarana_sekolah - '.Carbon::now()->format('Y-m-d_His').'.xlsx';
+            $fileName = 'data_ProfileSekolah_sekolah - '.Carbon::now()->format('Y-m-d_His').'.xlsx';
 
             return Excel::download(new ExportData, $fileName);
         } catch (\Exception $e) {

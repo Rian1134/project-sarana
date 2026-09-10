@@ -16,9 +16,29 @@
         </div>
     </div>
 
-    <x-card>
-        <div class="p-4">
-            <x-table bordered hover>
+    @if (session('success'))
+        <div class="alert alert-success mb-4" data-alert>
+            {{ session('success') }}
+            <button type="button" data-dismiss="alert" class="btn-close ml-auto">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger mb-4" data-alert>
+            {{ session('error') }}
+            <button type="button" data-dismiss="alert" class="btn-close ml-auto">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+    @endif
+
+    <div class="card">
+        <div class="card-body">
+
+            <x-table bordered class="text-[11px]">
+
                 <x-slot:head>
                     <tr class="bg-gray-800 text-white">
                         <x-table.heading class="text-white! text-center">No</x-table.heading>

@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\PeriodeLaporan;
-use App\Models\ProfileSekolah;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -23,9 +21,6 @@ class UserController extends Controller
         return view('admin.user.index', compact('users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.user.create');
@@ -36,27 +31,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|exists:roles,name',
-        ], [
-            'name.required' => 'Nama harus diisi',
-            'email.required' => 'Email harus diisi',
-            'email.email' => 'Format email tidak valid',
-            'email.unique' => 'Email sudah terdaftar',
-            'password.required' => 'Password harus diisi',
-            'password.min' => 'Password minimal 8 karakter',
-            'password.confirmed' => 'Konfirmasi password tidak sesuai',
-            'role.required' => 'Role harus dipilih',
+            'password' => ['required', 'confirmed', Password::defaults()],
+            'role' => 'required|in:admin,user',
         ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
 
         try {
             $user = User::create([
@@ -65,7 +45,6 @@ class UserController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
-            // Assign role
             $user->assignRole($request->role);
 
             return redirect()->route('user.index')
@@ -73,7 +52,7 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal menambahkan user: '.$e->getMessage());
+                ->with('error', 'Gagal menambahkan user: ' . $e->getMessage());
         }
     }
 
@@ -121,7 +100,7 @@ class UserController extends Controller
 
         $rkbPeriode = PeriodeLaporan::forKategori('rkb');
         $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
-
+        
         return view('admin.user.show', compact('user', 'profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
     }
 
@@ -131,8 +110,8 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::find($id);
-
-        if (! $user) {
+        
+        if (!$user) {
             return redirect()->route('user.index')
                 ->with('error', 'User tidak ditemukan.');
         }
@@ -143,51 +122,41 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, string $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'role' => 'required|exists:roles,name',
-        ], [
-            'name.required' => 'Nama harus diisi',
-            'email.required' => 'Email harus diisi',
-            'email.email' => 'Format email tidak valid',
-            'email.unique' => 'Email sudah terdaftar',
-            'password.min' => 'Password minimal 8 karakter',
-            'password.confirmed' => 'Konfirmasi password tidak sesuai',
-            'role.required' => 'Role harus dipilih',
-        ]);
+        $user = User::find($id);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+        if (!$user) {
+            return redirect()->route('user.index')
+                ->with('error', 'User tidak ditemukan.');
         }
 
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'role' => 'required|in:admin,user',
+        ]);
+
         try {
-            $data = [
+            $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
-            ];
+            ]);
 
-            // Update password jika diisi
-            if ($request->filled('password')) {
-                $data['password'] = Hash::make($request->password);
-            }
-
-            $user->update($data);
-
-            // Update role
             $user->syncRoles([$request->role]);
 
             return redirect()->route('user.index')
-                ->with('success', 'User berhasil diupdate!');
+                ->with('success', 'User berhasil diperbarui!');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal mengupdate user: '.$e->getMessage());
+                ->with('error', 'Gagal memperbarui user: ' . $e->getMessage());
         }
     }
 
