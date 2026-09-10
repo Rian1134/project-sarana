@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PeriodeLaporan;
+use App\Models\ProfileSekolah;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -29,32 +31,32 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => ['required', 'confirmed', Password::defaults()],
-            'role' => 'required|in:admin,user',
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|email|max:255|unique:users',
+    //         'password' => ['required', 'confirmed', Password::defaults()],
+    //         'role' => 'required|in:admin,user',
+    //     ]);
 
-        try {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
+    //     try {
+    //         $user = User::create([
+    //             'name' => $request->name,
+    //             'email' => $request->email,
+    //             'password' => Hash::make($request->password),
+    //         ]);
 
-            $user->assignRole($request->role);
+    //         $user->assignRole($request->role);
 
-            return redirect()->route('user.index')
-                ->with('success', 'User berhasil ditambahkan!');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Gagal menambahkan user: ' . $e->getMessage());
-        }
-    }
+    //         return redirect()->route('user.index')
+    //             ->with('success', 'User berhasil ditambahkan!');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()
+    //             ->withInput()
+    //             ->with('error', 'Gagal menambahkan user: ' . $e->getMessage());
+    //     }
+    // }
 
     /**
      * Display the specified resource.
@@ -122,43 +124,43 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $user = User::find($id);
+    // public function update(Request $request, string $id)
+    // {
+    //     $user = User::find($id);
 
-        if (!$user) {
-            return redirect()->route('user.index')
-                ->with('error', 'User tidak ditemukan.');
-        }
+    //     if (!$user) {
+    //         return redirect()->route('user.index')
+    //             ->with('error', 'User tidak ditemukan.');
+    //     }
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users', 'email')->ignore($user->id),
-            ],
-            'role' => 'required|in:admin,user',
-        ]);
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => [
+    //             'required',
+    //             'string',
+    //             'email',
+    //             'max:255',
+    //             Rule::unique('users', 'email')->ignore($user->id),
+    //         ],
+    //         'role' => 'required|in:admin,user',
+    //     ]);
 
-        try {
-            $user->update([
-                'name' => $request->name,
-                'email' => $request->email,
-            ]);
+    //     try {
+    //         $user->update([
+    //             'name' => $request->name,
+    //             'email' => $request->email,
+    //         ]);
 
-            $user->syncRoles([$request->role]);
+    //         $user->syncRoles([$request->role]);
 
-            return redirect()->route('user.index')
-                ->with('success', 'User berhasil diperbarui!');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Gagal memperbarui user: ' . $e->getMessage());
-        }
-    }
+    //         return redirect()->route('user.index')
+    //             ->with('success', 'User berhasil diperbarui!');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()
+    //             ->withInput()
+    //             ->with('error', 'Gagal memperbarui user: ' . $e->getMessage());
+    //     }
+    // }
 
     /**
      * Remove the specified resource from storage.

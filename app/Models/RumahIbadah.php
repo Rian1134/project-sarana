@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\LogsSaranaActivity;
-use App\Traits\RecordsSaranaSnapshot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RumahIbadah extends Model
 {
-    use HasFactory, LogsSaranaActivity, RecordsSaranaSnapshot;
+    use HasFactory;
 
     protected $table = 'rumah_ibadahs';
 

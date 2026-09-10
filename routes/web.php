@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::middleware('auth')->group(function () {
-    // Admin routes
-    // Route::middleware('verified')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::prefix('/admin')->group(function () {
             Route::resource('sarana', AdminDataController::class)->parameters(['sarana' => 'profileSekolah']);
@@ -26,15 +24,6 @@ Route::middleware('auth')->group(function () {
             Route::put('/periode', [PeriodeLaporanController::class, 'update'])->name('admin.periode.update');
 
             Route::view('/panduan', 'landing.panduan')->name('panduan');
-
-            Route::get('/sarana/kategori-list', [SaranaHistoryController::class, 'kategoriList'])
-                 ->name('sarana.kategori-list');
-
-            Route::get('/sarana/{profileSekolah}/riwayat', [SaranaHistoryController::class, 'riwayat'])
-                 ->name('sarana.riwayat');
-
-            Route::get('/sarana/{profileSekolah}/chart-history', [SaranaHistoryController::class, 'chartHistory'])
-                 ->name('sarana.chart-history');
         });
     });
 
@@ -54,24 +43,6 @@ Route::middleware('auth')->group(function () {
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
-    // });
-
-    // Route::get('/email/verify', function () {
-    //     return view('auth.verify-email');
-    // })->name('verification.notice');
-
-    // Route::post('/email/verification-notification', function (Request $request) {
-    //     $request->user()->sendEmailVerificationNotification();
-
-    //     return back()->with('status', 'verification-link-sent');
-    // })->middleware('throttle:6,1')->name('verification.send');
-
-    // Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    //     $request->fulfill();
-
-    //     return redirect('/');
-
-    // })->middleware(['auth', 'signed'])->name('verification.verify');
 });
 
 Route::middleware('guest')->group(function () {

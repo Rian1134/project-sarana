@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\LogsSaranaActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProfileSekolah extends Model
 {
-    use HasFactory, LogsSaranaActivity;
+    use HasFactory;
 
     protected $fillable = [
         'nama_sekolah',
