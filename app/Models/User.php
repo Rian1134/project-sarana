@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasOne(ProfileSekolah::class);
     }
 
+    public function pengajuan()
+    {
+        return $this->hasOne(Pengajuan::class);
+    }
+
     /**
      * Override supaya email verifikasi memakai template kustom
      * (App\Notifications\CustomVerifyEmail -> App\Mail\VerifyEmailMail)

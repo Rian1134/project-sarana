@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('NIP')->unique();
             $table->string('status_sekolah');
             $table->char('akreditasi');
-            $table->string('website');
+            $table->string('website')->nullable(true);
             $table->string('nomor_hp')->unique();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -336,6 +336,15 @@ return new class extends Migration
         });
 
         Schema::create('chromebooks', function (Blueprint $table) {
+            $table->id();
+            $table->integer('baik')->default(0);
+            $table->integer('rusak')->default(0);
+            $table->unsignedBigInteger('profile_sekolah_id');
+            $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        Schema::create('guru', function (Blueprint $table) {
             $table->id();
             $table->integer('baik')->default(0);
             $table->integer('rusak')->default(0);

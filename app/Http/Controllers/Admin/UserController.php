@@ -7,9 +7,9 @@ use App\Models\PeriodeLaporan;
 use App\Models\ProfileSekolah;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
+// use Illuminate\Support\Facades\Hash;
+// use Illuminate\Validation\Rule;
+// use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {

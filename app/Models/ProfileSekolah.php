@@ -152,6 +152,11 @@ class ProfileSekolah extends Model
         return $this->hasOne(Chromebook::class);
     }
 
+    public function pengajuan()
+    {
+        return $this->hasOne(Pengajuan::class);
+    }
+    
     public function user()
     {
         return $this->belongsTo(User::class);

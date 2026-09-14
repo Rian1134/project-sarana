@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pengajuan;
 use App\Models\PeriodeLaporan;
 use App\Models\ProfileSekolah;
 use Illuminate\Http\Request;
@@ -50,10 +51,15 @@ class ProfileController extends Controller
             'lapanganSekolah',
         ])->where('user_id', $user->id)->first();
 
+        $pengajuans = Pengajuan::with('profileSekolah')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->paginate(5);
+
         $rkbPeriode = PeriodeLaporan::forKategori('rkb');
         $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
 
-        return view('user.profile.index', compact('user', 'profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
+        return view('user.profile.index', compact('user', 'profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode', 'pengajuans'));
     }
 
     /**

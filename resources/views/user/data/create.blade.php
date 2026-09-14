@@ -14,7 +14,7 @@
                     <span class="hidden sm:inline">Form Tambah Data Sarana & Prasarana Sekolah</span>
                     <span class="sm:hidden">Tambah Data</span>
                 </h1>
-                <a href="{{ route('user.data.index') }}" class="inline-flex">
+                <a href="{{ route('user.profile.index') }}" class="inline-flex">
                     <x-button variant="secondary" size="sm">
                         <i class="bi bi-arrow-left me-1"></i>
                         <span class="hidden sm:inline">Kembali</span>
@@ -776,7 +776,7 @@
                             <x-button variant="warning" type="reset">
                                 <i class="bi bi-arrow-counterclockwise"></i> Reset
                             </x-button>
-                            <a href="{{ route('user.data.index') }}" class="inline-flex">
+                            <a href="{{ route('user.profile.index') }}" class="inline-flex">
                                 <x-button variant="secondary">
                                     <i class="bi bi-x-circle me-1"></i> Batal
                                 </x-button>

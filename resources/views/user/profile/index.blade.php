@@ -240,6 +240,86 @@
             </div>
 
             @if ($profileSekolah)
+                <!-- ============================================================
+                             Riwayat Pengajuan Perubahan Data
+                             ============================================================ -->
+                <x-card class="p-2 md:p-4">
+                    <x-slot:header>
+                        <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-list-check"></i>
+                                Riwayat Pengajuan
+                            </div>
+                            <a href="{{ route('user.pengajuan.create') }}" class="inline-flex">
+                                <x-button variant="primary" size="sm">
+                                    <i class="bi bi-plus-lg"></i> Ajukan Perubahan
+                                </x-button>
+                            </a>
+                        </div>
+                    </x-slot:header>
+
+                    <x-table striped hover>
+                        <x-slot:head>
+                            <tr>
+                                <x-table.heading>Kategori Data</x-table.heading>
+                                <x-table.heading>Rincian Pembaruan</x-table.heading>
+                                <x-table.heading>Status</x-table.heading>
+                                <x-table.heading>Diajukan</x-table.heading>
+                                <x-table.heading class="text-right">Aksi</x-table.heading>
+                            </tr>
+                        </x-slot:head>
+
+                        @forelse ($pengajuans ?? [] as $item)
+                            @php
+                                $kategoriLabel = \App\Http\Controllers\User\PengajuanController::kategoriList()[$item->pengajuan]['label'] ?? $item->pengajuan;
+                            @endphp
+                            <x-table.row>
+                                <x-table.cell class="font-medium">{{ $kategoriLabel }}</x-table.cell>
+                                <x-table.cell>
+                                    <ul class="space-y-0.5 text-sm">
+                                        @foreach ($item->perubahan as $field => $value)
+                                            <li>
+                                                <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\PengajuanController::fieldLabel($item->pengajuan, $field) }}:</span>
+                                                <span class="font-medium">{{ $value }}</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </x-table.cell>
+                                <x-table.cell>
+                                    @if ($item->status === 'pending')
+                                        <x-badge variant="warning">Menunggu Review</x-badge>
+                                    @elseif ($item->status === 'approved')
+                                        <x-badge variant="success">Disetujui</x-badge>
+                                    @elseif ($item->status === 'rejected')
+                                        <x-badge variant="danger">Ditolak</x-badge>
+                                    @else
+                                        <x-badge variant="secondary">{{ ucfirst($item->status) }}</x-badge>
+                                    @endif
+                                </x-table.cell>
+                                <x-table.cell>{{ $item->created_at->format('d M Y H:i') }}</x-table.cell>
+                                <x-table.cell class="text-right">
+                                    <div class="flex justify-end gap-1">
+                                        <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info" size="xs">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </x-button>
+                                        @if ($item->status === 'pending')
+                                            <x-button href="{{ route('user.pengajuan.edit', $item) }}" variant="warning" size="xs">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </x-button>
+                                        @endif
+                                    </div>
+                                </x-table.cell>
+                            </x-table.row>
+                        @empty
+                            <x-table.empty colspan="6" message="Belum ada pengajuan perubahan data." />
+                        @endforelse
+                    </x-table>
+
+                    @if (isset($pengajuans) && method_exists($pengajuans, 'links'))
+                        <x-pagination :paginator="$pengajuans" class="mt-4" />
+                    @endif
+                </x-card>
+
                 <!-- ===== MODAL KONFIRMASI HAPUS DATA SEKOLAH ===== -->
                 <x-modal id="hapusDataSekolahModal" size="sm" centered>
                     <x-slot:header>
@@ -379,7 +459,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                             <i class="bi bi-tools"></i>
-                            Rencana Pembangunan &amp; Rehabilitasi Ruang Kelas
+                            Pembangunan &amp; Rehabilitasi Ruang Kelas
                         </div>
                     </x-slot:header>
 

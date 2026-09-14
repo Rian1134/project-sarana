@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Sarana;
+use App\Models\ProfileSekolah;
 use App\Models\JumlahSiswa;
 use App\Models\JumlahRombel;
 use App\Models\RuangKelasBaru;
@@ -267,8 +267,8 @@ class SaranaSeeder extends Seeder
         }
 
         foreach ($dataSekolah as $data) {
-            // 1. Create Sarana
-            $sarana = Sarana::create([
+            // 1. Create ProfileSekolah
+            $sarana = ProfileSekolah::create([
                 'nama_sekolah' => $data['nama_sekolah'],
                 'NPSN' => $data['NPSN'],
                 'alamat_sekolah' => $data['alamat_sekolah'],
