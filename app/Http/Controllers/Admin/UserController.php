@@ -80,7 +80,6 @@ class UserController extends Controller
             'mejaGuru',
             'laptop',
             'komputer',
-            'chromebook',
             'jumlahSiswa',
             'jumlahRombel',
             'ruangKelasBaru',

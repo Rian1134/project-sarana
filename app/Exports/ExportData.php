@@ -26,7 +26,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
  *
  * Export sarana & prasarana ke Excel dengan bentuk tabel PERSIS mengikuti
  * template "Data Keadaan ProfileSekolah Prasarana Sekolah Tingkat SMP" (73 kolom,
- * A s.d BX), yaitu:
+ * A s.d BU), yaitu:
  *
  *  - Baris 1-2  : Judul laporan (judul + "DI KABUPATEN LAHAT TAHUN <tahun>")
  *  - Baris 3    : kosong (pemisah)
@@ -41,7 +41,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
  *  - F: NIP
  *  - G: Nomor HP
  *
- * Sehingga total kolom menjadi 76 (A s.d BX)
+ * Sehingga total kolom menjadi 73 (A s.d BU)
  */
 class ExportData extends DefaultValueBinder implements FromCollection, ShouldAutoSize, WithColumnWidths, WithCustomValueBinder, WithEvents, WithMapping, WithStyles
 {
@@ -111,7 +111,6 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
             'mejaGuru',
             'laptop',
             'komputer',
-            'chromebook',
         ]);
 
         if ($saranaId) {
@@ -127,7 +126,7 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
     }
 
     /**
-     * MAPPING DATA KE 76 KOLOM (A - BX), MENGIKUTI URUTAN TEMPLATE EXCEL:
+     * MAPPING DATA KE 73 KOLOM (A - BU), MENGIKUTI URUTAN TEMPLATE EXCEL:
      *
      * A     = No
      * B     = Nama Sekolah
@@ -161,9 +160,8 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
      * BI-BK = Kursi Guru (Baik, Rusak, Jumlah)
      * BL-BN = Meja Guru (Baik, Rusak, Jumlah)
      * BO-BQ = Laptop (Baik, Rusak, Jumlah)
-     * BR-BT = Chromebook (Baik, Rusak, Jumlah)
-     * BU-BW = Komputer/PC (Baik, Rusak, Jumlah)
-     * BX    = Keterangan / Catatan
+     * BR-BT = Komputer/PC (Baik, Rusak, Jumlah)
+     * BU    = Keterangan / Catatan
      */
     public function map($item): array
     {
@@ -295,22 +293,16 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
         $laptopRusak = $item->laptop?->rusak ?? 0;
         $jmlLaptop   = $laptopBaik + $laptopRusak;
 
-        // ============================================================
-        // 25. CHROMEBOOK (BR-BT)
-        // ============================================================
-        $chromebookBaik = $item->chromebook?->baik ?? 0;
-        $chromebookRusak = $item->chromebook?->rusak ?? 0;
-        $jmlChromebook   = $chromebookBaik + $chromebookRusak;
 
         // ============================================================
-        // 26. KOMPUTER (BU-BW)
+        // 25. KOMPUTER (BR-BT)
         // ============================================================
         $komputerBaik = $item->komputer?->baik ?? 0;
         $komputerRusak = $item->komputer?->rusak ?? 0;
         $jmlKomputer   = $komputerBaik + $komputerRusak;
 
         // ============================================================
-        // OUTPUT 76 KOLOM (A - BX)
+        // OUTPUT 73 KOLOM (A - BU)
         // ============================================================
         return [
             // === IDENTITAS (A-G) ===
@@ -373,14 +365,12 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
             // === 24. LAPTOP (BO-BQ) ===
             $laptopBaik, $laptopRusak, $jmlLaptop,
 
-            // === 25. CHROMEBOOK (BR-BT) ===
-            $chromebookBaik, $chromebookRusak, $jmlChromebook,
 
-            // === 26. KOMPUTER (BU-BW) ===
+            // === 25. KOMPUTER (BR-BT) ===
             $komputerBaik, $komputerRusak, $jmlKomputer,
 
-            // === 27. KETERANGAN / CATATAN (BX) ===
-            $item->keterangan ?? '',                 // BX
+            // === 26. KETERANGAN / CATATAN (BU) ===
+            $item->keterangan ?? '',                 // BU
         ];
     }
 
@@ -508,8 +498,8 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                 $sheet->mergeCells('U4:U6');
                 $sheet->setCellValue('U4', "Rehabilitasi Ruang Kelas Dari Tahun {$rehabPeriode->label()}");
 
-                // --- Grup besar "Ruang / Bangunan Gedung Sekolah" (V-BW) ---
-                $sheet->mergeCells('V4:BW4');
+                // --- Grup besar "Ruang / Bangunan Gedung Sekolah" (V-BT) ---
+                $sheet->mergeCells('V4:BT4');
                 $sheet->setCellValue('V4', 'Ruang / Bangunan Gedung Sekolah');
 
                 // Sub kategori baris 5 (colspan 2 atau 3, tergantung kategori)
@@ -534,8 +524,7 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                     'BI5:BK5' => 'Kursi Guru',
                     'BL5:BN5' => 'Meja Guru',
                     'BO5:BQ5' => 'Laptop',
-                    'BR5:BT5' => 'Chromebook',
-                    'BU5:BW5' => 'Komputer / PC',
+                    'BR5:BT5' => 'Komputer / PC',
                 ];
 
                 foreach ($subKategori as $range => $label) {
@@ -544,9 +533,9 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                     $sheet->setCellValue($startCell, $label);
                 }
 
-                // --- Keterangan / Catatan (BX), rowspan 4-6 ---
-                $sheet->mergeCells('BX4:BX6');
-                $sheet->setCellValue('BX4', 'Keterangan / Catatan');
+                // --- Keterangan / Catatan (BU), rowspan 4-6 ---
+                $sheet->mergeCells('BU4:BU6');
+                $sheet->setCellValue('BU4', 'Keterangan / Catatan');
 
                 // ============================================================
                 // BARIS 6: DETAIL (Baik/Rusak/Jumlah, VII/VIII/IX, Ada/Kondisi)
@@ -576,7 +565,6 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                     'BL' => 'Baik', 'BM' => 'Rusak', 'BN' => 'Jumlah',
                     'BO' => 'Baik', 'BP' => 'Rusak', 'BQ' => 'Jumlah',
                     'BR' => 'Baik', 'BS' => 'Rusak', 'BT' => 'Jumlah',
-                    'BU' => 'Baik', 'BV' => 'Rusak', 'BW' => 'Jumlah',
                 ];
 
                 foreach ($detailHeaders as $col => $label) {
@@ -605,14 +593,14 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                     ],
                 ];
 
-                // Apply ke seluruh header (A4:BX6)
-                $sheet->getStyle('A4:BX6')->applyFromArray($baseHeaderStyle);
+                // Apply ke seluruh header (A4:BU6)
+                $sheet->getStyle('A4:BU6')->applyFromArray($baseHeaderStyle);
 
                 // Highlight kolom "Jumlah" & "Kondisi" di baris detail (baris 6) dengan warna oranye
                 $highlightCols = [
                     'X', 'AA', 'AD',
                     'AF', 'AH', 'AJ', 'AL', 'AN', 'AP', 'AR', 'AT', 'AV', 'AX', 'AZ', 'BB',
-                    'BE', 'BH', 'BK', 'BN', 'BQ', 'BT', 'BW',
+                    'BE', 'BH', 'BK', 'BN', 'BQ', 'BT',
                 ];
                 foreach ($highlightCols as $col) {
                     $sheet->getStyle($col.'6')->applyFromArray([
@@ -629,7 +617,7 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                 $highestRow = $sheet->getHighestRow();
 
                 if ($highestRow >= 7) {
-                    $sheet->getStyle('A7:BX'.$highestRow)->applyFromArray([
+                    $sheet->getStyle('A7:BU'.$highestRow)->applyFromArray([
                         'borders' => [
                             'allBorders' => [
                                 'borderStyle' => Border::BORDER_THIN,
@@ -654,7 +642,7 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                         ]);
                     }
 
-                    // Center semua kolom data (H-BX)
+                    // Center semua kolom data (H-BU)
                     $dataColumns = [
                         'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
                         'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -663,7 +651,7 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                         'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY',
                         'AZ', 'BA', 'BB', 'BC', 'BD', 'BE', 'BF', 'BG',
                         'BH', 'BI', 'BJ', 'BK', 'BL', 'BM', 'BN', 'BO',
-                        'BP', 'BQ', 'BR', 'BS', 'BT', 'BU', 'BV', 'BW', 'BX',
+                        'BP', 'BQ', 'BR', 'BS', 'BT', 'BU',
                     ];
 
                     foreach ($dataColumns as $col) {
@@ -698,7 +686,7 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                     'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
                     'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD',
                     'BC', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BK',
-                    'BL', 'BM', 'BN', 'BO', 'BP', 'BQ', 'BR', 'BS', 'BT', 'BU', 'BV', 'BW',
+                    'BL', 'BM', 'BN', 'BO', 'BP', 'BQ', 'BR', 'BS', 'BT',
                 ];
                 foreach ($sumColumns as $col) {
                     $sum = 0;
@@ -737,10 +725,10 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                     $sheet->setCellValue($col.$footerRow, $count);
                 }
 
-                // T, U (RKB/Rehabilitasi teks) & BX (Keterangan) dibiarkan kosong di baris total
+                // T, U (RKB/Rehabilitasi teks) & BU (Keterangan) dibiarkan kosong di baris total
 
                 // Styling baris total
-                $sheet->getStyle('A'.$footerRow.':BX'.$footerRow)->applyFromArray([
+                $sheet->getStyle('A'.$footerRow.':BU'.$footerRow)->applyFromArray([
                     'font' => ['bold' => true, 'size' => 13],
                     'fill' => [
                         'fillType' => Fill::FILL_SOLID,
@@ -776,7 +764,7 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                 $sheet->getColumnDimension('G')->setWidth(15);
                 $sheet->getColumnDimension('T')->setWidth(18);
                 $sheet->getColumnDimension('U')->setWidth(17);
-                $sheet->getColumnDimension('BX')->setWidth(13);
+                $sheet->getColumnDimension('BU')->setWidth(13);
 
                 $sheet->freezePane('A7');
             },
@@ -800,7 +788,7 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
             'G' => 15,
             'T' => 18,
             'U' => 17,
-            'BX' => 13,
+            'BU' => 13,
         ];
     }
 }

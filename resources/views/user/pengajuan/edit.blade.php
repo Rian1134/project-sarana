@@ -53,7 +53,6 @@
                 'kursi_guru' => 'bi-person-badge',
                 'komputer' => 'bi-pc-display',
                 'laptop' => 'bi-laptop',
-                'chromebook' => 'bi-laptop',
                 'unit_kesehatan_sekolah' => 'bi-heart-pulse',
                 'lapangan_sekolah' => 'bi-flag',
                 'pagar_sekolah' => 'bi-border-all',

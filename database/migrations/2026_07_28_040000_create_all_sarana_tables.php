@@ -349,15 +349,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('chromebooks', function (Blueprint $table) {
-            $table->id();
-            $table->integer('baik')->default(0);
-            $table->integer('rusak')->default(0);
-            $table->unsignedBigInteger('profile_sekolah_id');
-            $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
-            $table->timestamps();
-        });
-
         Schema::create('guru', function (Blueprint $table) {
             $table->id();
             $table->integer('baik')->default(0);

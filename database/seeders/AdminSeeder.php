@@ -45,7 +45,7 @@ class AdminSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'email_verified_at' => Carbon::now(),
-            'password' => bcrypt('admin123'),
+            'password' => bcrypt('12345678'),
         ]);
 
         $admin->assignRole('admin');

@@ -911,24 +911,6 @@
                                             required :value="old('komputer_rusak', $profileSekolah->komputer?->rusak ?? 0)" />
                                     </div>
                                 </div>
-
-                                <!-- Chromebook -->
-                                <div class="col-span-2">
-                                    <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Chromebook
-                                    </div>
-                                    <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="chromebook_baik" label="Baik" type="number"
-                                            min="0" required :value="old(
-                                                'chromebook_baik',
-                                                $profileSekolah->chromebook?->baik ?? 0,
-                                            )" />
-                                        <x-form.input name="chromebook_rusak" label="Rusak" type="number"
-                                            min="0" required :value="old(
-                                                'chromebook_rusak',
-                                                $profileSekolah->chromebook?->rusak ?? 0,
-                                            )" />
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

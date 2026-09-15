@@ -32,7 +32,6 @@ class ProfileController extends Controller
             'mejaGuru',
             'laptop',
             'komputer',
-            'chromebook',
             'jumlahSiswa',
             'jumlahRombel',
             'ruangKelasBaru',

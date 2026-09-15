@@ -751,21 +751,6 @@
                     </div>
                 </x-card>
 
-                <!-- AA. Chromebook -->
-                <x-card>
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-laptop"></i>
-                            AA. Chromebook
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="chromebook_baik" label="Jumlah Baik" type="number" min="0" required :value="old('chromebook_baik', 0)" />
-                        <x-form.input name="chromebook_rusak" label="Jumlah Rusak" type="number" min="0" required :value="old('chromebook_rusak', 0)" />
-                    </div>
-                </x-card>
-
                 <!-- Tombol Aksi -->
                 <x-card>
                     <x-slot:footer>

@@ -34,85 +34,82 @@
         </div>
     @endif
 
-    <div class="card">
-        <div class="card-body">
+    <x-card>
+        <x-table bordered class="text-[11px]">
 
-            <x-table bordered class="text-[11px]">
+            <x-slot:head>
+                <tr class="bg-gray-800 text-white">
+                    <x-table.heading class="text-white! text-center">No</x-table.heading>
+                    <x-table.heading class="text-white!">Nama</x-table.heading>
+                    <x-table.heading class="text-white!">Email</x-table.heading>
+                    <x-table.heading class="text-white!">Role</x-table.heading>
+                    <x-table.heading class="text-white! text-center">Aksi</x-table.heading>
+                </tr>
+            </x-slot:head>
 
-                <x-slot:head>
-                    <tr class="bg-gray-800 text-white">
-                        <x-table.heading class="text-white! text-center">No</x-table.heading>
-                        <x-table.heading class="text-white!">Nama</x-table.heading>
-                        <x-table.heading class="text-white!">Email</x-table.heading>
-                        <x-table.heading class="text-white!">Role</x-table.heading>
-                        <x-table.heading class="text-white! text-center">Aksi</x-table.heading>
-                    </tr>
-                </x-slot:head>
+            <tbody>
+                @forelse ($users as $no => $item)
+                    <x-table.row>
+                        <x-table.cell class="text-center font-bold">
+                            {{ $no }}
+                        </x-table.cell>
+                        <x-table.cell>{{ $item->name }}</x-table.cell>
+                        <x-table.cell>{{ $item->email }}</x-table.cell>
+                        <x-table.cell>
+                            @if($item->getRoleNames()->isNotEmpty())
+                                <x-badge variant="primary">
+                                    {{ $item->getRoleNames()->first() }}
+                                </x-badge>
+                            @else
+                                <x-badge variant="secondary">User</x-badge>
+                            @endif
+                        </x-table.cell>
+                        <x-table.cell class="text-center">
+                            <div class="flex justify-center gap-1">
+                                <x-button 
+                                    href="{{ route('user.show', $item->id) }}" 
+                                    variant="info" 
+                                    size="xs" 
+                                    class="p-1.5"
+                                    title="Lihat Detail"
+                                >
+                                    <i class="bi bi-eye-fill"></i>
+                                </x-button>
+                                
+                                <x-button 
+                                    href="{{ route('user.edit', $item->id) }}" 
+                                    variant="warning" 
+                                    size="xs" 
+                                    class="p-1.5"
+                                    title="Edit Data"
+                                >
+                                    <i class="bi bi-pencil-fill"></i>
+                                </x-button>
+                                
+                                <x-button 
+                                    variant="danger" 
+                                    size="xs" 
+                                    class="p-1.5"
+                                    data-modal-open="deleteModal{{ $item->id }}"
+                                    title="Hapus Data"
+                                >
+                                    <i class="bi bi-trash-fill"></i>
+                                </x-button>
+                            </div>
+                        </x-table.cell>
+                    </x-table.row>
+                @empty
+                    <x-table.empty colspan="5" message="Belum ada data user." />
+                @endforelse
+            </tbody>
+        </x-table>
 
-                <tbody>
-                    @forelse ($users as $no => $item)
-                        <x-table.row>
-                            <x-table.cell class="text-center font-bold">
-                                {{ $no }}
-                            </x-table.cell>
-                            <x-table.cell>{{ $item->name }}</x-table.cell>
-                            <x-table.cell>{{ $item->email }}</x-table.cell>
-                            <x-table.cell>
-                                @if($item->getRoleNames()->isNotEmpty())
-                                    <x-badge variant="primary">
-                                        {{ $item->getRoleNames()->first() }}
-                                    </x-badge>
-                                @else
-                                    <x-badge variant="secondary">User</x-badge>
-                                @endif
-                            </x-table.cell>
-                            <x-table.cell class="text-center">
-                                <div class="flex justify-center gap-1">
-                                    <x-button 
-                                        href="{{ route('user.show', $item->id) }}" 
-                                        variant="info" 
-                                        size="xs" 
-                                        class="p-1.5"
-                                        title="Lihat Detail"
-                                    >
-                                        <i class="bi bi-eye-fill"></i>
-                                    </x-button>
-                                    
-                                    <x-button 
-                                        href="{{ route('user.edit', $item->id) }}" 
-                                        variant="warning" 
-                                        size="xs" 
-                                        class="p-1.5"
-                                        title="Edit Data"
-                                    >
-                                        <i class="bi bi-pencil-fill"></i>
-                                    </x-button>
-                                    
-                                    <x-button 
-                                        variant="danger" 
-                                        size="xs" 
-                                        class="p-1.5"
-                                        data-modal-open="deleteModal{{ $item->id }}"
-                                        title="Hapus Data"
-                                    >
-                                        <i class="bi bi-trash-fill"></i>
-                                    </x-button>
-                                </div>
-                            </x-table.cell>
-                        </x-table.row>
-                    @empty
-                        <x-table.empty colspan="5" message="Belum ada data user." />
-                    @endforelse
-                </tbody>
-            </x-table>
-
-            {{-- PAGINATION --}}
-            @if (method_exists($users, 'links'))
-                <div class="mt-4">
-                    <x-pagination :paginator="$users" />
-                </div>
-            @endif
-        </div>
+        {{-- PAGINATION --}}
+        @if (method_exists($users, 'links'))
+            <div class="mt-4">
+                <x-pagination :paginator="$users" />
+            </div>
+        @endif
     </x-card>
 
     <!-- ===== MODAL DELETE (Loop) ===== -->

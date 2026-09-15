@@ -375,6 +375,10 @@
     @apply fixed z-50 top-4 right-4 flex flex-col gap-2 w-full sm:w-auto px-4 sm:px-0;
 }
 
+.link{
+    @apply text-blue-600 underline hover:text-blue-600/90 active:text-blue-600/50;
+}
+
 
 /* ============================================================
    16. KHUSUS UNTUK <x-table> & <x-progress animated> (bukan class-only)

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\ExportData;
 use App\Http\Controllers\Controller;
 use App\Models\AirBersih;
-use App\Models\Chromebook;
 use App\Models\JumlahRombel;
 use App\Models\JumlahSiswa;
 use App\Models\Komputer;
@@ -55,7 +54,6 @@ class DataController extends Controller
             'mejaGuru',
             'laptop',
             'komputer',
-            'chromebook',
             'jumlahSiswa',
             'jumlahRombel',
             'ruangKelasBaru',
@@ -370,8 +368,6 @@ class DataController extends Controller
             'laptop_rusak' => 'required|integer|min:0',
             'komputer_baik' => 'required|integer|min:0',
             'komputer_rusak' => 'required|integer|min:0',
-            'chromebook_baik' => 'required|integer|min:0',
-            'chromebook_rusak' => 'required|integer|min:0',
             'jumlah_siswa_vii' => 'required|integer|min:0',
             'jumlah_siswa_viii' => 'required|integer|min:0',
             'jumlah_siswa_ix' => 'required|integer|min:0',
@@ -481,12 +477,6 @@ class DataController extends Controller
                 'profile_sekolah_id' => $profileSekolah->id,
                 'baik' => $request->komputer_baik,
                 'rusak' => $request->komputer_rusak,
-            ]);
-
-            Chromebook::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'baik' => $request->chromebook_baik,  
-                'rusak' => $request->chromebook_rusak,
             ]);
 
             // Simpan JumlahSiswa
@@ -618,43 +608,6 @@ class DataController extends Controller
         }
     }
 
-    // public function show(ProfileSekolah $profileSekolah)
-    // {
-    //     $profileSekolah->load([
-    //         'pagarSekolah',
-    //         'airBersih',
-    //         'kursiSiswa',
-    //         'mejaSiswa',
-    //         'kursiGuru',
-    //         'mejaGuru',
-    //         'laptop',
-    //         'komputer',
-    //         'chromebook',
-    //         'jumlahSiswa',
-    //         'jumlahRombel',
-    //         'ruangKelasBaru',
-    //         'rehabilitasiRuangKelas',
-    //         'ruangKelas',
-    //         'toiletSiswa',
-    //         'toiletGuru',
-    //         'ruangPerpustakaan',
-    //         'ruangKepalaSekolah',
-    //         'ruangGuru',
-    //         'ruangKantorTu',
-    //         'labIpa',
-    //         'labKomputer',
-    //         'unitKesehatanSekolah',
-    //         'rumahDinas',
-    //         'rumahIbadah',
-    //         'lapanganSekolah',
-    //     ]);
-
-    //     $rkbPeriode = PeriodeLaporan::forKategori('rkb');
-    //     $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
-
-    //     return view('admin.data.show', compact('profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
-    // }
-
     public function edit(ProfileSekolah $profileSekolah)
     {
         $profileSekolah->load([
@@ -666,7 +619,6 @@ class DataController extends Controller
             'mejaGuru',
             'laptop',
             'komputer',
-            'chromebook',
             'jumlahSiswa',
             'jumlahRombel',
             'ruangKelasBaru',
@@ -720,8 +672,6 @@ class DataController extends Controller
             'laptop_rusak' => 'required|integer|min:0',
             'komputer_baik' => 'required|integer|min:0',
             'komputer_rusak' => 'required|integer|min:0',
-            'chromebook_baik' => 'required|integer|min:0',
-            'chromebook_rusak' => 'required|integer|min:0',
             'jumlah_siswa_vii' => 'required|integer|min:0',
             'jumlah_siswa_viii' => 'required|integer|min:0',
             'jumlah_siswa_ix' => 'required|integer|min:0',
@@ -830,14 +780,6 @@ class DataController extends Controller
                 [
                     'baik' => $request->laptop_baik,
                     'rusak' => $request->laptop_rusak,
-                ]
-            );
-
-            Chromebook::updateOrCreate(
-                ['profile_sekolah_id' => $profileSekolah->id],
-                [
-                    'baik' => $request->chromebook_baik,
-                    'rusak' => $request->chromebook_rusak,
                 ]
             );
 
@@ -1004,7 +946,6 @@ class DataController extends Controller
             $profileSekolah->mejaGuru()->delete();
             $profileSekolah->laptop()->delete();
             $profileSekolah->komputer()->delete();
-            $profileSekolah->chromebook()->delete();
             $profileSekolah->jumlahSiswa()->delete();
             $profileSekolah->jumlahRombel()->delete();
             $profileSekolah->ruangKelasBaru()->delete();

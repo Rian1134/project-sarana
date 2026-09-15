@@ -167,7 +167,7 @@
                             HP</x-table.heading>
 
                         {{-- SARANA & PRASARANA (55 kolom) --}}
-                        <x-table.heading colspan="64" class="text-white! text-center align-middle px-1 py-1">Sarana &amp;
+                        <x-table.heading colspan="61" class="text-white! text-center align-middle px-1 py-1">Sarana &amp;
                             Prasarana</x-table.heading>
 
                         {{-- AKSI --}}
@@ -268,13 +268,10 @@
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Meja Guru</x-table.heading>
 
                         {{-- URUTAN 24: LAPTOP (3 kolom) --}}
-                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Laptop</x-table.heading>
+                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Laptop / Chromebook</x-table.heading>
 
-                        {{-- URUTAN 25: CHROMEBOOK (3 kolom) --}}
-                        <x-table.heading colspan="3"
-                            class="text-white! min-w-16 px-1 py-1">Chromebook</x-table.heading>
 
-                        {{-- URUTAN 26: KOMPUTER (3 kolom) --}}
+                        {{-- URUTAN 25: KOMPUTER (3 kolom) --}}
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Komputer</x-table.heading>
                     </tr>
 
@@ -423,14 +420,8 @@
                         <x-table.heading
                             class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
 
-                        {{-- URUTAN 25: CHROMEBOOK --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
-                        <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
-
-                        {{-- URUTAN 26: KOMPUTER --}}
+                        {{-- URUTAN 25: KOMPUTER --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
@@ -847,23 +838,7 @@
                             {{ $profileSekolahs->sum(fn($item) => ($item->laptop?->baik ?? 0) + ($item->laptop?->rusak ?? 0)) }}
                         </x-table.cell>
 
-                        {{-- URUTAN 25: Chromebook --}}
-
-                        {{-- baik --}}
-                        <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->chromebook?->baik ?? 0) }}
-                        </x-table.cell>
-
-                        {{-- RUSAK --}}
-                        <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->chromebook?->rusak ?? 0) }}
-                        </x-table.cell>
-
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
-                            {{ $profileSekolahs->sum(fn($item) => ($item->chromebook?->baik ?? 0) + ($item->chromebook?->rusak ?? 0)) }}
-                        </x-table.cell>
-
-                        {{-- URUTAN 26: KOMPUTER --}}
+                        {{-- URUTAN 25: KOMPUTER --}}
 
                         {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
@@ -1116,9 +1091,6 @@
                         // 24. LAPTOP
                         $jmlLaptop = ($item->laptop?->baik ?? 0) + ($item->laptop?->rusak ?? 0);
 
-                        // 25. CHROMEBOOK
-                        $jmlChromebook = ($item->chromebook?->baik ?? 0) + ($item->chromebook?->rusak ?? 0);
-
                         // 26. KOMPUTER
                         $jmlKomputer = ($item->komputer?->baik ?? 0) + ($item->komputer?->rusak ?? 0);
                     @endphp
@@ -1280,13 +1252,8 @@
                         <x-table.cell
                             class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlLaptop }}</x-table.cell>
 
-                        {{-- URUTAN 25: CHROMEBOOK (3 kolom) --}}
-                        <x-table.cell class="text-center">{{ $item->chromebook?->baik ?? 0 }}</x-table.cell>
-                        <x-table.cell class="text-center">{{ $item->chromebook?->rusak ?? 0 }}</x-table.cell>
-                        <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlChromebook }}</x-table.cell>
 
-                        {{-- URUTAN 26: KOMPUTER (3 kolom) --}}
+                        {{-- URUTAN 25: KOMPUTER (3 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->komputer?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->komputer?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
@@ -1313,7 +1280,7 @@
                         </x-table.cell>
                     </x-table.row>
                 @empty
-                    <x-table.empty colspan="72" message="Belum ada data sarana sekolah" />
+                    <x-table.empty colspan="69" message="Belum ada data sarana sekolah" />
                 @endforelse
 
                 {{-- Baris ini disembunyikan (hidden) secara default, dan hanya

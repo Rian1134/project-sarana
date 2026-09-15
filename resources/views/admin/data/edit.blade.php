@@ -960,23 +960,6 @@
                             value="{{ old('komputer_rusak', $profileSekolah->komputer?->rusak ?? 0) }}" 
                             min="0"
                         />
-
-                        <x-form.input 
-                            name="chromebook_baik" 
-                            label="Chromebook Baik" 
-                            type="number" 
-                            required 
-                            value="{{ old('chromebook_baik', $profileSekolah->chromebook?->baik ?? 0) }}" 
-                            min="0"
-                        />
-                        <x-form.input 
-                            name="chromebook_rusak" 
-                            label="Chromebook Rusak" 
-                            type="number" 
-                            required 
-                            value="{{ old('chromebook_rusak', $profileSekolah->chromebook?->rusak ?? 0) }}" 
-                            min="0"
-                        />
                     </div>
                 </x-card>
             </div>

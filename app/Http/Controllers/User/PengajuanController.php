@@ -31,7 +31,6 @@ class PengajuanController extends Controller
             'kursi_guru' => ['label' => 'Kursi Guru', 'table' => 'kursi_gurus', 'tipe' => 'baik_rusak'],
             'komputer' => ['label' => 'Komputer', 'table' => 'komputers', 'tipe' => 'baik_rusak'],
             'laptop' => ['label' => 'Laptop', 'table' => 'laptops', 'tipe' => 'baik_rusak'],
-            'chromebook' => ['label' => 'Chromebook', 'table' => 'chromebooks', 'tipe' => 'baik_rusak'],
             'unit_kesehatan_sekolah' => ['label' => 'Unit Kesehatan Sekolah (UKS)', 'table' => 'unit_kesehatan_sekolahs', 'tipe' => 'ada_kondisi'],
             'lapangan_sekolah' => ['label' => 'Lapangan Sekolah', 'table' => 'lapangan_sekolahs', 'tipe' => 'ada_kondisi'],
             'pagar_sekolah' => ['label' => 'Pagar Sekolah', 'table' => 'pagar_sekolahs', 'tipe' => 'ada_kondisi'],

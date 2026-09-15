@@ -633,7 +633,6 @@
                         'mejaGuru' => 'Meja Guru',
                         'laptop' => 'Laptop',
                         'komputer' => 'Komputer/PC',
-                        'chromebook' => 'Chromebook',
                     ];
 
                     $chartFurniturLabel = [];
