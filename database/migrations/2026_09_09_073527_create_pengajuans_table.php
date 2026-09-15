@@ -17,8 +17,9 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
-            $table->string('pengajuan');
-            $table->json('perubahan');
+            $table->string('judul');
+            $table->json('pengajuan')->nullable(true);
+            $table->json('perubahan')->nullable(true);
             $table->string('status')->default('panding');
             $table->timestamps();
         });

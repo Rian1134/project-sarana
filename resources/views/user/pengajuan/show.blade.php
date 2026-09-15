@@ -3,68 +3,151 @@
 @section('title', 'Detail Pengajuan')
 
 @section('content')
-<div class="max-w-3xl mx-auto px-4 py-6">
-    <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Detail Pengajuan</h1>
+<div class="max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+    <div class="flex flex-col gap-4 sm:gap-6">
 
-    <x-card class="p-2 md:p-4">
-        <x-slot:header>
-            <div class="flex items-center justify-between px-2 md:px-4">
-                <span class="text-lg font-semibold">{{ $kategoriList[$pengajuan->pengajuan]['label'] ?? $pengajuan->pengajuan }}</span>
-                @if ($pengajuan->status === 'pending')
-                    <x-badge variant="warning" class="text-sm px-3 py-1">Menunggu Review</x-badge>
-                @elseif ($pengajuan->status === 'approved')
-                    <x-badge variant="success" class="text-sm px-3 py-1">Disetujui</x-badge>
-                @elseif ($pengajuan->status === 'rejected')
-                    <x-badge variant="danger" class="text-sm px-3 py-1">Ditolak</x-badge>
-                @else
-                    <x-badge variant="secondary" class="text-sm px-3 py-1">{{ ucfirst($pengajuan->status) }}</x-badge>
-                @endif
-            </div>
-        </x-slot:header>
+        @php
+            $kategoriKeys = is_array($pengajuan->pengajuan) ? $pengajuan->pengajuan : array_filter([$pengajuan->pengajuan]);
+            // Field tambahan lain (kalau ada) di luar kategori resmi — judul TIDAK
+            // termasuk di sini karena sudah punya kolom `judul` sendiri.
+            $tambahanKeys = array_keys(array_diff_key($pengajuan->perubahan ?? [], array_flip($kategoriKeys)));
 
-        <x-table striped>
-            <x-slot:head>
-                <tr>
-                    <x-table.heading>Field</x-table.heading>
-                    <x-table.heading>Nilai Baru</x-table.heading>
-                </tr>
-            </x-slot:head>
+            // Ikon per kategori, sama seperti di form create/edit, biar konsisten.
+            $ikonKategori = [
+                'ruang_kelas_baru' => 'bi-building-add',
+                'rehabilitasi_ruang_kelas' => 'bi-tools',
+                'ruang_kelas' => 'bi-door-closed',
+                'ruang_guru' => 'bi-easel2',
+                'ruang_kepala_sekolah' => 'bi-person-workspace',
+                'ruang_kantor_tu' => 'bi-briefcase',
+                'ruang_perpustakaan' => 'bi-book',
+                'lab_ipa' => 'bi-flask',
+                'lab_komputer' => 'bi-pc-display-horizontal',
+                'toilet_siswa' => 'bi-droplet-half',
+                'toilet_guru' => 'bi-droplet',
+                'meja_siswa' => 'bi-table',
+                'meja_guru' => 'bi-table',
+                'kursi_siswa' => 'bi-person',
+                'kursi_guru' => 'bi-person-badge',
+                'komputer' => 'bi-pc-display',
+                'laptop' => 'bi-laptop',
+                'chromebook' => 'bi-laptop',
+                'unit_kesehatan_sekolah' => 'bi-heart-pulse',
+                'lapangan_sekolah' => 'bi-flag',
+                'pagar_sekolah' => 'bi-border-all',
+                'air_bersih' => 'bi-droplet',
+                'rumah_dinas' => 'bi-house-door',
+                'rumah_ibadah' => 'bi-building',
+            ];
+        @endphp
 
-            @foreach ($pengajuan->perubahan as $field => $value)
-                <x-table.row>
-                    <x-table.cell class="text-gray-500 dark:text-gray-400">
-                        {{ \App\Http\Controllers\PengajuanController::fieldLabel($pengajuan->pengajuan, $field) }}
-                    </x-table.cell>
-                    <x-table.cell class="font-medium">
-                        {{ ucfirst(str_replace('_', ' ', (string) $value)) }}
-                    </x-table.cell>
-                </x-table.row>
-            @endforeach
-        </x-table>
+        {{-- Ringkasan Pengajuan --}}
+        <x-card class="p-2 md:p-4">
+            <x-slot:header>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div class="flex flex-col gap-1 min-w-0">
+                        <h1 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100 wrap-break-word">
+                            {{ $pengajuan->judul }}
+                        </h1>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                            Diajukan pada {{ $pengajuan->created_at->format('d M Y H:i') }}
+                        </span>
+                    </div>
+                    <div>
+                        @if ($pengajuan->status === 'pending')
+                            <x-badge variant="warning" class="text-sm px-3 py-1">Menunggu Review</x-badge>
+                        @elseif ($pengajuan->status === 'approved')
+                            <x-badge variant="success" class="text-sm px-3 py-1">Disetujui</x-badge>
+                        @elseif ($pengajuan->status === 'rejected')
+                            <x-badge variant="danger" class="text-sm px-3 py-1">Ditolak</x-badge>
+                        @else
+                            <x-badge variant="secondary" class="text-sm px-3 py-1">{{ ucfirst($pengajuan->status) }}</x-badge>
+                        @endif
+                    </div>
+                </div>
+            </x-slot:header>
 
-        <div class="mt-4 px-2 md:px-4 pb-2 flex flex-col gap-1">
-            <span class="text-sm text-gray-500 dark:text-gray-400">Diajukan pada</span>
-            <span class="text-sm font-medium text-gray-800 dark:text-gray-100">{{ $pengajuan->created_at->format('d M Y H:i') }}</span>
-        </div>
-
-        {{-- Kolom alasan_penolakan belum ada di migration yang diunggah.
-             Tambahkan kolom ini kalau alur reject admin butuh menyimpan alasan. --}}
-        @if ($pengajuan->status === 'rejected' && !empty($pengajuan->alasan_penolakan))
-            <div class="mt-4 px-2 md:px-4">
+            {{-- Kolom alasan_penolakan belum ada di migration yang diunggah.
+                 Tambahkan kolom ini kalau alur reject admin butuh menyimpan alasan. --}}
+            @if ($pengajuan->status === 'rejected' && !empty($pengajuan->alasan_penolakan))
                 <x-alert type="danger" :icon="true">
                     <span class="font-medium">Alasan Ditolak:</span> {{ $pengajuan->alasan_penolakan }}
                 </x-alert>
-            </div>
-        @endif
+            @endif
+        </x-card>
 
-        <x-slot:footer>
-            <div class="flex justify-end gap-2">
-                <x-button href="{{ route('user.pengajuan.index') }}" variant="light">Kembali</x-button>
-                @if ($pengajuan->status === 'pending')
-                    <x-button href="{{ route('user.pengajuan.edit', $pengajuan) }}" variant="warning">Edit</x-button>
+        {{-- Rincian Perubahan: satu kategori satu card, disusun dalam grid
+             responsif (1 kolom di HP, 2 di tablet, 3 di layar besar). --}}
+        <div>
+            <h2 class="text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase mb-2">
+                Rincian Perubahan
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach ($kategoriKeys as $kunci)
+                    @php $fields = $pengajuan->perubahan[$kunci] ?? []; @endphp
+                    @if (count($fields))
+                        <x-card class="p-2 md:p-4">
+                            <x-slot:header>
+                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-semibold">
+                                    <i class="bi {{ $ikonKategori[$kunci] ?? 'bi-tag' }}"></i>
+                                    {{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}
+                                </div>
+                            </x-slot:header>
+
+                            <dl class="divide-y divide-gray-100 dark:divide-gray-700">
+                                @foreach ($fields as $field => $value)
+                                    <div class="flex justify-between gap-3 py-2 text-sm">
+                                        <dt class="text-gray-500 dark:text-gray-400">
+                                            {{ \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) }}
+                                        </dt>
+                                        <dd class="font-medium text-right">
+                                            {{ ucfirst(str_replace('_', ' ', (string) $value)) }}
+                                        </dd>
+                                    </div>
+                                @endforeach
+                            </dl>
+                        </x-card>
+                    @endif
+                @endforeach
+
+                @if (count($tambahanKeys))
+                    <x-card class="p-2 md:p-4">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-semibold">
+                                <i class="bi bi-tag"></i>
+                                Perubahan Lainnya
+                            </div>
+                        </x-slot:header>
+
+                        <dl class="divide-y divide-gray-100 dark:divide-gray-700">
+                            @foreach ($tambahanKeys as $namaField)
+                                <div class="flex justify-between gap-3 py-2 text-sm">
+                                    <dt class="text-gray-500 dark:text-gray-400">
+                                        {{ ucwords(str_replace('_', ' ', $namaField)) }}
+                                    </dt>
+                                    <dd class="font-medium text-right">
+                                        {{ ucfirst(str_replace('_', ' ', (string) $pengajuan->perubahan[$namaField])) }}
+                                    </dd>
+                                </div>
+                            @endforeach
+                        </dl>
+                    </x-card>
                 @endif
             </div>
-        </x-slot:footer>
-    </x-card>
+        </div>
+
+        {{-- Tombol Aksi --}}
+        <div class="flex flex-col sm:flex-row sm:justify-end gap-2">
+            <x-button href="{{ route('user.pengajuan.index') }}" variant="light" class="w-full sm:w-auto justify-center">
+                Kembali
+            </x-button>
+            @if ($pengajuan->status === 'pending')
+                <x-button href="{{ route('user.pengajuan.edit', $pengajuan) }}" variant="warning" class="w-full sm:w-auto justify-center">
+                    Edit
+                </x-button>
+            @endif
+        </div>
+    </div>
 </div>
 @endsection

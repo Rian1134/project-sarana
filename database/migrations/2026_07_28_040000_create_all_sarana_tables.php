@@ -35,6 +35,20 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('jumlah_gurus', function (Blueprint $table) {
+            $table->id();
+            $table->string('pns')->nullable(true);
+            $table->string('pppk')->nullable(true);
+            $table->string('honor')->nullable(true);
+
+            $table->string('i');
+            $table->string('ii');
+            $table->string('iii');
+            $table->string('iv');
+            
+            $table->timestamps();
+        });
+
         // ============================================
         // 1. PAGAR SEKOLAH
         // ============================================

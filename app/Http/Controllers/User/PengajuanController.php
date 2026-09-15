@@ -7,7 +7,6 @@ use App\Models\Pengajuan;
 use App\Models\ProfileSekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class PengajuanController extends Controller
@@ -15,8 +14,6 @@ class PengajuanController extends Controller
     public static function kategoriList(): array
     {
         return [
-            'jumlah_siswa' => ['label' => 'Jumlah Siswa', 'table' => 'jumlah_siswas', 'tipe' => 'siswa_rombel'],
-            'jumlah_rombel' => ['label' => 'Jumlah Rombongan Belajar', 'table' => 'jumlah_rombels', 'tipe' => 'siswa_rombel'],
             'ruang_kelas_baru' => ['label' => 'Ruang Kelas Baru (RKB)', 'table' => 'ruang_kelas_barus', 'tipe' => 'jumlah'],
             'rehabilitasi_ruang_kelas' => ['label' => 'Rehabilitasi Ruang Kelas', 'table' => 'rehabilitasi_ruang_kelas', 'tipe' => 'jumlah'],
             'ruang_kelas' => ['label' => 'Ruang Kelas', 'table' => 'ruang_kelas', 'tipe' => 'baik_rusak'],
@@ -91,6 +88,34 @@ class PengajuanController extends Controller
     }
 
     /**
+     * Label kategori untuk ditampilkan di index/show.
+     */
+    public static function categoryLabel(string $kategori): string
+    {
+        return self::kategoriList()[$kategori]['label'] ?? $kategori;
+    }
+
+    /**
+     * Pisahkan data "perubahan" jadi dua: yang termasuk kategori resmi (di
+     * kategoriList), dan field tambahan bebas yang nama serta nilainya diketik
+     * sendiri oleh user (bukan kategori, cuma field lepas). Dipakai di index & show
+     * supaya field bebas ini tidak dianggap/dilabeli sebagai kategori.
+     */
+    public static function pisahkanFieldTambahan(array $pengajuanKeys, array $perubahan): array
+    {
+        $kategoriValid = array_keys(self::kategoriList());
+        $tambahan = [];
+
+        foreach ($perubahan as $key => $value) {
+            if (! in_array($key, $kategoriValid, true)) {
+                $tambahan[$key] = $value;
+            }
+        }
+
+        return $tambahan;
+    }
+
+    /**
      * Bangun rules validasi untuk field-field satu kategori (dipakai store & update).
      */
     private function rulesForKategori(string $kategori): array
@@ -138,26 +163,34 @@ class PengajuanController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * Mendukung mengajukan beberapa kategori sekaligus dalam satu submit: setiap
-     * kategori yang dicentang ("pilih") jadi satu baris Pengajuan tersendiri,
-     * dibungkus dalam satu transaksi supaya semuanya tersimpan atau tidak sama sekali.
+     * Satu kali submit = SATU baris Pengajuan, walaupun user mencentang beberapa
+     * kategori sekaligus. Kolom `pengajuan` menyimpan array key kategori resmi yang
+     * dipilih (di-cast ke array oleh model), kolom `perubahan` menyimpan data semua
+     * kategori itu sekaligus, dikelompokkan per key kategori.
+     *
+     * Judul Perubahan disimpan ke kolom `judul` sendiri (sesuai migration), BUKAN
+     * dicampur ke dalam `perubahan` — supaya tidak ikut muncul di rincian
+     * pembaruan per kategori.
      */
     public function store(Request $request)
     {
         $kategoriList = self::kategoriList();
 
         $request->validate([
-            'pilih' => ['required', 'array', 'min:1'],
-            'catatan' => ['nullable', 'string', 'max:2000'],
-        ], [
-            'pilih.required' => 'Pilih minimal satu kategori data yang ingin diajukan.',
-            'pilih.min' => 'Pilih minimal satu kategori data yang ingin diajukan.',
+            'judul_perubahan' => ['required', 'string', 'max:255'],
+            'pilih' => ['nullable', 'array'],
         ]);
 
         $dipilih = array_values(array_intersect(
             array_keys($request->input('pilih', [])),
             array_keys($kategoriList)
         ));
+
+        if (empty($dipilih)) {
+            return back()
+                ->withInput()
+                ->withErrors(['pilih' => 'Pilih minimal satu kategori data yang ingin diajukan.']);
+        }
 
         $rules = [];
         foreach ($dipilih as $key) {
@@ -166,29 +199,23 @@ class PengajuanController extends Controller
             }
         }
         $validated = $request->validate($rules);
-        $catatan = $request->input('catatan');
 
-        $profileSekolah = ProfileSekolah::where('user_id', Auth::user()->id)->firstOrFail();
+        $perubahan = $validated['perubahan'] ?? [];
 
-        DB::transaction(function () use ($dipilih, $validated, $profileSekolah) {
-            foreach ($dipilih as $key) {
-                Pengajuan::create([
-                    'user_id' => Auth::id(),
-                    'profile_sekolah_id' => $profileSekolah->id,
-                    'pengajuan' => $key,
-                    'perubahan' => $validated['perubahan'][$key],
-                    'status' => 'pending',
-                ]);
-            }
-        });
+        $profileSekolah = ProfileSekolah::where('user_id', Auth::id())->firstOrFail();
 
-        $jumlah = count($dipilih);
+        Pengajuan::create([
+            'user_id' => Auth::id(),
+            'profile_sekolah_id' => $profileSekolah->id,
+            'judul' => $request->input('judul_perubahan'),
+            'pengajuan' => $dipilih,
+            'perubahan' => $perubahan,
+            'status' => 'pending',
+        ]);
 
         return redirect()
             ->route('user.pengajuan.index')
-            ->with('success', $jumlah > 1
-                ? "{$jumlah} pengajuan berhasil dikirim, menunggu review admin."
-                : 'Pengajuan berhasil dikirim, menunggu review admin.');
+            ->with('success', 'Pengajuan berhasil dikirim, menunggu review admin.');
     }
 
     /**
@@ -206,11 +233,11 @@ class PengajuanController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * Kategori default-nya kategori yang sudah tersimpan, tapi bisa diganti lewat
-     * query `?kategori=...` (dropdown GET di view), lalu field-nya dirender ulang
-     * oleh Blade sesuai kategori itu.
+     * Menampilkan SEMUA kategori (sama seperti create), dengan kategori yang sudah
+     * ada di pengajuan ini otomatis tercentang & terisi nilainya. User bisa
+     * menambah kategori lain sekaligus di form yang sama.
      */
-    public function edit(Request $request, Pengajuan $pengajuan)
+    public function edit(Pengajuan $pengajuan)
     {
         $this->authorizeOwner($pengajuan);
         $this->guardEditable($pengajuan);
@@ -218,16 +245,17 @@ class PengajuanController extends Controller
         $kategoriList = self::kategoriList();
         $fieldsByTipe = self::fieldsByTipe();
 
-        $kategoriTerpilih = $request->query('kategori', $pengajuan->pengajuan);
-        if (! isset($kategoriList[$kategoriTerpilih])) {
-            $kategoriTerpilih = $pengajuan->pengajuan;
-        }
-
-        return view('user.pengajuan.edit', compact('pengajuan', 'kategoriList', 'fieldsByTipe', 'kategoriTerpilih'));
+        return view('user.pengajuan.edit', compact('pengajuan', 'kategoriList', 'fieldsByTipe'));
     }
 
     /**
      * Update the specified resource in storage.
+     *
+     * Data kategori yang sudah tersimpan sebelumnya TETAP dipertahankan; kategori
+     * yang dicentang ulang di form ini akan menimpa nilai lamanya (kalau memang
+     * diubah), dan kategori baru yang baru dicentang akan ditambahkan ke baris
+     * pengajuan yang sama — jadi hasil akhirnya gabungan data lama + data baru,
+     * bukan menggantikan semuanya.
      */
     public function update(Request $request, Pengajuan $pengajuan)
     {
@@ -236,16 +264,38 @@ class PengajuanController extends Controller
 
         $kategoriList = self::kategoriList();
 
-        $rules = ['pengajuan' => ['required', Rule::in(array_keys($kategoriList))]];
-        foreach ($this->rulesForKategori($request->input('pengajuan', $pengajuan->pengajuan)) as $field => $fieldRules) {
-            $rules["perubahan.$field"] = $fieldRules;
-        }
+        $request->validate([
+            'judul_perubahan' => ['required', 'string', 'max:255'],
+            'pilih' => ['nullable', 'array'],
+        ]);
 
+        $dipilih = array_values(array_intersect(
+            array_keys($request->input('pilih', [])),
+            array_keys($kategoriList)
+        ));
+
+        $rules = [];
+        foreach ($dipilih as $key) {
+            foreach ($this->rulesForKategori($key) as $field => $fieldRules) {
+                $rules["perubahan.$key.$field"] = $fieldRules;
+            }
+        }
         $validated = $request->validate($rules);
 
+        $perubahanBaru = $validated['perubahan'] ?? [];
+
+        // Gabungkan: data kategori/field lama yang tidak disentuh tetap ada, yang
+        // dicentang/diisi ulang di form ini menimpa nilai lamanya dengan yang baru.
+        $perubahanLama = $pengajuan->perubahan ?? [];
+        $perubahanGabungan = array_merge($perubahanLama, $perubahanBaru);
+
+        $kategoriLama = is_array($pengajuan->pengajuan) ? $pengajuan->pengajuan : array_filter([$pengajuan->pengajuan]);
+        $kategoriGabungan = array_values(array_unique(array_merge($kategoriLama, $dipilih)));
+
         $pengajuan->update([
-            'pengajuan' => $validated['pengajuan'],
-            'perubahan' => $validated['perubahan'],
+            'judul' => $request->input('judul_perubahan'),
+            'pengajuan' => $kategoriGabungan,
+            'perubahan' => $perubahanGabungan,
         ]);
 
         return redirect()
