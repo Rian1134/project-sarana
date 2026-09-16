@@ -40,6 +40,7 @@
             <x-slot:head>
                 <tr class="bg-gray-800 text-white">
                     <x-table.heading class="text-white! text-center">No</x-table.heading>
+                    <x-table.heading class="text-white!">Nama Sekolah</x-table.heading>
                     <x-table.heading class="text-white!">Nama</x-table.heading>
                     <x-table.heading class="text-white!">Email</x-table.heading>
                     <x-table.heading class="text-white!">Role</x-table.heading>
@@ -53,6 +54,7 @@
                         <x-table.cell class="text-center font-bold">
                             {{ $no }}
                         </x-table.cell>
+                        <x-table.cell>{{ $item->profileSekolah->nama_sekolah ?? '-' }}</x-table.cell>
                         <x-table.cell>{{ $item->name }}</x-table.cell>
                         <x-table.cell>{{ $item->email }}</x-table.cell>
                         <x-table.cell>
@@ -99,7 +101,7 @@
                         </x-table.cell>
                     </x-table.row>
                 @empty
-                    <x-table.empty colspan="5" message="Belum ada data user." />
+                    <x-table.empty colspan="6" message="Belum ada data user." />
                 @endforelse
             </tbody>
         </x-table>

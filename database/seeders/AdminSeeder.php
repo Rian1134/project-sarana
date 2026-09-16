@@ -22,7 +22,6 @@ use App\Models\RumahIbadah;
 use App\Models\LapanganSekolah;
 use App\Models\PagarSekolah;
 use App\Models\AirBersih;
-use App\Models\Chromebook;
 use App\Models\KursiSiswa;
 use App\Models\KursiGuru;
 use App\Models\MejaSiswa;
@@ -159,10 +158,6 @@ class AdminSeeder extends Seeder
                 'rusak' => 2,
             ],
             'laptop' => [
-                'baik' => 12,
-                'rusak' => 1,
-            ],
-            'chromebook' => [
                 'baik' => 12,
                 'rusak' => 1,
             ],
@@ -351,12 +346,6 @@ class AdminSeeder extends Seeder
             'profile_sekolah_id' => $profileSekolah->id,
             'baik' => $data['laptop']['baik'],
             'rusak' => $data['laptop']['rusak'],
-        ]);
-        
-        Chromebook::create([
-            'profile_sekolah_id' => $profileSekolah->id,
-            'baik' => $data['chromebook']['baik'],
-            'rusak' => $data['chromebook']['rusak'],
         ]);
 
         // 26. Komputer

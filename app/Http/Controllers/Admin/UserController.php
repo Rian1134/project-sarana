@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pengajuan;
 use App\Models\PeriodeLaporan;
 use App\Models\ProfileSekolah;
 use App\Models\User;
@@ -101,8 +102,46 @@ class UserController extends Controller
 
         $rkbPeriode = PeriodeLaporan::forKategori('rkb');
         $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
-        
-        return view('admin.user.show', compact('user', 'profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
+
+        // Riwayat pengajuan perubahan data yang pernah diajukan user ini,
+        // ditampilkan di tabel "Pengajuan Rencana Pembangunan" pada halaman show.
+        $pengajuans = Pengajuan::where('user_id', $id)
+            ->latest()
+            ->paginate(10);
+
+        // Data lengkap (tanpa pagination) untuk chart "Riwayat Pengajuan per Bulan":
+        // cuma kolom yang dibutuhkan (kategori + tanggal), difilter/diagregasi di
+        // sisi JS berdasarkan tahun & kategori yang dipilih di dropdown.
+        $pengajuanChartData = Pengajuan::where('user_id', $id)
+            ->get(['pengajuan', 'created_at'])
+            ->map(function ($item) {
+                $kategoriKeys = is_array($item->pengajuan) ? $item->pengajuan : array_filter([$item->pengajuan]);
+
+                return [
+                    'tahun' => (int) $item->created_at->format('Y'),
+                    'bulan' => (int) $item->created_at->format('n'), // 1-12
+                    'kategori' => array_values($kategoriKeys),
+                ];
+            })
+            ->values();
+
+        $tahunTersedia = $pengajuanChartData->pluck('tahun')->unique()->sortDesc()->values();
+        if ($tahunTersedia->isEmpty()) {
+            $tahunTersedia = collect([(int) now()->format('Y')]);
+        }
+
+        $kategoriListChart = \App\Http\Controllers\User\PengajuanController::kategoriList();
+
+        return view('admin.user.show', compact(
+            'user',
+            'profileSekolah',
+            'rkbPeriode',
+            'rehabilitasiPeriode',
+            'pengajuans',
+            'pengajuanChartData',
+            'tahunTersedia',
+            'kategoriListChart'
+        ));
     }
 
     /**

@@ -101,7 +101,7 @@ class DataController extends Controller
             'nomor_hp' => 'required|string|unique:profile_sekolahs,nomor_hp|max:15',
             'status_sekolah' => 'required|in:negeri,swasta',
             'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
-            'website' => 'required|string',
+            'website' => 'string|nullable',
 
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
             'pagar_kondisi' => 'nullable|in:baik,rusak,nihil',
@@ -391,7 +391,7 @@ class DataController extends Controller
             'nomor_hp' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp,'.$profileSekolah->id,
             'status_sekolah' => 'required|in:negeri,swasta',
             'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
-            'website' => 'required|string',
+            'website' => 'string|nullable',
 
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
             'pagar_kondisi' => 'nullable|in:baik,rusak,nihil',

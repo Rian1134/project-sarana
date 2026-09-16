@@ -205,6 +205,36 @@
 
             <x-card class="p-2 md:p-4">
                 <x-slot:header>
+                    <div class="flex flex-wrap items-center justify-between gap-3 px-2 md:px-0">
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                            <i class="bi bi-bar-chart-line"></i>
+                            Riwayat Pengajuan per Bulan
+                        </div>
+
+                        <div class="flex flex-wrap gap-2">
+                            <select id="riwayatTahunFilter" class="form-select form-select-sm w-auto">
+                                @foreach ($tahunTersedia as $tahun)
+                                    <option value="{{ $tahun }}">{{ $tahun }}</option>
+                                @endforeach
+                            </select>
+
+                            <select id="riwayatKategoriFilter" class="form-select form-select-sm w-auto">
+                                <option value="">Semua Kategori</option>
+                                @foreach ($kategoriListChart as $key => $kat)
+                                    <option value="{{ $key }}">{{ $kat['label'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </x-slot:header>
+
+                <div class="h-64 sm:h-80 px-2 md:px-0">
+                    <canvas id="riwayatPengajuanChart"></canvas>
+                </div>
+            </x-card>
+
+            <x-card class="p-2 md:p-4">
+                <x-slot:header>
                     <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-list-check"></i>
@@ -363,10 +393,11 @@
 
                             <x-table.cell class="text-right">
                                 <div class="flex justify-end gap-1">
-                                    <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info"
+                                    <x-button href="{{ route('pengajuan.show', $item) }}" variant="info"
                                         size="xs">
                                         <i class="bi bi-eye-fill"></i>
                                     </x-button>
+                                </div>
                             </x-table.cell>
                         </x-table.row>
                     @empty
@@ -814,6 +845,65 @@
                         },
                     },
                 };
+
+                // ============================================================
+                // Riwayat Pengajuan per Bulan — data mentah dikirim dari server,
+                // agregasi per bulan dihitung di sini sesuai tahun & kategori yang
+                // dipilih di dropdown (tanpa reload halaman).
+                // ============================================================
+                const riwayatPengajuanData = @json($pengajuanChartData);
+                const namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+                function hitungPerBulan(tahun, kategori) {
+                    const jumlah = new Array(12).fill(0);
+
+                    riwayatPengajuanData.forEach(function(item) {
+                        if (item.tahun !== tahun) return;
+                        if (kategori && !item.kategori.includes(kategori)) return;
+                        jumlah[item.bulan - 1]++;
+                    });
+
+                    return jumlah;
+                }
+
+                const riwayatTahunFilter = document.getElementById('riwayatTahunFilter');
+                const riwayatKategoriFilter = document.getElementById('riwayatKategoriFilter');
+                const riwayatCanvas = document.getElementById('riwayatPengajuanChart');
+
+                let riwayatChart = null;
+
+                function renderRiwayatChart() {
+                    const tahun = parseInt(riwayatTahunFilter.value, 10);
+                    const kategori = riwayatKategoriFilter.value;
+                    const data = hitungPerBulan(tahun, kategori);
+
+                    if (riwayatChart) {
+                        riwayatChart.data.datasets[0].data = data;
+                        riwayatChart.update();
+                        return;
+                    }
+
+                    riwayatChart = new Chart(riwayatCanvas, {
+                        type: 'bar',
+                        data: {
+                            labels: namaBulan,
+                            datasets: [{
+                                label: 'Jumlah Pengajuan',
+                                data: data,
+                                backgroundColor: '#2563eb',
+                                borderRadius: 6,
+                                maxBarThickness: 40,
+                            }],
+                        },
+                        options: barOptions,
+                    });
+                }
+
+                if (riwayatCanvas && riwayatTahunFilter && riwayatKategoriFilter) {
+                    renderRiwayatChart();
+                    riwayatTahunFilter.addEventListener('change', renderRiwayatChart);
+                    riwayatKategoriFilter.addEventListener('change', renderRiwayatChart);
+                }
 
                 new Chart(document.getElementById('rkbRehabChart'), {
                     type: 'bar',

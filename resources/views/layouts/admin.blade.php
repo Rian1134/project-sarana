@@ -87,11 +87,19 @@
                 <i class="bi bi-grid-1x2-fill text-base shrink-0"></i>
                 <span data-sidebar-label>Sarana</span>
             </a>
+
             <a href="{{ route('user.index') }}"
                 class="sidebar-link {{ request()->routeIs('user.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
                 @if (request()->routeIs('user.*')) aria-current="page" @endif>
                 <i class="bi bi-people-fill text-base shrink-0"></i>
                 <span data-sidebar-label>User</span>
+            </a>
+
+            <a href="{{ route('pengajuan.index') }}"
+                class="sidebar-link {{ request()->routeIs('pengajuan.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
+                @if (request()->routeIs('pengajuan.*')) aria-current="page" @endif>
+                <i class="bi bi-clipboard-data-fill text-base shrink-0"></i>
+                <span data-sidebar-label>Pengajuan</span>
             </a>
 
             {{-- Logout — dengan modal konfirmasi, selalu menempel di bawah --}}
@@ -160,8 +168,8 @@
             </x-navbar>
 
             {{-- ===== KONTEN UTAMA ===== --}}
-            <main class="flex-1 w-full">
-                <div class="p-3 sm:p-4 lg:p-6 max-w-[1600px] mx-auto flex flex-col gap-4">
+            <main class="flex-1 w-full min-w-0">
+                <div class="p-3 sm:p-4 lg:p-6 max-w-[1600px] mx-auto flex flex-col gap-4 min-w-0">
                     {{-- ============================================================
                          ALERT / FLASH MESSAGE — global, satu tempat untuk semua
                          halaman. Jangan taruh alert serupa lagi di masing-masing
