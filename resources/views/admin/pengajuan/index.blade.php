@@ -24,7 +24,7 @@
 
                 <x-card class="p-3">
                     <div class="flex items-start justify-between gap-2 mb-2">
-                        <p class="font-semibold text-gray-800 dark:text-gray-100 break-words">
+                        <p class="font-semibold text-gray-800 dark:text-gray-100 wrap-break-word">
                             {{ $item->judul }}
                         </p>
 
@@ -160,7 +160,7 @@
                             {{-- SEKOLAH & JUDUL --}}
                             <x-table.cell class="px-3 py-3 align-top">
                                 <div class="font-medium text-gray-800 dark:text-gray-100 wrap-break-word">{{ $item->judul }}</div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 break-words">
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 wrap-break-word">
                                     {{ $item->profileSekolah->nama_sekolah ?? '-' }} &middot; User #{{ $item->user_id }}
                                 </div>
                             </x-table.cell>

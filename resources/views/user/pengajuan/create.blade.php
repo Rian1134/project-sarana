@@ -49,18 +49,29 @@
                 'lab_komputer' => 'bi-pc-display-horizontal',
                 'toilet_siswa' => 'bi-droplet-half',
                 'toilet_guru' => 'bi-droplet',
-                'meja_siswa' => 'bi-table',
-                'meja_guru' => 'bi-table',
-                'kursi_siswa' => 'bi-person',
-                'kursi_guru' => 'bi-person-badge',
-                'komputer' => 'bi-pc-display',
-                'laptop' => 'bi-laptop',
                 'unit_kesehatan_sekolah' => 'bi-heart-pulse',
                 'lapangan_sekolah' => 'bi-flag',
                 'pagar_sekolah' => 'bi-border-all',
                 'air_bersih' => 'bi-droplet',
                 'rumah_dinas' => 'bi-house-door',
                 'rumah_ibadah' => 'bi-building',
+
+                // Update Kondisi: ikon sama dengan kategori "usul bangun"
+                // pasangannya (mis. ruang_guru_kondisi pakai ikon yang sama
+                // dengan ruang_guru), supaya user tetap gampang mengenali
+                // fasilitas mana yang dimaksud.
+                'ruang_guru_kondisi' => 'bi-easel2',
+                'ruang_kepala_sekolah_kondisi' => 'bi-person-workspace',
+                'ruang_kantor_tu_kondisi' => 'bi-briefcase',
+                'ruang_perpustakaan_kondisi' => 'bi-book',
+                'lab_ipa_kondisi' => 'bi-flask',
+                'lab_komputer_kondisi' => 'bi-pc-display-horizontal',
+                'unit_kesehatan_sekolah_kondisi' => 'bi-heart-pulse',
+                'lapangan_sekolah_kondisi' => 'bi-flag',
+                'pagar_sekolah_kondisi' => 'bi-border-all',
+                'air_bersih_kondisi' => 'bi-droplet',
+                'rumah_dinas_kondisi' => 'bi-house-door',
+                'rumah_ibadah_kondisi' => 'bi-building',
             ];
         @endphp
 
@@ -130,8 +141,6 @@
                     // ber-quote di dalam atribut Blade) supaya tidak ada masalah
                     // escaping tanda kutip yang bikin komponen x-form.* gagal render.
                     $oldPilih = old('pilih.' . $key);
-                    $oldAda = old('perubahan.' . $key . '.ada/tidak_ada');
-                    $oldKodisi = old('perubahan.' . $key . '.kodisi');
                 @endphp
 
                 {{-- Dibungkus <div data-kategori> (bukan atribut langsung di <x-card>)
@@ -158,35 +167,16 @@
                         </x-slot:header>
 
                         @if ($kat['tipe'] === 'ada_kondisi')
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="form-label">Keberadaan {{ $kat['label'] }}</label>
-                                    <div class="flex flex-wrap gap-4 mt-1">
-                                        <x-form.radio
-                                            name="perubahan[{{ $key }}][ada/tidak_ada]"
-                                            value="ada"
-                                            label="Ada"
-                                            :checked="$oldAda === 'ada'"
-                                        />
-                                        <x-form.radio
-                                            name="perubahan[{{ $key }}][ada/tidak_ada]"
-                                            value="tidak_ada"
-                                            label="Tidak Ada"
-                                            :checked="$oldAda === 'tidak_ada'"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <x-form.select
-                                        name="perubahan[{{ $key }}][kodisi]"
-                                        label="Kondisi"
-                                        placeholder="-- Pilih Kondisi --"
-                                        :options="['baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
-                                        :value="$oldKodisi"
-                                    />
-                                </div>
-                            </div>
+                            {{-- Rencana Pembangunan: mencentang/menambahkan kategori ini SUDAH
+                                 berarti "ingin membangun {{ $kat['label'] }}" — tidak perlu isi
+                                 status ada/tidak-ada atau kondisi apa pun lagi. --}}
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Kategori ini akan diajukan sebagai rencana pembangunan
+                                <strong>{{ $kat['label'] }}</strong> yang baru. Tidak ada isian
+                                tambahan yang perlu diisi — cukup pastikan kategori ini sudah
+                                ditambahkan di atas.
+                            </p>
                         @elseif ($kat['tipe'] === 'siswa_rombel')
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 @foreach ($fields as $field)
@@ -210,6 +200,22 @@
                                     min="0"
                                     :value="$oldJumlah"
                                 />
+                            </div>
+                        @elseif ($kat['tipe'] === 'update_kondisi')
+                            {{-- Update Kondisi: lapor kondisi TERKINI fasilitas yang sudah
+                                 ada (termasuk kalau sekarang rusak). Beda dengan ada_kondisi
+                                 di atas yang artinya "usul bangun baru". --}}
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                @foreach ($fields as $field)
+                                    @php $oldVal = old('perubahan.' . $key . '.' . $field['name']); @endphp
+                                    <x-form.select
+                                        name="perubahan[{{ $key }}][{{ $field['name'] }}]"
+                                        label="{{ $field['label'] }}"
+                                        placeholder="-- Pilih Kondisi --"
+                                        :options="$field['options']"
+                                        :value="$oldVal"
+                                    />
+                                @endforeach
                             </div>
                         @else {{-- baik_rusak --}}
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -255,46 +261,6 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Kalau radio "Tidak Ada" dipilih, kondisi otomatis dikunci ke "Nihil".
-            // Sengaja TIDAK memakai select.disabled = true, karena input yang disabled
-            // tidak ikut terkirim saat form di-submit (validasi server jadi gagal).
-            // Dikunci secara visual saja, nilainya tetap terkirim.
-            function setupConditionAuto(radioName, selectName) {
-                const radios = document.querySelectorAll(`input[name="${radioName}"]`);
-                const select = document.querySelector(`select[name="${selectName}"]`);
-                if (!select || radios.length === 0) return;
-
-                function lock() {
-                    select.value = 'nihil';
-                    select.setAttribute('aria-disabled', 'true');
-                    select.classList.add('opacity-60', 'pointer-events-none');
-                }
-                function unlock() {
-                    select.removeAttribute('aria-disabled');
-                    select.classList.remove('opacity-60', 'pointer-events-none');
-                    if (select.value === 'nihil') {
-                        select.value = '';
-                    }
-                }
-
-                radios.forEach(radio => {
-                    radio.addEventListener('change', function () {
-                        this.value === 'tidak_ada' ? lock() : unlock();
-                    });
-                });
-
-                const checked = document.querySelector(`input[name="${radioName}"]:checked`);
-                if (checked && checked.value === 'tidak_ada') {
-                    lock();
-                }
-            }
-
-            @foreach ($kategoriList as $key => $kat)
-                @if ($kat['tipe'] === 'ada_kondisi')
-                    setupConditionAuto('perubahan[{{ $key }}][ada/tidak_ada]', 'perubahan[{{ $key }}][kodisi]');
-                @endif
-            @endforeach
-
             // ---- Tambah / Hapus kategori lewat dropdown ----
             const form = document.getElementById('pengajuanForm');
             const select = document.getElementById('pilihKategoriSelect');

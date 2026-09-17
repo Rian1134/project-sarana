@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AirBersih;
 use App\Models\JumlahRombel;
 use App\Models\JumlahSiswa;
+use App\Models\JumlahGuru;
 use App\Models\Komputer;
 use App\Models\KursiGuru;
 use App\Models\KursiSiswa;
@@ -48,6 +49,7 @@ class DataController extends Controller
             'laptop',
             'komputer',
             'jumlahSiswa',
+            'jumlahGuru',
             'jumlahRombel',
             'ruangKelasBaru',
             'rehabilitasiRuangKelas',
@@ -69,13 +71,13 @@ class DataController extends Controller
         $rkbPeriode = PeriodeLaporan::forKategori('rkb');
         $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
 
-        return view('user.data.index', compact('profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
+        return view('user.profile.index', compact('profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
     }
 
     public function create()
     {
         if (ProfileSekolah::where('user_id', Auth::id())->exists()) {
-            return redirect()->route('user.data.index')
+            return redirect()->route('user.profile.index')
                 ->with('error', 'Anda sudah memiliki data. Maksimal 1 data per user.');
         }
 
@@ -88,7 +90,7 @@ class DataController extends Controller
     public function store(Request $request)
     {
         if (ProfileSekolah::where('user_id', Auth::id())->exists()) {
-            return redirect()->route('user.data.index')
+            return redirect()->route('user.profile.index')
                 ->with('error', 'Anda sudah memiliki data. Maksimal 1 data per user.');
         }
 
@@ -125,6 +127,15 @@ class DataController extends Controller
             'jumlah_rombel_vii' => 'required|integer|min:0',
             'jumlah_rombel_viii' => 'required|integer|min:0',
             'jumlah_rombel_ix' => 'required|integer|min:0',
+
+            'jumlah_guru_pns' => 'required|integer|min:0',
+            'jumlah_guru_pppk' => 'required|integer|min:0',
+            'jumlah_guru_honor' => 'required|integer|min:0',
+            'jumlah_guru_i' => 'required|integer|min:0',
+            'jumlah_guru_ii' => 'required|integer|min:0',
+            'jumlah_guru_iii' => 'required|integer|min:0',
+            'jumlah_guru_iv' => 'required|integer|min:0',
+            
             'rkb_jumlah' => 'required|integer|min:0',
             'rehabilitasi_jumlah' => 'required|integer|min:0',
             'ruang_kelas_baik' => 'required|integer|min:0',
@@ -221,6 +232,18 @@ class DataController extends Controller
                 'profile_sekolah_id' => $profileSekolah->id,
                 'baik' => $request->komputer_baik,
                 'rusak' => $request->komputer_rusak,
+            ]);
+
+            JumlahGuru::create([
+                'profile_sekolah_id' => $profileSekolah->id,
+                'pns' => $request->jumlah_guru_pns,
+                'pppk' => $request->jumlah_guru_pppk,
+                'honor' => $request->jumlah_guru_honor,
+        
+                'i' => $request->jumlah_guru_i,
+                'ii' => $request->jumlah_guru_ii,
+                'iii' => $request->jumlah_guru_iii,
+                'iv' => $request->jumlah_guru_iv,
             ]);
 
             JumlahSiswa::create([
@@ -337,7 +360,7 @@ class DataController extends Controller
     public function edit(ProfileSekolah $profileSekolah)
     {
         if ($profileSekolah->user_id !== Auth::id()) {
-            return redirect()->route('user.data.index')
+            return redirect()->route('user.profile.index')
                 ->with('error', 'Anda tidak memiliki akses untuk mengedit data ini.');
         }
 
@@ -350,6 +373,7 @@ class DataController extends Controller
             'mejaGuru',
             'laptop',
             'komputer',
+            'jumlahGuru',
             'jumlahSiswa',
             'jumlahRombel',
             'ruangKelasBaru',
@@ -378,11 +402,11 @@ class DataController extends Controller
     public function update(Request $request, ProfileSekolah $profileSekolah)
     {
         if ($profileSekolah->user_id !== Auth::id()) {
-            return redirect()->route('user.data.index')
+            return redirect()->route('user.profile.index')
                 ->with('error', 'Anda tidak memiliki akses untuk mengupdate data ini.');
         }
 
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [ 
             'nama_sekolah' => 'required|string|max:255',
             'NPSN' => 'required|string|max:20|unique:profile_sekolahs,NPSN,'.$profileSekolah->id,
             'alamat_sekolah' => 'required|string',
@@ -409,6 +433,15 @@ class DataController extends Controller
             'laptop_rusak' => 'required|integer|min:0',
             'komputer_baik' => 'required|integer|min:0',
             'komputer_rusak' => 'required|integer|min:0',
+
+            'jumlah_guru_pns' => 'required|integer|min:0',
+            'jumlah_guru_pppk' => 'required|integer|min:0',
+            'jumlah_guru_honor' => 'required|integer|min:0',
+            'jumlah_guru_i' => 'required|integer|min:0',
+            'jumlah_guru_ii' => 'required|integer|min:0',
+            'jumlah_guru_iii' => 'required|integer|min:0',
+            'jumlah_guru_iv' => 'required|integer|min:0',
+
             'jumlah_siswa_vii' => 'required|integer|min:0',
             'jumlah_siswa_viii' => 'required|integer|min:0',
             'jumlah_siswa_ix' => 'required|integer|min:0',
@@ -527,6 +560,18 @@ class DataController extends Controller
                     'rusak' => $request->komputer_rusak,
                 ]
             );
+
+            JumlahGuru::updateOrCreate([
+                'profile_sekolah_id' => $profileSekolah->id,
+                'pns' => $request->jumlah_guru_pns,
+                'pppk' => $request->jumlah_guru_pppk,
+                'honor' => $request->jumlah_guru_honor,
+        
+                'i' => $request->jumlah_guru_i,
+                'ii' => $request->jumlah_guru_ii,
+                'iii' => $request->jumlah_guru_iii,
+                'iv' => $request->jumlah_guru_iv,
+            ]);
 
             JumlahSiswa::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
@@ -685,6 +730,7 @@ class DataController extends Controller
             $profileSekolah->mejaGuru()->delete();
             $profileSekolah->laptop()->delete();
             $profileSekolah->komputer()->delete();
+            $profileSekolah->jumlahgGuru()->delete();
             $profileSekolah->jumlahSiswa()->delete();
             $profileSekolah->jumlahRombel()->delete();
             $profileSekolah->ruangKelasBaru()->delete();

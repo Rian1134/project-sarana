@@ -47,7 +47,8 @@
                     </x-slot:header>
 
                     <div class="flex flex-col gap-6">
-                        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 pb-4 border-b border-gray-200 dark:border-gray-700">
+                        <div
+                            class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 pb-4 border-b border-gray-200 dark:border-gray-700">
                             <x-avatar :name="$user->name" size="xl" />
 
                             <div class="text-center sm:text-left">
@@ -183,7 +184,8 @@
                                     Status Sekolah
                                 </label>
                                 <p class="text-base font-semibold">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                         {{ $profileSekolah->status_sekolah == 'negeri'
                                             ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
                                             : 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' }}">
@@ -197,7 +199,8 @@
                                     Akreditasi
                                 </label>
                                 <p class="text-base font-semibold">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                         {{ $profileSekolah->akreditasi == 'A'
                                             ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
                                             : ($profileSekolah->akreditasi == 'B'
@@ -205,9 +208,7 @@
                                                 : ($profileSekolah->akreditasi == 'C'
                                                     ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300'
                                                     : 'bg-gray-100 text-gray-800 dark:bg-gray-700/30 dark:text-gray-300')) }}">
-                                        {{ $profileSekolah->akreditasi == 'belum_terakreditasi'
-                                            ? 'Belum Terakreditasi'
-                                            : $profileSekolah->akreditasi }}
+                                        {{ $profileSekolah->akreditasi == 'belum_terakreditasi' ? 'Belum Terakreditasi' : $profileSekolah->akreditasi }}
                                     </span>
                                 </p>
                             </div>
@@ -218,9 +219,8 @@
                                 </label>
                                 <p class="text-base font-semibold text-gray-800 dark:text-gray-100">
                                     @if ($profileSekolah->website)
-                                        <a href="{{ $profileSekolah->website }}"
-                                           target="_blank"
-                                           class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
+                                        <a href="{{ $profileSekolah->website }}" target="_blank"
+                                            class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
                                             Kunjungi Laman
                                             <i class="bi bi-box-arrow-up-right text-base ms-1"></i>
                                         </a>
@@ -234,7 +234,8 @@
                                 <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
                                     Alamat Sekolah
                                 </label>
-                                <p class="text-base font-semibold text-gray-800 dark:text-gray-100 wrap-break-word hyphens-auto">
+                                <p
+                                    class="text-base font-semibold text-gray-800 dark:text-gray-100 wrap-break-word hyphens-auto">
                                     {{ $profileSekolah->alamat_sekolah }}
                                 </p>
                             </div>
@@ -264,14 +265,17 @@
                         <div class="mt-4 flex flex-wrap justify-end gap-2"></div>
                     </x-card>
                 @else
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                         <div class="flex flex-col items-center justify-center text-center py-6 sm:py-8 px-3 sm:px-4 h-full">
                             <div class="relative inline-block">
-                                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                                <div
+                                    class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-3 sm:mb-4">
                                     <i class="bi bi-building text-3xl sm:text-4xl text-blue-600 dark:text-blue-400"></i>
                                 </div>
 
-                                <div class="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-yellow-400 flex items-center justify-center shadow-lg">
+                                <div
+                                    class="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-yellow-400 flex items-center justify-center shadow-lg">
                                     <i class="bi bi-plus-lg text-white text-[8px] sm:text-xs"></i>
                                 </div>
                             </div>
@@ -285,7 +289,7 @@
                             </p>
 
                             <a href="{{ route('user.data.create') }}"
-                               class="inline-flex items-center px-4 sm:px-5 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm hover:shadow-md">
+                                class="inline-flex items-center px-4 sm:px-5 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm hover:shadow-md">
                                 <i class="bi bi-plus-lg me-1"></i>
                                 Tambah Data Sekolah
                             </a>
@@ -312,191 +316,243 @@
                         </div>
                     </x-slot:header>
 
-                    <x-table striped hover>
-                        <x-slot:head>
-                            <tr>
-                                <x-table.heading>Judul</x-table.heading>
-                                <x-table.heading>Perubahan</x-table.heading>
-                                <x-table.heading>Rincian Pembaruan</x-table.heading>
-                                <x-table.heading>Status</x-table.heading>
-                                <x-table.heading>Diajukan</x-table.heading>
-                                <x-table.heading class="text-right">Aksi</x-table.heading>
-                            </tr>
-                        </x-slot:head>
+                    @php
+                        // Satu tempat untuk memetakan status -> variant badge + labelnya,
+                        // supaya tidak perlu rantai @if panjang yang diulang di tampilan
+                        // mobile maupun desktop.
+                        $statusBadge = [
+                            'pending' => ['variant' => 'warning', 'label' => 'Menunggu Review'],
+                            'approved' => ['variant' => 'success', 'label' => 'Disetujui'],
+                            'rejected' => ['variant' => 'danger', 'label' => 'Ditolak'],
+                        ];
 
-                        @forelse ($pengajuans ?? [] as $item)
+                        // Rangkum tiap baris pengajuan sekali saja di sini, lalu dipakai
+                        // ulang oleh tampilan mobile & desktop di bawah — sebelumnya logika
+                        // parsing ini ditulis inline di tengah tabel sehingga sulit dibaca.
+                        //
+                        // PENTING: $pengajuans adalah objek paginator (LengthAwarePaginator),
+                        // BUKAN array item. Karena paginator implements Arrayable, memanggil
+                        // collect($pengajuans) akan memanggil ->toArray()-nya yang isinya
+                        // metadata paginasi (current_page, data, total, dst) — bukan daftar
+                        // item — sehingga closure map() di bawah menerima nilai campuran
+                        // (termasuk integer) alih-alih model Pengajuan. Harus lewat
+                        // ->items() dulu supaya benar-benar cuma daftar barisnya.
+                        $daftarPengajuan =
+                            isset($pengajuans) && method_exists($pengajuans, 'items')
+                                ? $pengajuans->items()
+                                : $pengajuans ?? [];
+
+                        $barisPengajuan = collect($daftarPengajuan)->map(function ($item) {
+                            $pengajuanData = $item->pengajuan ?? [];
+                            if (!is_array($pengajuanData)) {
+                                $pengajuanData = [$pengajuanData];
+                            }
+
+                            $kategoriKeys = [];
+                            foreach ($pengajuanData as $key => $value) {
+                                if (is_string($value)) {
+                                    $kategoriKeys[] = $value;
+                                } elseif (is_string($key)) {
+                                    $kategoriKeys[] = $key;
+                                }
+                            }
+                            $kategoriKeys = array_values(
+                                array_unique(array_filter($kategoriKeys, fn($v) => is_string($v) && $v !== '')),
+                            );
+
+                            $perubahanData = $item->perubahan ?? [];
+                            if (!is_array($perubahanData)) {
+                                $perubahanData = [];
+                            }
+
+                            $ratakan = function ($value) {
+                                if (is_array($value)) {
+                                    return implode(
+                                        ', ',
+                                        array_map(fn($v) => is_scalar($v) ? (string) $v : json_encode($v), $value),
+                                    );
+                                }
+                                return (string) $value;
+                            };
+
+                            // Tiap kategori jadi satu "chip": label kategori + rinciannya.
+                            // Kategori bertipe ada_kondisi memang tidak punya field — untuk
+                            // kategori seperti ini detailnya diisi teks fallback "Diajukan
+    // untuk dibangun" (bukan dibiarkan kosong) supaya rincian tetap
+                            // terlihat di tabel, bukan cuma nama kategorinya saja.
+                            $chips = [];
+                            foreach ($kategoriKeys as $kunci) {
+                                $nilai = $perubahanData[$kunci] ?? [];
+                                if (!is_array($nilai)) {
+                                    $nilai = ['value' => $nilai];
+                                }
+
+                                $detail = [];
+                                foreach ($nilai as $field => $value) {
+                                    $detail[] =
+                                        \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) .
+                                        ': ' .
+                                        $ratakan($value);
+                                }
+
+                                $chips[] = [
+                                    'label' => \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci),
+                                    'detail' => count($detail) ? implode(' · ', $detail) : 'Diajukan untuk dibangun',
+                                ];
+                            }
+
+                            // Field bebas di luar kategori resmi (kalau ada).
+                            foreach (array_diff_key($perubahanData, array_flip($kategoriKeys)) as $nama => $value) {
+                                $chips[] = [
+                                    'label' => ucwords(str_replace('_', ' ', $nama)),
+                                    'detail' => $ratakan($value),
+                                ];
+                            }
+
+                            return ['item' => $item, 'chips' => $chips];
+                        });
+                    @endphp
+
+                    {{-- MOBILE (< md): satu pengajuan = satu kartu, supaya tabel 5 kolom
+                         tidak memaksa scroll horizontal di layar sempit. --}}
+                    <div class="md:hidden flex flex-col gap-3 px-2">
+                        @forelse ($barisPengajuan as $baris)
                             @php
-                                $pengajuanData = $item->pengajuan ?? [];
-
-                                if (!is_array($pengajuanData)) {
-                                    $pengajuanData = [$pengajuanData];
-                                }
-
-                                $kategoriKeys = [];
-
-                                foreach ($pengajuanData as $key => $value) {
-                                    if (is_string($value)) {
-                                        $kategoriKeys[] = $value;
-                                    } elseif (is_string($key)) {
-                                        $kategoriKeys[] = $key;
-                                    }
-                                }
-
-                                $kategoriKeys = array_values(
-                                    array_unique(
-                                        array_filter(
-                                            $kategoriKeys,
-                                            fn ($value) => is_string($value) && $value !== ''
-                                        )
-                                    )
-                                );
-
-                                $perubahanData = $item->perubahan ?? [];
-
-                                if (!is_array($perubahanData)) {
-                                    $perubahanData = [];
-                                }
-
-                                $tambahanKeys = array_keys(
-                                    array_diff_key(
-                                        $perubahanData,
-                                        array_flip($kategoriKeys)
-                                    )
-                                );
+                                $item = $baris['item'];
+                                $badge = $statusBadge[$item->status] ?? [
+                                    'variant' => 'secondary',
+                                    'label' => ucfirst($item->status),
+                                ];
                             @endphp
 
-                            <x-table.row>
-                                <x-table.cell class="font-medium">
-                                    {{ $item->judul ?? '-' }}
-                                </x-table.cell>
+                            <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+                                <div class="flex items-start justify-between gap-2">
+                                    <p class="font-semibold text-gray-800 dark:text-gray-100 wrap-break-word">
+                                        {{ $item->judul ?? '-' }}
+                                    </p>
+                                    <x-badge :variant="$badge['variant']" class="shrink-0">
+                                        {{ $badge['label'] }}
+                                    </x-badge>
+                                </div>
 
-                                <x-table.cell>
-                                    <ul class="space-y-1">
-                                        @foreach ($kategoriKeys as $kunci)
-                                            <li>
-                                                {{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </x-table.cell>
+                                <div class="flex flex-wrap gap-1.5 mt-2">
+                                    @forelse ($baris['chips'] as $chip)
+                                        <span
+                                            class="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-300">
+                                            {{ $chip['label'] }}
+                                            @if ($chip['detail'] !== '')
+                                                <span class="font-semibold">{{ $chip['detail'] }}</span>
+                                            @endif
+                                        </span>
+                                    @empty
+                                        <span class="text-xs text-gray-400">Tidak ada rincian</span>
+                                    @endforelse
+                                </div>
 
-                                <x-table.cell>
-                                    <ul class="space-y-1 text-sm">
-                                        @foreach ($kategoriKeys as $kunci)
-                                            @php
-                                                $kategoriPerubahan = $perubahanData[$kunci] ?? [];
-
-                                                if (!is_array($kategoriPerubahan)) {
-                                                    $kategoriPerubahan = [
-                                                        'value' => $kategoriPerubahan
-                                                    ];
-                                                }
-                                            @endphp
-
-                                            <li>
-                                                @if (count($kategoriKeys) > 1)
-                                                    <div class="text-xs font-semibold text-gray-400 uppercase mb-1">
-                                                        {{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}
-                                                    </div>
-                                                @endif
-
-                                                <ul class="space-y-0.5 pl-2">
-                                                    @foreach ($kategoriPerubahan as $field => $value)
-                                                        @php
-                                                            if (is_array($value)) {
-                                                                $value = implode(
-                                                                    ', ',
-                                                                    array_map(
-                                                                        fn ($item) => is_scalar($item)
-                                                                            ? (string) $item
-                                                                            : json_encode($item),
-                                                                        $value
-                                                                    )
-                                                                );
-                                                            }
-                                                        @endphp
-
-                                                        <li>
-                                                            <span class="text-gray-500 dark:text-gray-400">
-                                                                {{ \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) }}:
-                                                            </span>
-
-                                                            <span class="font-medium">
-                                                                {{ $value }}
-                                                            </span>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
-                                            </li>
-                                        @endforeach
-
-                                        @foreach ($tambahanKeys as $namaField)
-                                            <li class="pt-1">
-                                                <span class="text-gray-500 dark:text-gray-400">
-                                                    {{ ucwords(str_replace('_', ' ', $namaField)) }}:
-                                                </span>
-
-                                                <span class="font-medium">
-                                                    {{ $perubahanData[$namaField] ?? '-' }}
-                                                </span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </x-table.cell>
-
-                                <x-table.cell>
-                                    @if ($item->status === 'pending')
-                                        <x-badge variant="warning">
-                                            Menunggu Review
-                                        </x-badge>
-                                    @elseif ($item->status === 'approved')
-                                        <x-badge variant="success">
-                                            Disetujui
-                                        </x-badge>
-                                    @elseif ($item->status === 'rejected')
-                                        <x-badge variant="danger">
-                                            Ditolak
-                                        </x-badge>
-                                    @else
-                                        <x-badge variant="secondary">
-                                            {{ ucfirst($item->status) }}
-                                        </x-badge>
-                                    @endif
-                                </x-table.cell>
-
-                                <x-table.cell>
-                                    {{ $item->created_at?->format('d M Y H:i') }}
-                                </x-table.cell>
-
-                                <x-table.cell class="text-right">
-                                    <div class="flex justify-end gap-1">
-                                        <x-button
-                                            href="{{ route('user.pengajuan.show', $item) }}"
-                                            variant="info"
-                                            size="xs"
-                                        >
+                                <div
+                                    class="flex items-center justify-between gap-2 mt-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                    <span class="text-xs text-gray-400">
+                                        {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
+                                    </span>
+                                    <div class="flex gap-1">
+                                        <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info"
+                                            size="xs">
                                             <i class="bi bi-eye-fill"></i>
                                         </x-button>
-
                                         @if ($item->status === 'pending')
-                                            <x-button
-                                                href="{{ route('user.pengajuan.edit', $item) }}"
-                                                variant="warning"
-                                                size="xs"
-                                            >
+                                            <x-button href="{{ route('user.pengajuan.edit', $item) }}" variant="warning"
+                                                size="xs">
                                                 <i class="bi bi-pencil-fill"></i>
                                             </x-button>
                                         @endif
                                     </div>
-                                </x-table.cell>
-                            </x-table.row>
+                                </div>
+                            </div>
                         @empty
-                            <x-table.empty
-                                colspan="5"
-                                message="Belum ada pengajuan perubahan data."
-                            />
+                            <p class="text-center text-sm text-gray-400 py-6">
+                                <i class="bi bi-inbox block text-2xl mb-1"></i>
+                                Belum ada pengajuan rencana pembangunan.
+                            </p>
                         @endforelse
-                    </x-table>
+                    </div>
+
+                    {{-- DESKTOP (>= md): kolom "Perubahan" dan "Rincian Pembaruan" yang dulu
+                         terpisah sekarang digabung jadi satu kolom berisi chip, karena
+                         kategori ada_kondisi tidak punya field sehingga kolom rincian lama
+                         sering tampil kosong dan menyisakan ruang mubazir. --}}
+                    <div class="hidden md:block">
+                        <x-table striped hover>
+                            <x-slot:head>
+                                <tr>
+                                    <x-table.heading>Judul</x-table.heading>
+                                    <x-table.heading>Rencana Diajukan</x-table.heading>
+                                    <x-table.heading class="whitespace-nowrap">Status</x-table.heading>
+                                    <x-table.heading class="whitespace-nowrap">Diajukan</x-table.heading>
+                                    <x-table.heading class="text-right">Aksi</x-table.heading>
+                                </tr>
+                            </x-slot:head>
+
+                            @forelse ($barisPengajuan as $baris)
+                                @php
+                                    $item = $baris['item'];
+                                    $badge = $statusBadge[$item->status] ?? [
+                                        'variant' => 'secondary',
+                                        'label' => ucfirst($item->status),
+                                    ];
+                                @endphp
+
+                                <x-table.row class="align-top">
+                                    <x-table.cell class="font-medium max-w-[16rem] wrap-break-word">
+                                        {{ $item->judul ?? '-' }}
+                                    </x-table.cell>
+
+                                    <x-table.cell>
+                                        <div class="flex flex-wrap gap-1.5">
+                                            @forelse ($baris['chips'] as $chip)
+                                                <span
+                                                    class="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-300">
+                                                    {{ $chip['label'] }}
+                                                    @if ($chip['detail'] !== '')
+                                                        <span class="font-semibold">{{ $chip['detail'] }}</span>
+                                                    @endif
+                                                </span>
+                                            @empty
+                                                <span class="text-xs text-gray-400">Tidak ada rincian</span>
+                                            @endforelse
+                                        </div>
+                                    </x-table.cell>
+
+                                    <x-table.cell class="whitespace-nowrap">
+                                        <x-badge :variant="$badge['variant']">
+                                            {{ $badge['label'] }}
+                                        </x-badge>
+                                    </x-table.cell>
+
+                                    <x-table.cell class="whitespace-nowrap text-gray-500 dark:text-gray-400">
+                                        {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
+                                    </x-table.cell>
+
+                                    <x-table.cell class="text-right">
+                                        <div class="flex justify-end gap-1">
+                                            <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info"
+                                                size="xs">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </x-button>
+
+                                            @if ($item->status === 'pending')
+                                                <x-button href="{{ route('user.pengajuan.edit', $item) }}"
+                                                    variant="warning" size="xs">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </x-button>
+                                            @endif
+                                        </div>
+                                    </x-table.cell>
+                                </x-table.row>
+                            @empty
+                                <x-table.empty colspan="5" message="Belum ada pengajuan rencana pembangunan." />
+                            @endforelse
+                        </x-table>
+                    </div>
 
                     @if (isset($pengajuans) && method_exists($pengajuans, 'links'))
                         <x-pagination :paginator="$pengajuans" class="mt-4" />
@@ -535,11 +591,8 @@
                                 Batal
                             </x-button>
 
-                            <form
-                                action="{{ route('user.data.destroy', $profileSekolah->id) }}"
-                                method="POST"
-                                class="inline"
-                            >
+                            <form action="{{ route('user.data.destroy', $profileSekolah->id) }}" method="POST"
+                                class="inline">
                                 @csrf
                                 @method('DELETE')
 
@@ -618,11 +671,7 @@
                     }
 
                     $chartFasilitas = [$countAda, $countTidakAda];
-                    $chartFasilitasKondisi = [
-                        $countKondisiBaik,
-                        $countKondisiRusak,
-                        $countKondisiNihil
-                    ];
+                    $chartFasilitasKondisi = [$countKondisiBaik, $countKondisiRusak, $countKondisiNihil];
 
                     $furnitur = [
                         'toiletSiswa' => 'Toilet Siswa',
@@ -645,10 +694,7 @@
                         $chartFurniturRusak[] = (int) ($profileSekolah->$rel?->rusak ?? 0);
                     }
 
-                    $chartFurniturTotal = [
-                        array_sum($chartFurniturBaik),
-                        array_sum($chartFurniturRusak)
-                    ];
+                    $chartFurniturTotal = [array_sum($chartFurniturBaik), array_sum($chartFurniturRusak)];
                 @endphp
 
                 <x-card>
@@ -703,6 +749,123 @@
 
                     <div class="mt-4 h-40 sm:h-48">
                         <canvas id="rkbRehabChart"></canvas>
+                    </div>
+                </x-card>
+
+                <x-card>
+                    <x-slot:header>
+                        <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                            <i class="bi bi-person-video3"></i>
+                            Jumlah Guru
+                        </div>
+                    </x-slot:header>
+
+                    <div class="flex flex-col gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {{-- Status Kepegawaian --}}
+                            <div>
+                                <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                    Status Kepegawaian
+                                </label>
+
+                                <div class="grid grid-cols-3 gap-2 mt-1">
+                                    <div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">PNS</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->jumlahGuru?->pns ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">PPPK</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->jumlahGuru?->pppk ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-violet-50 dark:bg-violet-900/20 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Honor</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->jumlahGuru?->honor ?? 0) }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                                            Total
+                                        </span>
+
+                                        <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
+                                            {{ (int) ($profileSekolah->jumlahGuru?->pns ?? 0) +
+                                                (int) ($profileSekolah->jumlahGuru?->pppk ?? 0) +
+                                                (int) ($profileSekolah->jumlahGuru?->honor ?? 0) }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 h-36 sm:h-40">
+                                    <canvas id="guruStatusChart"></canvas>
+                                </div>
+                            </div>
+
+                            {{-- Golongan --}}
+                            <div>
+                                <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                    Golongan
+                                </label>
+
+                                <div class="grid grid-cols-4 gap-2 mt-1">
+                                    <div class="bg-slate-50 dark:bg-slate-900/20 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Gol I</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->jumlahGuru?->i ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-slate-100 dark:bg-slate-900/30 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Gol II</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->jumlahGuru?->ii ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-slate-200 dark:bg-slate-900/40 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Gol III</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->jumlahGuru?->iii ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-slate-300 dark:bg-slate-900/50 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Gol IV</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->jumlahGuru?->iv ?? 0) }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                                            Total
+                                        </span>
+
+                                        <span class="text-sm font-bold text-slate-600 dark:text-slate-400">
+                                            {{ (int) ($profileSekolah->jumlahGuru?->i ?? 0) +
+                                                (int) ($profileSekolah->jumlahGuru?->ii ?? 0) +
+                                                (int) ($profileSekolah->jumlahGuru?->iii ?? 0) +
+                                                (int) ($profileSekolah->jumlahGuru?->iv ?? 0) }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 h-36 sm:h-40">
+                                    <canvas id="guruGolonganChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </x-card>
 
@@ -814,7 +977,8 @@
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-3 items-center">
                                 <div class="grid grid-cols-3 gap-2 sm:gap-4">
-                                    <div class="bg-sky-50 dark:bg-sky-900/20 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
+                                    <div
+                                        class="bg-sky-50 dark:bg-sky-900/20 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
                                         <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                                             Baik
                                         </p>
@@ -824,7 +988,8 @@
                                         </p>
                                     </div>
 
-                                    <div class="bg-rose-50 dark:bg-red-900/20 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
+                                    <div
+                                        class="bg-rose-50 dark:bg-red-900/20 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
                                         <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                                             Rusak
                                         </p>
@@ -834,7 +999,8 @@
                                         </p>
                                     </div>
 
-                                    <div class="bg-sky-100 dark:bg-sky-900/40 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
+                                    <div
+                                        class="bg-sky-100 dark:bg-sky-900/40 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
                                         <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                                             Total
                                         </p>
@@ -878,20 +1044,26 @@
 
                                 <div class="flex flex-wrap gap-1">
                                     @if ($ada === 'ada')
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
                                             Ada
                                         </span>
 
                                         <span @class([
                                             'inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium',
-                                            'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' => $kondisi == 'baik',
-                                            'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300' => $kondisi == 'rusak',
-                                            'bg-gray-100 text-gray-600 dark:bg-gray-700/40 dark:text-gray-300' => !in_array($kondisi, ['baik', 'rusak']),
+                                            'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' =>
+                                                $kondisi == 'baik',
+                                            'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300' =>
+                                                $kondisi == 'rusak',
+                                            'bg-gray-100 text-gray-600 dark:bg-gray-700/40 dark:text-gray-300' => !in_array(
+                                                $kondisi,
+                                                ['baik', 'rusak']),
                                         ])>
                                             {{ $kondisi == 'baik' ? 'Baik' : ($kondisi == 'rusak' ? 'Rusak' : 'Nihil') }}
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300">
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300">
                                             Tidak Ada
                                         </span>
                                     @endif
@@ -1010,6 +1182,45 @@
                         }
                     }
                 };
+
+                new Chart(document.getElementById('guruStatusChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['PNS', 'PPPK', 'Honor'],
+                        datasets: [{
+                            label: 'Jumlah Guru',
+                            data: [
+                                {{ (int) ($profileSekolah->jumlahGuru?->pns ?? 0) }},
+                                {{ (int) ($profileSekolah->jumlahGuru?->pppk ?? 0) }},
+                                {{ (int) ($profileSekolah->jumlahGuru?->honor ?? 0) }}
+                            ],
+                            backgroundColor: ['#2563eb', '#6366f1', '#8b5cf6'],
+                            borderRadius: 6,
+                            maxBarThickness: 48
+                        }]
+                    },
+                    options: barOptions
+                });
+
+                new Chart(document.getElementById('guruGolonganChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Gol I', 'Gol II', 'Gol III', 'Gol IV'],
+                        datasets: [{
+                            label: 'Jumlah Guru',
+                            data: [
+                                {{ (int) ($profileSekolah->jumlahGuru?->i ?? 0) }},
+                                {{ (int) ($profileSekolah->jumlahGuru?->ii ?? 0) }},
+                                {{ (int) ($profileSekolah->jumlahGuru?->iii ?? 0) }},
+                                {{ (int) ($profileSekolah->jumlahGuru?->iv ?? 0) }}
+                            ],
+                            backgroundColor: ['#94a3b8', '#64748b', '#475569', '#334155'],
+                            borderRadius: 6,
+                            maxBarThickness: 48
+                        }]
+                    },
+                    options: barOptions
+                });
 
                 new Chart(document.getElementById('rkbRehabChart'), {
                     type: 'bar',

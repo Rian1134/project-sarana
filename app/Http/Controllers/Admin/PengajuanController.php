@@ -7,30 +7,47 @@ use App\Models\Pengajuan;
 use App\Models\ProfileSekolah;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class PengajuanController extends Controller
 {
+    /**
+     * Gabungan SEMUA kategori dari kedua modul user (Koreksi Data +
+     * Rencana Pembangunan). HARUS SAMA PERSIS dengan gabungan
+     * User\PengajuanController::kategoriList() dan
+     * User\RencanaPembangunanController::kategoriList() — kalau salah satu
+     * berubah (kategori baru/dihapus/tipe berubah), method ini WAJIB
+     * disesuaikan juga, atau approve/reject bisa salah menerapkan perubahan.
+     */
     public static function kategoriList(): array
     {
         return [
+            // ---- dari User\PengajuanController (Koreksi Data) ----
+            'ruang_kelas' => ['label' => 'Ruang Kelas', 'table' => 'ruang_kelas', 'tipe' => 'baik_rusak'],
+            'toilet_siswa' => ['label' => 'Toilet Siswa', 'table' => 'toilet_siswas', 'tipe' => 'baik_rusak'],
+            'toilet_guru' => ['label' => 'Toilet Guru', 'table' => 'toilet_gurus', 'tipe' => 'baik_rusak'],
+
+            'ruang_guru_kondisi' => ['label' => 'Ruang Guru — Update Kondisi', 'table' => 'ruang_gurus', 'tipe' => 'update_kondisi'],
+            'ruang_kepala_sekolah_kondisi' => ['label' => 'Ruang Kepala Sekolah — Update Kondisi', 'table' => 'ruang_kepala_sekolahs', 'tipe' => 'update_kondisi'],
+            'ruang_kantor_tu_kondisi' => ['label' => 'Ruang Kantor TU — Update Kondisi', 'table' => 'ruang_kantor_tus', 'tipe' => 'update_kondisi'],
+            'ruang_perpustakaan_kondisi' => ['label' => 'Ruang Perpustakaan — Update Kondisi', 'table' => 'ruang_perpustakaans', 'tipe' => 'update_kondisi'],
+            'lab_ipa_kondisi' => ['label' => 'Laboratorium IPA — Update Kondisi', 'table' => 'lab_ipas', 'tipe' => 'update_kondisi'],
+            'lab_komputer_kondisi' => ['label' => 'Laboratorium Komputer — Update Kondisi', 'table' => 'lab_komputers', 'tipe' => 'update_kondisi'],
+            'unit_kesehatan_sekolah_kondisi' => ['label' => 'Unit Kesehatan Sekolah (UKS) — Update Kondisi', 'table' => 'unit_kesehatan_sekolahs', 'tipe' => 'update_kondisi'],
+            'lapangan_sekolah_kondisi' => ['label' => 'Lapangan Sekolah — Update Kondisi', 'table' => 'lapangan_sekolahs', 'tipe' => 'update_kondisi'],
+            'pagar_sekolah_kondisi' => ['label' => 'Pagar Sekolah — Update Kondisi', 'table' => 'pagar_sekolahs', 'tipe' => 'update_kondisi'],
+            'air_bersih_kondisi' => ['label' => 'Air Bersih — Update Kondisi', 'table' => 'air_bersihs', 'tipe' => 'update_kondisi'],
+            'rumah_dinas_kondisi' => ['label' => 'Rumah Dinas — Update Kondisi', 'table' => 'rumah_dinas', 'tipe' => 'update_kondisi'],
+            'rumah_ibadah_kondisi' => ['label' => 'Rumah Ibadah — Update Kondisi', 'table' => 'rumah_ibadahs', 'tipe' => 'update_kondisi'],
+
+            // ---- dari User\RencanaPembangunanController ----
             'ruang_kelas_baru' => ['label' => 'Ruang Kelas Baru (RKB)', 'table' => 'ruang_kelas_barus', 'tipe' => 'jumlah'],
             'rehabilitasi_ruang_kelas' => ['label' => 'Rehabilitasi Ruang Kelas', 'table' => 'rehabilitasi_ruang_kelas', 'tipe' => 'jumlah'],
-            'ruang_kelas' => ['label' => 'Ruang Kelas', 'table' => 'ruang_kelas', 'tipe' => 'baik_rusak'],
             'ruang_guru' => ['label' => 'Ruang Guru', 'table' => 'ruang_gurus', 'tipe' => 'ada_kondisi'],
             'ruang_kepala_sekolah' => ['label' => 'Ruang Kepala Sekolah', 'table' => 'ruang_kepala_sekolahs', 'tipe' => 'ada_kondisi'],
             'ruang_kantor_tu' => ['label' => 'Ruang Kantor TU', 'table' => 'ruang_kantor_tus', 'tipe' => 'ada_kondisi'],
             'ruang_perpustakaan' => ['label' => 'Ruang Perpustakaan', 'table' => 'ruang_perpustakaans', 'tipe' => 'ada_kondisi'],
             'lab_ipa' => ['label' => 'Laboratorium IPA', 'table' => 'lab_ipas', 'tipe' => 'ada_kondisi'],
             'lab_komputer' => ['label' => 'Laboratorium Komputer', 'table' => 'lab_komputers', 'tipe' => 'ada_kondisi'],
-            'toilet_siswa' => ['label' => 'Toilet Siswa', 'table' => 'toilet_siswas', 'tipe' => 'baik_rusak'],
-            'toilet_guru' => ['label' => 'Toilet Guru', 'table' => 'toilet_gurus', 'tipe' => 'baik_rusak'],
-            'meja_siswa' => ['label' => 'Meja Siswa', 'table' => 'meja_siswas', 'tipe' => 'baik_rusak'],
-            'meja_guru' => ['label' => 'Meja Guru', 'table' => 'meja_gurus', 'tipe' => 'baik_rusak'],
-            'kursi_siswa' => ['label' => 'Kursi Siswa', 'table' => 'kursi_siswas', 'tipe' => 'baik_rusak'],
-            'kursi_guru' => ['label' => 'Kursi Guru', 'table' => 'kursi_gurus', 'tipe' => 'baik_rusak'],
-            'komputer' => ['label' => 'Komputer', 'table' => 'komputers', 'tipe' => 'baik_rusak'],
-            'laptop' => ['label' => 'Laptop', 'table' => 'laptops', 'tipe' => 'baik_rusak'],
             'unit_kesehatan_sekolah' => ['label' => 'Unit Kesehatan Sekolah (UKS)', 'table' => 'unit_kesehatan_sekolahs', 'tipe' => 'ada_kondisi'],
             'lapangan_sekolah' => ['label' => 'Lapangan Sekolah', 'table' => 'lapangan_sekolahs', 'tipe' => 'ada_kondisi'],
             'pagar_sekolah' => ['label' => 'Pagar Sekolah', 'table' => 'pagar_sekolahs', 'tipe' => 'ada_kondisi'],
@@ -41,12 +58,13 @@ class PengajuanController extends Controller
     }
 
     /**
-     * Definisi field per tipe, disesuaikan dengan kolom asli tiap tabel sarana.
-     * Dirender langsung oleh Blade di view create/edit (bukan JS), dan dipakai
-     * fieldLabel() untuk menerjemahkan key JSON `perubahan` jadi label yang enak
-     * dibaca di index/show. Nama field di sini SAMA PERSIS dengan nama kolom
-     * asli di tabel sarana (sudah dikonfirmasi lewat Model: baik/rusak,
-     * ada/tidak_ada, kodisi, jumlah) — dipakai juga oleh terapkanPerubahan().
+     * HARUS SAMA PERSIS (gabungan) dengan fieldsByTipe() di kedua controller user.
+     *
+     * - ada_kondisi: KOSONG SENGAJA — "usul bangun baru", nilai baik/ada
+     *   ditetapkan otomatis saat approve (lihat terapkanAdaKondisi()).
+     * - update_kondisi: field 'kodisi' — lapor kondisi TERKINI fasilitas yang
+     *   sudah ada (termasuk "Rusak"); nilainya DIBACA dari input user
+     *   (lihat terapkanUpdateKondisi()), bukan ditetapkan otomatis.
      */
     public static function fieldsByTipe(): array
     {
@@ -55,17 +73,12 @@ class PengajuanController extends Controller
                 ['name' => 'baik', 'label' => 'Kondisi Baik', 'type' => 'number'],
                 ['name' => 'rusak', 'label' => 'Kondisi Rusak', 'type' => 'number'],
             ],
-            'siswa_rombel' => [
-                ['name' => 'vii', 'label' => 'Kelas VII', 'type' => 'number'],
-                ['name' => 'viii', 'label' => 'Kelas VIII', 'type' => 'number'],
-                ['name' => 'ix', 'label' => 'Kelas IX', 'type' => 'number'],
-            ],
             'jumlah' => [
                 ['name' => 'jumlah', 'label' => 'Jumlah', 'type' => 'number'],
             ],
-            'ada_kondisi' => [
-                ['name' => 'ada/tidak_ada', 'label' => 'Status', 'type' => 'select', 'options' => ['ada' => 'Ada', 'tidak_ada' => 'Tidak Ada']],
-                ['name' => 'kodisi', 'label' => 'Kondisi', 'type' => 'select', 'options' => ['baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']],
+            'ada_kondisi' => [],
+            'update_kondisi' => [
+                ['name' => 'kodisi', 'label' => 'Kondisi Saat Ini', 'type' => 'select', 'options' => ['baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']],
             ],
         ];
     }
@@ -127,13 +140,6 @@ class PengajuanController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * FIX: sebelumnya method ini menerima string $id, membuat query builder
-     * tanpa pernah dieksekusi (tidak ada ->first()/->firstOrFail()), dan
-     * mengembalikan view 'admin.pengajuan.index' (bukan view show). Sekarang
-     * pakai route model binding (konsisten dengan User\PengajuanController)
-     * supaya otomatis 404 kalau id tidak ditemukan, dan mengembalikan view
-     * show yang benar.
      */
     public function show(Pengajuan $pengajuan)
     {
@@ -187,12 +193,11 @@ class PengajuanController extends Controller
     /**
      * Terapkan seluruh kategori yang diajukan ke tabel sarana terkait.
      *
-     * Relasi sarana di ProfileSekolah (ruangKelas(), kursiSiswa(), dst) diambil
-     * SECARA GENERIK dari key kategori lewat Str::camel() — bukan di-hardcode
-     * satu-satu — karena penamaannya sudah konsisten (dicek manual untuk
-     * semua 23 kategori). Kalau suatu saat ada kategori baru yang nama
-     * relasinya tidak mengikuti pola ini, method ini akan MELEWATI (skip)
-     * kategori itu dengan aman (lihat method_exists check), bukan error.
+     * Relasi sarana di ProfileSekolah diambil SECARA GENERIK dari key kategori
+     * lewat Str::camel() — untuk kategori *_kondisi, akhiran "_kondisi" DIBUANG
+     * dulu sebelum di-camel-kan, karena relasinya menunjuk ke tabel sarana yang
+     * SAMA dengan kategori ada_kondisi/baik_rusak pasangannya (contoh:
+     * 'ruang_guru_kondisi' & 'ruang_guru' sama-sama relasi ruangGuru()).
      */
     private function terapkanPerubahan(Pengajuan $pengajuan): void
     {
@@ -207,15 +212,18 @@ class PengajuanController extends Controller
         $kategoriList = self::kategoriList();
 
         foreach ($kategoriTerpilih as $kategori) {
-            $data = $perubahan[$kategori] ?? null;
-
             // Field tambahan bebas (di luar kategoriList) tidak punya tabel
             // sarana tujuan — sengaja dilewati, bukan error.
-            if (! $data || ! isset($kategoriList[$kategori])) {
+            if (! isset($kategoriList[$kategori])) {
                 continue;
             }
 
-            $relasi = Str::camel($kategori);
+            $data = $perubahan[$kategori] ?? [];
+
+            $namaRelasi = Str::endsWith($kategori, '_kondisi')
+                ? Str::beforeLast($kategori, '_kondisi')
+                : $kategori;
+            $relasi = Str::camel($namaRelasi);
 
             if (! method_exists($profileSekolah, $relasi)) {
                 continue;
@@ -227,7 +235,8 @@ class PengajuanController extends Controller
 
             match ($kategoriList[$kategori]['tipe']) {
                 'baik_rusak' => $this->terapkanBaikRusak($sarana, $data),
-                'ada_kondisi' => $this->terapkanAdaKondisi($sarana, $data),
+                'ada_kondisi' => $this->terapkanAdaKondisi($sarana),
+                'update_kondisi' => $this->terapkanUpdateKondisi($sarana, $data),
                 'jumlah' => $this->terapkanJumlah($profileSekolah, $kategori, $sarana, $data),
                 default => null,
             };
@@ -252,20 +261,35 @@ class PengajuanController extends Controller
     }
 
     /**
-     * ada_kondisi: field status "ada/tidak_ada" & "kodisi" merepresentasikan
-     * kondisi TERKINI (bukan angka kumulatif) — jadi nilai baru MENGGANTIKAN
-     * nilai lama, bukan ditambah/dikurang.
+     * ada_kondisi: form user (Rencana Pembangunan) TIDAK mengumpulkan field
+     * apapun — mencentang kategori ini SUDAH berarti "usul dibangun". Jadi
+     * begitu admin approve, statusnya otomatis diset "ada" dengan kondisi
+     * "baik" (fasilitas baru yang baru saja terwujud), BUKAN dibaca dari
+     * input user (karena memang tidak ada inputnya).
      */
-    private function terapkanAdaKondisi($sarana, array $data): void
+    private function terapkanAdaKondisi($sarana): void
     {
-        if (array_key_exists('ada/tidak_ada', $data)) {
-            $sarana->{'ada/tidak_ada'} = $data['ada/tidak_ada'];
-        }
+        $sarana->{'ada/tidak_ada'} = 'ada';
+        $sarana->kodisi = 'baik';
+        $sarana->save();
+    }
 
+    /**
+     * update_kondisi: kebalikan dari ada_kondisi — ini buat fasilitas yang
+     * SUDAH ADA, user melaporkan kondisi terkininya (termasuk "Rusak").
+     * Nilai kodisi DIBACA LANGSUNG dari input user dan MENGGANTIKAN
+     * (bukan menambah/mengurangi) nilai lama, karena fasilitas jenis ini
+     * cuma satu unit per sekolah, bukan stok berjumlah banyak seperti
+     * baik_rusak. Status ada/tidak_ada juga dipastikan "ada", karena
+     * melaporkan kondisi cuma masuk akal kalau fasilitasnya memang sudah ada.
+     */
+    private function terapkanUpdateKondisi($sarana, array $data): void
+    {
         if (array_key_exists('kodisi', $data)) {
             $sarana->kodisi = $data['kodisi'];
         }
 
+        $sarana->{'ada/tidak_ada'} = 'ada';
         $sarana->save();
     }
 

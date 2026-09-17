@@ -6,78 +6,84 @@ use App\Http\Controllers\Controller;
 use App\Models\Pengajuan;
 use App\Models\ProfileSekolah;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 /**
- * Modul "Koreksi Data" (Pengajuan Perubahan Data). Berpasangan dengan
- * RencanaPembangunanController — keduanya sama-sama pakai tabel `pengajuans`,
- * dibedakan lewat kategori mana yang dipilih (lihat kategoriList() di masing-
- * masing controller, tidak saling tumpang tindih key-nya).
+ * Modul "Rencana Pembangunan". Berpasangan dengan User\PengajuanController
+ * (modul "Koreksi Data" / update kondisi) — keduanya sama-sama pakai tabel
+ * `pengajuans`, dibedakan lewat kategori mana yang dipilih (lihat
+ * kategoriList() di masing-masing controller, tidak saling tumpang tindih
+ * key-nya dengan punya PengajuanController).
+ *
+ * Kategori di sini semuanya soal USUL PEMBANGUNAN BARU — bukan koreksi/laporan
+ * kondisi data yang sudah ada:
+ *   - jumlah        → RKB & Rehabilitasi Ruang Kelas (berapa unit yang diusulkan)
+ *   - ada_kondisi    → semua ruangan/fasilitas lain (Ruang Guru, Perpustakaan,
+ *                      dst) — SENGAJA TANPA FIELD sama sekali. Mencentang/
+ *                      menambahkan kategori ini di form SUDAH berarti "ingin
+ *                      membangun fasilitas ini"; begitu admin approve, statusnya
+ *                      otomatis di-set "ada" + kondisi "baik" (lihat
+ *                      Admin\PengajuanController::terapkanAdaKondisi()).
  */
-class PengajuanController extends Controller
+class RencanaPembangunanController extends Controller
 {
     public static function kategoriList(): array
     {
         return [
-            'ruang_kelas' => ['label' => 'Ruang Kelas', 'table' => 'ruang_kelas', 'tipe' => 'baik_rusak'],
-            'toilet_siswa' => ['label' => 'Toilet Siswa', 'table' => 'toilet_siswas', 'tipe' => 'baik_rusak'],
-            'toilet_guru' => ['label' => 'Toilet Guru', 'table' => 'toilet_gurus', 'tipe' => 'baik_rusak'],
-            'ruang_guru_kondisi' => ['label' => 'Ruang Guru — Update Kondisi', 'table' => 'ruang_gurus', 'tipe' => 'update_kondisi'],
-            'ruang_kepala_sekolah_kondisi' => ['label' => 'Ruang Kepala Sekolah — Update Kondisi', 'table' => 'ruang_kepala_sekolahs', 'tipe' => 'update_kondisi'],
-            'ruang_kantor_tu_kondisi' => ['label' => 'Ruang Kantor TU — Update Kondisi', 'table' => 'ruang_kantor_tus', 'tipe' => 'update_kondisi'],
-            'ruang_perpustakaan_kondisi' => ['label' => 'Ruang Perpustakaan — Update Kondisi', 'table' => 'ruang_perpustakaans', 'tipe' => 'update_kondisi'],
-            'lab_ipa_kondisi' => ['label' => 'Laboratorium IPA — Update Kondisi', 'table' => 'lab_ipas', 'tipe' => 'update_kondisi'],
-            'lab_komputer_kondisi' => ['label' => 'Laboratorium Komputer — Update Kondisi', 'table' => 'lab_komputers', 'tipe' => 'update_kondisi'],
-            'unit_kesehatan_sekolah_kondisi' => ['label' => 'Unit Kesehatan Sekolah (UKS) — Update Kondisi', 'table' => 'unit_kesehatan_sekolahs', 'tipe' => 'update_kondisi'],
-            'lapangan_sekolah_kondisi' => ['label' => 'Lapangan Sekolah — Update Kondisi', 'table' => 'lapangan_sekolahs', 'tipe' => 'update_kondisi'],
-            'pagar_sekolah_kondisi' => ['label' => 'Pagar Sekolah — Update Kondisi', 'table' => 'pagar_sekolahs', 'tipe' => 'update_kondisi'],
-            'air_bersih_kondisi' => ['label' => 'Air Bersih — Update Kondisi', 'table' => 'air_bersihs', 'tipe' => 'update_kondisi'],
-            'rumah_dinas_kondisi' => ['label' => 'Rumah Dinas — Update Kondisi', 'table' => 'rumah_dinas', 'tipe' => 'update_kondisi'],
-            'rumah_ibadah_kondisi' => ['label' => 'Rumah Ibadah — Update Kondisi', 'table' => 'rumah_ibadahs', 'tipe' => 'update_kondisi'],
+            'ruang_kelas_baru' => ['label' => 'Ruang Kelas Baru (RKB)', 'table' => 'ruang_kelas_barus', 'tipe' => 'jumlah'],
+            'rehabilitasi_ruang_kelas' => ['label' => 'Rehabilitasi Ruang Kelas', 'table' => 'rehabilitasi_ruang_kelas', 'tipe' => 'jumlah'],
+            'ruang_guru' => ['label' => 'Ruang Guru', 'table' => 'ruang_gurus', 'tipe' => 'ada_kondisi'],
+            'ruang_kepala_sekolah' => ['label' => 'Ruang Kepala Sekolah', 'table' => 'ruang_kepala_sekolahs', 'tipe' => 'ada_kondisi'],
+            'ruang_kantor_tu' => ['label' => 'Ruang Kantor TU', 'table' => 'ruang_kantor_tus', 'tipe' => 'ada_kondisi'],
+            'ruang_perpustakaan' => ['label' => 'Ruang Perpustakaan', 'table' => 'ruang_perpustakaans', 'tipe' => 'ada_kondisi'],
+            'lab_ipa' => ['label' => 'Laboratorium IPA', 'table' => 'lab_ipas', 'tipe' => 'ada_kondisi'],
+            'lab_komputer' => ['label' => 'Laboratorium Komputer', 'table' => 'lab_komputers', 'tipe' => 'ada_kondisi'],
+            'unit_kesehatan_sekolah' => ['label' => 'Unit Kesehatan Sekolah (UKS)', 'table' => 'unit_kesehatan_sekolahs', 'tipe' => 'ada_kondisi'],
+            'lapangan_sekolah' => ['label' => 'Lapangan Sekolah', 'table' => 'lapangan_sekolahs', 'tipe' => 'ada_kondisi'],
+            'pagar_sekolah' => ['label' => 'Pagar Sekolah', 'table' => 'pagar_sekolahs', 'tipe' => 'ada_kondisi'],
+            'air_bersih' => ['label' => 'Air Bersih', 'table' => 'air_bersihs', 'tipe' => 'ada_kondisi'],
+            'rumah_dinas' => ['label' => 'Rumah Dinas', 'table' => 'rumah_dinas', 'tipe' => 'ada_kondisi'],
+            'rumah_ibadah' => ['label' => 'Rumah Ibadah', 'table' => 'rumah_ibadahs', 'tipe' => 'ada_kondisi'],
         ];
     }
 
     /**
-     * Ikon Bootstrap Icons per kategori, dipakai di view create/edit.
+     * Ikon Bootstrap Icons per kategori, dipakai di view create/edit/show.
      */
     public static function ikonKategori(): array
     {
         return [
-            'ruang_kelas' => 'bi-door-closed',
-            'toilet_siswa' => 'bi-droplet-half',
-            'toilet_guru' => 'bi-droplet',
-            'ruang_guru_kondisi' => 'bi-easel2',
-            'ruang_kepala_sekolah_kondisi' => 'bi-person-workspace',
-            'ruang_kantor_tu_kondisi' => 'bi-briefcase',
-            'ruang_perpustakaan_kondisi' => 'bi-book',
-            'lab_ipa_kondisi' => 'bi-flask',
-            'lab_komputer_kondisi' => 'bi-pc-display-horizontal',
-            'unit_kesehatan_sekolah_kondisi' => 'bi-heart-pulse',
-            'lapangan_sekolah_kondisi' => 'bi-flag',
-            'pagar_sekolah_kondisi' => 'bi-border-all',
-            'air_bersih_kondisi' => 'bi-droplet',
-            'rumah_dinas_kondisi' => 'bi-house-door',
-            'rumah_ibadah_kondisi' => 'bi-building',
+            'ruang_kelas_baru' => 'bi-building-add',
+            'rehabilitasi_ruang_kelas' => 'bi-tools',
+            'ruang_guru' => 'bi-easel2',
+            'ruang_kepala_sekolah' => 'bi-person-workspace',
+            'ruang_kantor_tu' => 'bi-briefcase',
+            'ruang_perpustakaan' => 'bi-book',
+            'lab_ipa' => 'bi-flask',
+            'lab_komputer' => 'bi-pc-display-horizontal',
+            'unit_kesehatan_sekolah' => 'bi-heart-pulse',
+            'lapangan_sekolah' => 'bi-flag',
+            'pagar_sekolah' => 'bi-border-all',
+            'air_bersih' => 'bi-droplet',
+            'rumah_dinas' => 'bi-house-door',
+            'rumah_ibadah' => 'bi-building',
         ];
     }
 
     /**
-     * Definisi field per tipe. `update_kondisi` cuma satu field: kondisi
-     * terkini fasilitas yang sudah ada (termasuk pilihan "Rusak" untuk lapor
-     * kerusakan). Berbeda dengan `ada_kondisi` milik RencanaPembangunanController
-     * yang memang sengaja TIDAK punya field sama sekali.
+     * Definisi field per tipe.
+     *
+     * ada_kondisi KOSONG SENGAJA — lihat catatan di docblock class. jumlah cuma
+     * satu field: berapa unit yang diusulkan.
      */
     public static function fieldsByTipe(): array
     {
         return [
-            'baik_rusak' => [
-                ['name' => 'baik', 'label' => 'Kondisi Baik', 'type' => 'number'],
-                ['name' => 'rusak', 'label' => 'Kondisi Rusak', 'type' => 'number'],
+            'jumlah' => [
+                ['name' => 'jumlah', 'label' => 'Jumlah', 'type' => 'number'],
             ],
-            'update_kondisi' => [
-                ['name' => 'kodisi', 'label' => 'Kondisi Saat Ini', 'type' => 'select', 'options' => ['baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']],
-            ],
+            'ada_kondisi' => [],
         ];
     }
 
@@ -129,6 +135,8 @@ class PengajuanController extends Controller
 
     /**
      * Bangun rules validasi untuk field-field satu kategori (dipakai store & update).
+     * Kategori ada_kondisi tidak punya field, jadi otomatis menghasilkan array
+     * rules kosong — tidak ada yang divalidasi untuk kategori itu.
      */
     private function rulesForKategori(string $kategori): array
     {
@@ -161,7 +169,7 @@ class PengajuanController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('user.pengajuan.index', compact('pengajuans'));
+        return view('user.rencana-pembangunan.index', compact('pengajuans'));
     }
 
     /**
@@ -173,7 +181,7 @@ class PengajuanController extends Controller
         $fieldsByTipe = self::fieldsByTipe();
         $ikonKategori = self::ikonKategori();
 
-        return view('user.pengajuan.create', compact('kategoriList', 'fieldsByTipe', 'ikonKategori'));
+        return view('user.rencana-pembangunan.create', compact('kategoriList', 'fieldsByTipe', 'ikonKategori'));
     }
 
     /**
@@ -201,7 +209,7 @@ class PengajuanController extends Controller
         if (empty($dipilih)) {
             return back()
                 ->withInput()
-                ->withErrors(['pilih' => 'Pilih minimal satu kategori data yang ingin diajukan.']);
+                ->withErrors(['pilih' => 'Pilih minimal satu kategori yang ingin diusulkan pembangunannya.']);
         }
 
         $rules = [];
@@ -213,6 +221,15 @@ class PengajuanController extends Controller
         $validated = $request->validate($rules);
 
         $perubahan = $validated['perubahan'] ?? [];
+
+        // Kategori bertipe ada_kondisi tidak punya field/rules sama sekali, jadi
+        // tidak akan muncul di $validated. Tetap catat sebagai array kosong supaya
+        // kategori itu diketahui "diajukan" (bukan tak tercatat sama sekali).
+        foreach ($dipilih as $key) {
+            if (! array_key_exists($key, $perubahan)) {
+                $perubahan[$key] = [];
+            }
+        }
 
         $profileSekolah = ProfileSekolah::where('user_id', Auth::id())->firstOrFail();
 
@@ -226,8 +243,8 @@ class PengajuanController extends Controller
         ]);
 
         return redirect()
-            ->route('user.pengajuan.index')
-            ->with('success', 'Pengajuan berhasil dikirim, menunggu review admin.');
+            ->route('user.rencana-pembangunan.index')
+            ->with('success', 'Rencana pembangunan berhasil diajukan, menunggu review admin.');
     }
 
     /**
@@ -238,8 +255,9 @@ class PengajuanController extends Controller
         $this->authorizeOwner($pengajuan);
 
         $kategoriList = self::kategoriList();
+        $ikonKategori = self::ikonKategori();
 
-        return view('user.pengajuan.show', compact('pengajuan', 'kategoriList'));
+        return view('user.rencana-pembangunan.show', compact('pengajuan', 'kategoriList', 'ikonKategori'));
     }
 
     /**
@@ -254,7 +272,7 @@ class PengajuanController extends Controller
         $fieldsByTipe = self::fieldsByTipe();
         $ikonKategori = self::ikonKategori();
 
-        return view('user.pengajuan.edit', compact('pengajuan', 'kategoriList', 'fieldsByTipe', 'ikonKategori'));
+        return view('user.rencana-pembangunan.edit', compact('pengajuan', 'kategoriList', 'fieldsByTipe', 'ikonKategori'));
     }
 
     /**
@@ -292,6 +310,14 @@ class PengajuanController extends Controller
 
         $perubahanBaru = $validated['perubahan'] ?? [];
 
+        foreach ($dipilih as $key) {
+            if (! array_key_exists($key, $perubahanBaru)) {
+                $perubahanBaru[$key] = [];
+            }
+        }
+
+        // Gabungkan: data kategori/field lama yang tidak disentuh tetap ada, yang
+        // dipilih ulang di form ini menimpa nilai lamanya dengan yang baru.
         $perubahanLama = $pengajuan->perubahan ?? [];
         $perubahanGabungan = array_merge($perubahanLama, $perubahanBaru);
 
@@ -305,8 +331,8 @@ class PengajuanController extends Controller
         ]);
 
         return redirect()
-            ->route('user.pengajuan.index')
-            ->with('success', 'Pengajuan berhasil diperbarui.');
+            ->route('user.rencana-pembangunan.index')
+            ->with('success', 'Rencana pembangunan berhasil diperbarui.');
     }
 
     /**
@@ -320,8 +346,8 @@ class PengajuanController extends Controller
         $pengajuan->delete();
 
         return redirect()
-            ->route('user.pengajuan.index')
-            ->with('success', 'Pengajuan berhasil dihapus.');
+            ->route('user.rencana-pembangunan.index')
+            ->with('success', 'Rencana pembangunan berhasil dihapus.');
     }
 
     private function authorizeOwner(Pengajuan $pengajuan): void

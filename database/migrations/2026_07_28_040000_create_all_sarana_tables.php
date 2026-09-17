@@ -45,7 +45,10 @@ return new class extends Migration
             $table->string('ii');
             $table->string('iii');
             $table->string('iv');
-            
+
+            $table->unsignedBigInteger('profile_sekolah_id');
+            $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
+
             $table->timestamps();
         });
 
@@ -188,7 +191,7 @@ return new class extends Migration
         Schema::create('rehabilitasi_ruang_kelas', function (Blueprint $table) {
             $table->id();
             $table->integer('jumlah')->default(0);
-            $table->unsignedBigInteger('profile_sekolah_id');    
+            $table->unsignedBigInteger('profile_sekolah_id');
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
         });
@@ -348,15 +351,6 @@ return new class extends Migration
             $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
             $table->timestamps();
         });
-
-        Schema::create('guru', function (Blueprint $table) {
-            $table->id();
-            $table->integer('baik')->default(0);
-            $table->integer('rusak')->default(0);
-            $table->unsignedBigInteger('profile_sekolah_id');
-            $table->foreign('profile_sekolah_id')->references('id')->on('profile_sekolahs')->onDelete('cascade');
-            $table->timestamps();
-        });
     }
 
     /**
@@ -379,6 +373,7 @@ return new class extends Migration
         Schema::dropIfExists('ruang_kelas');
         Schema::dropIfExists('rehabilitasi_ruang_kelas');
         Schema::dropIfExists('ruang_kelas_barus');
+        Schema::dropIfExists('jumlah_gurus');
         Schema::dropIfExists('jumlah_rombels');
         Schema::dropIfExists('jumlah_siswas');
         Schema::dropIfExists('komputers');

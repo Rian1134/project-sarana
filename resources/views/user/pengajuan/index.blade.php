@@ -55,12 +55,14 @@
                                 <div class="text-xs font-semibold text-gray-400 uppercase">{{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}</div>
                             @endif
                             <ul class="space-y-0.5">
-                                @foreach (($item->perubahan[$kunci] ?? []) as $field => $value)
+                                @forelse (($item->perubahan[$kunci] ?? []) as $field => $value)
                                     <li>
                                         <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) }}:</span>
                                         <span class="font-medium">{{ $value }}</span>
                                     </li>
-                                @endforeach
+                                @empty
+                                    <li class="text-gray-400 italic">Diajukan untuk dibangun</li>
+                                @endforelse
                             </ul>
                         </div>
                     @endforeach
@@ -163,12 +165,14 @@
                                         <div class="text-xs font-semibold text-gray-400 uppercase">{{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}</div>
                                     @endif
                                     <ul class="space-y-0.5 pl-2">
-                                        @foreach (($item->perubahan[$kunci] ?? []) as $field => $value)
+                                        @forelse (($item->perubahan[$kunci] ?? []) as $field => $value)
                                             <li>
                                                 <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) }}:</span>
                                                 <span class="font-medium">{{ $value }}</span>
                                             </li>
-                                        @endforeach
+                                        @empty
+                                            <li class="text-gray-400 italic">Diajukan untuk dibangun</li>
+                                        @endforelse
                                     </ul>
                                 </li>
                             @endforeach

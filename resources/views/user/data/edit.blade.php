@@ -90,6 +90,39 @@
                     </div>
                 </div>
 
+                <!-- B. Jumlah Guru -->
+                <x-card>
+                    <x-slot:header>
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                            <i class="bi-person-badge"></i>
+                            B. Jumlah Guru
+                        </div>
+                    </x-slot:header>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <x-form.input name="jumlah_guru_pns" label="Guru PNS" type="number" min="0" required
+                            :value="old('jumlah_guru_pns', $profileSekolah->jumlahGuru->pns ?? 0)" />
+
+                        <x-form.input name="jumlah_guru_pppk" label="Guru PPPK" type="number" min="0" required
+                            :value="old('jumlah_guru_pppk', $profileSekolah->jumlahGuru->pppk ?? 0)" />
+
+                        <x-form.input name="jumlah_guru_honor" label="Guru Honor" type="number" min="0" required
+                            :value="old('jumlah_guru_honor', $profileSekolah->jumlahGuru->honor ?? 0)" />
+
+                        <x-form.input name="jumlah_guru_i" label="Golongan I" type="number" min="0" required
+                            :value="old('jumlah_guru_i', $profileSekolah->jumlahGuru->i ?? 0)" />
+
+                        <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number" min="0" required
+                            :value="old('jumlah_guru_ii', $profileSekolah->jumlahGuru->ii ?? 0)" />
+
+                        <x-form.input name="jumlah_guru_iii" label="Golongan III" type="number" min="0" required
+                            :value="old('jumlah_guru_iii', $profileSekolah->jumlahGuru->iii ?? 0)" />
+
+                        <x-form.input name="jumlah_guru_iv" label="Golongan IV" type="number" min="0" required
+                            :value="old('jumlah_guru_iv', $profileSekolah->jumlahGuru->iv ?? 0)" />
+                    </div>
+                </x-card>
+
                 <!-- B. Jumlah Siswa -->
                 <div
                     class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -126,12 +159,12 @@
                     </div>
                     <div class="p-3 sm:p-4">
                         <div class="grid grid-cols-1 gap-2 sm:gap-4">
-                            <x-form.input name="jumlah_rombel_vii" label="Kelas VII" type="number" min="0" required
-                                :value="old('jumlah_rombel_vii', $profileSekolah->jumlahRombel?->vii ?? 0)" />
+                            <x-form.input name="jumlah_rombel_vii" label="Kelas VII" type="number" min="0"
+                                required :value="old('jumlah_rombel_vii', $profileSekolah->jumlahRombel?->vii ?? 0)" />
                             <x-form.input name="jumlah_rombel_viii" label="Kelas VIII" type="number" min="0"
                                 required :value="old('jumlah_rombel_viii', $profileSekolah->jumlahRombel?->viii ?? 0)" />
-                            <x-form.input name="jumlah_rombel_ix" label="Kelas IX" type="number" min="0" required
-                                :value="old('jumlah_rombel_ix', $profileSekolah->jumlahRombel?->ix ?? 0)" />
+                            <x-form.input name="jumlah_rombel_ix" label="Kelas IX" type="number" min="0"
+                                required :value="old('jumlah_rombel_ix', $profileSekolah->jumlahRombel?->ix ?? 0)" />
                         </div>
                     </div>
                 </div>
@@ -826,10 +859,7 @@
                                     </div>
                                     <div class="grid grid-cols-1 gap-2">
                                         <x-form.input name="kursi_siswa_baik" label="Baik" type="number"
-                                            min="0" required :value="old(
-                                                'kursi_siswa_baik',
-                                                $profileSekolah->kursiSiswa?->baik ?? 0,
-                                            )" />
+                                            min="0" required :value="old('kursi_siswa_baik', $profileSekolah->kursiSiswa?->baik ?? 0)" />
                                         <x-form.input name="kursi_siswa_rusak" label="Rusak" type="number"
                                             min="0" required :value="old(
                                                 'kursi_siswa_rusak',
@@ -867,8 +897,8 @@
                                     <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">Meja Guru
                                     </div>
                                     <div class="grid grid-cols-1 gap-2">
-                                        <x-form.input name="meja_guru_baik" label="Baik" type="number"
-                                            min="0" required :value="old('meja_guru_baik', $profileSekolah->mejaGuru?->baik ?? 0)" />
+                                        <x-form.input name="meja_guru_baik" label="Baik" type="number" min="0"
+                                            required :value="old('meja_guru_baik', $profileSekolah->mejaGuru?->baik ?? 0)" />
                                         <x-form.input name="meja_guru_rusak" label="Rusak" type="number"
                                             min="0" required :value="old('meja_guru_rusak', $profileSekolah->mejaGuru?->rusak ?? 0)" />
                                     </div>
