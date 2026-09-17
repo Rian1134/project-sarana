@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Pengajuan')
+@section('title', 'Detail Laporan Kerusakan')
 
 @section('content')
     <div class="max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
@@ -82,7 +82,7 @@
              responsif (1 kolom di HP, 2 di tablet, 3 di layar besar). --}}
             <div>
                 <h2 class="text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase mb-2">
-                    Rincian Perubahan
+                    Rincian Kerusakan
                 </h2>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -108,7 +108,7 @@
                                     </div>
                                 @empty
                                     <div class="py-2 text-sm text-gray-400 italic">
-                                        Diajukan untuk dibangun
+                                        Tidak ada rincian
                                     </div>
                                 @endforelse
                             </dl>

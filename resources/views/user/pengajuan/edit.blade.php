@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Pengajuan')
+@section('title', 'Edit Laporan Kerusakan')
 
 @section('content')
 <div class="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
@@ -9,8 +9,8 @@
         <div class="flex flex-wrap items-center justify-between gap-2">
             <h1 class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                 <i class="bi bi-pencil-square"></i>
-                <span class="hidden sm:inline">Edit Pengajuan Perubahan Data</span>
-                <span class="sm:hidden">Edit Pengajuan</span>
+                <span class="hidden sm:inline">Edit Laporan Kerusakan</span>
+                <span class="sm:hidden">Edit Laporan</span>
             </h1>
             <a href="{{ route('user.pengajuan.index') }}" class="inline-flex">
                 <x-button variant="secondary" size="sm">
@@ -22,7 +22,7 @@
         </div>
 
         <p class="text-sm text-gray-500 dark:text-gray-400">
-            Kategori yang sudah diajukan sebelumnya otomatis terbuka & terisi (tidak bisa dihapus dari
+            Kategori yang sudah dilaporkan sebelumnya otomatis terbuka & terisi (tidak bisa dihapus dari
             sini). Untuk menambah kategori lain, pilih dari dropdown "Tambah Kategori" di bawah.
         </p>
 
@@ -219,7 +219,7 @@
                                 @endforeach
                             </div>
                         @else {{-- baik_rusak --}}
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 @foreach ($fields as $field)
                                     @php $oldVal = old('perubahan.' . $key . '.' . $field['name'], $perubahanTersimpan[$key][$field['name']] ?? 0); @endphp
                                     <x-form.input
@@ -241,7 +241,7 @@
                 <x-slot:footer>
                     <div class="flex flex-wrap gap-2">
                         <x-button variant="primary" type="submit">
-                            <i class="bi bi-save"></i> Simpan Perubahan
+                            <i class="bi bi-save"></i> Simpan Laporan
                         </x-button>
                         <a href="{{ route('user.pengajuan.index') }}" class="inline-flex">
                             <x-button variant="secondary">

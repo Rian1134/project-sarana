@@ -95,6 +95,13 @@
                 <span data-sidebar-label>Pengajuan</span>
             </a>
 
+            <a href="{{ route('user.rencana-pembangunan.index') }}"
+                class="sidebar-link {{ request()->routeIs('user.rencana-pembangunan.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
+                @if (request()->routeIs('user.rencana-pembangunan.*')) aria-current="page" @endif>
+                <i class="bi bi-building-fill text-base shrink-0"></i>
+                <span data-sidebar-label>Pembangunan</span>
+            </a>
+
             {{-- Logout — dengan modal konfirmasi, selalu menempel di bawah --}}
             <button type="button" data-modal-open="logoutModal"
                 class="sidebar-link mt-auto text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 w-full text-left border-t border-gray-200 dark:border-gray-700 pt-3">

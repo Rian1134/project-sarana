@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Laporan Kerusakan')
+@section('title', 'Rencana Pembangunan')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-6">
         <h1 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
             <i class="bi bi-list-check"></i>
-            Laporan Kerusakan Sarana &amp; Prasarana
+            Rencana Pembangunan
         </h1>
-        <x-button href="{{ route('user.pengajuan.create') }}" variant="primary" class="w-full sm:w-auto justify-center">
-            <i class="bi bi-plus-lg"></i> Buat Laporan
+        <x-button href="{{ route('user.rencana-pembangunan.create') }}" variant="primary" class="w-full sm:w-auto justify-center">
+            <i class="bi bi-plus-lg"></i> Ajukan Rencana
         </x-button>
     </div>
 
@@ -41,7 +41,7 @@
 
                 <ul class="text-xs text-gray-500 dark:text-gray-400 mb-2">
                     @foreach ($kategoriKeys as $kunci)
-                        <li>{{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}</li>
+                        <li>{{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}</li>
                     @endforeach
                     @if (count($tambahanKeys))
                         <li>Perubahan Lainnya</li>
@@ -52,16 +52,16 @@
                     @foreach ($kategoriKeys as $kunci)
                         <div class="mb-1.5">
                             @if (count($kategoriKeys) > 1 || count($tambahanKeys))
-                                <div class="text-xs font-semibold text-gray-400 uppercase">{{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}</div>
+                                <div class="text-xs font-semibold text-gray-400 uppercase">{{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}</div>
                             @endif
                             <ul class="space-y-0.5">
                                 @forelse (($item->perubahan[$kunci] ?? []) as $field => $value)
                                     <li>
-                                        <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) }}:</span>
+                                        <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel($kunci, $field) }}:</span>
                                         <span class="font-medium">{{ $value }}</span>
                                     </li>
                                 @empty
-                                    <li class="text-gray-400 italic">Tidak ada rincian</li>
+                                    <li class="text-gray-400 italic">Diajukan untuk dibangun</li>
                                 @endforelse
                             </ul>
                         </div>
@@ -86,14 +86,14 @@
                 <div class="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
                     <span class="text-xs text-gray-400">{{ $item->created_at->format('d M Y H:i') }}</span>
                     <div class="flex gap-1">
-                        <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info" size="xs">
+                        <x-button href="{{ route('user.rencana-pembangunan.show', $item) }}" variant="info" size="xs">
                             <i class="bi bi-eye-fill"></i>
                         </x-button>
                         @if ($item->status === 'pending')
-                            <x-button href="{{ route('user.pengajuan.edit', $item) }}" variant="warning" size="xs">
+                            <x-button href="{{ route('user.rencana-pembangunan.edit', $item) }}" variant="warning" size="xs">
                                 <i class="bi bi-pencil-fill"></i>
                             </x-button>
-                            <form action="{{ route('user.pengajuan.destroy', $item) }}" method="POST" onsubmit="return confirm('Hapus laporan ini?')">
+                            <form action="{{ route('user.rencana-pembangunan.destroy', $item) }}" method="POST" onsubmit="return confirm('Hapus pengajuan ini?')">
                                 @csrf
                                 @method('DELETE')
                                 <x-button type="submit" variant="danger" size="xs">
@@ -107,7 +107,7 @@
         @empty
             <x-card class="p-6 text-center text-gray-500 dark:text-gray-400">
                 <i class="bi bi-inbox text-2xl block mb-2"></i>
-                Belum ada laporan kerusakan.
+                Belum ada rencana pembangunan yang diajukan.
             </x-card>
         @endforelse
     </div>
@@ -121,10 +121,10 @@
                             Judul
                         </x-table.heading>
                         <x-table.heading class="text-white! align-middle px-3 py-2">
-                            Kategori
+                            Perubahan
                         </x-table.heading>
                         <x-table.heading class="text-white! align-middle px-3 py-2">
-                            Rincian Kerusakan
+                            Rincian Pembaruan
                         </x-table.heading>
                         <x-table.heading class="text-white! align-middle px-3 py-2">
                             Status
@@ -150,7 +150,7 @@
                     <x-table.cell class="font-medium px-3 py-2.5">
                         <ul class="space-y-0.5">
                             @foreach ($kategoriKeys as $kunci)
-                                <li>{{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}</li>
+                                <li>{{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}</li>
                             @endforeach
                             @if (count($tambahanKeys))
                                 <li>Perubahan Lainnya</li>
@@ -162,16 +162,16 @@
                             @foreach ($kategoriKeys as $kunci)
                                 <li>
                                     @if (count($kategoriKeys) > 1 || count($tambahanKeys))
-                                        <div class="text-xs font-semibold text-gray-400 uppercase">{{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}</div>
+                                        <div class="text-xs font-semibold text-gray-400 uppercase">{{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}</div>
                                     @endif
                                     <ul class="space-y-0.5 pl-2">
                                         @forelse (($item->perubahan[$kunci] ?? []) as $field => $value)
                                             <li>
-                                                <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) }}:</span>
+                                                <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel($kunci, $field) }}:</span>
                                                 <span class="font-medium">{{ $value }}</span>
                                             </li>
                                         @empty
-                                            <li class="text-gray-400 italic">Tidak ada rincian</li>
+                                            <li class="text-gray-400 italic">Diajukan untuk dibangun</li>
                                         @endforelse
                                     </ul>
                                 </li>
@@ -209,14 +209,14 @@
                     </x-table.cell>
                     <x-table.cell class="text-center px-3 py-2.5">
                         <div class="flex justify-center gap-1">
-                            <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info" size="xs">
+                            <x-button href="{{ route('user.rencana-pembangunan.show', $item) }}" variant="info" size="xs">
                                 <i class="bi bi-eye-fill"></i>
                             </x-button>
                             @if ($item->status === 'pending')
-                                <x-button href="{{ route('user.pengajuan.edit', $item) }}" variant="warning" size="xs">
+                                <x-button href="{{ route('user.rencana-pembangunan.edit', $item) }}" variant="warning" size="xs">
                                     <i class="bi bi-pencil-fill"></i>
                                 </x-button>
-                                <form action="{{ route('user.pengajuan.destroy', $item) }}" method="POST" onsubmit="return confirm('Hapus laporan ini?')">
+                                <form action="{{ route('user.rencana-pembangunan.destroy', $item) }}" method="POST" onsubmit="return confirm('Hapus pengajuan ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <x-button type="submit" variant="danger" size="xs">
@@ -228,7 +228,7 @@
                     </x-table.cell>
                 </x-table.row>
             @empty
-                <x-table.empty colspan="6" message="Belum ada laporan kerusakan." />
+                <x-table.empty colspan="6" message="Belum ada rencana pembangunan yang diajukan." />
             @endforelse
             </x-table>
         </div>

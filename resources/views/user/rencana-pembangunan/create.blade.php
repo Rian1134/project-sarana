@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Ajukan Laporan Kerusakan')
+@section('title', 'Ajukan Rencana Pembangunan')
 
 @section('content')
 <div class="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
@@ -9,10 +9,10 @@
         <div class="flex flex-wrap items-center justify-between gap-2">
             <h1 class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                 <i class="bi bi-plus-circle"></i>
-                <span class="hidden sm:inline">Form Laporan Kerusakan Sarana &amp; Prasarana</span>
-                <span class="sm:hidden">Lapor Kerusakan</span>
+                <span class="hidden sm:inline">Form Ajukan Rencana Pembangunan</span>
+                <span class="sm:hidden">Ajukan Rencana</span>
             </h1>
-            <a href="{{ route('user.pengajuan.index') }}" class="inline-flex">
+            <a href="{{ route('user.rencana-pembangunan.index') }}" class="inline-flex">
                 <x-button variant="secondary" size="sm">
                     <i class="bi bi-arrow-left me-1"></i>
                     <span class="hidden sm:inline">Kembali</span>
@@ -22,8 +22,8 @@
         </div>
 
         <p class="text-sm text-gray-500 dark:text-gray-400">
-            Pilih kategori sarana/prasarana yang kondisinya rusak dari dropdown di bawah lalu klik
-            "Tambah". Anda bisa menambahkan beberapa kategori sekaligus dalam satu pengiriman.
+            Pilih kategori bangunan/ruang yang ingin diusulkan pembangunannya dari dropdown di bawah
+            lalu klik "Tambah". Anda bisa mengusulkan beberapa kategori sekaligus dalam satu pengiriman.
         </p>
 
         @if ($errors->any())
@@ -32,50 +32,7 @@
             </x-alert>
         @endif
 
-        @php
-            // Ikon per kategori, sekadar polesan visual biar konsisten dengan form
-            // Tambah Data Sarpras. Kategori yang tidak ada di daftar ini pakai ikon default.
-            $ikonKategori = [
-                'jumlah_siswa' => 'bi-mortarboard',
-                'jumlah_rombel' => 'bi-diagram-3',
-                'ruang_kelas_baru' => 'bi-building-add',
-                'rehabilitasi_ruang_kelas' => 'bi-tools',
-                'ruang_kelas' => 'bi-door-closed',
-                'ruang_guru' => 'bi-easel2',
-                'ruang_kepala_sekolah' => 'bi-person-workspace',
-                'ruang_kantor_tu' => 'bi-briefcase',
-                'ruang_perpustakaan' => 'bi-book',
-                'lab_ipa' => 'bi-flask',
-                'lab_komputer' => 'bi-pc-display-horizontal',
-                'toilet_siswa' => 'bi-droplet-half',
-                'toilet_guru' => 'bi-droplet',
-                'unit_kesehatan_sekolah' => 'bi-heart-pulse',
-                'lapangan_sekolah' => 'bi-flag',
-                'pagar_sekolah' => 'bi-border-all',
-                'air_bersih' => 'bi-droplet',
-                'rumah_dinas' => 'bi-house-door',
-                'rumah_ibadah' => 'bi-building',
-
-                // Update Kondisi: ikon sama dengan kategori "usul bangun"
-                // pasangannya (mis. ruang_guru_kondisi pakai ikon yang sama
-                // dengan ruang_guru), supaya user tetap gampang mengenali
-                // fasilitas mana yang dimaksud.
-                'ruang_guru_kondisi' => 'bi-easel2',
-                'ruang_kepala_sekolah_kondisi' => 'bi-person-workspace',
-                'ruang_kantor_tu_kondisi' => 'bi-briefcase',
-                'ruang_perpustakaan_kondisi' => 'bi-book',
-                'lab_ipa_kondisi' => 'bi-flask',
-                'lab_komputer_kondisi' => 'bi-pc-display-horizontal',
-                'unit_kesehatan_sekolah_kondisi' => 'bi-heart-pulse',
-                'lapangan_sekolah_kondisi' => 'bi-flag',
-                'pagar_sekolah_kondisi' => 'bi-border-all',
-                'air_bersih_kondisi' => 'bi-droplet',
-                'rumah_dinas_kondisi' => 'bi-house-door',
-                'rumah_ibadah_kondisi' => 'bi-building',
-            ];
-        @endphp
-
-        <form action="{{ route('user.pengajuan.store') }}" method="POST" id="pengajuanForm" class="flex flex-col gap-4">
+        <form action="{{ route('user.rencana-pembangunan.store') }}" method="POST" id="pengajuanForm" class="flex flex-col gap-4">
             @csrf
 
             {{-- Judul Perubahan: disimpan ke kolom `judul` sendiri (lihat migration
@@ -172,7 +129,7 @@
                                  status ada/tidak-ada atau kondisi apa pun lagi. --}}
                             <p class="text-sm text-gray-500 dark:text-gray-400">
                                 <i class="bi bi-info-circle me-1"></i>
-                                Kategori ini akan diajukan sebagai rencana pembangunan
+                                Kategori ini akan diajukan sebagai rencana-pembangunan pembangunan
                                 <strong>{{ $kat['label'] }}</strong> yang baru. Tidak ada isian
                                 tambahan yang perlu diisi — cukup pastikan kategori ini sudah
                                 ditambahkan di atas.
@@ -201,24 +158,8 @@
                                     :value="$oldJumlah"
                                 />
                             </div>
-                        @elseif ($kat['tipe'] === 'update_kondisi')
-                            {{-- Update Kondisi: lapor kondisi TERKINI fasilitas yang sudah
-                                 ada (termasuk kalau sekarang rusak). Beda dengan ada_kondisi
-                                 di atas yang artinya "usul bangun baru". --}}
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                @foreach ($fields as $field)
-                                    @php $oldVal = old('perubahan.' . $key . '.' . $field['name']); @endphp
-                                    <x-form.select
-                                        name="perubahan[{{ $key }}][{{ $field['name'] }}]"
-                                        label="{{ $field['label'] }}"
-                                        placeholder="-- Pilih Kondisi --"
-                                        :options="$field['options']"
-                                        :value="$oldVal"
-                                    />
-                                @endforeach
-                            </div>
                         @else {{-- baik_rusak --}}
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 @foreach ($fields as $field)
                                     @php $oldVal = old('perubahan.' . $key . '.' . $field['name'], 0); @endphp
                                     <x-form.input
@@ -240,12 +181,12 @@
                 <x-slot:footer>
                     <div class="flex flex-wrap gap-2">
                         <x-button variant="primary" type="submit">
-                            <i class="bi bi-send"></i> Kirim Laporan
+                            <i class="bi bi-send"></i> Kirim Pengajuan
                         </x-button>
                         <x-button variant="warning" type="reset">
                             <i class="bi bi-arrow-counterclockwise"></i> Reset
                         </x-button>
-                        <a href="{{ route('user.pengajuan.index') }}" class="inline-flex">
+                        <a href="{{ route('user.rencana-pembangunan.index') }}" class="inline-flex">
                             <x-button variant="secondary">
                                 <i class="bi bi-x-circle me-1"></i> Batal
                             </x-button>

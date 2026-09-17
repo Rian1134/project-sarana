@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\User\PengajuanController as UserPengajuanController;
 use App\Http\Controllers\User\DataController as UserDataController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\RencanaPembangunanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
@@ -40,6 +41,7 @@ Route::middleware('auth')->group(function () {
             Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
             Route::get('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
             Route::resource('pengajuan', UserPengajuanController::class);
+            Route::resource('rencana-pembangunan', RencanaPembangunanController::class);
         });
     });
 

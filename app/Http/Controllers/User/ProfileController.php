@@ -24,7 +24,7 @@ class ProfileController extends Controller
         // Ambil data sekolah yang terhubung dengan user
         $profileSekolah = ProfileSekolah::with([
             'pagarSekolah',
-            // 'jumlahGuru',
+            'jumlahGuru',
             'airBersih',
             'kursiSiswa',
             'mejaSiswa',
@@ -51,15 +51,40 @@ class ProfileController extends Controller
             'lapanganSekolah',
         ])->where('user_id', $user->id)->first();
 
+        // Modul "Pengajuan Koreksi Data" dan "Rencana Pembangunan" sama-sama
+        // memakai tabel `pengajuans`, dibedakan lewat kategori yang dipilih.
+        // Masing-masing HARUS difilter dengan kategoriList() milik controllernya
+        // sendiri (lihat PengajuanController/RencanaPembangunanController) —
+        // tanpa filter ini, kedua tabel di halaman profil akan menampilkan baris
+        // yang sama (tercampur), atau salah satunya selalu kosong.
+        $pengajuanKategoriKeys = array_keys(PengajuanController::kategoriList());
         $pengajuans = Pengajuan::with('profileSekolah')
             ->where('user_id', Auth::id())
+            ->where(function ($query) use ($pengajuanKategoriKeys) {
+                foreach ($pengajuanKategoriKeys as $key) {
+                    $query->orWhereJsonContains('pengajuan', $key);
+                }
+            })
             ->latest()
-            ->paginate(5);
+            // pageName unik supaya paginasi tabel ini tidak bentrok dengan
+            // paginasi tabel "Rencana Pembangunan" yang tampil di halaman yang sama.
+            ->paginate(5, ['*'], 'pengajuan_page');
+
+        $rencanaKategoriKeys = array_keys(RencanaPembangunanController::kategoriList());
+        $rencanaPembangunans = Pengajuan::with('profileSekolah')
+            ->where('user_id', Auth::id())
+            ->where(function ($query) use ($rencanaKategoriKeys) {
+                foreach ($rencanaKategoriKeys as $key) {
+                    $query->orWhereJsonContains('pengajuan', $key);
+                }
+            })
+            ->latest()
+            ->paginate(5, ['*'], 'rencana_page');
 
         $rkbPeriode = PeriodeLaporan::forKategori('rkb');
         $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
 
-        return view('user.profile.index', compact('user', 'profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode', 'pengajuans'));
+        return view('user.profile.index', compact('user', 'profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode', 'pengajuans', 'rencanaPembangunans'));
     }
 
     /**

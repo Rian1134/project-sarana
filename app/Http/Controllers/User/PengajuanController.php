@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 /**
- * Modul "Koreksi Data" (Pengajuan Perubahan Data). Berpasangan dengan
+ * Modul "Laporan Kerusakan" (dulu disebut "Koreksi Data"). Berpasangan dengan
  * RencanaPembangunanController — keduanya sama-sama pakai tabel `pengajuans`,
  * dibedakan lewat kategori mana yang dipilih (lihat kategoriList() di masing-
  * masing controller, tidak saling tumpang tindih key-nya).
@@ -23,18 +23,18 @@ class PengajuanController extends Controller
             'ruang_kelas' => ['label' => 'Ruang Kelas', 'table' => 'ruang_kelas', 'tipe' => 'baik_rusak'],
             'toilet_siswa' => ['label' => 'Toilet Siswa', 'table' => 'toilet_siswas', 'tipe' => 'baik_rusak'],
             'toilet_guru' => ['label' => 'Toilet Guru', 'table' => 'toilet_gurus', 'tipe' => 'baik_rusak'],
-            'ruang_guru_kondisi' => ['label' => 'Ruang Guru — Update Kondisi', 'table' => 'ruang_gurus', 'tipe' => 'update_kondisi'],
-            'ruang_kepala_sekolah_kondisi' => ['label' => 'Ruang Kepala Sekolah — Update Kondisi', 'table' => 'ruang_kepala_sekolahs', 'tipe' => 'update_kondisi'],
-            'ruang_kantor_tu_kondisi' => ['label' => 'Ruang Kantor TU — Update Kondisi', 'table' => 'ruang_kantor_tus', 'tipe' => 'update_kondisi'],
-            'ruang_perpustakaan_kondisi' => ['label' => 'Ruang Perpustakaan — Update Kondisi', 'table' => 'ruang_perpustakaans', 'tipe' => 'update_kondisi'],
-            'lab_ipa_kondisi' => ['label' => 'Laboratorium IPA — Update Kondisi', 'table' => 'lab_ipas', 'tipe' => 'update_kondisi'],
-            'lab_komputer_kondisi' => ['label' => 'Laboratorium Komputer — Update Kondisi', 'table' => 'lab_komputers', 'tipe' => 'update_kondisi'],
-            'unit_kesehatan_sekolah_kondisi' => ['label' => 'Unit Kesehatan Sekolah (UKS) — Update Kondisi', 'table' => 'unit_kesehatan_sekolahs', 'tipe' => 'update_kondisi'],
-            'lapangan_sekolah_kondisi' => ['label' => 'Lapangan Sekolah — Update Kondisi', 'table' => 'lapangan_sekolahs', 'tipe' => 'update_kondisi'],
-            'pagar_sekolah_kondisi' => ['label' => 'Pagar Sekolah — Update Kondisi', 'table' => 'pagar_sekolahs', 'tipe' => 'update_kondisi'],
-            'air_bersih_kondisi' => ['label' => 'Air Bersih — Update Kondisi', 'table' => 'air_bersihs', 'tipe' => 'update_kondisi'],
-            'rumah_dinas_kondisi' => ['label' => 'Rumah Dinas — Update Kondisi', 'table' => 'rumah_dinas', 'tipe' => 'update_kondisi'],
-            'rumah_ibadah_kondisi' => ['label' => 'Rumah Ibadah — Update Kondisi', 'table' => 'rumah_ibadahs', 'tipe' => 'update_kondisi'],
+            'ruang_guru_kondisi' => ['label' => 'Ruang Guru — Lapor Kerusakan', 'table' => 'ruang_gurus', 'tipe' => 'update_kondisi'],
+            'ruang_kepala_sekolah_kondisi' => ['label' => 'Ruang Kepala Sekolah — Lapor Kerusakan', 'table' => 'ruang_kepala_sekolahs', 'tipe' => 'update_kondisi'],
+            'ruang_kantor_tu_kondisi' => ['label' => 'Ruang Kantor TU — Lapor Kerusakan', 'table' => 'ruang_kantor_tus', 'tipe' => 'update_kondisi'],
+            'ruang_perpustakaan_kondisi' => ['label' => 'Ruang Perpustakaan — Lapor Kerusakan', 'table' => 'ruang_perpustakaans', 'tipe' => 'update_kondisi'],
+            'lab_ipa_kondisi' => ['label' => 'Laboratorium IPA — Lapor Kerusakan', 'table' => 'lab_ipas', 'tipe' => 'update_kondisi'],
+            'lab_komputer_kondisi' => ['label' => 'Laboratorium Komputer — Lapor Kerusakan', 'table' => 'lab_komputers', 'tipe' => 'update_kondisi'],
+            'unit_kesehatan_sekolah_kondisi' => ['label' => 'Unit Kesehatan Sekolah (UKS) — Lapor Kerusakan', 'table' => 'unit_kesehatan_sekolahs', 'tipe' => 'update_kondisi'],
+            'lapangan_sekolah_kondisi' => ['label' => 'Lapangan Sekolah — Lapor Kerusakan', 'table' => 'lapangan_sekolahs', 'tipe' => 'update_kondisi'],
+            'pagar_sekolah_kondisi' => ['label' => 'Pagar Sekolah — Lapor Kerusakan', 'table' => 'pagar_sekolahs', 'tipe' => 'update_kondisi'],
+            'air_bersih_kondisi' => ['label' => 'Air Bersih — Lapor Kerusakan', 'table' => 'air_bersihs', 'tipe' => 'update_kondisi'],
+            'rumah_dinas_kondisi' => ['label' => 'Rumah Dinas — Lapor Kerusakan', 'table' => 'rumah_dinas', 'tipe' => 'update_kondisi'],
+            'rumah_ibadah_kondisi' => ['label' => 'Rumah Ibadah — Lapor Kerusakan', 'table' => 'rumah_ibadahs', 'tipe' => 'update_kondisi'],
         ];
     }
 
@@ -63,20 +63,24 @@ class PengajuanController extends Controller
     }
 
     /**
-     * Definisi field per tipe. `update_kondisi` cuma satu field: kondisi
-     * terkini fasilitas yang sudah ada (termasuk pilihan "Rusak" untuk lapor
-     * kerusakan). Berbeda dengan `ada_kondisi` milik RencanaPembangunanController
-     * yang memang sengaja TIDAK punya field sama sekali.
+     * Definisi field per tipe. Kedua tipe di bawah sengaja HANYA soal
+     * melaporkan KERUSAKAN — bukan mencatat ulang kondisi baik atau nihil:
+     *   - `baik_rusak`     → cuma field `rusak` (jumlah unit yang rusak).
+     *   - `update_kondisi` → cuma opsi "Rusak" (menandai fasilitas yang
+     *                        sudah ada sebagai rusak). Opsi Baik & Nihil
+     *                        sengaja dihapus dari sini.
+     * Berbeda dengan `ada_kondisi` milik RencanaPembangunanController yang
+     * memang sengaja TIDAK punya field sama sekali (itu untuk usul bangun baru,
+     * bukan laporan kerusakan).
      */
     public static function fieldsByTipe(): array
     {
         return [
             'baik_rusak' => [
-                ['name' => 'baik', 'label' => 'Kondisi Baik', 'type' => 'number'],
                 ['name' => 'rusak', 'label' => 'Kondisi Rusak', 'type' => 'number'],
             ],
             'update_kondisi' => [
-                ['name' => 'kodisi', 'label' => 'Kondisi Saat Ini', 'type' => 'select', 'options' => ['baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']],
+                ['name' => 'kodisi', 'label' => 'Kondisi Saat Ini', 'type' => 'select', 'options' => ['rusak' => 'Rusak']],
             ],
         ];
     }
@@ -201,7 +205,7 @@ class PengajuanController extends Controller
         if (empty($dipilih)) {
             return back()
                 ->withInput()
-                ->withErrors(['pilih' => 'Pilih minimal satu kategori data yang ingin diajukan.']);
+                ->withErrors(['pilih' => 'Pilih minimal satu kategori sarana/prasarana yang ingin dilaporkan rusak.']);
         }
 
         $rules = [];
@@ -227,7 +231,7 @@ class PengajuanController extends Controller
 
         return redirect()
             ->route('user.pengajuan.index')
-            ->with('success', 'Pengajuan berhasil dikirim, menunggu review admin.');
+            ->with('success', 'Laporan kerusakan berhasil dikirim, menunggu review admin.');
     }
 
     /**
@@ -306,7 +310,7 @@ class PengajuanController extends Controller
 
         return redirect()
             ->route('user.pengajuan.index')
-            ->with('success', 'Pengajuan berhasil diperbarui.');
+            ->with('success', 'Laporan kerusakan berhasil diperbarui.');
     }
 
     /**
@@ -321,7 +325,7 @@ class PengajuanController extends Controller
 
         return redirect()
             ->route('user.pengajuan.index')
-            ->with('success', 'Pengajuan berhasil dihapus.');
+            ->with('success', 'Laporan kerusakan berhasil dihapus.');
     }
 
     private function authorizeOwner(Pengajuan $pengajuan): void
