@@ -112,26 +112,6 @@ class PengajuanController extends Controller
     }
 
     /**
-     * Pisahkan data "perubahan" jadi dua: yang termasuk kategori resmi (di
-     * kategoriList), dan field tambahan bebas yang nama serta nilainya diketik
-     * sendiri oleh user (bukan kategori, cuma field lepas). Dipakai di index & show
-     * supaya field bebas ini tidak dianggap/dilabeli sebagai kategori.
-     */
-    public static function pisahkanFieldTambahan(array $pengajuanKeys, array $perubahan): array
-    {
-        $kategoriValid = array_keys(self::kategoriList());
-        $tambahan = [];
-
-        foreach ($perubahan as $key => $value) {
-            if (! in_array($key, $kategoriValid, true)) {
-                $tambahan[$key] = $value;
-            }
-        }
-
-        return $tambahan;
-    }
-
-    /**
      * Bangun rules validasi untuk field-field satu kategori (dipakai store & update).
      */
     private function rulesForKategori(string $kategori): array

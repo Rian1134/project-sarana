@@ -99,7 +99,14 @@
                 class="sidebar-link {{ request()->routeIs('pengajuan.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
                 @if (request()->routeIs('pengajuan.*')) aria-current="page" @endif>
                 <i class="bi bi-clipboard-data-fill text-base shrink-0"></i>
-                <span data-sidebar-label>Pengajuan</span>
+                <span data-sidebar-label>Laporan</span>
+            </a>
+
+            <a href="{{ route('rencana.index') }}"
+                class="sidebar-link {{ request()->routeIs('rencana.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
+                @if (request()->routeIs('rencana.*')) aria-current="page" @endif>
+                <i class="bi bi-building-fill text-base shrink-0"></i>
+                <span data-sidebar-label>Pembagunan</span>
             </a>
 
             {{-- Logout — dengan modal konfirmasi, selalu menempel di bawah --}}

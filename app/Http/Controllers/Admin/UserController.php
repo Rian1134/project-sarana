@@ -8,6 +8,7 @@ use App\Models\PeriodeLaporan;
 use App\Models\ProfileSekolah;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+
 // use Illuminate\Support\Facades\Hash;
 // use Illuminate\Validation\Rule;
 // use Illuminate\Validation\Rules\Password;
@@ -140,7 +141,7 @@ class UserController extends Controller
             'pengajuans',
             'pengajuanChartData',
             'tahunTersedia',
-            'kategoriListChart'
+            'kategoriListChart',
         ));
     }
 
@@ -150,8 +151,8 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::find($id);
-        
-        if (!$user) {
+
+        if (! $user) {
             return redirect()->route('user.index')
                 ->with('error', 'User tidak ditemukan.');
         }

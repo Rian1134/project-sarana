@@ -69,6 +69,12 @@ class AdminSeeder extends Seeder
             'status_sekolah' => 'Negeri',
             'user_id' => $user->id,
 
+            'jumlah_guru' => [
+                'vii' => 120,
+                'viii' => 110,
+                'ix' => 100,
+            ],
+
             'jumlah_siswa' => [
                 'vii' => 120,
                 'viii' => 110,
@@ -92,7 +98,7 @@ class AdminSeeder extends Seeder
             'toilet_guru' => [
                 'baik' => 2,
                 'rusak' => 0,
-            ],
+           ],
             'ruang_perpustakaan' => [
                 'ada/tidak_ada' => 'ada',
                 'kodisi' => 'baik',

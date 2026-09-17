@@ -304,7 +304,7 @@
                         <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
                             <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                                 <i class="bi bi-list-check"></i>
-                                Rencana Pembangunan
+                                Rencana Pembangunan & Rehabilitasi
                             </div>
 
                             <a href="{{ route('user.rencana-pembangunan.create') }}" class="inline-flex">
@@ -326,17 +326,6 @@
                             'rejected' => ['variant' => 'danger', 'label' => 'Ditolak'],
                         ];
 
-                        // Rangkum tiap baris pengajuan sekali saja di sini, lalu dipakai
-                        // ulang oleh tampilan mobile & desktop di bawah — sebelumnya logika
-                        // parsing ini ditulis inline di tengah tabel sehingga sulit dibaca.
-                        //
-                        // PENTING: $rencanaPembangunans adalah objek paginator (LengthAwarePaginator),
-                        // BUKAN array item. Karena paginator implements Arrayable, memanggil
-                        // collect($rencanaPembangunans) akan memanggil ->toArray()-nya yang isinya
-                        // metadata paginasi (current_page, data, total, dst) — bukan daftar
-                        // item — sehingga closure map() di bawah menerima nilai campuran
-                        // (termasuk integer) alih-alih model Pengajuan. Harus lewat
-                        // ->items() dulu supaya benar-benar cuma daftar barisnya.
                         $daftarRencana =
                             isset($rencanaPembangunans) && method_exists($rencanaPembangunans, 'items')
                                 ? $rencanaPembangunans->items()
@@ -943,61 +932,6 @@
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                            <i class="bi bi-tools"></i>
-                            Pembangunan &amp; Rehabilitasi Ruang Kelas
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                                Pembangunan Ruang Kelas Baru (RKB)
-                            </label>
-
-                            <div class="bg-blue-50 dark:bg-blue-900/20 p-3 sm:p-4 rounded-lg text-center mt-1.5">
-                                <p class="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">
-                                    {{ $chartRkbRehab[0] }}
-                                </p>
-
-                                <p class="text-xs text-gray-500 dark:text-gray-400">
-                                    Ruang Kelas Baru
-                                </p>
-
-                                <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
-                                    Periode {{ $rkbPeriode->label() }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                                Rehabilitasi Ruang Kelas
-                            </label>
-
-                            <div class="bg-orange-50 dark:bg-orange-900/20 p-3 sm:p-4 rounded-lg text-center mt-1.5">
-                                <p class="text-2xl sm:text-3xl font-bold text-orange-600 dark:text-orange-400">
-                                    {{ $chartRkbRehab[1] }}
-                                </p>
-
-                                <p class="text-xs text-gray-500 dark:text-gray-400">
-                                    Ruang Kelas
-                                </p>
-
-                                <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
-                                    Periode {{ $rehabilitasiPeriode->label() }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 h-40 sm:h-48">
-                        <canvas id="rkbRehabChart"></canvas>
-                    </div>
-                </x-card>
-
-                <x-card>
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                             <i class="bi bi-person-video3"></i>
                             Jumlah Guru
                         </div>
@@ -1109,6 +1043,62 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </x-card>
+
+                
+                <x-card>
+                    <x-slot:header>
+                        <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                            <i class="bi bi-tools"></i>
+                            Pembangunan &amp; Rehabilitasi Ruang Kelas
+                        </div>
+                    </x-slot:header>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                Pembangunan Ruang Kelas Baru (RKB)
+                            </label>
+
+                            <div class="bg-blue-50 dark:bg-blue-900/20 p-3 sm:p-4 rounded-lg text-center mt-1.5">
+                                <p class="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">
+                                    {{ $chartRkbRehab[0] }}
+                                </p>
+
+                                <p class="text-xs text-gray-500 dark:text-gray-400">
+                                    Ruang Kelas Baru
+                                </p>
+
+                                <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
+                                    Periode {{ $rkbPeriode->label() }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                Rehabilitasi Ruang Kelas
+                            </label>
+
+                            <div class="bg-orange-50 dark:bg-orange-900/20 p-3 sm:p-4 rounded-lg text-center mt-1.5">
+                                <p class="text-2xl sm:text-3xl font-bold text-orange-600 dark:text-orange-400">
+                                    {{ $chartRkbRehab[1] }}
+                                </p>
+
+                                <p class="text-xs text-gray-500 dark:text-gray-400">
+                                    Ruang Kelas
+                                </p>
+
+                                <p class="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
+                                    Periode {{ $rehabilitasiPeriode->label() }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 h-40 sm:h-48">
+                        <canvas id="rkbRehabChart"></canvas>
                     </div>
                 </x-card>
 

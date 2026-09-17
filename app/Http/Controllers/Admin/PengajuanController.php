@@ -129,13 +129,59 @@ class PengajuanController extends Controller
         return $tambahan;
     }
 
+    /**
+     * Display a listing of Laporan Kerusakan (kategori dari
+     * User\PengajuanController::kategoriList() saja).
+     *
+     * Berpasangan dengan rencanaPembangunanIndex() di bawah — keduanya
+     * sengaja jadi VIEW & ROUTE terpisah (mengikuti pola user.pengajuan.*
+     * vs user.rencana-pembangunan.* di sisi User), TAPI tetap satu
+     * controller & satu tabel `pengajuans` yang sama (tidak ada
+     * Admin\RencanaPembangunanController terpisah). Pemisahan kategori
+     * mana masuk yang mana diambil dari kategoriList() milik masing-masing
+     * controller USER (User\PengajuanController &
+     * User\RencanaPembangunanController) — supaya kalau salah satu daftar
+     * kategori berubah di sana, pemisahan di sini otomatis ikut berubah,
+     * tidak perlu didaftar ulang manual di sini.
+     */
     public function index()
     {
-        $pengajuans = Pengajuan::with('profileSekolah')
-            ->latest()
-            ->paginate(10);
+        $laporanKerusakanKeys = array_keys(\App\Http\Controllers\User\PengajuanController::kategoriList());
 
-        return view('admin.pengajuan.index', compact('pengajuans'));
+        $laporanKerusakans = Pengajuan::with('profileSekolah')
+            ->where(function ($query) use ($laporanKerusakanKeys) {
+                foreach ($laporanKerusakanKeys as $key) {
+                    $query->orWhereJsonContains('pengajuan', $key);
+                }
+            })
+            ->latest()
+            ->paginate(10, ['*'], 'laporan_page');
+
+        return view('admin.pengajuan.index', compact('laporanKerusakans'));
+    }
+
+    /**
+     * Display a listing of Rencana Pembangunan (kategori dari
+     * User\RencanaPembangunanController::kategoriList() saja).
+     *
+     * Sengaja jadi method & view TERPISAH dari index() di atas — tapi masih
+     * di controller yang sama (Admin\PengajuanController), bukan controller
+     * baru — lihat catatan di index().
+     */
+    public function rencanaPembangunanIndex()
+    {
+        $rencanaPembangunanKeys = array_keys(\App\Http\Controllers\User\RencanaPembangunanController::kategoriList());
+
+        $rencanaPembangunans = Pengajuan::with('profileSekolah')
+            ->where(function ($query) use ($rencanaPembangunanKeys) {
+                foreach ($rencanaPembangunanKeys as $key) {
+                    $query->orWhereJsonContains('pengajuan', $key);
+                }
+            })
+            ->latest()
+            ->paginate(10, ['*'], 'rencana_page');
+
+        return view('admin.rencana-pembangunan.index', compact('rencanaPembangunans'));
     }
 
     /**
@@ -151,6 +197,25 @@ class PengajuanController extends Controller
     }
 
     /**
+     * Route index mana yang cocok untuk pengajuan ini — 'pengajuan.index'
+     * (Laporan Kerusakan) atau 'rencana-pembangunan.index' (Rencana
+     * Pembangunan) — dipakai supaya approve/reject membawa admin kembali
+     * ke daftar yang sesuai, bukan selalu ke Laporan Kerusakan.
+     */
+    private function indexRouteFor(Pengajuan $pengajuan): string
+    {
+        $kategoriKeys = is_array($pengajuan->pengajuan)
+            ? $pengajuan->pengajuan
+            : array_filter([$pengajuan->pengajuan]);
+
+        $laporanKerusakanKeys = array_keys(\App\Http\Controllers\User\PengajuanController::kategoriList());
+
+        return count(array_intersect($kategoriKeys, $laporanKerusakanKeys))
+            ? 'pengajuan.index'
+            : 'rencana-pembangunan.index';
+    }
+
+    /**
      * Setujui pengajuan: terapkan seluruh perubahan ke data sarana sekolah
      * terkait, lalu tandai status jadi 'approved'. Dibungkus DB transaction
      * supaya kalau salah satu update gagal di tengah jalan, semuanya
@@ -159,6 +224,8 @@ class PengajuanController extends Controller
     public function approve(Pengajuan $pengajuan)
     {
         abort_if($pengajuan->status !== 'pending', 403, 'Hanya pengajuan berstatus pending yang bisa disetujui.');
+
+        $indexRoute = $this->indexRouteFor($pengajuan);
 
         DB::transaction(function () use ($pengajuan) {
             $this->terapkanPerubahan($pengajuan);
@@ -169,7 +236,7 @@ class PengajuanController extends Controller
         });
 
         return redirect()
-            ->route('pengajuan.index')
+            ->route($indexRoute)
             ->with('success', 'Pengajuan disetujui, data sarana sekolah sudah diperbarui.');
     }
 
@@ -181,12 +248,14 @@ class PengajuanController extends Controller
     {
         abort_if($pengajuan->status !== 'pending', 403, 'Hanya pengajuan berstatus pending yang bisa ditolak.');
 
+        $indexRoute = $this->indexRouteFor($pengajuan);
+
         $pengajuan->update([
             'status' => 'rejected',
         ]);
 
         return redirect()
-            ->route('pengajuan.index')
+            ->route($indexRoute)
             ->with('success', 'Pengajuan ditolak.');
     }
 

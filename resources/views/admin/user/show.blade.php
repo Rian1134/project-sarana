@@ -233,12 +233,50 @@
                 </div>
             </x-card>
 
+            @php
+                // Dipakai untuk menentukan section mana yang cocok untuk tiap baris
+                // $pengajuans — satu baris normalnya murni salah satu jenis saja
+                // (lihat catatan store() di masing-masing User\...Controller).
+                $rencanaPembangunanKeys = array_keys(\App\Http\Controllers\User\RencanaPembangunanController::kategoriList());
+                $laporanKerusakanKeys = array_keys(\App\Http\Controllers\User\PengajuanController::kategoriList());
+
+                // Helper lokal: ambil array kategori key yang valid dari satu item
+                // $pengajuans (dipakai dua kali di bawah, jadi disatukan di sini
+                // supaya tidak duplikasi logic parsing-nya).
+                $ambilKategoriKeys = function ($item) {
+                    $pengajuanData = $item->pengajuan ?? [];
+
+                    if (!is_array($pengajuanData)) {
+                        $pengajuanData = [$pengajuanData];
+                    }
+
+                    $keys = [];
+
+                    foreach ($pengajuanData as $key => $value) {
+                        if (is_string($value)) {
+                            $keys[] = $value;
+                        } elseif (is_string($key)) {
+                            $keys[] = $key;
+                        }
+                    }
+
+                    return array_values(
+                        array_unique(
+                            array_filter($keys, fn($value) => is_string($value) && $value !== ''),
+                        ),
+                    );
+                };
+            @endphp
+
+            {{-- ============================================================
+                 Rencana Pembangunan — DI ATAS Laporan Kerusakan.
+                 ============================================================ --}}
             <x-card class="p-2 md:p-4">
                 <x-slot:header>
                     <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-list-check"></i>
-                            Pengajuan Rencana Pembangunan
+                            <i class="bi bi-building-add"></i>
+                            Rencana Pembangunan
                         </div>
                     </div>
                 </x-slot:header>
@@ -247,38 +285,195 @@
                     <x-slot:head>
                         <tr>
                             <x-table.heading>Judul</x-table.heading>
-                            <x-table.heading>Perubahan</x-table.heading>
-                            <x-table.heading>Rincian Pembaruan</x-table.heading>
+                            <x-table.heading>Kategori</x-table.heading>
+                            <x-table.heading>Rincian</x-table.heading>
                             <x-table.heading>Status</x-table.heading>
                             <x-table.heading>Diajukan</x-table.heading>
                             <x-table.heading class="text-right">Aksi</x-table.heading>
                         </tr>
                     </x-slot:head>
 
+                    @php $adaRencana = false; @endphp
                     @forelse ($pengajuans ?? [] as $item)
                         @php
-                            $pengajuanData = $item->pengajuan ?? [];
+                            $kategoriKeys = $ambilKategoriKeys($item);
+                        @endphp
 
-                            if (!is_array($pengajuanData)) {
-                                $pengajuanData = [$pengajuanData];
+                        @continue(!count(array_intersect($kategoriKeys, $rencanaPembangunanKeys)))
+                        @php $adaRencana = true; @endphp
+
+                        @php
+                            $perubahanData = $item->perubahan ?? [];
+
+                            if (!is_array($perubahanData)) {
+                                $perubahanData = [];
                             }
 
-                            $kategoriKeys = [];
+                            $tambahanKeys = array_keys(array_diff_key($perubahanData, array_flip($kategoriKeys)));
+                        @endphp
 
-                            foreach ($pengajuanData as $key => $value) {
-                                if (is_string($value)) {
-                                    $kategoriKeys[] = $value;
-                                } elseif (is_string($key)) {
-                                    $kategoriKeys[] = $key;
-                                }
-                            }
+                        <x-table.row>
+                            <x-table.cell class="font-medium">
+                                {{ $item->judul ?? '-' }}
+                            </x-table.cell>
 
-                            $kategoriKeys = array_values(
-                                array_unique(
-                                    array_filter($kategoriKeys, fn($value) => is_string($value) && $value !== ''),
-                                ),
-                            );
+                            <x-table.cell>
+                                <ul class="space-y-1">
+                                    @foreach ($kategoriKeys as $kunci)
+                                        <li>
+                                            {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </x-table.cell>
 
+                            <x-table.cell>
+                                <ul class="space-y-1 text-sm">
+                                    @foreach ($kategoriKeys as $kunci)
+                                        @php
+                                            $kategoriPerubahan = $perubahanData[$kunci] ?? [];
+
+                                            if (!is_array($kategoriPerubahan)) {
+                                                $kategoriPerubahan = [
+                                                    'value' => $kategoriPerubahan,
+                                                ];
+                                            }
+                                        @endphp
+
+                                        <li>
+                                            @if (count($kategoriKeys) > 1)
+                                                <div class="text-xs font-semibold text-gray-400 uppercase mb-1">
+                                                    {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
+                                                </div>
+                                            @endif
+
+                                            <ul class="space-y-0.5 pl-2">
+                                                @forelse ($kategoriPerubahan as $field => $value)
+                                                    @php
+                                                        if (is_array($value)) {
+                                                            $value = implode(
+                                                                ', ',
+                                                                array_map(
+                                                                    fn($item) => is_scalar($item)
+                                                                        ? (string) $item
+                                                                        : json_encode($item),
+                                                                    $value,
+                                                                ),
+                                                            );
+                                                        }
+                                                    @endphp
+
+                                                    <li>
+                                                        <span class="text-gray-500 dark:text-gray-400">
+                                                            {{ \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel($kunci, $field) }}:
+                                                        </span>
+
+                                                        <span class="font-medium">
+                                                            {{ $value }}
+                                                        </span>
+                                                    </li>
+                                                @empty
+                                                    {{-- Kategori tipe ada_kondisi sengaja tanpa field — mencentang
+                                                         kategorinya saja sudah berarti "diajukan untuk dibangun". --}}
+                                                    <li class="text-gray-400 italic">
+                                                        Diajukan untuk dibangun
+                                                    </li>
+                                                @endforelse
+                                            </ul>
+                                        </li>
+                                    @endforeach
+
+                                    @foreach ($tambahanKeys as $namaField)
+                                        <li class="pt-1">
+                                            <span class="text-gray-500 dark:text-gray-400">
+                                                {{ ucwords(str_replace('_', ' ', $namaField)) }}:
+                                            </span>
+
+                                            <span class="font-medium">
+                                                {{ $perubahanData[$namaField] ?? '-' }}
+                                            </span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </x-table.cell>
+
+                            <x-table.cell>
+                                @if ($item->status === 'pending')
+                                    <x-badge variant="warning">
+                                        Menunggu Review
+                                    </x-badge>
+                                @elseif ($item->status === 'approved')
+                                    <x-badge variant="success">
+                                        Disetujui
+                                    </x-badge>
+                                @elseif ($item->status === 'rejected')
+                                    <x-badge variant="danger">
+                                        Ditolak
+                                    </x-badge>
+                                @else
+                                    <x-badge variant="secondary">
+                                        {{ ucfirst($item->status) }}
+                                    </x-badge>
+                                @endif
+                            </x-table.cell>
+
+                            <x-table.cell>
+                                {{ $item->created_at?->format('d M Y H:i') }}
+                            </x-table.cell>
+
+                            <x-table.cell class="text-right">
+                                <div class="flex justify-end gap-1">
+                                    <x-button href="{{ route('pengajuan.show', $item) }}" variant="info"
+                                        size="xs">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </x-button>
+                                </div>
+                            </x-table.cell>
+                        </x-table.row>
+                    @empty
+                    @endforelse
+
+                    @if (!$adaRencana)
+                        <x-table.empty colspan="6" message="Belum ada rencana pembangunan yang diajukan." />
+                    @endif
+                </x-table>
+            </x-card>
+
+            {{-- ============================================================
+                 Laporan Kerusakan — DI BAWAH Rencana Pembangunan.
+                 ============================================================ --}}
+            <x-card class="p-2 md:p-4">
+                <x-slot:header>
+                    <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                            <i class="bi bi-list-check"></i>
+                            Laporan Kerusakan
+                        </div>
+                    </div>
+                </x-slot:header>
+
+                <x-table striped hover>
+                    <x-slot:head>
+                        <tr>
+                            <x-table.heading>Judul</x-table.heading>
+                            <x-table.heading>Kategori</x-table.heading>
+                            <x-table.heading>Rincian Kerusakan</x-table.heading>
+                            <x-table.heading>Status</x-table.heading>
+                            <x-table.heading>Diajukan</x-table.heading>
+                            <x-table.heading class="text-right">Aksi</x-table.heading>
+                        </tr>
+                    </x-slot:head>
+
+                    @php $adaLaporan = false; @endphp
+                    @forelse ($pengajuans ?? [] as $item)
+                        @php
+                            $kategoriKeys = $ambilKategoriKeys($item);
+                        @endphp
+
+                        @continue(!count(array_intersect($kategoriKeys, $laporanKerusakanKeys)))
+                        @php $adaLaporan = true; @endphp
+
+                        @php
                             $perubahanData = $item->perubahan ?? [];
 
                             if (!is_array($perubahanData)) {
@@ -401,8 +596,11 @@
                             </x-table.cell>
                         </x-table.row>
                     @empty
-                        <x-table.empty colspan="5" message="Belum ada pengajuan perubahan data." />
                     @endforelse
+
+                    @if (!$adaLaporan)
+                        <x-table.empty colspan="6" message="Belum ada laporan kerusakan." />
+                    @endif
                 </x-table>
 
                 @if (isset($pengajuans) && method_exists($pengajuans, 'links'))

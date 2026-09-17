@@ -1,21 +1,22 @@
 @extends('layouts.admin')
 
-@section('title', 'Pengajuan Perubahan Data')
+@section('title', 'Laporan Kerusakan')
 
 @section('content')
 
     <div class="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-6">
             <h1 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                <i class="bi bi-list-check"></i>
-                Pengajuan Perubahan Data
+                <i class="bi bi-exclamation-triangle"></i>
+                Laporan Kerusakan
             </h1>
         </div>
+
         {{-- ============================================================
              MOBILE (< sm): satu pengajuan = satu kartu.
              ============================================================ --}}
         <div class="sm:hidden flex flex-col gap-3">
-            @forelse ($pengajuans as $item)
+            @forelse ($laporanKerusakans as $item)
                 @php
                     $kategoriKeys = is_array($item->pengajuan) ? $item->pengajuan : array_filter([$item->pengajuan]);
                     $perubahan = is_array($item->perubahan) ? $item->perubahan : [];
@@ -112,7 +113,7 @@
             @empty
                 <x-card class="p-6 text-center text-gray-500 dark:text-gray-400">
                     <i class="bi bi-inbox text-2xl block mb-2"></i>
-                    Belum ada pengajuan perubahan data.
+                    Belum ada laporan kerusakan.
                 </x-card>
             @endforelse
         </div>
@@ -121,9 +122,6 @@
              DESKTOP (>= sm): tabel dipadatkan jadi 5 kolom saja — Sekolah &
              Judul digabung satu kolom, Perubahan & Rincian Pembaruan juga
              digabung satu kolom (kategori jadi sub-judul, field-nya di bawahnya).
-             Ini yang paling banyak makan lebar di versi sebelumnya (8 kolom
-             dengan beberapa kolom lebar sendiri-sendiri), jadi digabung supaya
-             muat di layout admin tanpa perlu scroll di layar biasa.
              ============================================================ --}}
         <div class="hidden sm:block">
             <x-card class="p-4">
@@ -148,7 +146,7 @@
                         </tr>
                     </x-slot:head>
 
-                    @forelse ($pengajuans as $item)
+                    @forelse ($laporanKerusakans as $item)
                         @php
                             $kategoriKeys = is_array($item->pengajuan) ? $item->pengajuan : array_filter([$item->pengajuan]);
                             $perubahan = is_array($item->perubahan) ? $item->perubahan : [];
@@ -166,10 +164,7 @@
                             </x-table.cell>
 
                             {{-- PERUBAHAN: cuma ringkasan kategori + jumlah field, rincian
-                                 lengkapnya dilihat lewat tombol "Lihat" (halaman show).
-                                 Sengaja tidak menampilkan detail field:nilai di sini karena
-                                 itu yang bikin kolom ini melebar tak terkendali kalau
-                                 pengajuannya berisi banyak kategori/field sekaligus. --}}
+                                 lengkapnya dilihat lewat tombol "Lihat" (halaman show). --}}
                             <x-table.cell class="px-3 py-3 align-top">
                                 <div class="flex flex-wrap gap-1">
                                     @foreach ($kategoriKeys as $kunci)
@@ -232,13 +227,13 @@
                             </x-table.cell>
                         </x-table.row>
                     @empty
-                        <x-table.empty colspan="5" message="Belum ada pengajuan perubahan data." />
+                        <x-table.empty colspan="5" message="Belum ada laporan kerusakan." />
                     @endforelse
                 </x-table>
             </x-card>
         </div>
 
-        <x-pagination :paginator="$pengajuans" class="mt-4" />
+        <x-pagination :paginator="$laporanKerusakans" class="mt-4" />
 
     </div>
 @endsection

@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/pengajuan/{pengajuan}', [AdminPengajuanController::class, 'show'])->name('pengajuan.show');
             Route::post('/pengajuan/{pengajuan}/approve', [AdminPengajuanController::class, 'approve'])->name('pengajuan.approve');
             Route::post('/pengajuan/{pengajuan}/reject', [AdminPengajuanController::class, 'reject'])->name('pengajuan.reject');
+            Route::get('/rencana-pembangunan/', [AdminPengajuanController::class, 'rencanaPembangunanIndex'])->name('rencana.index');
 
         });
     });
@@ -60,4 +61,4 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::view('/panduan', 'landing.panduan')->name('panduan');
-// Route::view('/demo', 'demo');
+Route::view('/demo', 'demo');

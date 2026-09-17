@@ -11,6 +11,15 @@
             $perubahan = is_array($pengajuan->perubahan) ? $pengajuan->perubahan : [];
             $tambahanKeys = array_keys(array_diff_key($perubahan, array_flip($kategoriKeys)));
 
+            // "Jenis" pengajuan ini (Laporan Kerusakan / Rencana Pembangunan)
+            // ditentukan dari kategoriList() controller USER mana yang beririsan
+            // dengan kategori yang diajukan — bukan dari controller admin
+            // terpisah, karena memang tidak ada Admin\RencanaPembangunanController.
+            $laporanKerusakanKeys = array_keys(\App\Http\Controllers\User\PengajuanController::kategoriList());
+            $jenisPengajuan = count(array_intersect($kategoriKeys, $laporanKerusakanKeys))
+                ? 'Laporan Kerusakan'
+                : 'Rencana Pembangunan';
+
             $ikonKategori = [
                 'jumlah_siswa' => 'bi-mortarboard',
                 'jumlah_rombel' => 'bi-diagram-3',
@@ -64,6 +73,9 @@
                             User ID {{ $pengajuan->user_id }} &middot;
                             {{ $pengajuan->profileSekolah->nama_sekolah ?? '-' }} &middot;
                             Diajukan {{ $pengajuan->created_at->format('d M Y H:i') }}
+                        </span>
+                        <span>
+                            <x-badge variant="secondary" class="text-xs">{{ $jenisPengajuan }}</x-badge>
                         </span>
                     </div>
                     <div>
