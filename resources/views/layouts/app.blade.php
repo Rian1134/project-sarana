@@ -66,8 +66,9 @@
     <div class="flex min-h-screen">
 
         {{-- Sidebar: overlay drawer di mobile, kolom sticky full-height di desktop.
-             Untuk user: tidak diberi tombol collapse — menu cuma sedikit, tidak perlu mode ikon saja. --}}
-        <x-sidebar id="mainSidebar" :toggle="false">
+             Bisa di-collapse jadi mode ikon saja lewat tombol bawaan komponen
+             (disamakan dengan sidebar Admin). --}}
+        <x-sidebar id="mainSidebar">
             {{-- Info user --}}
             <div class="flex items-center gap-3 border-b border-gray-200 dark:border-gray-700 pb-4 mb-3">
                 <x-avatar :name="Auth::user()->name ?? 'U'" size="md" />
@@ -78,6 +79,11 @@
                         {{ ucfirst(Auth::user()->role ?? 'Pengguna') }}</p>
                 </div>
             </div>
+
+            {{-- Label section menu --}}
+            <p class="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500" data-sidebar-label>
+                Menu Utama
+            </p>
 
             {{-- Menu utama — user hanya bisa akses data sarana sekolahnya sendiri. --}}
 
