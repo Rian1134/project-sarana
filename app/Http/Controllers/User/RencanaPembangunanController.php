@@ -224,7 +224,7 @@ class RencanaPembangunanController extends Controller
         );
     }
 
-    public function create(Request $request)
+    public function create()
     {
         $kategoriList = self::kategoriList();
         $fieldsByTipe = self::fieldsByTipe();
@@ -242,6 +242,8 @@ class RencanaPembangunanController extends Controller
 
     public function store(Request $request)
     {
+
+        // dd($request);
         $kategoriList = self::kategoriList();
 
         $request->validate([
@@ -253,6 +255,10 @@ class RencanaPembangunanController extends Controller
             'pilih' => [
                 'nullable',
                 'array',
+            ],
+            'lampiran' => [
+                'required',
+                'string',
             ],
         ]);
 
@@ -301,6 +307,7 @@ class RencanaPembangunanController extends Controller
         Pengajuan::create([
             'user_id' => Auth::id(),
             'profile_sekolah_id' => $profileSekolah->id,
+            'lampiran' => $request->input('lampiran'),
             'judul' => $request->input('judul_perubahan'),
             'pengajuan' => $dipilih,
             'perubahan' => $perubahan,
@@ -369,6 +376,10 @@ class RencanaPembangunanController extends Controller
                 'nullable',
                 'array',
             ],
+            'lampiran' => [
+                'required',
+                'string',
+            ],
         ]);
 
         $dipilih = array_values(
@@ -428,6 +439,7 @@ class RencanaPembangunanController extends Controller
             'judul' => $request->input('judul_perubahan'),
             'pengajuan' => $kategoriGabungan,
             'perubahan' => $perubahanGabungan,
+            'lampiran' => $request->input('lampiran'),
         ]);
 
         return redirect()

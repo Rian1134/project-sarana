@@ -14,6 +14,7 @@ class Pengajuan extends Model
         'pengajuan',
         'perubahan',
         'status',
+        'lampiran',
     ];
 
     protected $casts = [

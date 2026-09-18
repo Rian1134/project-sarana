@@ -3,264 +3,251 @@
 @section('title', 'Ajukan Laporan Kerusakan')
 
 @section('content')
-<div class="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
-    <div class="flex flex-col gap-3 sm:gap-4">
-        {{-- Header --}}
-        <div class="flex flex-wrap items-center justify-between gap-2">
-            <h1 class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                <i class="bi bi-plus-circle"></i>
-                <span class="hidden sm:inline">Form Laporan Kerusakan Sarana &amp; Prasarana</span>
-                <span class="sm:hidden">Lapor Kerusakan</span>
-            </h1>
-            <a href="{{ route('user.pengajuan.index') }}" class="inline-flex">
-                <x-button variant="secondary" size="sm">
-                    <i class="bi bi-arrow-left me-1"></i>
-                    <span class="hidden sm:inline">Kembali</span>
-                    <span class="sm:hidden">Back</span>
-                </x-button>
-            </a>
-        </div>
+    <div class="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+        <div class="flex flex-col gap-3 sm:gap-4">
+            {{-- Header --}}
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <h1 class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                    <i class="bi bi-plus-circle"></i>
+                    <span class="hidden sm:inline">Form Laporan Kerusakan Sarana &amp; Prasarana</span>
+                    <span class="sm:hidden">Lapor Kerusakan</span>
+                </h1>
+                <a href="{{ route('user.pengajuan.index') }}" class="inline-flex">
+                    <x-button variant="secondary" size="sm">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        <span class="hidden sm:inline">Kembali</span>
+                        <span class="sm:hidden">Back</span>
+                    </x-button>
+                </a>
+            </div>
 
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-            Pilih kategori sarana/prasarana yang kondisinya rusak dari dropdown di bawah lalu klik
-            "Tambah". Anda bisa menambahkan beberapa kategori sekaligus dalam satu pengiriman.
-        </p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                Pilih kategori sarana/prasarana yang kondisinya rusak dari dropdown di bawah lalu klik
+                "Tambah". Anda bisa menambahkan beberapa kategori sekaligus dalam satu pengiriman.
+            </p>
 
-        @if ($errors->any())
-            <x-alert type="danger" dismissible>
-                Ada isian yang belum lengkap, silakan periksa kembali kategori yang Anda tambahkan.
-            </x-alert>
-        @endif
+            @if ($errors->any())
+                <x-alert type="danger" dismissible>
+                    Ada isian yang belum lengkap, silakan periksa kembali kategori yang Anda tambahkan.
+                </x-alert>
+            @endif
 
-        @php
-            // Ikon per kategori, sekadar polesan visual biar konsisten dengan form
-            // Tambah Data Sarpras. Kategori yang tidak ada di daftar ini pakai ikon default.
-            $ikonKategori = [
-                'jumlah_siswa' => 'bi-mortarboard',
-                'jumlah_rombel' => 'bi-diagram-3',
-                'ruang_kelas_baru' => 'bi-building-add',
-                'rehabilitasi_ruang_kelas' => 'bi-tools',
-                'ruang_kelas' => 'bi-door-closed',
-                'ruang_guru' => 'bi-easel2',
-                'ruang_kepala_sekolah' => 'bi-person-workspace',
-                'ruang_kantor_tu' => 'bi-briefcase',
-                'ruang_perpustakaan' => 'bi-book',
-                'lab_ipa' => 'bi-flask',
-                'lab_komputer' => 'bi-pc-display-horizontal',
-                'toilet_siswa' => 'bi-droplet-half',
-                'toilet_guru' => 'bi-droplet',
-                'unit_kesehatan_sekolah' => 'bi-heart-pulse',
-                'lapangan_sekolah' => 'bi-flag',
-                'pagar_sekolah' => 'bi-border-all',
-                'air_bersih' => 'bi-droplet',
-                'rumah_dinas' => 'bi-house-door',
-                'rumah_ibadah' => 'bi-building',
+            @php
+                // Ikon per kategori, sekadar polesan visual biar konsisten dengan form
+                // Tambah Data Sarpras. Kategori yang tidak ada di daftar ini pakai ikon default.
+                $ikonKategori = [
+                    'jumlah_siswa' => 'bi-mortarboard',
+                    'jumlah_rombel' => 'bi-diagram-3',
+                    'ruang_kelas_baru' => 'bi-building-add',
+                    'rehabilitasi_ruang_kelas' => 'bi-tools',
+                    'ruang_kelas' => 'bi-door-closed',
+                    'ruang_guru' => 'bi-easel2',
+                    'ruang_kepala_sekolah' => 'bi-person-workspace',
+                    'ruang_kantor_tu' => 'bi-briefcase',
+                    'ruang_perpustakaan' => 'bi-book',
+                    'lab_ipa' => 'bi-flask',
+                    'lab_komputer' => 'bi-pc-display-horizontal',
+                    'toilet_siswa' => 'bi-droplet-half',
+                    'toilet_guru' => 'bi-droplet',
+                    'unit_kesehatan_sekolah' => 'bi-heart-pulse',
+                    'lapangan_sekolah' => 'bi-flag',
+                    'pagar_sekolah' => 'bi-border-all',
+                    'air_bersih' => 'bi-droplet',
+                    'rumah_dinas' => 'bi-house-door',
+                    'rumah_ibadah' => 'bi-building',
 
-                // Update Kondisi: ikon sama dengan kategori "usul bangun"
-                // pasangannya (mis. ruang_guru_kondisi pakai ikon yang sama
-                // dengan ruang_guru), supaya user tetap gampang mengenali
-                // fasilitas mana yang dimaksud.
-                'ruang_guru_kondisi' => 'bi-easel2',
-                'ruang_kepala_sekolah_kondisi' => 'bi-person-workspace',
-                'ruang_kantor_tu_kondisi' => 'bi-briefcase',
-                'ruang_perpustakaan_kondisi' => 'bi-book',
-                'lab_ipa_kondisi' => 'bi-flask',
-                'lab_komputer_kondisi' => 'bi-pc-display-horizontal',
-                'unit_kesehatan_sekolah_kondisi' => 'bi-heart-pulse',
-                'lapangan_sekolah_kondisi' => 'bi-flag',
-                'pagar_sekolah_kondisi' => 'bi-border-all',
-                'air_bersih_kondisi' => 'bi-droplet',
-                'rumah_dinas_kondisi' => 'bi-house-door',
-                'rumah_ibadah_kondisi' => 'bi-building',
-            ];
-        @endphp
+                    // Update Kondisi: ikon sama dengan kategori "usul bangun"
+                    // pasangannya (mis. ruang_guru_kondisi pakai ikon yang sama
+                    // dengan ruang_guru), supaya user tetap gampang mengenali
+                    // fasilitas mana yang dimaksud.
+                    'ruang_guru_kondisi' => 'bi-easel2',
+                    'ruang_kepala_sekolah_kondisi' => 'bi-person-workspace',
+                    'ruang_kantor_tu_kondisi' => 'bi-briefcase',
+                    'ruang_perpustakaan_kondisi' => 'bi-book',
+                    'lab_ipa_kondisi' => 'bi-flask',
+                    'lab_komputer_kondisi' => 'bi-pc-display-horizontal',
+                    'unit_kesehatan_sekolah_kondisi' => 'bi-heart-pulse',
+                    'lapangan_sekolah_kondisi' => 'bi-flag',
+                    'pagar_sekolah_kondisi' => 'bi-border-all',
+                    'air_bersih_kondisi' => 'bi-droplet',
+                    'rumah_dinas_kondisi' => 'bi-house-door',
+                    'rumah_ibadah_kondisi' => 'bi-building',
+                ];
+            @endphp
 
-        <form action="{{ route('user.pengajuan.store') }}" method="POST" id="pengajuanForm" class="flex flex-col gap-4">
-            @csrf
+            <form action="{{ route('user.pengajuan.store') }}" method="POST" id="pengajuanForm"
+                class="flex flex-col gap-4">
+                @csrf
 
-            {{-- Judul Perubahan: disimpan ke kolom `judul` sendiri (lihat migration
+                {{-- Judul Perubahan: disimpan ke kolom `judul` sendiri (lihat migration
                  pengajuans), BUKAN dicampur ke kolom `perubahan` — supaya tidak ikut
                  muncul di rincian pembaruan per kategori. --}}
-            <x-card>
-                <x-slot:header>
-                    <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                        <i class="bi bi-card-heading"></i>
-                        Judul Perubahan
-                    </div>
-                </x-slot:header>
+                <x-card>
+                    <x-slot:header>
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                            <i class="bi bi-card-heading"></i>
+                            Judul Perubahan
+                        </div>
+                    </x-slot:header>
 
-                <x-form.input
-                    name="judul_perubahan"
-                    label="Judul Perubahan"
-                    placeholder="Contoh: Penambahan ruang musik hasil swadaya masyarakat"
-                    required
-                    :value="old('judul_perubahan')"
-                />
-            </x-card>
+                    <x-form.input name="judul_perubahan" label="Judul Perubahan"
+                        placeholder="Contoh: Penambahan ruang musik hasil swadaya masyarakat" required :value="old('judul_perubahan')" />
+                </x-card>
 
-            {{-- Tambah Kategori: kategori baru muncul sebagai card di bawah setelah
+                {{-- Tambah Kategori: kategori baru muncul sebagai card di bawah setelah
                  dipilih dari dropdown ini dan diklik "Tambah". Kategori yang sudah
                  ditambahkan otomatis hilang dari pilihan supaya tidak dobel. --}}
-            <x-card>
-                <x-slot:header>
-                    <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                        <i class="bi bi-plus-square"></i>
-                        Tambah Kategori
+                <x-card>
+                    <x-slot:header>
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                            <i class="bi bi-plus-square"></i>
+                            Tambah Kategori
+                        </div>
+                    </x-slot:header>
+
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <select id="pilihKategoriSelect"
+                            class="w-full sm:flex-1 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 text-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach ($kategoriList as $key => $kat)
+                                <option value="{{ $key }}">{{ $kat['label'] }}</option>
+                            @endforeach
+                        </select>
+                        <x-button type="button" variant="primary" id="btnTambahKategori">
+                            <i class="bi bi-plus-lg"></i> Tambah
+                        </x-button>
                     </div>
-                </x-slot:header>
 
-                <div class="flex flex-col sm:flex-row gap-2">
-                    <select
-                        id="pilihKategoriSelect"
-                        class="w-full sm:flex-1 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 text-sm focus:ring-blue-500 focus:border-blue-500"
-                    >
-                        <option value="">-- Pilih Kategori --</option>
-                        @foreach ($kategoriList as $key => $kat)
-                            <option value="{{ $key }}">{{ $kat['label'] }}</option>
-                        @endforeach
-                    </select>
-                    <x-button type="button" variant="primary" id="btnTambahKategori">
-                        <i class="bi bi-plus-lg"></i> Tambah
-                    </x-button>
-                </div>
+                    <p class="text-xs text-gray-400 mt-2" id="pesanBelumAdaKategori">
+                        Belum ada kategori yang ditambahkan.
+                    </p>
 
-                <p class="text-xs text-gray-400 mt-2" id="pesanBelumAdaKategori">
-                    Belum ada kategori yang ditambahkan.
-                </p>
+                    @error('pilih')
+                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                    @enderror
+                </x-card>
 
-                @error('pilih')
-                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                @enderror
-            </x-card>
+                @foreach ($kategoriList as $key => $kat)
+                    @php
+                        $fields = $fieldsByTipe[$kat['tipe']];
 
-            @foreach ($kategoriList as $key => $kat)
-                @php
-                    $fields = $fieldsByTipe[$kat['tipe']];
+                        // Ambil old() dengan string concatenation biasa (bukan interpolasi
+                        // ber-quote di dalam atribut Blade) supaya tidak ada masalah
+                        // escaping tanda kutip yang bikin komponen x-form.* gagal render.
+                        $oldPilih = old('pilih.' . $key);
+                    @endphp
 
-                    // Ambil old() dengan string concatenation biasa (bukan interpolasi
-                    // ber-quote di dalam atribut Blade) supaya tidak ada masalah
-                    // escaping tanda kutip yang bikin komponen x-form.* gagal render.
-                    $oldPilih = old('pilih.' . $key);
-                @endphp
-
-                {{-- Dibungkus <div data-kategori> (bukan atribut langsung di <x-card>)
+                    {{-- Dibungkus <div data-kategori> (bukan atribut langsung di <x-card>)
                      supaya JS Tambah/Hapus tidak bergantung pada apakah komponen
                      x-card meneruskan atribut HTML tambahan. Card ini disembunyikan
                      (hidden) sampai kategorinya ditambahkan lewat dropdown di atas,
                      kecuali kalau sebelumnya sudah dipilih user tapi validasi gagal. --}}
-                <div data-kategori="{{ $key }}" class="{{ $oldPilih ? '' : 'hidden' }}">
-                    <x-card>
-                        <x-slot:header>
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                    <i class="bi {{ $ikonKategori[$key] ?? 'bi-tag' }}"></i>
-                                    {{ $kat['label'] }}
+                    <div data-kategori="{{ $key }}" class="{{ $oldPilih ? '' : 'hidden' }}">
+                        <x-card>
+                            <x-slot:header>
+                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                        <i class="bi {{ $ikonKategori[$key] ?? 'bi-tag' }}"></i>
+                                        {{ $kat['label'] }}
+                                    </div>
+                                    <button type="button"
+                                        class="btn-hapus-kategori inline-flex items-center gap-1 text-sm text-red-600 hover:text-red-700 dark:text-red-400"
+                                        data-kategori="{{ $key }}">
+                                        <i class="bi bi-x-circle"></i> Hapus
+                                    </button>
                                 </div>
-                                <button
-                                    type="button"
-                                    class="btn-hapus-kategori inline-flex items-center gap-1 text-sm text-red-600 hover:text-red-700 dark:text-red-400"
-                                    data-kategori="{{ $key }}"
-                                >
-                                    <i class="bi bi-x-circle"></i> Hapus
-                                </button>
-                            </div>
-                        </x-slot:header>
+                            </x-slot:header>
 
-                        @if ($kat['tipe'] === 'ada_kondisi')
-                            {{-- Rencana Pembangunan: mencentang/menambahkan kategori ini SUDAH
+                            @if ($kat['tipe'] === 'ada_kondisi')
+                                {{-- Rencana Pembangunan: mencentang/menambahkan kategori ini SUDAH
                                  berarti "ingin membangun {{ $kat['label'] }}" — tidak perlu isi
                                  status ada/tidak-ada atau kondisi apa pun lagi. --}}
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                <i class="bi bi-info-circle me-1"></i>
-                                Kategori ini akan diajukan sebagai rencana pembangunan
-                                <strong>{{ $kat['label'] }}</strong> yang baru. Tidak ada isian
-                                tambahan yang perlu diisi — cukup pastikan kategori ini sudah
-                                ditambahkan di atas.
-                            </p>
-                        @elseif ($kat['tipe'] === 'siswa_rombel')
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                @foreach ($fields as $field)
-                                    @php $oldVal = old('perubahan.' . $key . '.' . $field['name'], 0); @endphp
-                                    <x-form.input
-                                        name="perubahan[{{ $key }}][{{ $field['name'] }}]"
-                                        label="{{ $field['label'] }}"
-                                        type="number"
-                                        min="0"
-                                        :value="$oldVal"
-                                    />
-                                @endforeach
-                            </div>
-                        @elseif ($kat['tipe'] === 'jumlah')
-                            @php $oldJumlah = old('perubahan.' . $key . '.jumlah', 0); @endphp
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <x-form.input
-                                    name="perubahan[{{ $key }}][jumlah]"
-                                    label="Jumlah"
-                                    type="number"
-                                    min="0"
-                                    :value="$oldJumlah"
-                                />
-                            </div>
-                        @elseif ($kat['tipe'] === 'update_kondisi')
-                            {{-- Update Kondisi: lapor kondisi TERKINI fasilitas yang sudah
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    Kategori ini akan diajukan sebagai rencana pembangunan
+                                    <strong>{{ $kat['label'] }}</strong> yang baru. Tidak ada isian
+                                    tambahan yang perlu diisi — cukup pastikan kategori ini sudah
+                                    ditambahkan di atas.
+                                </p>
+                            @elseif ($kat['tipe'] === 'siswa_rombel')
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    @foreach ($fields as $field)
+                                        @php $oldVal = old('perubahan.' . $key . '.' . $field['name'], 0); @endphp
+                                        <x-form.input name="perubahan[{{ $key }}][{{ $field['name'] }}]"
+                                            label="{{ $field['label'] }}" type="number" min="0"
+                                            :value="$oldVal" />
+                                    @endforeach
+                                </div>
+                            @elseif ($kat['tipe'] === 'jumlah')
+                                @php $oldJumlah = old('perubahan.' . $key . '.jumlah', 0); @endphp
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <x-form.input name="perubahan[{{ $key }}][jumlah]" label="Jumlah"
+                                        type="number" min="0" :value="$oldJumlah" />
+                                </div>
+                            @elseif ($kat['tipe'] === 'update_kondisi')
+                                {{-- Update Kondisi: lapor kondisi TERKINI fasilitas yang sudah
                                  ada (termasuk kalau sekarang rusak). Beda dengan ada_kondisi
                                  di atas yang artinya "usul bangun baru". --}}
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                @foreach ($fields as $field)
-                                    @php $oldVal = old('perubahan.' . $key . '.' . $field['name']); @endphp
-                                    <x-form.select
-                                        name="perubahan[{{ $key }}][{{ $field['name'] }}]"
-                                        label="{{ $field['label'] }}"
-                                        placeholder="-- Pilih Kondisi --"
-                                        :options="$field['options']"
-                                        :value="$oldVal"
-                                    />
-                                @endforeach
-                            </div>
-                        @else {{-- baik_rusak --}}
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                @foreach ($fields as $field)
-                                    @php $oldVal = old('perubahan.' . $key . '.' . $field['name'], 0); @endphp
-                                    <x-form.input
-                                        name="perubahan[{{ $key }}][{{ $field['name'] }}]"
-                                        label="{{ $field['label'] }}"
-                                        type="number"
-                                        min="0"
-                                        :value="$oldVal"
-                                    />
-                                @endforeach
-                            </div>
-                        @endif
-                    </x-card>
-                </div>
-            @endforeach
-
-            {{-- Tombol Aksi --}}
-            <x-card>
-                <x-slot:footer>
-                    <div class="flex flex-wrap gap-2">
-                        <x-button variant="primary" type="submit">
-                            <i class="bi bi-send"></i> Kirim Laporan
-                        </x-button>
-                        <x-button variant="warning" type="reset">
-                            <i class="bi bi-arrow-counterclockwise"></i> Reset
-                        </x-button>
-                        <a href="{{ route('user.pengajuan.index') }}" class="inline-flex">
-                            <x-button variant="secondary">
-                                <i class="bi bi-x-circle me-1"></i> Batal
-                            </x-button>
-                        </a>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    @foreach ($fields as $field)
+                                        @php $oldVal = old('perubahan.' . $key . '.' . $field['name']); @endphp
+                                        <x-form.select name="perubahan[{{ $key }}][{{ $field['name'] }}]"
+                                            label="{{ $field['label'] }}" placeholder="-- Pilih Kondisi --"
+                                            :options="$field['options']" :value="$oldVal" />
+                                    @endforeach
+                                </div>
+                            @else
+                                {{-- baik_rusak --}}
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    @foreach ($fields as $field)
+                                        @php $oldVal = old('perubahan.' . $key . '.' . $field['name'], 0); @endphp
+                                        <x-form.input name="perubahan[{{ $key }}][{{ $field['name'] }}]"
+                                            label="{{ $field['label'] }}" type="number" min="0"
+                                            :value="$oldVal" />
+                                    @endforeach
+                                </div>
+                            @endif
+                        </x-card>
                     </div>
-                </x-slot:footer>
-            </x-card>
-        </form>
+                @endforeach
+                <x-card>
+                    <x-slot:header>
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                            <i class="bi bi-card-heading"></i>
+                            Lampiran
+                        </div>
+                    </x-slot:header>
+
+                    <x-form.input name="lampiran" label="lampiran"
+                        placeholder="masukan link dirve (wajib)" required :value="old('lampiran')" />
+                </x-card>
+
+                {{-- Tombol Aksi --}}
+                <x-card>
+                    <x-slot:footer>
+                        <div class="flex flex-wrap gap-2">
+                            <x-button variant="primary" type="submit">
+                                <i class="bi bi-send"></i> Kirim Laporan
+                            </x-button>
+                            <x-button variant="warning" type="reset">
+                                <i class="bi bi-arrow-counterclockwise"></i> Reset
+                            </x-button>
+                            <a href="{{ route('user.pengajuan.index') }}" class="inline-flex">
+                                <x-button variant="secondary">
+                                    <i class="bi bi-x-circle me-1"></i> Batal
+                                </x-button>
+                            </a>
+                        </div>
+                    </x-slot:footer>
+                </x-card>
+            </form>
+        </div>
     </div>
-</div>
 @endsection
 
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // ---- Tambah / Hapus kategori lewat dropdown ----
             const form = document.getElementById('pengajuanForm');
             const select = document.getElementById('pilihKategoriSelect');
@@ -317,13 +304,13 @@
                 updatePesanKosong();
             }
 
-            btnTambah.addEventListener('click', function () {
+            btnTambah.addEventListener('click', function() {
                 if (!select.value) return;
                 tampilkanKategori(select.value);
                 select.value = '';
             });
 
-            form.addEventListener('click', function (e) {
+            form.addEventListener('click', function(e) {
                 const btn = e.target.closest('.btn-hapus-kategori');
                 if (!btn) return;
                 e.preventDefault();
@@ -331,14 +318,15 @@
             });
 
             // Tombol Reset juga mengembalikan semua kategori ke kondisi tersembunyi.
-            form.addEventListener('reset', function () {
-                setTimeout(function () {
-                    form.querySelectorAll('[data-kategori]').forEach(function (wrapper) {
+            form.addEventListener('reset', function() {
+                setTimeout(function() {
+                    form.querySelectorAll('[data-kategori]').forEach(function(wrapper) {
                         wrapper.classList.add('hidden');
-                        const input = wrapper.querySelector('input[type="hidden"][name^="pilih["]');
+                        const input = wrapper.querySelector(
+                            'input[type="hidden"][name^="pilih["]');
                         if (input) input.remove();
                     });
-                    select.querySelectorAll('option').forEach(function (opt) {
+                    select.querySelectorAll('option').forEach(function(opt) {
                         opt.disabled = false;
                     });
                     updatePesanKosong();
