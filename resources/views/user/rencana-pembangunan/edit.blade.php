@@ -44,19 +44,6 @@
                 @csrf
                 @method('PUT')
 
-                {{-- Judul Perubahan: dari kolom `judul` sendiri, bukan dari `perubahan`. --}}
-                <x-card>
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-card-heading"></i>
-                            Judul Perubahan
-                        </div>
-                    </x-slot:header>
-
-                    <x-form.input name="judul_perubahan" label="Judul Perubahan"
-                        placeholder="Contoh: Penambahan ruang musik hasil swadaya masyarakat" required :value="old('judul_perubahan', $pengajuan->judul)" />
-                </x-card>
-
                 {{-- Tambah Kategori: dipakai untuk menambah kategori BARU yang belum ada
                  di pengajuan ini. Kategori yang sudah tersimpan otomatis tampil di
                  bawah dan tidak muncul lagi di dropdown ini. --}}

@@ -10,7 +10,6 @@ class Pengajuan extends Model
     protected $fillable = [
         'user_id',
         'profile_sekolah_id',
-        'judul',
         'pengajuan',
         'perubahan',
         'status',

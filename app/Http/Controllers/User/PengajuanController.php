@@ -20,9 +20,9 @@ class PengajuanController extends Controller
     public static function kategoriList(): array
     {
         return [
-            'ruang_kelas' => ['label' => 'Ruang Kelas', 'table' => 'ruang_kelas', 'tipe' => 'baik_rusak'],
-            'toilet_siswa' => ['label' => 'Toilet Siswa', 'table' => 'toilet_siswas', 'tipe' => 'baik_rusak'],
-            'toilet_guru' => ['label' => 'Toilet Guru', 'table' => 'toilet_gurus', 'tipe' => 'baik_rusak'],
+            'ruang_kelas_kondisi' => ['label' => 'Ruang Kelas — Lapor Kerusakan', 'table' => 'ruang_kelas', 'tipe' => 'baik_rusak'],
+            'toilet_siswa_kondisi' => ['label' => 'Toilet Siswa — Lapor Kerusakan', 'table' => 'toilet_siswas', 'tipe' => 'baik_rusak'],
+            'toilet_guru_kondisi' => ['label' => 'Toilet Guru — Lapor Kerusakan', 'table' => 'toilet_gurus', 'tipe' => 'baik_rusak'],
             'ruang_guru_kondisi' => ['label' => 'Ruang Guru — Lapor Kerusakan', 'table' => 'ruang_gurus', 'tipe' => 'update_kondisi'],
             'ruang_kepala_sekolah_kondisi' => ['label' => 'Ruang Kepala Sekolah — Lapor Kerusakan', 'table' => 'ruang_kepala_sekolahs', 'tipe' => 'update_kondisi'],
             'ruang_kantor_tu_kondisi' => ['label' => 'Ruang Kantor TU — Lapor Kerusakan', 'table' => 'ruang_kantor_tus', 'tipe' => 'update_kondisi'],
@@ -173,7 +173,6 @@ class PengajuanController extends Controller
         $kategoriList = self::kategoriList();
 
         $request->validate([
-            'judul_perubahan' => ['required', 'string', 'max:255'],
             'pilih' => ['nullable', 'array'],
             'lampiran' => ['required', 'string'],
         ]);
@@ -204,7 +203,6 @@ class PengajuanController extends Controller
         Pengajuan::create([
             'user_id' => Auth::id(),
             'profile_sekolah_id' => $profileSekolah->id,
-            'judul' => $request->input('judul_perubahan'),
             'pengajuan' => $dipilih,
             'perubahan' => $perubahan,
             'status' => 'pending',

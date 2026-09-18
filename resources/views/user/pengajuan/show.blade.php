@@ -10,8 +10,7 @@
                 $kategoriKeys = is_array($pengajuan->pengajuan)
                     ? $pengajuan->pengajuan
                     : array_filter([$pengajuan->pengajuan]);
-                // Field tambahan lain (kalau ada) di luar kategori resmi — judul TIDAK
-                // termasuk di sini karena sudah punya kolom `judul` sendiri.
+                // Field tambahan lain (kalau ada) di luar kategori resmi.
                 $tambahanKeys = array_keys(array_diff_key($pengajuan->perubahan ?? [], array_flip($kategoriKeys)));
 
                 // Ikon per kategori, sama seperti di form create/edit, biar konsisten.
@@ -47,9 +46,6 @@
                 <x-slot:header>
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                         <div class="flex flex-col gap-1 min-w-0">
-                            <h1 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100 wrap-break-word">
-                                {{ $pengajuan->judul }}
-                            </h1>
                             <span class="text-xs text-gray-500 dark:text-gray-400">
                                 Diajukan pada {{ $pengajuan->created_at->format('d M Y H:i') }}
                             </span>
@@ -75,6 +71,16 @@
                     <x-alert type="danger" :icon="true">
                         <span class="font-medium">Alasan Ditolak:</span> {{ $pengajuan->alasan_penolakan }}
                     </x-alert>
+                @endif
+
+                @if (!empty($pengajuan->lampiran))
+                    <div class="mt-3 flex items-center gap-2 text-sm">
+                        <span class="text-gray-500 dark:text-gray-400 font-medium">Lampiran:</span>
+                        <a href="{{ $pengajuan->lampiran }}" target="_blank" rel="noopener"
+                            class="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline break-all">
+                            <i class="bi bi-paperclip"></i> Lihat Lampiran
+                        </a>
+                    </div>
                 @endif
             </x-card>
 

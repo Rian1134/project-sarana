@@ -36,21 +36,6 @@
                 class="flex flex-col gap-4">
                 @csrf
 
-                {{-- Judul Perubahan: disimpan ke kolom `judul` sendiri (lihat migration
-                 pengajuans), BUKAN dicampur ke kolom `perubahan` — supaya tidak ikut
-                 muncul di rincian pembaruan per kategori. --}}
-                <x-card>
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-card-heading"></i>
-                            Judul Perubahan
-                        </div>
-                    </x-slot:header>
-
-                    <x-form.input name="judul_perubahan" label="Judul Perubahan"
-                        placeholder="Contoh: Penambahan ruang kelas baru" required :value="old('judul_perubahan')" />
-                </x-card>
-
                 {{-- Tambah Kategori: kategori baru muncul sebagai card di bawah setelah
                  dipilih dari dropdown ini dan diklik "Tambah". Kategori yang sudah
                  ditambahkan otomatis hilang dari pilihan supaya tidak dobel. --}}

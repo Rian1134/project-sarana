@@ -26,8 +26,7 @@
                 $tambahanKeys = array_keys(array_diff_key($item->perubahan ?? [], array_flip($kategoriKeys)));
             @endphp
             <x-card class="p-3">
-                <div class="flex items-start justify-between gap-2 mb-2">
-                    <p class="font-semibold text-gray-800 dark:text-gray-100 wrap-break-word">{{ $item->judul }}</p>
+                <div class="flex items-center justify-end gap-2 mb-2">
                     @if ($item->status === 'pending')
                         <x-badge variant="warning" class="shrink-0">Menunggu</x-badge>
                     @elseif ($item->status === 'approved')
@@ -86,6 +85,11 @@
                 <div class="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
                     <span class="text-xs text-gray-400">{{ $item->created_at->format('d M Y H:i') }}</span>
                     <div class="flex gap-1">
+                        @if (!empty($item->lampiran))
+                            <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener" variant="secondary" size="xs">
+                                <i class="bi bi-paperclip"></i>
+                            </x-button>
+                        @endif
                         <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info" size="xs">
                             <i class="bi bi-eye-fill"></i>
                         </x-button>
@@ -118,9 +122,6 @@
                 <x-slot:head>
                     <tr class="bg-gray-800 text-white text-center">
                         <x-table.heading class="text-white! align-middle px-3 py-2">
-                            Judul
-                        </x-table.heading>
-                        <x-table.heading class="text-white! align-middle px-3 py-2">
                             Kategori
                         </x-table.heading>
                         <x-table.heading class="text-white! align-middle px-3 py-2">
@@ -144,9 +145,6 @@
                     $tambahanKeys = array_keys(array_diff_key($item->perubahan ?? [], array_flip($kategoriKeys)));
                 @endphp
                 <x-table.row class="align-middle">
-                    <x-table.cell class="font-medium px-3 py-2.5">
-                        {{ $item->judul }}
-                    </x-table.cell>
                     <x-table.cell class="font-medium px-3 py-2.5">
                         <ul class="space-y-0.5">
                             @foreach ($kategoriKeys as $kunci)
@@ -209,6 +207,11 @@
                     </x-table.cell>
                     <x-table.cell class="text-center px-3 py-2.5">
                         <div class="flex justify-center gap-1">
+                            @if (!empty($item->lampiran))
+                                <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener" variant="secondary" size="xs">
+                                    <i class="bi bi-paperclip"></i>
+                                </x-button>
+                            @endif
                             <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info" size="xs">
                                 <i class="bi bi-eye-fill"></i>
                             </x-button>
@@ -228,7 +231,7 @@
                     </x-table.cell>
                 </x-table.row>
             @empty
-                <x-table.empty colspan="6" message="Belum ada laporan kerusakan." />
+                <x-table.empty colspan="5" message="Belum ada laporan kerusakan." />
             @endforelse
             </x-table>
         </div>

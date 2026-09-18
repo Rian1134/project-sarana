@@ -247,11 +247,6 @@ class RencanaPembangunanController extends Controller
         $kategoriList = self::kategoriList();
 
         $request->validate([
-            'judul_perubahan' => [
-                'required',
-                'string',
-                'max:255',
-            ],
             'pilih' => [
                 'nullable',
                 'array',
@@ -308,7 +303,6 @@ class RencanaPembangunanController extends Controller
             'user_id' => Auth::id(),
             'profile_sekolah_id' => $profileSekolah->id,
             'lampiran' => $request->input('lampiran'),
-            'judul' => $request->input('judul_perubahan'),
             'pengajuan' => $dipilih,
             'perubahan' => $perubahan,
             'status' => 'pending',
@@ -324,6 +318,7 @@ class RencanaPembangunanController extends Controller
 
     public function show(Pengajuan $pengajuan)
     {
+        // dd(Auth::user());
         $this->authorizeOwner($pengajuan);
 
         $kategoriList = self::kategoriList();
@@ -436,7 +431,6 @@ class RencanaPembangunanController extends Controller
         );
 
         $pengajuan->update([
-            'judul' => $request->input('judul_perubahan'),
             'pengajuan' => $kategoriGabungan,
             'perubahan' => $perubahanGabungan,
             'lampiran' => $request->input('lampiran'),
@@ -472,7 +466,7 @@ class RencanaPembangunanController extends Controller
         Pengajuan $pengajuan
     ): void {
         abort_unless(
-            $pengajuan->user_id === Auth::id(),
+            (int) $pengajuan->user_id === (int) Auth::id(),
             403
         );
     }

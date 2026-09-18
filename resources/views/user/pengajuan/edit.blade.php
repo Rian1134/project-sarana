@@ -34,8 +34,6 @@
 
             @php
                 $ikonKategori = [
-                    'jumlah_siswa' => 'bi-mortarboard',
-                    'jumlah_rombel' => 'bi-diagram-3',
                     'ruang_kelas_baru' => 'bi-building-add',
                     'rehabilitasi_ruang_kelas' => 'bi-tools',
                     'ruang_kelas' => 'bi-door-closed',
@@ -60,10 +58,6 @@
                     'rumah_dinas' => 'bi-house-door',
                     'rumah_ibadah' => 'bi-building',
 
-                    // Update Kondisi: ikon sama dengan kategori "usul bangun"
-                    // pasangannya (mis. ruang_guru_kondisi pakai ikon yang sama
-                    // dengan ruang_guru), supaya user tetap gampang mengenali
-                    // fasilitas mana yang dimaksud.
                     'ruang_guru_kondisi' => 'bi-easel2',
                     'ruang_kepala_sekolah_kondisi' => 'bi-person-workspace',
                     'ruang_kantor_tu_kondisi' => 'bi-briefcase',
@@ -88,19 +82,6 @@
                 class="flex flex-col gap-4">
                 @csrf
                 @method('PUT')
-
-                {{-- Judul Perubahan: dari kolom `judul` sendiri, bukan dari `perubahan`. --}}
-                <x-card>
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-card-heading"></i>
-                            Judul Perubahan
-                        </div>
-                    </x-slot:header>
-
-                    <x-form.input name="judul_perubahan" label="Judul Perubahan"
-                        placeholder="Contoh: Penambahan ruang musik hasil swadaya masyarakat" required :value="old('judul_perubahan', $pengajuan->judul)" />
-                </x-card>
 
                 {{-- Tambah Kategori: dipakai untuk menambah kategori BARU yang belum ada
                  di pengajuan ini. Kategori yang sudah tersimpan otomatis tampil di

@@ -415,10 +415,7 @@
                             @endphp
 
                             <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-3">
-                                <div class="flex items-start justify-between gap-2">
-                                    <p class="font-semibold text-gray-800 dark:text-gray-100 wrap-break-word">
-                                        {{ $item->judul ?? '-' }}
-                                    </p>
+                                <div class="flex items-start justify-end gap-2">
                                     <x-badge :variant="$badge['variant']" class="shrink-0">
                                         {{ $badge['label'] }}
                                     </x-badge>
@@ -444,6 +441,12 @@
                                         {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
                                     </span>
                                     <div class="flex gap-1">
+                                        @if (!empty($item->lampiran))
+                                            <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
+                                                variant="secondary" size="xs">
+                                                <i class="bi bi-paperclip"></i>
+                                            </x-button>
+                                        @endif
                                         <x-button href="{{ route('user.rencana-pembangunan.show', $item) }}"
                                             variant="info" size="xs">
                                             <i class="bi bi-eye-fill"></i>
@@ -473,7 +476,6 @@
                         <x-table striped hover>
                             <x-slot:head>
                                 <tr>
-                                    <x-table.heading>Judul</x-table.heading>
                                     <x-table.heading>Rencana Diajukan</x-table.heading>
                                     <x-table.heading class="whitespace-nowrap">Status</x-table.heading>
                                     <x-table.heading class="whitespace-nowrap">Diajukan</x-table.heading>
@@ -491,10 +493,6 @@
                                 @endphp
 
                                 <x-table.row class="align-top">
-                                    <x-table.cell class="font-medium max-w-[16rem] wrap-break-word">
-                                        {{ $item->judul ?? '-' }}
-                                    </x-table.cell>
-
                                     <x-table.cell>
                                         <div class="flex flex-wrap gap-1.5">
                                             @forelse ($baris['chips'] as $chip)
@@ -523,6 +521,12 @@
 
                                     <x-table.cell class="text-right">
                                         <div class="flex justify-end gap-1">
+                                            @if (!empty($item->lampiran))
+                                                <x-button href="{{ $item->lampiran }}" target="_blank"
+                                                    rel="noopener" variant="secondary" size="xs">
+                                                    <i class="bi bi-paperclip"></i>
+                                                </x-button>
+                                            @endif
                                             <x-button href="{{ route('user.rencana-pembangunan.show', $item) }}"
                                                 variant="info" size="xs">
                                                 <i class="bi bi-eye-fill"></i>
@@ -538,7 +542,7 @@
                                     </x-table.cell>
                                 </x-table.row>
                             @empty
-                                <x-table.empty colspan="5" message="Belum ada rencana pembangunan yang diajukan." />
+                                <x-table.empty colspan="4" message="Belum ada rencana pembangunan yang diajukan." />
                             @endforelse
                         </x-table>
                     </div>
@@ -658,10 +662,7 @@
                             @endphp
 
                             <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-3">
-                                <div class="flex items-start justify-between gap-2">
-                                    <p class="font-semibold text-gray-800 dark:text-gray-100 wrap-break-word">
-                                        {{ $item->judul ?? '-' }}
-                                    </p>
+                                <div class="flex items-start justify-end gap-2">
                                     <x-badge :variant="$badge['variant']" class="shrink-0">
                                         {{ $badge['label'] }}
                                     </x-badge>
@@ -687,6 +688,12 @@
                                         {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
                                     </span>
                                     <div class="flex gap-1">
+                                        @if (!empty($item->lampiran))
+                                            <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
+                                                variant="secondary" size="xs">
+                                                <i class="bi bi-paperclip"></i>
+                                            </x-button>
+                                        @endif
                                         <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info"
                                             size="xs">
                                             <i class="bi bi-eye-fill"></i>
@@ -716,7 +723,6 @@
                         <x-table striped hover>
                             <x-slot:head>
                                 <tr>
-                                    <x-table.heading>Judul</x-table.heading>
                                     <x-table.heading>Perubahan Diajukan</x-table.heading>
                                     <x-table.heading class="whitespace-nowrap">Status</x-table.heading>
                                     <x-table.heading class="whitespace-nowrap">Diajukan</x-table.heading>
@@ -734,10 +740,6 @@
                                 @endphp
 
                                 <x-table.row class="align-top">
-                                    <x-table.cell class="font-medium max-w-[16rem] wrap-break-word">
-                                        {{ $item->judul ?? '-' }}
-                                    </x-table.cell>
-
                                     <x-table.cell>
                                         <div class="flex flex-wrap gap-1.5">
                                             @forelse ($baris['chips'] as $chip)
@@ -766,6 +768,12 @@
 
                                     <x-table.cell class="text-right">
                                         <div class="flex justify-end gap-1">
+                                            @if (!empty($item->lampiran))
+                                                <x-button href="{{ $item->lampiran }}" target="_blank"
+                                                    rel="noopener" variant="secondary" size="xs">
+                                                    <i class="bi bi-paperclip"></i>
+                                                </x-button>
+                                            @endif
                                             <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info"
                                                 size="xs">
                                                 <i class="bi bi-eye-fill"></i>
@@ -781,7 +789,7 @@
                                     </x-table.cell>
                                 </x-table.row>
                             @empty
-                                <x-table.empty colspan="5" message="Belum ada pengajuan koreksi data." />
+                                <x-table.empty colspan="4" message="Belum ada pengajuan koreksi data." />
                             @endforelse
                         </x-table>
                     </div>
