@@ -176,7 +176,6 @@ class RencanaPembangunanController extends Controller
         return self::kategoriList()[$kategori]['label'] ?? $kategori;
     }
 
-
     private function rulesForKategori(string $kategori): array
     {
         $kategoriData = self::kategoriList()[$kategori] ?? null;
@@ -318,7 +317,8 @@ class RencanaPembangunanController extends Controller
 
     public function show(Pengajuan $pengajuan)
     {
-        // dd(Auth::user());
+        // dd(Auth::id());
+
         $this->authorizeOwner($pengajuan);
 
         $kategoriList = self::kategoriList();
@@ -462,19 +462,23 @@ class RencanaPembangunanController extends Controller
             );
     }
 
-    private function authorizeOwner(
-        Pengajuan $pengajuan
-    ): void {
+    private function authorizeOwner(Pengajuan $pengajuan): void
+    {
+        // Bandingkan sebagai integer agar tidak salah karena
+        // beda tipe data (string vs int) dari database.
+        $ownerId = (int) $pengajuan->user_id;
+        $loggedInId = (int) Auth::id();
         abort_unless(
-            (int) $pengajuan->user_id === (int) Auth::id(),
-            403
+            $ownerId === $loggedInId,
+            403,
+            "Akses ditolak. Pengajuan ini milik user_id={$ownerId}, "
+            ."tapi kamu login sebagai user_id={$loggedInId}."
         );
+        // --- AKHIR MODE DEBUG ---
     }
 
-    private function guardEditable(
-        Pengajuan $pengajuan,
-        string $aksi = 'diedit'
-    ): void {
+    private function guardEditable(Pengajuan $pengajuan, string $aksi = 'diedit'): void
+    {
         abort_if(
             $pengajuan->status !== 'pending',
             403,

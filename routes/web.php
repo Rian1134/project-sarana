@@ -41,8 +41,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
             Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
             Route::get('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
+
             Route::resource('pengajuan', UserPengajuanController::class);
-            Route::resource('rencana-pembangunan', RencanaPembangunanController::class);
+            Route::resource('rencana-pembangunan', RencanaPembangunanController::class)->parameters(['rencana-pembangunan' => 'pengajuan']);
         });
     });
 
