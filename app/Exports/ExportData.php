@@ -385,9 +385,11 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
 
         return match ($kondisi) {
             'baik' => 'Baik',
-            'rusak' => 'Rusak',
+            'rusak_ringan' => 'Rusak Ringan',
+            'rusak_sedang' => 'Rusak Sedang',
+            'rusak_berat' => 'Rusak Berat',
             'nihil' => 'Nihil',
-            default => ucfirst(str_replace('_', ' ', $kondisi)),
+            default => ucwords(str_replace('_', ' ', $kondisi)),
         };
     }
 
@@ -718,7 +720,8 @@ class ExportData extends DefaultValueBinder implements FromCollection, ShouldAut
                 foreach ($kondisiCols as $col) {
                     $count = 0;
                     for ($r = 7; $r <= $highestRow; $r++) {
-                        if ($sheet->getCell($col.$r)->getValue() === 'Rusak') {
+                        $nilaiKondisi = $sheet->getCell($col.$r)->getValue();
+                        if (in_array($nilaiKondisi, ['Rusak Ringan', 'Rusak Sedang', 'Rusak Berat'], true)) {
                             $count++;
                         }
                     }

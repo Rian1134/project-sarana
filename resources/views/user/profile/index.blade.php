@@ -522,8 +522,8 @@
                                     <x-table.cell class="text-right">
                                         <div class="flex justify-end gap-1">
                                             @if (!empty($item->lampiran))
-                                                <x-button href="{{ $item->lampiran }}" target="_blank"
-                                                    rel="noopener" variant="secondary" size="xs">
+                                                <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
+                                                    variant="secondary" size="xs">
                                                     <i class="bi bi-paperclip"></i>
                                                 </x-button>
                                             @endif
@@ -769,8 +769,8 @@
                                     <x-table.cell class="text-right">
                                         <div class="flex justify-end gap-1">
                                             @if (!empty($item->lampiran))
-                                                <x-button href="{{ $item->lampiran }}" target="_blank"
-                                                    rel="noopener" variant="secondary" size="xs">
+                                                <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
+                                                    variant="secondary" size="xs">
                                                     <i class="bi bi-paperclip"></i>
                                                 </x-button>
                                             @endif
@@ -888,7 +888,9 @@
                     $countAda = 0;
                     $countTidakAda = 0;
                     $countKondisiBaik = 0;
-                    $countKondisiRusak = 0;
+                    $countKondisiRusakRingan = 0;
+                    $countKondisiRusakSedang = 0;
+                    $countKondisiRusakBerat = 0;
                     $countKondisiNihil = 0;
 
                     foreach ($fasilitas as $rel => $info) {
@@ -901,17 +903,23 @@
                             $countTidakAda++;
                         }
 
-                        if ($kondisiFasilitas === 'baik') {
-                            $countKondisiBaik++;
-                        } elseif ($kondisiFasilitas === 'rusak') {
-                            $countKondisiRusak++;
-                        } else {
-                            $countKondisiNihil++;
-                        }
+                        match ($kondisiFasilitas) {
+                            'baik' => $countKondisiBaik++,
+                            'rusak_ringan' => $countKondisiRusakRingan++,
+                            'rusak_sedang' => $countKondisiRusakSedang++,
+                            'rusak_berat' => $countKondisiRusakBerat++,
+                            default => $countKondisiNihil++,
+                        };
                     }
 
                     $chartFasilitas = [$countAda, $countTidakAda];
-                    $chartFasilitasKondisi = [$countKondisiBaik, $countKondisiRusak, $countKondisiNihil];
+                    $chartFasilitasKondisi = [
+                        $countKondisiBaik,
+                        $countKondisiRusakRingan,
+                        $countKondisiRusakSedang,
+                        $countKondisiRusakBerat,
+                        $countKondisiNihil,
+                    ];
 
                     $furnitur = [
                         'toiletSiswa' => 'Toilet Siswa',
@@ -1054,7 +1062,7 @@
                     </div>
                 </x-card>
 
-                
+
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
@@ -1290,17 +1298,31 @@
                                             Ada
                                         </span>
 
+                                        @php
+                                            $kondisiLabel = match ($kondisi) {
+                                                'baik' => 'Baik',
+                                                'rusak_ringan' => 'Rusak Ringan',
+                                                'rusak_sedang' => 'Rusak Sedang',
+                                                'rusak_berat' => 'Rusak Berat',
+                                                default => 'Nihil',
+                                            };
+                                        @endphp
+
                                         <span @class([
                                             'inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium',
                                             'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' =>
                                                 $kondisi == 'baik',
-                                            'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300' =>
-                                                $kondisi == 'rusak',
+                                            'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' =>
+                                                $kondisi == 'rusak_ringan',
+                                            'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' =>
+                                                $kondisi == 'rusak_sedang',
+                                            'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' =>
+                                                $kondisi == 'rusak_berat',
                                             'bg-gray-100 text-gray-600 dark:bg-gray-700/40 dark:text-gray-300' => !in_array(
                                                 $kondisi,
-                                                ['baik', 'rusak']),
+                                                ['baik', 'rusak_ringan', 'rusak_sedang', 'rusak_berat']),
                                         ])>
-                                            {{ $kondisi == 'baik' ? 'Baik' : ($kondisi == 'rusak' ? 'Rusak' : 'Nihil') }}
+                                            {{ $kondisiLabel }}
                                         </span>
                                     @else
                                         <span
@@ -1326,7 +1348,7 @@
 
                         <div>
                             <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
-                                Kondisi (Baik / Rusak / Nihil)
+                                Kondisi (Baik / Rusak Ringan / Sedang / Berat / Nihil)
                             </p>
 
                             <div class="h-40 sm:h-48">
@@ -1566,10 +1588,10 @@
                 new Chart(document.getElementById('fasilitasKondisiChart'), {
                     type: 'doughnut',
                     data: {
-                        labels: ['Baik', 'Rusak', 'Nihil'],
+                        labels: ['Baik', 'Rusak Ringan', 'Rusak Sedang', 'Rusak Berat', 'Nihil'],
                         datasets: [{
                             data: @json($chartFasilitasKondisi),
-                            backgroundColor: ['#22c55e', '#f59e0b', '#9ca3af'],
+                            backgroundColor: ['#22c55e', '#facc15', '#f97316', '#ef4444', '#9ca3af'],
                             borderWidth: 0
                         }]
                     },

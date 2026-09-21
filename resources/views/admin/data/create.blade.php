@@ -187,7 +187,7 @@
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="ruang_kelas_bagus" label="Jumlah Bagus" type="number" min="0" required :value="old('ruang_kelas_bagus', 0)" />
+                        <x-form.input name="ruang_kelas_baik" label="Jumlah Baik" type="number" min="0" required :value="old('ruang_kelas_baik', 0)" />
                         <x-form.input name="ruang_kelas_rusak" label="Jumlah Rusak" type="number" min="0" required :value="old('ruang_kelas_rusak', 0)" />
                     </div>
                 </x-card>
@@ -202,7 +202,7 @@
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="toilet_siswa_bagus" label="Jumlah Bagus" type="number" min="0" required :value="old('toilet_siswa_bagus', 0)" />
+                        <x-form.input name="toilet_siswa_baik" label="Jumlah Baik" type="number" min="0" required :value="old('toilet_siswa_baik', 0)" />
                         <x-form.input name="toilet_siswa_rusak" label="Jumlah Rusak" type="number" min="0" required :value="old('toilet_siswa_rusak', 0)" />
                     </div>
                 </x-card>
@@ -217,7 +217,7 @@
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="toilet_guru_bagus" label="Jumlah Bagus" type="number" min="0" required :value="old('toilet_guru_bagus', 0)" />
+                        <x-form.input name="toilet_guru_baik" label="Jumlah Baik" type="number" min="0" required :value="old('toilet_guru_baik', 0)" />
                         <x-form.input name="toilet_guru_rusak" label="Jumlah Rusak" type="number" min="0" required :value="old('toilet_guru_rusak', 0)" />
                     </div>
                 </x-card>
@@ -250,7 +250,7 @@
                                 name="perpustakaan_kondisi"
                                 label="Kondisi R. Perpustakaan"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('perpustakaan_kondisi')"
                             />
                         </div>
@@ -285,7 +285,7 @@
                                 name="kepala_sekolah_kondisi"
                                 label="Kondisi R. Kepala Sekolah"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('kepala_sekolah_kondisi')"
                             />
                         </div>
@@ -320,7 +320,7 @@
                                 name="ruang_guru_kondisi"
                                 label="Kondisi R. Guru"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('ruang_guru_kondisi')"
                             />
                         </div>
@@ -355,7 +355,7 @@
                                 name="kantor_tu_kondisi"
                                 label="Kondisi R. Kantor/TU"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('kantor_tu_kondisi')"
                             />
                         </div>
@@ -390,7 +390,7 @@
                                 name="lab_ipa_kondisi"
                                 label="Kondisi Lab IPA"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('lab_ipa_kondisi')"
                             />
                         </div>
@@ -425,7 +425,7 @@
                                 name="lab_komputer_kondisi"
                                 label="Kondisi Lab Komputer"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('lab_komputer_kondisi')"
                             />
                         </div>
@@ -460,7 +460,7 @@
                                 name="uks_kondisi"
                                 label="Kondisi UKS"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('uks_kondisi')"
                             />
                         </div>
@@ -495,7 +495,7 @@
                                 name="rumah_dinas_kondisi"
                                 label="Kondisi Rumah Dinas"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('rumah_dinas_kondisi')"
                             />
                         </div>
@@ -530,7 +530,7 @@
                                 name="rumah_ibadah_kondisi"
                                 label="Kondisi Rumah Ibadah"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('rumah_ibadah_kondisi')"
                             />
                         </div>
@@ -565,7 +565,7 @@
                                 name="lapangan_sekolah_kondisi"
                                 label="Kondisi Lapangan Sekolah"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('lapangan_sekolah_kondisi')"
                             />
                         </div>
@@ -600,7 +600,7 @@
                                 name="pagar_kondisi"
                                 label="Kondisi Pagar"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('pagar_kondisi')"
                             />
                         </div>
@@ -635,7 +635,7 @@
                                 name="air_kondisi"
                                 label="Kondisi Air"
                                 placeholder="-- Pilih Kondisi --"
-                                :options="['bagus' => 'bagus', 'rusak' => 'Rusak', 'nihil' => 'Nihil']"
+                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('air_kondisi')"
                             />
                         </div>
@@ -652,7 +652,7 @@
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="kursi_siswa_bagus" label="Jumlah Bagus" type="number" min="0" required :value="old('kursi_siswa_bagus', 0)" />
+                        <x-form.input name="kursi_siswa_baik" label="Jumlah Baik" type="number" min="0" required :value="old('kursi_siswa_baik', 0)" />
                         <x-form.input name="kursi_siswa_rusak" label="Jumlah Rusak" type="number" min="0" required :value="old('kursi_siswa_rusak', 0)" />
                     </div>
                 </x-card>
@@ -667,7 +667,7 @@
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="meja_siswa_bagus" label="Jumlah Bagus" type="number" min="0" required :value="old('meja_siswa_bagus', 0)" />
+                        <x-form.input name="meja_siswa_baik" label="Jumlah Baik" type="number" min="0" required :value="old('meja_siswa_baik', 0)" />
                         <x-form.input name="meja_siswa_rusak" label="Jumlah Rusak" type="number" min="0" required :value="old('meja_siswa_rusak', 0)" />
                     </div>
                 </x-card>
@@ -682,7 +682,7 @@
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="kursi_guru_bagus" label="Jumlah Bagus" type="number" min="0" required :value="old('kursi_guru_bagus', 0)" />
+                        <x-form.input name="kursi_guru_baik" label="Jumlah Baik" type="number" min="0" required :value="old('kursi_guru_baik', 0)" />
                         <x-form.input name="kursi_guru_rusak" label="Jumlah Rusak" type="number" min="0" required :value="old('kursi_guru_rusak', 0)" />
                     </div>
                 </x-card>
@@ -697,7 +697,7 @@
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="meja_guru_bagus" label="Jumlah Bagus" type="number" min="0" required :value="old('meja_guru_bagus', 0)" />
+                        <x-form.input name="meja_guru_baik" label="Jumlah Baik" type="number" min="0" required :value="old('meja_guru_baik', 0)" />
                         <x-form.input name="meja_guru_rusak" label="Jumlah Rusak" type="number" min="0" required :value="old('meja_guru_rusak', 0)" />
                     </div>
                 </x-card>
@@ -712,7 +712,7 @@
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="laptop_bagus" label="Jumlah Bagus" type="number" min="0" required :value="old('laptop_bagus', 0)" />
+                        <x-form.input name="laptop_baik" label="Jumlah Baik" type="number" min="0" required :value="old('laptop_baik', 0)" />
                         <x-form.input name="laptop_rusak" label="Jumlah Rusak" type="number" min="0" required :value="old('laptop_rusak', 0)" />
                     </div>
                 </x-card>
@@ -727,7 +727,7 @@
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="komputer_bagus" label="Jumlah Bagus" type="number" min="0" required :value="old('komputer_bagus', 0)" />
+                        <x-form.input name="komputer_baik" label="Jumlah Baik" type="number" min="0" required :value="old('komputer_baik', 0)" />
                         <x-form.input name="komputer_rusak" label="Jumlah Rusak" type="number" min="0" required :value="old('komputer_rusak', 0)" />
                     </div>
                 </x-card>

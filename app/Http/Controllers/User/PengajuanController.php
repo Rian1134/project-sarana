@@ -63,12 +63,16 @@ class PengajuanController extends Controller
     }
 
     /**
-     * Definisi field per tipe. Kedua tipe di bawah sengaja HANYA soal
-     * melaporkan KERUSAKAN — bukan mencatat ulang kondisi baik atau nihil:
+     * Definisi field per tipe. Kedua tipe di bawah soal melaporkan status
+     * TERKINI fasilitas yang sudah ada:
      *   - `baik_rusak`     → cuma field `rusak` (jumlah unit yang rusak).
-     *   - `update_kondisi` → cuma opsi "Rusak" (menandai fasilitas yang
-     *                        sudah ada sebagai rusak). Opsi Baik & Nihil
-     *                        sengaja dihapus dari sini.
+     *   - `update_kondisi` → field `ada/tidak_ada` (status terkini fasilitas)
+     *                        dan `kodisi` dengan opsi tingkat kerusakan
+     *                        ("Rusak Ringan", "Rusak Sedang", "Rusak Berat")
+     *                        plus "Nihil" (kalau fasilitasnya sudah tidak
+     *                        relevan/tidak ada lagi). Opsi "Baik" sengaja
+     *                        tidak disediakan di sini karena form ini memang
+     *                        khusus untuk melaporkan masalah/kerusakan.
      * Berbeda dengan `ada_kondisi` milik RencanaPembangunanController yang
      * memang sengaja TIDAK punya field sama sekali (itu untuk usul bangun baru,
      * bukan laporan kerusakan).
@@ -80,7 +84,16 @@ class PengajuanController extends Controller
                 ['name' => 'rusak', 'label' => 'Kondisi Rusak', 'type' => 'number'],
             ],
             'update_kondisi' => [
-                ['name' => 'kodisi', 'label' => 'Kondisi Saat Ini', 'type' => 'select', 'options' => ['rusak' => 'Rusak']],
+                ['name' => 'ada/tidak_ada', 'label' => 'Ada / Tidak Ada', 'type' => 'select', 'options' => [
+                    'ada' => 'Ada',
+                    'tidak_ada' => 'Tidak Ada',
+                ]],
+                ['name' => 'kodisi', 'label' => 'Kondisi Saat Ini', 'type' => 'select', 'options' => [
+                    'rusak_ringan' => 'Rusak Ringan',
+                    'rusak_sedang' => 'Rusak Sedang',
+                    'rusak_berat' => 'Rusak Berat',
+                    'nihil' => 'Nihil',
+                ]],
             ],
         ];
     }

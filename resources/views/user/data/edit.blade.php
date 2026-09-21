@@ -325,7 +325,9 @@
                             <x-form.select name="perpustakaan_kondisi" label="Kondisi" :options="[
                                 '' => '-- Pilih --',
                                 'baik' => 'Baik',
-                                'rusak' => 'Rusak',
+                                'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                 'nihil' => 'Nihil',
                             ]"
                                 :value="old('perpustakaan_kondisi', $profileSekolah->ruangPerpustakaan?->kodisi)" />
@@ -370,7 +372,9 @@
                             <x-form.select name="kepala_sekolah_kondisi" label="Kondisi" :options="[
                                 '' => '-- Pilih --',
                                 'baik' => 'Baik',
-                                'rusak' => 'Rusak',
+                                'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                 'nihil' => 'Nihil',
                             ]"
                                 :value="old('kepala_sekolah_kondisi', $profileSekolah->ruangKepalaSekolah?->kodisi)" />
@@ -415,7 +419,9 @@
                             <x-form.select name="ruang_guru_kondisi" label="Kondisi" :options="[
                                 '' => '-- Pilih --',
                                 'baik' => 'Baik',
-                                'rusak' => 'Rusak',
+                                'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                 'nihil' => 'Nihil',
                             ]"
                                 :value="old('ruang_guru_kondisi', $profileSekolah->ruangGuru?->kodisi)" />
@@ -460,7 +466,9 @@
                             <x-form.select name="kantor_tu_kondisi" label="Kondisi" :options="[
                                 '' => '-- Pilih --',
                                 'baik' => 'Baik',
-                                'rusak' => 'Rusak',
+                                'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                 'nihil' => 'Nihil',
                             ]"
                                 :value="old('kantor_tu_kondisi', $profileSekolah->ruangKantorTu?->kodisi)" />
@@ -507,7 +515,9 @@
                                 <x-form.select name="lab_ipa_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
                                     'baik' => 'Baik',
-                                    'rusak' => 'Rusak',
+                                    'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
                                 ]"
                                     :value="old('lab_ipa_kondisi', $profileSekolah->labIpa?->kodisi)" />
@@ -552,7 +562,9 @@
                                 <x-form.select name="lab_komputer_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
                                     'baik' => 'Baik',
-                                    'rusak' => 'Rusak',
+                                    'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
                                 ]"
                                     :value="old('lab_komputer_kondisi', $profileSekolah->labKomputer?->kodisi)" />
@@ -598,7 +610,9 @@
                             <x-form.select name="uks_kondisi" label="Kondisi" :options="[
                                 '' => '-- Pilih --',
                                 'baik' => 'Baik',
-                                'rusak' => 'Rusak',
+                                'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                 'nihil' => 'Nihil',
                             ]" :value="old('uks_kondisi', $profileSekolah->unitKesehatanSekolah?->kodisi)" />
                         </div>
@@ -644,7 +658,9 @@
                                 <x-form.select name="rumah_dinas_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
                                     'baik' => 'Baik',
-                                    'rusak' => 'Rusak',
+                                    'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
                                 ]"
                                     :value="old('rumah_dinas_kondisi', $profileSekolah->rumahDinas?->kodisi)" />
@@ -689,7 +705,9 @@
                                 <x-form.select name="rumah_ibadah_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
                                     'baik' => 'Baik',
-                                    'rusak' => 'Rusak',
+                                    'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
                                 ]"
                                     :value="old('rumah_ibadah_kondisi', $profileSekolah->rumahIbadah?->kodisi)" />
@@ -734,7 +752,9 @@
                                 <x-form.select name="lapangan_sekolah_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
                                     'baik' => 'Baik',
-                                    'rusak' => 'Rusak',
+                                    'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
                                 ]"
                                     :value="old(
@@ -785,7 +805,9 @@
                                 <x-form.select name="pagar_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
                                     'baik' => 'Baik',
-                                    'rusak' => 'Rusak',
+                                    'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
                                 ]"
                                     :value="old('pagar_kondisi', $profileSekolah->pagarSekolah?->kodisi)" />
@@ -830,7 +852,9 @@
                                 <x-form.select name="air_kondisi" label="Kondisi" :options="[
                                     '' => '-- Pilih --',
                                     'baik' => 'Baik',
-                                    'rusak' => 'Rusak',
+                                    'rusak_ringan' => 'Rusak Ringan',
+                                'rusak_sedang' => 'Rusak Sedang',
+                                'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
                                 ]" :value="old('air_kondisi', $profileSekolah->airBersih?->kodisi)" />
                             </div>

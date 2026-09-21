@@ -82,21 +82,29 @@
             'rumahIbadah', 'lapanganSekolah', 'pagarSekolah', 'airBersih',
         ];
         $countFasilitasBaik = 0;
-        $countFasilitasRusak = 0;
+        $countFasilitasRusakRingan = 0;
+        $countFasilitasRusakSedang = 0;
+        $countFasilitasRusakBerat = 0;
         $countFasilitasNihil = 0;
         foreach ($profileSekolahs as $item) {
             foreach ($fasilitasRelasi as $rel) {
                 $kondisiFasilitas = $item->$rel?->kodisi ?? null;
-                if ($kondisiFasilitas === 'baik') {
-                    $countFasilitasBaik++;
-                } elseif ($kondisiFasilitas === 'rusak') {
-                    $countFasilitasRusak++;
-                } else {
-                    $countFasilitasNihil++;
-                }
+                match ($kondisiFasilitas) {
+                    'baik' => $countFasilitasBaik++,
+                    'rusak_ringan' => $countFasilitasRusakRingan++,
+                    'rusak_sedang' => $countFasilitasRusakSedang++,
+                    'rusak_berat' => $countFasilitasRusakBerat++,
+                    default => $countFasilitasNihil++,
+                };
             }
         }
-        $chartFasilitas = [$countFasilitasBaik, $countFasilitasRusak, $countFasilitasNihil];
+        $chartFasilitas = [
+            $countFasilitasBaik,
+            $countFasilitasRusakRingan,
+            $countFasilitasRusakSedang,
+            $countFasilitasRusakBerat,
+            $countFasilitasNihil,
+        ];
     @endphp
 
     <div class="card mb-4">
@@ -124,7 +132,7 @@
                 </div>
                 <div>
                     <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
-                        Total Kondisi Fasilitas (Baik/Rusak/Nihil)
+                        Total Kondisi Fasilitas (Baik/Rusak Ringan/Sedang/Berat/Nihil)
                     </p>
                     <div class="h-56 sm:h-64">
                         <canvas id="adminChartFasilitas"></canvas>
@@ -560,7 +568,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangPerpustakaan?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangPerpustakaan?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->ruangPerpustakaan?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 9: R. KEPALA SEKOLAH --}}
@@ -578,7 +586,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangKepalaSekolah?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangKepalaSekolah?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->ruangKepalaSekolah?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 10: R. GURU --}}
@@ -596,7 +604,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangGuru?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangGuru?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->ruangGuru?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 11: R. KANTOR/TU --}}
@@ -614,7 +622,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangKantorTu?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->ruangKantorTu?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->ruangKantorTu?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 12: LAB IPA --}}
@@ -631,7 +639,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->labIpa?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 13: LAB KOMPUTER --}}
@@ -649,7 +657,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->labIpa?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 14: UKS --}}
@@ -667,7 +675,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->uks?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->uks?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->uks?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 15: RUMAH DINAS --}}
@@ -684,7 +692,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->rumahDinas?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->rumahDinas?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->rumahDinas?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 16: RUMAH IBADAH --}}
@@ -702,7 +710,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->rumahIbadah?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->rumahIbadah?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->rumahIbadah?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 17: LAPANGAN SEKOLAH --}}
@@ -720,7 +728,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->lapanganSekolah?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->lapanganSekolah?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->lapanganSekolah?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 18: PAGAR --}}
@@ -738,7 +746,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->pagarSekolah?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->pagarSekolah?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->pagarSekolah?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 19: AIR --}}
@@ -756,7 +764,7 @@
                             <span
                                 class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->airBersih?->kodisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->airBersih?->kodisi ?? null) === 'rusak')->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->airBersih?->kodisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 20: KURSI SISWA --}}
@@ -904,7 +912,7 @@
                         $ruangPerpustakaanKondisiBadge =
                             $ruangPerpustakaanKondisi == 'baik'
                                 ? 'success'
-                                : ($ruangPerpustakaanKondisi == 'rusak'
+                                : (in_array($ruangPerpustakaanKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -920,7 +928,7 @@
                         $ruangKepalaSekolahKondisiBadge =
                             $ruangKepalaSekolahKondisi == 'baik'
                                 ? 'success'
-                                : ($ruangKepalaSekolahKondisi == 'rusak'
+                                : (in_array($ruangKepalaSekolahKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -936,7 +944,7 @@
                         $ruangGuruKondisiBadge =
                             $ruangGuruKondisi == 'baik'
                                 ? 'success'
-                                : ($ruangGuruKondisi == 'rusak'
+                                : (in_array($ruangGuruKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -952,7 +960,7 @@
                         $ruangKantorTuKondisiBadge =
                             $ruangKantorTuKondisi == 'baik'
                                 ? 'success'
-                                : ($ruangKantorTuKondisi == 'rusak'
+                                : (in_array($ruangKantorTuKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -962,7 +970,7 @@
                             $labIpaStatus == 'ada' ? 'success' : ($labIpaStatus == 'tidak_ada' ? 'danger' : 'light');
                         $labIpaKondisi = $item->labIpa?->kodisi ?? '-';
                         $labIpaKondisiBadge =
-                            $labIpaKondisi == 'baik' ? 'success' : ($labIpaKondisi == 'rusak' ? 'warning' : 'light');
+                            $labIpaKondisi == 'baik' ? 'success' : (in_array($labIpaKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']) ? 'warning' : 'light');
 
                         // 13. LAB KOMPUTER
                         $labKomputerStatus = $item->labKomputer?->{'ada/tidak_ada'} ?? '-';
@@ -976,7 +984,7 @@
                         $labKomputerKondisiBadge =
                             $labKomputerKondisi == 'baik'
                                 ? 'success'
-                                : ($labKomputerKondisi == 'rusak'
+                                : (in_array($labKomputerKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -992,7 +1000,7 @@
                         $unitKesehatanSekolahKondisiBadge =
                             $unitKesehatanSekolahKondisi == 'baik'
                                 ? 'success'
-                                : ($unitKesehatanSekolahKondisi == 'rusak'
+                                : (in_array($unitKesehatanSekolahKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -1008,7 +1016,7 @@
                         $rumahDinasKondisiBadge =
                             $rumahDinasKondisi == 'baik'
                                 ? 'success'
-                                : ($rumahDinasKondisi == 'rusak'
+                                : (in_array($rumahDinasKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -1024,7 +1032,7 @@
                         $rumahIbadahKondisiBadge =
                             $rumahIbadahKondisi == 'baik'
                                 ? 'success'
-                                : ($rumahIbadahKondisi == 'rusak'
+                                : (in_array($rumahIbadahKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -1040,7 +1048,7 @@
                         $lapanganSekolahKondisiBadge =
                             $lapanganSekolahKondisi == 'baik'
                                 ? 'success'
-                                : ($lapanganSekolahKondisi == 'rusak'
+                                : (in_array($lapanganSekolahKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -1056,7 +1064,7 @@
                         $pagarSekolahKondisiBadge =
                             $pagarSekolahKondisi == 'baik'
                                 ? 'success'
-                                : ($pagarSekolahKondisi == 'rusak'
+                                : (in_array($pagarSekolahKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -1072,7 +1080,7 @@
                         $airBersihKondisiBadge =
                             $airBersihKondisi == 'baik'
                                 ? 'success'
-                                : ($airBersihKondisi == 'rusak'
+                                : (in_array($airBersihKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
                                     ? 'warning'
                                     : 'light');
 
@@ -1405,10 +1413,10 @@
             new Chart(document.getElementById('adminChartFasilitas'), {
                 type: 'doughnut',
                 data: {
-                    labels: ['Baik', 'Rusak', 'Nihil'],
+                    labels: ['Baik', 'Rusak Ringan', 'Rusak Sedang', 'Rusak Berat', 'Nihil'],
                     datasets: [{
                         data: @json($chartFasilitas),
-                        backgroundColor: ['#22c55e', '#f59e0b', '#9ca3af'],
+                        backgroundColor: ['#22c55e', '#facc15', '#f97316', '#ef4444', '#9ca3af'],
                         borderWidth: 0,
                     }],
                 },
