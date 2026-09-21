@@ -35,29 +35,29 @@ class RolePermissionSeeder extends Seeder
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'user']);
 
-        // $roleAdmin = Role::findByName('admin');
+        $roleAdmin = Role::findByName('admin');
 
-        // $roleAdmin->givePermissionTo('view-sarana');
-        // $roleAdmin->givePermissionTo('show-sarana');
-        // $roleAdmin->givePermissionTo('edit-sarana');
-        // $roleAdmin->givePermissionTo('create-sarana');
-        // $roleAdmin->givePermissionTo('delete-sarana');
+        $roleAdmin->givePermissionTo('view-sarana');
+        $roleAdmin->givePermissionTo('show-sarana');
+        $roleAdmin->givePermissionTo('edit-sarana');
+        $roleAdmin->givePermissionTo('create-sarana');
+        $roleAdmin->givePermissionTo('delete-sarana');
 
-        // $roleAdmin->givePermissionTo('view-user');
-        // $roleAdmin->givePermissionTo('edit-user');
-        // $roleAdmin->givePermissionTo('create-user');
-        // $roleAdmin->givePermissionTo('delete-user');
+        $roleAdmin->givePermissionTo('view-user');
+        $roleAdmin->givePermissionTo('edit-user');
+        $roleAdmin->givePermissionTo('create-user');
+        $roleAdmin->givePermissionTo('delete-user');
 
-        // $roleUser = Role::findByName('user');
+        $roleUser = Role::findByName('user');
 
-        // $roleUser->givePermissionTo('show-sarana');
-        // $roleUser->givePermissionTo('edit-sarana');
-        // $roleUser->givePermissionTo('create-sarana');
-        // $roleUser->givePermissionTo('delete-sarana');
+        $roleUser->givePermissionTo('show-sarana');
+        $roleUser->givePermissionTo('edit-sarana');
+        $roleUser->givePermissionTo('create-sarana');
+        $roleUser->givePermissionTo('delete-sarana');
 
-        // $roleUser->givePermissionTo('show-user');
-        // $roleUser->givePermissionTo('edit-user');
-        // $roleUser->givePermissionTo('create-user');
-        // $roleUser->givePermissionTo('delete-user');
+        $roleUser->givePermissionTo('show-user');
+        $roleUser->givePermissionTo('edit-user');
+        $roleUser->givePermissionTo('create-user');
+        $roleUser->givePermissionTo('delete-user');
     }
 }
