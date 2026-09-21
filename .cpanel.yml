@@ -3,7 +3,7 @@ deployment:
   tasks:
     # Ganti USERNAME dengan username cPanel kamu,
     # dan "laravel_app" dengan nama folder project di server.
-    - export DEPLOYPATH=/home/USERNAME/laravel_app/
+    - export DEPLOYPATH=/home/simsarpr/project-sarana/
 
     # Salin seluruh isi repo ke folder deploy
     - /bin/cp -R ./* $DEPLOYPATH
