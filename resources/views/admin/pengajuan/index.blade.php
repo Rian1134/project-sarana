@@ -42,7 +42,8 @@
 
                     <div class="text-xs text-gray-500 dark:text-gray-400 mb-2 space-y-1">
                         <div><span class="font-semibold">User ID:</span> {{ $item->user_id }}</div>
-                        <div><span class="font-semibold">Sekolah:</span> {{ $item->profileSekolah->nama_sekolah ?? '-' }}</div>
+                        <div><span class="font-semibold">Sekolah:</span> {{ $item->profileSekolah->nama_sekolah ?? '-' }}
+                        </div>
                         <div><span class="font-semibold">Diajukan:</span> {{ $item->created_at->format('d M Y H:i') }}</div>
                     </div>
 
@@ -73,7 +74,8 @@
                                 <ul class="space-y-0.5">
                                     @foreach ($tambahanKeys as $namaField)
                                         <li>
-                                            <span class="text-gray-500 dark:text-gray-400">{{ ucwords(str_replace('_', ' ', $namaField)) }}:</span>
+                                            <span
+                                                class="text-gray-500 dark:text-gray-400">{{ ucwords(str_replace('_', ' ', $namaField)) }}:</span>
                                             <span class="font-medium text-gray-800 dark:text-gray-200">
                                                 {{ is_array($perubahan[$namaField] ?? null) ? json_encode($perubahan[$namaField]) : $perubahan[$namaField] ?? '-' }}
                                             </span>
@@ -86,7 +88,8 @@
 
                     <div class="flex items-center justify-end pt-2 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex gap-1">
-                            <x-button href="{{ route('pengajuan.show', $item) }}" variant="info" size="xs" title="Lihat">
+                            <x-button href="{{ route('pengajuan.show', $item) }}" variant="info" size="xs"
+                                title="Lihat">
                                 <i class="bi bi-eye-fill"></i>
                             </x-button>
 
@@ -129,7 +132,7 @@
                     <x-slot:head>
                         <tr class="bg-gray-800 text-white text-center">
                             <x-table.heading class="text-white! align-middle px-3 py-2">
-                                Sekolah &amp; Judul
+                                Sekolah
                             </x-table.heading>
                             <x-table.heading class="text-white! align-middle px-3 py-2">
                                 Perubahan
@@ -148,16 +151,21 @@
 
                     @forelse ($laporanKerusakans as $item)
                         @php
-                            $kategoriKeys = is_array($item->pengajuan) ? $item->pengajuan : array_filter([$item->pengajuan]);
+                            $kategoriKeys = is_array($item->pengajuan)
+                                ? $item->pengajuan
+                                : array_filter([$item->pengajuan]);
                             $perubahan = is_array($item->perubahan) ? $item->perubahan : [];
                             $tambahanKeys = array_keys(array_diff_key($perubahan, array_flip($kategoriKeys)));
-                            $jumlahField = collect($kategoriKeys)->sum(fn ($k) => count($perubahan[$k] ?? [])) + count($tambahanKeys);
+                            $jumlahField =
+                                collect($kategoriKeys)->sum(fn($k) => count($perubahan[$k] ?? [])) +
+                                count($tambahanKeys);
                         @endphp
 
                         <x-table.row class="align-top">
                             {{-- SEKOLAH & JUDUL --}}
                             <x-table.cell class="px-3 py-3 align-top">
-                                <div class="font-medium text-gray-800 dark:text-gray-100 wrap-break-word">{{ $item->judul }}</div>
+                                <div class="font-medium text-gray-800 dark:text-gray-100 wrap-break-word">
+                                    {{ $item->judul }}</div>
                                 <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 wrap-break-word">
                                     {{ $item->profileSekolah->nama_sekolah ?? '-' }} &middot; User #{{ $item->user_id }}
                                 </div>
@@ -168,12 +176,14 @@
                             <x-table.cell class="px-3 py-3 align-top">
                                 <div class="flex flex-wrap gap-1">
                                     @foreach ($kategoriKeys as $kunci)
-                                        <span class="inline-block text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+                                        <span
+                                            class="inline-block text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
                                             {{ \App\Http\Controllers\Admin\PengajuanController::categoryLabel($kunci) }}
                                         </span>
                                     @endforeach
                                     @if (count($tambahanKeys))
-                                        <span class="inline-block text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+                                        <span
+                                            class="inline-block text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
                                             Perubahan Lainnya
                                         </span>
                                     @endif
@@ -202,23 +212,32 @@
                             {{-- AKSI --}}
                             <x-table.cell class="text-center px-3 py-3 whitespace-nowrap">
                                 <div class="flex justify-center gap-1">
-                                    <x-button href="{{ route('pengajuan.show', $item) }}" variant="info" size="xs" class="p-1.5" title="Lihat rincian">
+                                    <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
+                                        variant="secondary" size="xs">
+                                        <i class="bi bi-paperclip"></i>
+                                    </x-button>
+
+                                    <x-button href="{{ route('pengajuan.show', $item) }}" variant="info" size="xs"
+                                        class="p-1.5" title="Lihat rincian">
                                         <i class="bi bi-eye-fill"></i>
                                     </x-button>
 
                                     @if ($item->status === 'pending')
-                                        <form action="{{ route('pengajuan.approve', $item) }}" method="POST" class="inline"
+                                        <form action="{{ route('pengajuan.approve', $item) }}" method="POST"
+                                            class="inline"
                                             onsubmit="return confirm('Setujui pengajuan ini? Data sarana sekolah akan diperbarui sesuai isi pengajuan.');">
                                             @csrf
-                                            <x-button type="submit" variant="success" size="xs" class="p-1.5" title="Setujui">
+                                            <x-button type="submit" variant="success" size="xs" class="p-1.5"
+                                                title="Setujui">
                                                 <i class="bi bi-check-lg"></i>
                                             </x-button>
                                         </form>
 
-                                        <form action="{{ route('pengajuan.reject', $item) }}" method="POST" class="inline"
-                                            onsubmit="return confirm('Tolak pengajuan ini?');">
+                                        <form action="{{ route('pengajuan.reject', $item) }}" method="POST"
+                                            class="inline" onsubmit="return confirm('Tolak pengajuan ini?');">
                                             @csrf
-                                            <x-button type="submit" variant="danger" size="xs" class="p-1.5" title="Tolak">
+                                            <x-button type="submit" variant="danger" size="xs" class="p-1.5"
+                                                title="Tolak">
                                                 <i class="bi bi-x-lg"></i>
                                             </x-button>
                                         </form>

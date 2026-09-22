@@ -54,7 +54,11 @@
                         <x-table.cell class="text-center font-bold">
                             {{ $no }}
                         </x-table.cell>
-                        <x-table.cell>{{ $item->profileSekolah->nama_sekolah ?? '-' }}</x-table.cell>
+                        <x-table.cell>
+                            <a class="link" href="{{ $item->profileSekolah->nama_sekolah ?? '#' }}">
+                                {{ $item->profileSekolah->nama_sekolah ?? '-' }}
+                            </a>
+                        </x-table.cell>
                         <x-table.cell>{{ $item->name }}</x-table.cell>
                         <x-table.cell>{{ $item->email }}</x-table.cell>
                         <x-table.cell>

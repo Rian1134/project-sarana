@@ -136,7 +136,7 @@
                         <x-slot:head>
                             <tr class="bg-gray-800 text-white text-center">
                                 <x-table.heading class="text-white! align-middle px-3 py-2">
-                                    Sekolah &amp; Judul
+                                    Sekolah
                                 </x-table.heading>
                                 <x-table.heading class="text-white! align-middle px-3 py-2">
                                     Perubahan
@@ -168,8 +168,6 @@
                             <x-table.row class="align-top">
                                 {{-- SEKOLAH & JUDUL --}}
                                 <x-table.cell class="px-3 py-3 align-top">
-                                    <div class="font-medium text-gray-800 dark:text-gray-100 wrap-break-word">
-                                        {{ $item->judul }}</div>
                                     <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 wrap-break-word">
                                         {{ $item->profileSekolah->nama_sekolah ?? '-' }} &middot; User #{{ $item->user_id }}
                                     </div>
@@ -216,6 +214,11 @@
                                 {{-- AKSI --}}
                                 <x-table.cell class="text-center px-3 py-3 whitespace-nowrap">
                                     <div class="flex justify-center gap-1">
+                                        <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
+                                            variant="secondary" size="xs">
+                                            <i class="bi bi-paperclip"></i>
+                                        </x-button>
+
                                         <x-button href="{{ route('pengajuan.show', $item) }}" variant="info" size="xs"
                                             class="p-1.5" title="Lihat rincian">
                                             <i class="bi bi-eye-fill"></i>

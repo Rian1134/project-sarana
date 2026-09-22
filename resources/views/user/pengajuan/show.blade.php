@@ -65,13 +65,6 @@
                     </div>
                 </x-slot:header>
 
-                {{-- Kolom alasan_penolakan belum ada di migration yang diunggah.
-                 Tambahkan kolom ini kalau alur reject admin butuh menyimpan alasan. --}}
-                @if ($pengajuan->status === 'rejected' && !empty($pengajuan->alasan_penolakan))
-                    <x-alert type="danger" :icon="true">
-                        <span class="font-medium">Alasan Ditolak:</span> {{ $pengajuan->alasan_penolakan }}
-                    </x-alert>
-                @endif
 
                 @if (!empty($pengajuan->lampiran))
                     <div class="mt-3 flex items-center gap-2 text-sm">
