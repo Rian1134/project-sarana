@@ -34,7 +34,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-building"></i>
-                            A. Data Sekolah
+                            Data Sekolah
                         </div>
                     </x-slot:header>
 
@@ -86,7 +86,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-person-badge"></i>
-                            B. Jumlah Guru
+                            Jumlah Guru
                         </div>
                     </x-slot:header>
 
@@ -119,7 +119,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-mortarboard"></i>
-                            B. Jumlah Siswa
+                            Jumlah Siswa
                         </div>
                     </x-slot:header>
 
@@ -138,7 +138,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-diagram-3"></i>
-                            C. Jumlah Rombongan Belajar
+                            Jumlah Rombongan Belajar
                         </div>
                     </x-slot:header>
 
@@ -157,7 +157,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-building-add"></i>
-                            D. Pembangunan Ruang Kelas Baru (RKB)
+                            Pembangunan Ruang Kelas Baru (RKB)
                         </div>
                     </x-slot:header>
 
@@ -178,7 +178,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-tools"></i>
-                            E. Rehabilitasi Ruang Kelas
+                            Rehabilitasi Ruang Kelas
                         </div>
                     </x-slot:header>
 
@@ -199,7 +199,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-door-closed"></i>
-                            F. Ruang Kelas
+                            Ruang Kelas
                         </div>
                     </x-slot:header>
 
@@ -216,7 +216,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-droplet-half"></i>
-                            G. Toilet Siswa
+                            Toilet Siswa
                         </div>
                     </x-slot:header>
 
@@ -233,7 +233,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-droplet"></i>
-                            H. Toilet Guru
+                            Toilet Guru
                         </div>
                     </x-slot:header>
 
@@ -250,7 +250,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-book"></i>
-                            I. Ruang Perpustakaan
+                            Ruang Perpustakaan
                         </div>
                     </x-slot:header>
 
@@ -282,7 +282,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-person-workspace"></i>
-                            J. Ruang Kepala Sekolah
+                            Ruang Kepala Sekolah
                         </div>
                     </x-slot:header>
 
@@ -314,7 +314,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-easel2"></i>
-                            K. Ruang Guru
+                            Ruang Guru
                         </div>
                     </x-slot:header>
 
@@ -346,7 +346,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-briefcase"></i>
-                            L. Ruang Kantor/Tata Usaha
+                            Ruang Kantor/Tata Usaha
                         </div>
                     </x-slot:header>
 
@@ -378,7 +378,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-flask"></i>
-                            M. Lab IPA
+                            Lab IPA
                         </div>
                     </x-slot:header>
 
@@ -410,7 +410,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-pc-display-horizontal"></i>
-                            N. Lab Komputer
+                            Lab Komputer
                         </div>
                     </x-slot:header>
 
@@ -442,7 +442,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-heart-pulse"></i>
-                            O. UKS
+                            UKS
                         </div>
                     </x-slot:header>
 
@@ -474,7 +474,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-house-door"></i>
-                            P. Rumah Dinas
+                            Rumah Dinas
                         </div>
                     </x-slot:header>
 
@@ -506,7 +506,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-building"></i>
-                            Q. Rumah Ibadah
+                            Rumah Ibadah
                         </div>
                     </x-slot:header>
 
@@ -538,7 +538,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-flag"></i>
-                            R. Lapangan Sekolah
+                            Lapangan Sekolah
                         </div>
                     </x-slot:header>
 
@@ -570,7 +570,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-border-all"></i>
-                            S. Pagar
+                            Pagar
                         </div>
                     </x-slot:header>
 
@@ -602,7 +602,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-droplet"></i>
-                            T. Air
+                            Air
                         </div>
                     </x-slot:header>
 
@@ -634,7 +634,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-person"></i>
-                            U. Kursi Siswa
+                            Kursi Siswa
                         </div>
                     </x-slot:header>
 
@@ -651,7 +651,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-table"></i>
-                            V. Meja Siswa
+                            Meja Siswa
                         </div>
                     </x-slot:header>
 
@@ -668,7 +668,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-person-badge"></i>
-                            W. Kursi Guru
+                            Kursi Guru
                         </div>
                     </x-slot:header>
 
@@ -685,7 +685,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-table"></i>
-                            X. Meja Guru
+                            Meja Guru
                         </div>
                     </x-slot:header>
 
@@ -702,7 +702,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-laptop"></i>
-                            Y. Laptop
+                            Laptop
                         </div>
                     </x-slot:header>
 
@@ -719,7 +719,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-pc-display"></i>
-                            Z. Komputer
+                            Komputer
                         </div>
                     </x-slot:header>
 

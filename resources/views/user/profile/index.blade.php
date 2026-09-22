@@ -299,554 +299,6 @@
             </div>
 
             @if ($profileSekolah)
-                <x-card class="p-2 md:p-4">
-                    <x-slot:header>
-                        <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
-                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                <i class="bi bi-list-check"></i>
-                                Rencana Pembangunan & Rehabilitasi
-                            </div>
-
-                            <a href="{{ route('user.rencana-pembangunan.create') }}" class="inline-flex">
-                                <x-button variant="primary" size="sm">
-                                    <i class="bi bi-plus-lg"></i>
-                                    Ajukan
-                                </x-button>
-                            </a>
-                        </div>
-                    </x-slot:header>
-
-                    @php
-                        // Satu tempat untuk memetakan status -> variant badge + labelnya,
-                        // supaya tidak perlu rantai @if panjang yang diulang di tampilan
-                        // mobile maupun desktop.
-                        $statusBadge = [
-                            'pending' => ['variant' => 'warning', 'label' => 'Menunggu Review'],
-                            'approved' => ['variant' => 'success', 'label' => 'Disetujui'],
-                            'rejected' => ['variant' => 'danger', 'label' => 'Ditolak'],
-                        ];
-
-                        $daftarRencana =
-                            isset($rencanaPembangunans) && method_exists($rencanaPembangunans, 'items')
-                                ? $rencanaPembangunans->items()
-                                : $rencanaPembangunans ?? [];
-
-                        $barisRencana = collect($daftarRencana)->map(function ($item) {
-                            $pengajuanData = $item->pengajuan ?? [];
-                            if (!is_array($pengajuanData)) {
-                                $pengajuanData = [$pengajuanData];
-                            }
-
-                            $kategoriKeys = [];
-                            foreach ($pengajuanData as $key => $value) {
-                                if (is_string($value)) {
-                                    $kategoriKeys[] = $value;
-                                } elseif (is_string($key)) {
-                                    $kategoriKeys[] = $key;
-                                }
-                            }
-                            $kategoriKeys = array_values(
-                                array_unique(array_filter($kategoriKeys, fn($v) => is_string($v) && $v !== '')),
-                            );
-
-                            $perubahanData = $item->perubahan ?? [];
-                            if (!is_array($perubahanData)) {
-                                $perubahanData = [];
-                            }
-
-                            $ratakan = function ($value) {
-                                if (is_array($value)) {
-                                    return implode(
-                                        ', ',
-                                        array_map(fn($v) => is_scalar($v) ? (string) $v : json_encode($v), $value),
-                                    );
-                                }
-                                return (string) $value;
-                            };
-
-                            $chips = [];
-                            foreach ($kategoriKeys as $kunci) {
-                                $nilai = $perubahanData[$kunci] ?? [];
-                                if (!is_array($nilai)) {
-                                    $nilai = ['value' => $nilai];
-                                }
-
-                                $detail = [];
-                                foreach ($nilai as $field => $value) {
-                                    $detail[] =
-                                        \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel(
-                                            $kunci,
-                                            $field,
-                                        ) .
-                                        ': ' .
-                                        $ratakan($value);
-                                }
-
-                                $chips[] = [
-                                    'label' => \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel(
-                                        $kunci,
-                                    ),
-                                    'detail' => count($detail) ? implode(' · ', $detail) : 'Diajukan untuk dibangun',
-                                ];
-                            }
-
-                            // Field bebas di luar kategori resmi (kalau ada).
-                            foreach (array_diff_key($perubahanData, array_flip($kategoriKeys)) as $nama => $value) {
-                                $chips[] = [
-                                    'label' => ucwords(str_replace('_', ' ', $nama)),
-                                    'detail' => $ratakan($value),
-                                ];
-                            }
-
-                            return ['item' => $item, 'chips' => $chips];
-                        });
-                    @endphp
-
-                    {{-- MOBILE (< md): satu pengajuan = satu kartu, supaya tabel 5 kolom
-                         tidak memaksa scroll horizontal di layar sempit. --}}
-                    <div class="md:hidden flex flex-col gap-3 px-2">
-                        @forelse ($barisRencana as $baris)
-                            @php
-                                $item = $baris['item'];
-                                $badge = $statusBadge[$item->status] ?? [
-                                    'variant' => 'secondary',
-                                    'label' => ucfirst($item->status),
-                                ];
-                            @endphp
-
-                            <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-3">
-                                <div class="flex items-start justify-end gap-2">
-                                    <x-badge :variant="$badge['variant']" class="shrink-0">
-                                        {{ $badge['label'] }}
-                                    </x-badge>
-                                </div>
-
-                                <div class="flex flex-wrap gap-1.5 mt-2">
-                                    @forelse ($baris['chips'] as $chip)
-                                        <span
-                                            class="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-300">
-                                            {{ $chip['label'] }}
-                                            @if ($chip['detail'] !== '')
-                                                <span class="font-semibold">{{ $chip['detail'] }}</span>
-                                            @endif
-                                        </span>
-                                    @empty
-                                        <span class="text-xs text-gray-400">Tidak ada rincian</span>
-                                    @endforelse
-                                </div>
-
-                                <div
-                                    class="flex items-center justify-between gap-2 mt-3 pt-2 border-t border-gray-200 dark:border-gray-700">
-                                    <span class="text-xs text-gray-400">
-                                        {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
-                                    </span>
-                                    <div class="flex gap-1">
-                                        @if (!empty($item->lampiran))
-                                            <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
-                                                variant="secondary" size="xs">
-                                                <i class="bi bi-paperclip"></i>
-                                            </x-button>
-                                        @endif
-                                        <x-button href="{{ route('user.rencana-pembangunan.show', $item) }}"
-                                            variant="info" size="xs">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </x-button>
-                                        @if ($item->status === 'pending')
-                                            <x-button href="{{ route('user.rencana-pembangunan.edit', $item) }}"
-                                                variant="warning" size="xs">
-                                                <i class="bi bi-pencil-fill"></i>
-                                            </x-button>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <p class="text-center text-sm text-gray-400 py-6">
-                                <i class="bi bi-inbox block text-2xl mb-1"></i>
-                                Belum ada rencana pembangunan yang diajukan.
-                            </p>
-                        @endforelse
-                    </div>
-
-                    {{-- DESKTOP (>= md): kolom "Perubahan" dan "Rincian Pembaruan" yang dulu
-                         terpisah sekarang digabung jadi satu kolom berisi chip, karena
-                         kategori ada_kondisi tidak punya field sehingga kolom rincian lama
-                         sering tampil kosong dan menyisakan ruang mubazir. --}}
-                    <div class="hidden md:block">
-                        <x-table striped hover>
-                            <x-slot:head>
-                                <tr>
-                                    <x-table.heading>Rencana Diajukan</x-table.heading>
-                                    <x-table.heading class="whitespace-nowrap">Status</x-table.heading>
-                                    <x-table.heading class="whitespace-nowrap">Diajukan</x-table.heading>
-                                    <x-table.heading class="text-right">Aksi</x-table.heading>
-                                </tr>
-                            </x-slot:head>
-
-                            @forelse ($barisRencana as $baris)
-                                @php
-                                    $item = $baris['item'];
-                                    $badge = $statusBadge[$item->status] ?? [
-                                        'variant' => 'secondary',
-                                        'label' => ucfirst($item->status),
-                                    ];
-                                @endphp
-
-                                <x-table.row class="align-top">
-                                    <x-table.cell>
-                                        <div class="flex flex-wrap gap-1.5">
-                                            @forelse ($baris['chips'] as $chip)
-                                                <span
-                                                    class="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-300">
-                                                    {{ $chip['label'] }}
-                                                    @if ($chip['detail'] !== '')
-                                                        <span class="font-semibold">{{ $chip['detail'] }}</span>
-                                                    @endif
-                                                </span>
-                                            @empty
-                                                <span class="text-xs text-gray-400">Tidak ada rincian</span>
-                                            @endforelse
-                                        </div>
-                                    </x-table.cell>
-
-                                    <x-table.cell class="whitespace-nowrap">
-                                        <x-badge :variant="$badge['variant']">
-                                            {{ $badge['label'] }}
-                                        </x-badge>
-                                    </x-table.cell>
-
-                                    <x-table.cell class="whitespace-nowrap text-gray-500 dark:text-gray-400">
-                                        {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
-                                    </x-table.cell>
-
-                                    <x-table.cell class="text-right">
-                                        <div class="flex justify-end gap-1">
-                                            @if (!empty($item->lampiran))
-                                                <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
-                                                    variant="secondary" size="xs">
-                                                    <i class="bi bi-paperclip"></i>
-                                                </x-button>
-                                            @endif
-                                            <x-button href="{{ route('user.rencana-pembangunan.show', $item) }}"
-                                                variant="info" size="xs">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </x-button>
-
-                                            @if ($item->status === 'pending')
-                                                <x-button href="{{ route('user.rencana-pembangunan.edit', $item) }}"
-                                                    variant="warning" size="xs">
-                                                    <i class="bi bi-pencil-fill"></i>
-                                                </x-button>
-                                            @endif
-                                        </div>
-                                    </x-table.cell>
-                                </x-table.row>
-                            @empty
-                                <x-table.empty colspan="4" message="Belum ada rencana pembangunan yang diajukan." />
-                            @endforelse
-                        </x-table>
-                    </div>
-
-                    @if (isset($rencanaPembangunans) && method_exists($rencanaPembangunans, 'links'))
-                        <x-pagination :paginator="$rencanaPembangunans" class="mt-4" />
-                    @endif
-                </x-card>
-
-                <x-card class="p-2 md:p-4">
-                    <x-slot:header>
-                        <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
-                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                <i class="bi bi-list-check"></i>
-                                Laporan Kerusakan
-                            </div>
-
-                            <a href="{{ route('user.pengajuan.create') }}" class="inline-flex">
-                                <x-button variant="primary" size="sm">
-                                    <i class="bi bi-plus-lg"></i>
-                                    Ajukan
-                                </x-button>
-                            </a>
-                        </div>
-                    </x-slot:header>
-
-                    @php
-                        // Satu tempat untuk memetakan status -> variant badge + labelnya,
-                        // supaya tidak perlu rantai @if panjang yang diulang di tampilan
-                        // mobile maupun desktop.
-                        $statusBadge = [
-                            'pending' => ['variant' => 'warning', 'label' => 'Menunggu Review'],
-                            'approved' => ['variant' => 'success', 'label' => 'Disetujui'],
-                            'rejected' => ['variant' => 'danger', 'label' => 'Ditolak'],
-                        ];
-                        $daftarPengajuan =
-                            isset($pengajuans) && method_exists($pengajuans, 'items')
-                                ? $pengajuans->items()
-                                : $pengajuans ?? [];
-
-                        $barisPengajuan = collect($daftarPengajuan)->map(function ($item) {
-                            $pengajuanData = $item->pengajuan ?? [];
-                            if (!is_array($pengajuanData)) {
-                                $pengajuanData = [$pengajuanData];
-                            }
-
-                            $kategoriKeys = [];
-                            foreach ($pengajuanData as $key => $value) {
-                                if (is_string($value)) {
-                                    $kategoriKeys[] = $value;
-                                } elseif (is_string($key)) {
-                                    $kategoriKeys[] = $key;
-                                }
-                            }
-                            $kategoriKeys = array_values(
-                                array_unique(array_filter($kategoriKeys, fn($v) => is_string($v) && $v !== '')),
-                            );
-
-                            $perubahanData = $item->perubahan ?? [];
-                            if (!is_array($perubahanData)) {
-                                $perubahanData = [];
-                            }
-
-                            $ratakan = function ($value) {
-                                if (is_array($value)) {
-                                    return implode(
-                                        ', ',
-                                        array_map(fn($v) => is_scalar($v) ? (string) $v : json_encode($v), $value),
-                                    );
-                                }
-                                return (string) $value;
-                            };
-
-                            $chips = [];
-                            foreach ($kategoriKeys as $kunci) {
-                                $nilai = $perubahanData[$kunci] ?? [];
-                                if (!is_array($nilai)) {
-                                    $nilai = ['value' => $nilai];
-                                }
-
-                                $detail = [];
-                                foreach ($nilai as $field => $value) {
-                                    $detail[] =
-                                        \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) .
-                                        ': ' .
-                                        $ratakan($value);
-                                }
-
-                                $chips[] = [
-                                    'label' => \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci),
-                                    'detail' => count($detail) ? implode(' · ', $detail) : 'Diajukan untuk dibangun',
-                                ];
-                            }
-
-                            // Field bebas di luar kategori resmi (kalau ada).
-                            foreach (array_diff_key($perubahanData, array_flip($kategoriKeys)) as $nama => $value) {
-                                $chips[] = [
-                                    'label' => ucwords(str_replace('_', ' ', $nama)),
-                                    'detail' => $ratakan($value),
-                                ];
-                            }
-
-                            return ['item' => $item, 'chips' => $chips];
-                        });
-                    @endphp
-
-                    {{-- MOBILE (< md): satu pengajuan = satu kartu, supaya tabel 5 kolom
-                         tidak memaksa scroll horizontal di layar sempit. --}}
-                    <div class="md:hidden flex flex-col gap-3 px-2">
-                        @forelse ($barisPengajuan as $baris)
-                            @php
-                                $item = $baris['item'];
-                                $badge = $statusBadge[$item->status] ?? [
-                                    'variant' => 'secondary',
-                                    'label' => ucfirst($item->status),
-                                ];
-                            @endphp
-
-                            <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-3">
-                                <div class="flex items-start justify-end gap-2">
-                                    <x-badge :variant="$badge['variant']" class="shrink-0">
-                                        {{ $badge['label'] }}
-                                    </x-badge>
-                                </div>
-
-                                <div class="flex flex-wrap gap-1.5 mt-2">
-                                    @forelse ($baris['chips'] as $chip)
-                                        <span
-                                            class="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-300">
-                                            {{ $chip['label'] }}
-                                            @if ($chip['detail'] !== '')
-                                                <span class="font-semibold">{{ $chip['detail'] }}</span>
-                                            @endif
-                                        </span>
-                                    @empty
-                                        <span class="text-xs text-gray-400">Tidak ada rincian</span>
-                                    @endforelse
-                                </div>
-
-                                <div
-                                    class="flex items-center justify-between gap-2 mt-3 pt-2 border-t border-gray-200 dark:border-gray-700">
-                                    <span class="text-xs text-gray-400">
-                                        {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
-                                    </span>
-                                    <div class="flex gap-1">
-                                        @if (!empty($item->lampiran))
-                                            <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
-                                                variant="secondary" size="xs">
-                                                <i class="bi bi-paperclip"></i>
-                                            </x-button>
-                                        @endif
-                                        <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info"
-                                            size="xs">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </x-button>
-                                        @if ($item->status === 'pending')
-                                            <x-button href="{{ route('user.pengajuan.edit', $item) }}" variant="warning"
-                                                size="xs">
-                                                <i class="bi bi-pencil-fill"></i>
-                                            </x-button>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <p class="text-center text-sm text-gray-400 py-6">
-                                <i class="bi bi-inbox block text-2xl mb-1"></i>
-                                Belum ada pengajuan koreksi data.
-                            </p>
-                        @endforelse
-                    </div>
-
-                    {{-- DESKTOP (>= md): kolom "Perubahan" dan "Rincian Pembaruan" yang dulu
-                         terpisah sekarang digabung jadi satu kolom berisi chip, karena
-                         kategori ada_kondisi tidak punya field sehingga kolom rincian lama
-                         sering tampil kosong dan menyisakan ruang mubazir. --}}
-                    <div class="hidden md:block">
-                        <x-table striped hover>
-                            <x-slot:head>
-                                <tr>
-                                    <x-table.heading>Perubahan Diajukan</x-table.heading>
-                                    <x-table.heading class="whitespace-nowrap">Status</x-table.heading>
-                                    <x-table.heading class="whitespace-nowrap">Diajukan</x-table.heading>
-                                    <x-table.heading class="text-right">Aksi</x-table.heading>
-                                </tr>
-                            </x-slot:head>
-
-                            @forelse ($barisPengajuan as $baris)
-                                @php
-                                    $item = $baris['item'];
-                                    $badge = $statusBadge[$item->status] ?? [
-                                        'variant' => 'secondary',
-                                        'label' => ucfirst($item->status),
-                                    ];
-                                @endphp
-
-                                <x-table.row class="align-top">
-                                    <x-table.cell>
-                                        <div class="flex flex-wrap gap-1.5">
-                                            @forelse ($baris['chips'] as $chip)
-                                                <span
-                                                    class="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-300">
-                                                    {{ $chip['label'] }}
-                                                    @if ($chip['detail'] !== '')
-                                                        <span class="font-semibold">{{ $chip['detail'] }}</span>
-                                                    @endif
-                                                </span>
-                                            @empty
-                                                <span class="text-xs text-gray-400">Tidak ada rincian</span>
-                                            @endforelse
-                                        </div>
-                                    </x-table.cell>
-
-                                    <x-table.cell class="whitespace-nowrap">
-                                        <x-badge :variant="$badge['variant']">
-                                            {{ $badge['label'] }}
-                                        </x-badge>
-                                    </x-table.cell>
-
-                                    <x-table.cell class="whitespace-nowrap text-gray-500 dark:text-gray-400">
-                                        {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
-                                    </x-table.cell>
-
-                                    <x-table.cell class="text-right">
-                                        <div class="flex justify-end gap-1">
-                                            @if (!empty($item->lampiran))
-                                                <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
-                                                    variant="secondary" size="xs">
-                                                    <i class="bi bi-paperclip"></i>
-                                                </x-button>
-                                            @endif
-                                            <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info"
-                                                size="xs">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </x-button>
-
-                                            @if ($item->status === 'pending')
-                                                <x-button href="{{ route('user.pengajuan.edit', $item) }}"
-                                                    variant="warning" size="xs">
-                                                    <i class="bi bi-pencil-fill"></i>
-                                                </x-button>
-                                            @endif
-                                        </div>
-                                    </x-table.cell>
-                                </x-table.row>
-                            @empty
-                                <x-table.empty colspan="4" message="Belum ada pengajuan koreksi data." />
-                            @endforelse
-                        </x-table>
-                    </div>
-
-                    @if (isset($pengajuans) && method_exists($pengajuans, 'links'))
-                        <x-pagination :paginator="$pengajuans" class="mt-4" />
-                    @endif
-                </x-card>
-
-                <x-modal id="hapusDataSekolahModal" size="sm" centered>
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-red-600">
-                            <i class="bi bi-exclamation-triangle-fill text-xl"></i>
-                            <span>Konfirmasi Hapus Data</span>
-                        </div>
-                    </x-slot:header>
-
-                    <div class="text-center py-4">
-                        <div class="text-5xl text-red-500 mb-4">
-                            <i class="bi bi-trash"></i>
-                        </div>
-
-                        <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
-                            Yakin ingin menghapus data sekolah ini?
-                        </h4>
-
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Seluruh data sarana &amp; prasarana
-                            <strong>{{ $profileSekolah->nama_sekolah }}</strong>
-                            (jumlah siswa, rombel, ruang kelas, fasilitas, furnitur, dst)
-                            akan ikut terhapus. Tindakan ini tidak bisa dibatalkan.
-                        </p>
-                    </div>
-
-                    <x-slot:footer>
-                        <div class="flex flex-wrap justify-end gap-2 w-full">
-                            <x-button variant="secondary" data-modal-close>
-                                <i class="bi bi-x-circle me-1"></i>
-                                Batal
-                            </x-button>
-
-                            <form action="{{ route('user.data.destroy', $profileSekolah->id) }}" method="POST"
-                                class="inline">
-                                @csrf
-                                @method('DELETE')
-
-                                <x-button variant="danger" type="submit">
-                                    <i class="bi bi-trash me-1"></i>
-                                    Ya, Hapus
-                                </x-button>
-                            </form>
-                        </div>
-                    </x-slot:footer>
-                </x-modal>
-            @endif
-
-            @if ($profileSekolah)
                 @php
                     $chartSiswa = [
                         (int) ($profileSekolah->jumlahSiswa?->vii ?? 0),
@@ -1413,6 +865,560 @@
                         </div>
                     </div>
                 </x-card>
+                @if ($profileSekolah)
+                    <x-card class="p-2 md:p-4">
+                        <x-slot:header>
+                            <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
+                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                    <i class="bi bi-list-check"></i>
+                                    Rencana Pembangunan & Rehabilitasi
+                                </div>
+
+                                <a href="{{ route('user.rencana-pembangunan.create') }}" class="inline-flex">
+                                    <x-button variant="primary" size="sm">
+                                        <i class="bi bi-plus-lg"></i>
+                                        Ajukan
+                                    </x-button>
+                                </a>
+                            </div>
+                        </x-slot:header>
+
+                        @php
+                            // Satu tempat untuk memetakan status -> variant badge + labelnya,
+                            // supaya tidak perlu rantai @if panjang yang diulang di tampilan
+                            // mobile maupun desktop.
+                            $statusBadge = [
+                                'pending' => ['variant' => 'warning', 'label' => 'Menunggu Review'],
+                                'approved' => ['variant' => 'success', 'label' => 'Disetujui'],
+                                'rejected' => ['variant' => 'danger', 'label' => 'Ditolak'],
+                            ];
+
+                            $daftarRencana =
+                                isset($rencanaPembangunans) && method_exists($rencanaPembangunans, 'items')
+                                    ? $rencanaPembangunans->items()
+                                    : $rencanaPembangunans ?? [];
+
+                            $barisRencana = collect($daftarRencana)->map(function ($item) {
+                                $pengajuanData = $item->pengajuan ?? [];
+                                if (!is_array($pengajuanData)) {
+                                    $pengajuanData = [$pengajuanData];
+                                }
+
+                                $kategoriKeys = [];
+                                foreach ($pengajuanData as $key => $value) {
+                                    if (is_string($value)) {
+                                        $kategoriKeys[] = $value;
+                                    } elseif (is_string($key)) {
+                                        $kategoriKeys[] = $key;
+                                    }
+                                }
+                                $kategoriKeys = array_values(
+                                    array_unique(array_filter($kategoriKeys, fn($v) => is_string($v) && $v !== '')),
+                                );
+
+                                $perubahanData = $item->perubahan ?? [];
+                                if (!is_array($perubahanData)) {
+                                    $perubahanData = [];
+                                }
+
+                                $ratakan = function ($value) {
+                                    if (is_array($value)) {
+                                        return implode(
+                                            ', ',
+                                            array_map(fn($v) => is_scalar($v) ? (string) $v : json_encode($v), $value),
+                                        );
+                                    }
+                                    return (string) $value;
+                                };
+
+                                $chips = [];
+                                foreach ($kategoriKeys as $kunci) {
+                                    $nilai = $perubahanData[$kunci] ?? [];
+                                    if (!is_array($nilai)) {
+                                        $nilai = ['value' => $nilai];
+                                    }
+
+                                    $detail = [];
+                                    foreach ($nilai as $field => $value) {
+                                        $detail[] =
+                                            \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel(
+                                                $kunci,
+                                                $field,
+                                            ) .
+                                            ': ' .
+                                            $ratakan($value);
+                                    }
+
+                                    $chips[] = [
+                                        'label' => \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel(
+                                            $kunci,
+                                        ),
+                                        'detail' => count($detail)
+                                            ? implode(' · ', $detail)
+                                            : 'Diajukan untuk dibangun',
+                                    ];
+                                }
+
+                                // Field bebas di luar kategori resmi (kalau ada).
+                                foreach (array_diff_key($perubahanData, array_flip($kategoriKeys)) as $nama => $value) {
+                                    $chips[] = [
+                                        'label' => ucwords(str_replace('_', ' ', $nama)),
+                                        'detail' => $ratakan($value),
+                                    ];
+                                }
+
+                                return ['item' => $item, 'chips' => $chips];
+                            });
+                        @endphp
+
+                        {{-- MOBILE (< md): satu pengajuan = satu kartu, supaya tabel 5 kolom
+                         tidak memaksa scroll horizontal di layar sempit. --}}
+                        <div class="md:hidden flex flex-col gap-3 px-2">
+                            @forelse ($barisRencana as $baris)
+                                @php
+                                    $item = $baris['item'];
+                                    $badge = $statusBadge[$item->status] ?? [
+                                        'variant' => 'secondary',
+                                        'label' => ucfirst($item->status),
+                                    ];
+                                @endphp
+
+                                <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+                                    <div class="flex items-start justify-end gap-2">
+                                        <x-badge :variant="$badge['variant']" class="shrink-0">
+                                            {{ $badge['label'] }}
+                                        </x-badge>
+                                    </div>
+
+                                    <div class="flex flex-wrap gap-1.5 mt-2">
+                                        @forelse ($baris['chips'] as $chip)
+                                            <span
+                                                class="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-300">
+                                                {{ $chip['label'] }}
+                                                @if ($chip['detail'] !== '')
+                                                    <span class="font-semibold">{{ $chip['detail'] }}</span>
+                                                @endif
+                                            </span>
+                                        @empty
+                                            <span class="text-xs text-gray-400">Tidak ada rincian</span>
+                                        @endforelse
+                                    </div>
+
+                                    <div
+                                        class="flex items-center justify-between gap-2 mt-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                        <span class="text-xs text-gray-400">
+                                            {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
+                                        </span>
+                                        <div class="flex gap-1">
+                                            @if (!empty($item->lampiran))
+                                                <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
+                                                    variant="secondary" size="xs">
+                                                    <i class="bi bi-paperclip"></i>
+                                                </x-button>
+                                            @endif
+                                            <x-button href="{{ route('user.rencana-pembangunan.show', $item) }}"
+                                                variant="info" size="xs">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </x-button>
+                                            @if ($item->status === 'pending')
+                                                <x-button href="{{ route('user.rencana-pembangunan.edit', $item) }}"
+                                                    variant="warning" size="xs">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </x-button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-center text-sm text-gray-400 py-6">
+                                    <i class="bi bi-inbox block text-2xl mb-1"></i>
+                                    Belum ada rencana pembangunan yang diajukan.
+                                </p>
+                            @endforelse
+                        </div>
+
+                        {{-- DESKTOP (>= md): kolom "Perubahan" dan "Rincian Pembaruan" yang dulu
+                         terpisah sekarang digabung jadi satu kolom berisi chip, karena
+                         kategori ada_kondisi tidak punya field sehingga kolom rincian lama
+                         sering tampil kosong dan menyisakan ruang mubazir. --}}
+                        <div class="hidden md:block">
+                            <x-table striped hover>
+                                <x-slot:head>
+                                    <tr>
+                                        <x-table.heading>Rencana Diajukan</x-table.heading>
+                                        <x-table.heading class="whitespace-nowrap">Status</x-table.heading>
+                                        <x-table.heading class="whitespace-nowrap">Diajukan</x-table.heading>
+                                        <x-table.heading class="text-right">Aksi</x-table.heading>
+                                    </tr>
+                                </x-slot:head>
+
+                                @forelse ($barisRencana as $baris)
+                                    @php
+                                        $item = $baris['item'];
+                                        $badge = $statusBadge[$item->status] ?? [
+                                            'variant' => 'secondary',
+                                            'label' => ucfirst($item->status),
+                                        ];
+                                    @endphp
+
+                                    <x-table.row class="align-top">
+                                        <x-table.cell>
+                                            <div class="flex flex-wrap gap-1.5">
+                                                @forelse ($baris['chips'] as $chip)
+                                                    <span
+                                                        class="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-300">
+                                                        {{ $chip['label'] }}
+                                                        @if ($chip['detail'] !== '')
+                                                            <span class="font-semibold">{{ $chip['detail'] }}</span>
+                                                        @endif
+                                                    </span>
+                                                @empty
+                                                    <span class="text-xs text-gray-400">Tidak ada rincian</span>
+                                                @endforelse
+                                            </div>
+                                        </x-table.cell>
+
+                                        <x-table.cell class="whitespace-nowrap">
+                                            <x-badge :variant="$badge['variant']">
+                                                {{ $badge['label'] }}
+                                            </x-badge>
+                                        </x-table.cell>
+
+                                        <x-table.cell class="whitespace-nowrap text-gray-500 dark:text-gray-400">
+                                            {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
+                                        </x-table.cell>
+
+                                        <x-table.cell class="text-right">
+                                            <div class="flex justify-end gap-1">
+                                                @if (!empty($item->lampiran))
+                                                    <x-button href="{{ $item->lampiran }}" target="_blank"
+                                                        rel="noopener" variant="secondary" size="xs">
+                                                        <i class="bi bi-paperclip"></i>
+                                                    </x-button>
+                                                @endif
+                                                <x-button href="{{ route('user.rencana-pembangunan.show', $item) }}"
+                                                    variant="info" size="xs">
+                                                    <i class="bi bi-eye-fill"></i>
+                                                </x-button>
+
+                                                @if ($item->status === 'pending')
+                                                    <x-button href="{{ route('user.rencana-pembangunan.edit', $item) }}"
+                                                        variant="warning" size="xs">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </x-button>
+                                                @endif
+                                            </div>
+                                        </x-table.cell>
+                                    </x-table.row>
+                                @empty
+                                    <x-table.empty colspan="4"
+                                        message="Belum ada rencana pembangunan yang diajukan." />
+                                @endforelse
+                            </x-table>
+                        </div>
+
+                        @if (isset($rencanaPembangunans) && method_exists($rencanaPembangunans, 'links'))
+                            <x-pagination :paginator="$rencanaPembangunans" class="mt-4" />
+                        @endif
+                    </x-card>
+
+                    <x-card class="p-2 md:p-4">
+                        <x-slot:header>
+                            <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
+                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                    <i class="bi bi-list-check"></i>
+                                    Laporan Kerusakan
+                                </div>
+
+                                <a href="{{ route('user.pengajuan.create') }}" class="inline-flex">
+                                    <x-button variant="primary" size="sm">
+                                        <i class="bi bi-plus-lg"></i>
+                                        Ajukan
+                                    </x-button>
+                                </a>
+                            </div>
+                        </x-slot:header>
+
+                        @php
+                            // Satu tempat untuk memetakan status -> variant badge + labelnya,
+                            // supaya tidak perlu rantai @if panjang yang diulang di tampilan
+                            // mobile maupun desktop.
+                            $statusBadge = [
+                                'pending' => ['variant' => 'warning', 'label' => 'Menunggu Review'],
+                                'approved' => ['variant' => 'success', 'label' => 'Disetujui'],
+                                'rejected' => ['variant' => 'danger', 'label' => 'Ditolak'],
+                            ];
+                            $daftarPengajuan =
+                                isset($pengajuans) && method_exists($pengajuans, 'items')
+                                    ? $pengajuans->items()
+                                    : $pengajuans ?? [];
+
+                            $barisPengajuan = collect($daftarPengajuan)->map(function ($item) {
+                                $pengajuanData = $item->pengajuan ?? [];
+                                if (!is_array($pengajuanData)) {
+                                    $pengajuanData = [$pengajuanData];
+                                }
+
+                                $kategoriKeys = [];
+                                foreach ($pengajuanData as $key => $value) {
+                                    if (is_string($value)) {
+                                        $kategoriKeys[] = $value;
+                                    } elseif (is_string($key)) {
+                                        $kategoriKeys[] = $key;
+                                    }
+                                }
+                                $kategoriKeys = array_values(
+                                    array_unique(array_filter($kategoriKeys, fn($v) => is_string($v) && $v !== '')),
+                                );
+
+                                $perubahanData = $item->perubahan ?? [];
+                                if (!is_array($perubahanData)) {
+                                    $perubahanData = [];
+                                }
+
+                                $ratakan = function ($value) {
+                                    if (is_array($value)) {
+                                        return implode(
+                                            ', ',
+                                            array_map(fn($v) => is_scalar($v) ? (string) $v : json_encode($v), $value),
+                                        );
+                                    }
+                                    return (string) $value;
+                                };
+
+                                $chips = [];
+                                foreach ($kategoriKeys as $kunci) {
+                                    $nilai = $perubahanData[$kunci] ?? [];
+                                    if (!is_array($nilai)) {
+                                        $nilai = ['value' => $nilai];
+                                    }
+
+                                    $detail = [];
+                                    foreach ($nilai as $field => $value) {
+                                        $detail[] =
+                                            \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) .
+                                            ': ' .
+                                            $ratakan($value);
+                                    }
+
+                                    $chips[] = [
+                                        'label' => \App\Http\Controllers\User\PengajuanController::categoryLabel(
+                                            $kunci,
+                                        ),
+                                        'detail' => count($detail)
+                                            ? implode(' · ', $detail)
+                                            : 'Diajukan untuk dibangun',
+                                    ];
+                                }
+
+                                // Field bebas di luar kategori resmi (kalau ada).
+                                foreach (array_diff_key($perubahanData, array_flip($kategoriKeys)) as $nama => $value) {
+                                    $chips[] = [
+                                        'label' => ucwords(str_replace('_', ' ', $nama)),
+                                        'detail' => $ratakan($value),
+                                    ];
+                                }
+
+                                return ['item' => $item, 'chips' => $chips];
+                            });
+                        @endphp
+
+                        {{-- MOBILE (< md): satu pengajuan = satu kartu, supaya tabel 5 kolom
+                         tidak memaksa scroll horizontal di layar sempit. --}}
+                        <div class="md:hidden flex flex-col gap-3 px-2">
+                            @forelse ($barisPengajuan as $baris)
+                                @php
+                                    $item = $baris['item'];
+                                    $badge = $statusBadge[$item->status] ?? [
+                                        'variant' => 'secondary',
+                                        'label' => ucfirst($item->status),
+                                    ];
+                                @endphp
+
+                                <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+                                    <div class="flex items-start justify-end gap-2">
+                                        <x-badge :variant="$badge['variant']" class="shrink-0">
+                                            {{ $badge['label'] }}
+                                        </x-badge>
+                                    </div>
+
+                                    <div class="flex flex-wrap gap-1.5 mt-2">
+                                        @forelse ($baris['chips'] as $chip)
+                                            <span
+                                                class="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-300">
+                                                {{ $chip['label'] }}
+                                                @if ($chip['detail'] !== '')
+                                                    <span class="font-semibold">{{ $chip['detail'] }}</span>
+                                                @endif
+                                            </span>
+                                        @empty
+                                            <span class="text-xs text-gray-400">Tidak ada rincian</span>
+                                        @endforelse
+                                    </div>
+
+                                    <div
+                                        class="flex items-center justify-between gap-2 mt-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                        <span class="text-xs text-gray-400">
+                                            {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
+                                        </span>
+                                        <div class="flex gap-1">
+                                            @if (!empty($item->lampiran))
+                                                <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
+                                                    variant="secondary" size="xs">
+                                                    <i class="bi bi-paperclip"></i>
+                                                </x-button>
+                                            @endif
+                                            <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info"
+                                                size="xs">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </x-button>
+                                            @if ($item->status === 'pending')
+                                                <x-button href="{{ route('user.pengajuan.edit', $item) }}"
+                                                    variant="warning" size="xs">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </x-button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-center text-sm text-gray-400 py-6">
+                                    <i class="bi bi-inbox block text-2xl mb-1"></i>
+                                    Belum ada pengajuan koreksi data.
+                                </p>
+                            @endforelse
+                        </div>
+
+                        {{-- DESKTOP (>= md): kolom "Perubahan" dan "Rincian Pembaruan" yang dulu
+                         terpisah sekarang digabung jadi satu kolom berisi chip, karena
+                         kategori ada_kondisi tidak punya field sehingga kolom rincian lama
+                         sering tampil kosong dan menyisakan ruang mubazir. --}}
+                        <div class="hidden md:block">
+                            <x-table striped hover>
+                                <x-slot:head>
+                                    <tr>
+                                        <x-table.heading>Perubahan Diajukan</x-table.heading>
+                                        <x-table.heading class="whitespace-nowrap">Status</x-table.heading>
+                                        <x-table.heading class="whitespace-nowrap">Diajukan</x-table.heading>
+                                        <x-table.heading class="text-right">Aksi</x-table.heading>
+                                    </tr>
+                                </x-slot:head>
+
+                                @forelse ($barisPengajuan as $baris)
+                                    @php
+                                        $item = $baris['item'];
+                                        $badge = $statusBadge[$item->status] ?? [
+                                            'variant' => 'secondary',
+                                            'label' => ucfirst($item->status),
+                                        ];
+                                    @endphp
+
+                                    <x-table.row class="align-top">
+                                        <x-table.cell>
+                                            <div class="flex flex-wrap gap-1.5">
+                                                @forelse ($baris['chips'] as $chip)
+                                                    <span
+                                                        class="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-300">
+                                                        {{ $chip['label'] }}
+                                                        @if ($chip['detail'] !== '')
+                                                            <span class="font-semibold">{{ $chip['detail'] }}</span>
+                                                        @endif
+                                                    </span>
+                                                @empty
+                                                    <span class="text-xs text-gray-400">Tidak ada rincian</span>
+                                                @endforelse
+                                            </div>
+                                        </x-table.cell>
+
+                                        <x-table.cell class="whitespace-nowrap">
+                                            <x-badge :variant="$badge['variant']">
+                                                {{ $badge['label'] }}
+                                            </x-badge>
+                                        </x-table.cell>
+
+                                        <x-table.cell class="whitespace-nowrap text-gray-500 dark:text-gray-400">
+                                            {{ $item->created_at?->format('d M Y H:i') ?? '-' }}
+                                        </x-table.cell>
+
+                                        <x-table.cell class="text-right">
+                                            <div class="flex justify-end gap-1">
+                                                @if (!empty($item->lampiran))
+                                                    <x-button href="{{ $item->lampiran }}" target="_blank"
+                                                        rel="noopener" variant="secondary" size="xs">
+                                                        <i class="bi bi-paperclip"></i>
+                                                    </x-button>
+                                                @endif
+                                                <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info"
+                                                    size="xs">
+                                                    <i class="bi bi-eye-fill"></i>
+                                                </x-button>
+
+                                                @if ($item->status === 'pending')
+                                                    <x-button href="{{ route('user.pengajuan.edit', $item) }}"
+                                                        variant="warning" size="xs">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </x-button>
+                                                @endif
+                                            </div>
+                                        </x-table.cell>
+                                    </x-table.row>
+                                @empty
+                                    <x-table.empty colspan="4" message="Belum ada pengajuan koreksi data." />
+                                @endforelse
+                            </x-table>
+                        </div>
+
+                        @if (isset($pengajuans) && method_exists($pengajuans, 'links'))
+                            <x-pagination :paginator="$pengajuans" class="mt-4" />
+                        @endif
+                    </x-card>
+
+                    <x-modal id="hapusDataSekolahModal" size="sm" centered>
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-red-600">
+                                <i class="bi bi-exclamation-triangle-fill text-xl"></i>
+                                <span>Konfirmasi Hapus Data</span>
+                            </div>
+                        </x-slot:header>
+
+                        <div class="text-center py-4">
+                            <div class="text-5xl text-red-500 mb-4">
+                                <i class="bi bi-trash"></i>
+                            </div>
+
+                            <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
+                                Yakin ingin menghapus data sekolah ini?
+                            </h4>
+
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Seluruh data sarana &amp; prasarana
+                                <strong>{{ $profileSekolah->nama_sekolah }}</strong>
+                                (jumlah siswa, rombel, ruang kelas, fasilitas, furnitur, dst)
+                                akan ikut terhapus. Tindakan ini tidak bisa dibatalkan.
+                            </p>
+                        </div>
+
+                        <x-slot:footer>
+                            <div class="flex flex-wrap justify-end gap-2 w-full">
+                                <x-button variant="secondary" data-modal-close>
+                                    <i class="bi bi-x-circle me-1"></i>
+                                    Batal
+                                </x-button>
+
+                                <form action="{{ route('user.data.destroy', $profileSekolah->id) }}" method="POST"
+                                    class="inline">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <x-button variant="danger" type="submit">
+                                        <i class="bi bi-trash me-1"></i>
+                                        Ya, Hapus
+                                    </x-button>
+                                </form>
+                            </div>
+                        </x-slot:footer>
+                    </x-modal>
+                @endif
             @endif
         </div>
     </div>

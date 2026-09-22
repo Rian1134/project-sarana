@@ -29,7 +29,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-building"></i>
-                            A. Data Sekolah
+                            Data Sekolah
                         </div>
                     </x-slot:header>
 
@@ -110,7 +110,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-mortarboard"></i>
-                            B. Jumlah Siswa
+                            Jumlah Siswa
                         </div>
                     </x-slot:header>
 
@@ -126,7 +126,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-diagram-3"></i>
-                            C. Jumlah Rombongan Belajar
+                            Jumlah Rombongan Belajar
                         </div>
                     </x-slot:header>
 
@@ -142,7 +142,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-building-add"></i>
-                            D. RKB (Ruang Kelas Baru)
+                            RKB (Ruang Kelas Baru)
                         </div>
                     </x-slot:header>
 
@@ -162,7 +162,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-tools"></i>
-                            E. Rehabilitasi Ruang Kelas
+                            Rehabilitasi Ruang Kelas
                         </div>
                     </x-slot:header>
 
@@ -182,7 +182,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-door-closed"></i>
-                            F. Ruang Kelas
+                            Ruang Kelas
                         </div>
                     </x-slot:header>
 
@@ -197,7 +197,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-droplet-half"></i>
-                            G. Toilet Siswa
+                            Toilet Siswa
                         </div>
                     </x-slot:header>
 
@@ -212,7 +212,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-droplet"></i>
-                            H. Toilet Guru
+                            Toilet Guru
                         </div>
                     </x-slot:header>
 
@@ -222,19 +222,19 @@
                     </div>
                 </x-card>
 
-                <!-- I. R. Perpustakaan -->
+                <!-- I. Ruang Perpustakaan -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-book"></i>
-                            I. R. Perpustakaan
+                            Ruang Perpustakaan
                         </div>
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="form-label">
-                                Keberadaan R. Perpustakaan <span class="text-danger">*</span>
+                                Keberadaan Ruang Perpustakaan <span class="text-danger">*</span>
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="perpustakaan_ada_tidak" value="ada" label="Ada" :checked="old('perpustakaan_ada_tidak') == 'ada'" required />
@@ -248,7 +248,7 @@
                         <div>
                             <x-form.select
                                 name="perpustakaan_kondisi"
-                                label="Kondisi R. Perpustakaan"
+                                label="Kondisi Ruang Perpustakaan"
                                 placeholder="-- Pilih Kondisi --"
                                 :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('perpustakaan_kondisi')"
@@ -257,19 +257,19 @@
                     </div>
                 </x-card>
 
-                <!-- J. R. Kepala Sekolah -->
+                <!-- J. Ruang Kepala Sekolah -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-person-workspace"></i>
-                            J. R. Kepala Sekolah
+                            Ruang Kepala Sekolah
                         </div>
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="form-label">
-                                Keberadaan R. Kepala Sekolah <span class="text-danger">*</span>
+                                Ruang Kepala Sekolah <span class="text-danger">*</span>
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="kepala_sekolah_ada_tidak" value="ada" label="Ada" :checked="old('kepala_sekolah_ada_tidak') == 'ada'" required />
@@ -283,7 +283,7 @@
                         <div>
                             <x-form.select
                                 name="kepala_sekolah_kondisi"
-                                label="Kondisi R. Kepala Sekolah"
+                                label="Kondisi Ruang Kepala Sekolah"
                                 placeholder="-- Pilih Kondisi --"
                                 :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('kepala_sekolah_kondisi')"
@@ -292,19 +292,19 @@
                     </div>
                 </x-card>
 
-                <!-- K. R. Guru -->
+                <!-- K. Ruang Guru -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-easel2"></i>
-                            K. R. Guru
+                            R Guru
                         </div>
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="form-label">
-                                Keberadaan R. Guru <span class="text-danger">*</span>
+                                Keberadaan Ruang Guru <span class="text-danger">*</span>
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="ruang_guru_ada_tidak" value="ada" label="Ada" :checked="old('ruang_guru_ada_tidak') == 'ada'" required />
@@ -318,7 +318,7 @@
                         <div>
                             <x-form.select
                                 name="ruang_guru_kondisi"
-                                label="Kondisi R. Guru"
+                                label="Kondisi Ruang Guru"
                                 placeholder="-- Pilih Kondisi --"
                                 :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('ruang_guru_kondisi')"
@@ -327,19 +327,19 @@
                     </div>
                 </x-card>
 
-                <!-- L. R. Kantor/TU -->
+                <!-- L. Ruang Kantor/TU -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-briefcase"></i>
-                            L. R. Kantor/TU
+                        Ruang Kantor/TU
                         </div>
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="form-label">
-                                Keberadaan R. Kantor/TU <span class="text-danger">*</span>
+                                Keberadaan Ruang Kantor/TU <span class="text-danger">*</span>
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="kantor_tu_ada_tidak" value="ada" label="Ada" :checked="old('kantor_tu_ada_tidak') == 'ada'" required />
@@ -353,7 +353,7 @@
                         <div>
                             <x-form.select
                                 name="kantor_tu_kondisi"
-                                label="Kondisi R. Kantor/TU"
+                                label="Kondisi Ruang Kantor/TU"
                                 placeholder="-- Pilih Kondisi --"
                                 :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old('kantor_tu_kondisi')"
@@ -367,7 +367,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-flask"></i>
-                            M. Lab IPA
+                            Lab IPA
                         </div>
                     </x-slot:header>
 
@@ -402,7 +402,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-pc-display-horizontal"></i>
-                            N. Lab Komputer
+                            Lab Komputer
                         </div>
                     </x-slot:header>
 
@@ -437,7 +437,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-heart-pulse"></i>
-                            O. UKS
+                            UKS
                         </div>
                     </x-slot:header>
 
@@ -472,7 +472,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-house-door"></i>
-                            P. Rumah Dinas
+                            Rumah Dinas
                         </div>
                     </x-slot:header>
 
@@ -507,7 +507,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-building"></i>
-                            Q. Rumah Ibadah
+                            Rumah Ibadah
                         </div>
                     </x-slot:header>
 
@@ -537,12 +537,12 @@
                     </div>
                 </x-card>
 
-                <!-- R. Lapangan Sekolah -->
+                <!-- Ruang Lapangan Sekolah -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-flag"></i>
-                            R. Lapangan Sekolah
+                            Ruang Lapangan Sekolah
                         </div>
                     </x-slot:header>
 
@@ -577,7 +577,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-border-all"></i>
-                            S. Pagar
+                            Pagar Sekolah
                         </div>
                     </x-slot:header>
 
@@ -612,7 +612,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-droplet"></i>
-                            T. Air
+                            Air Bersih
                         </div>
                     </x-slot:header>
 
@@ -647,7 +647,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-person"></i>
-                            U. Kursi Siswa
+                            Kursi Siswa
                         </div>
                     </x-slot:header>
 
@@ -657,12 +657,12 @@
                     </div>
                 </x-card>
 
-                <!-- V. Meja Siswa -->
+                <!-- Meja Siswa -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-table"></i>
-                            V. Meja Siswa
+                            Meja Siswa
                         </div>
                     </x-slot:header>
 
@@ -677,7 +677,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-person-badge"></i>
-                            W. Kursi Guru
+                            Kursi Guru
                         </div>
                     </x-slot:header>
 
@@ -692,7 +692,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-table"></i>
-                            X. Meja Guru
+                            Meja Guru
                         </div>
                     </x-slot:header>
 
@@ -707,7 +707,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-laptop"></i>
-                            Y. Laptop
+                            Laptop/chromebook
                         </div>
                     </x-slot:header>
 
@@ -722,7 +722,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-pc-display"></i>
-                            Z. Komputer
+                            Komputer
                         </div>
                     </x-slot:header>
 

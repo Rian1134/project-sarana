@@ -37,7 +37,7 @@
                         <div
                             class="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-building"></i>
-                            <span>A. Data Sekolah</span>
+                            <span>Data Sekolah</span>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4">
@@ -95,7 +95,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi-person-badge"></i>
-                            B. Jumlah Guru
+                            Jumlah Guru
                         </div>
                     </x-slot:header>
 
@@ -131,7 +131,7 @@
                         <div
                             class="flex items-center gap-2 text-green-700 dark:text-green-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-mortarboard"></i>
-                            <span>B. Jumlah Siswa</span>
+                            <span>Jumlah Siswa</span>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4">
@@ -154,7 +154,7 @@
                         <div
                             class="flex items-center gap-2 text-purple-700 dark:text-purple-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-diagram-3"></i>
-                            <span>C. Jumlah Rombongan Belajar</span>
+                            <span>Jumlah Rombongan Belajar</span>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4">
@@ -232,7 +232,7 @@
                         <div
                             class="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-door-closed"></i>
-                            <span>F. Ruang Kelas</span>
+                            <span>Ruang Kelas</span>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4">
@@ -254,7 +254,7 @@
                             <div
                                 class="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-droplet-half"></i>
-                                <span class="inline">G. Toilet Siswa</span>
+                                <span class="inline">Toilet Siswa</span>
                             </div>
                         </div>
                         <div class="p-3 sm:p-4">
@@ -274,7 +274,7 @@
                             <div
                                 class="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-droplet"></i>
-                                <span class="inline">H. Toilet Guru</span>
+                                <span class="inline">Toilet Guru</span>
                             </div>
                         </div>
                         <div class="p-3 sm:p-4">
@@ -296,7 +296,7 @@
                         <div
                             class="flex items-center gap-2 text-yellow-700 dark:text-yellow-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-book"></i>
-                            <span>I. Ruang Perpustakaan</span>
+                            <span>Ruang Perpustakaan</span>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4">
@@ -343,7 +343,7 @@
                         <div
                             class="flex items-center gap-2 text-pink-700 dark:text-pink-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-person-workspace"></i>
-                            <span>J. Ruang Kepala Sekolah</span>
+                            <span>Ruang Kepala Sekolah</span>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4">
@@ -390,7 +390,7 @@
                         <div
                             class="flex items-center gap-2 text-indigo-700 dark:text-indigo-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-easel2"></i>
-                            <span>K. Ruang Guru</span>
+                            <span>Ruang Guru</span>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4">
@@ -437,7 +437,7 @@
                         <div
                             class="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-briefcase"></i>
-                            <span>L. Ruang Kantor/Tata Usaha</span>
+                            <span>Ruang Kantor/Tata Usaha</span>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4">
@@ -485,7 +485,7 @@
                             <div
                                 class="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-flask"></i>
-                                <span class="inline">M. Lab IPA</span>
+                                <span class="inline">Lab IPA</span>
                             </div>
                         </div>
                         <div class="p-3 sm:p-4">
@@ -581,7 +581,7 @@
                         <div
                             class="flex items-center gap-2 text-rose-700 dark:text-rose-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-heart-pulse"></i>
-                            <span>O. UKS</span>
+                            <span>UKS</span>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4">
@@ -628,7 +628,7 @@
                             <div
                                 class="flex items-center gap-2 text-teal-700 dark:text-teal-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-house-door"></i>
-                                <span class="inline">P. Rumah Dinas</span>
+                                <span class="inline">Rumah Dinas</span>
                             </div>
                         </div>
                         <div class="p-3 sm:p-4">
@@ -675,7 +675,7 @@
                             <div
                                 class="flex items-center gap-2 text-violet-700 dark:text-violet-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-building"></i>
-                                <span class="hidden sm:inline">Q. Rumah Ibadah</span>
+                                <span class="hidden sm:inline">Rumah Ibadah</span>
                             </div>
                         </div>
                         <div class="p-3 sm:p-4">
@@ -722,7 +722,7 @@
                             <div
                                 class="flex items-center gap-2 text-lime-700 dark:text-lime-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-flag"></i>
-                                <span class="hidden sm:inline">R. Lapangan Sekolah</span>
+                                <span class="hidden sm:inline">Lapangan Sekolah</span>
                             </div>
                         </div>
                         <div class="p-3 sm:p-4">
@@ -775,7 +775,7 @@
                             <div
                                 class="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-border-all"></i>
-                                <span>S. Pagar Sekolah</span>
+                                <span>Pagar Sekolah</span>
                             </div>
                         </div>
                         <div class="p-3 sm:p-4">
@@ -822,7 +822,7 @@
                             <div
                                 class="flex items-center gap-2 text-blue-700 dark:text-blue-400 font-semibold text-xs sm:text-sm">
                                 <i class="bi bi-droplet"></i>
-                                <span>T. Air Bersih</span>
+                                <span>Air Bersih</span>
                             </div>
                         </div>
                         <div class="p-3 sm:p-4">
