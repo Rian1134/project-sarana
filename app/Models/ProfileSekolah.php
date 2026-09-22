@@ -22,9 +22,9 @@ class ProfileSekolah extends Model
         'user_id',
     ];
 
-    public function jumlahGuru()
+    public function kondisiGuru()
     {
-        return $this->hasOne(JumlahGuru::class);
+        return $this->hasOne(KondisiGuru::class);
     }
 
     public function pagarSekolah()

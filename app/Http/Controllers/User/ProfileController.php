@@ -24,7 +24,7 @@ class ProfileController extends Controller
         // Ambil data sekolah yang terhubung dengan user
         $profileSekolah = ProfileSekolah::with([
             'pagarSekolah',
-            'jumlahGuru',
+            'kondisiGuru',
             'airBersih',
             'kursiSiswa',
             'mejaSiswa',

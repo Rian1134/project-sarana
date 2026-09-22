@@ -35,10 +35,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('jumlah_gurus', function (Blueprint $table) {
+        Schema::create('kondisi_gurus', function (Blueprint $table) {
             $table->id();
             $table->string('pns')->nullable(true);
             $table->string('pppk')->nullable(true);
+            $table->string('pppk_paruh_waktu')->nullable(true);
             $table->string('honor')->nullable(true);
 
             $table->string('i');
@@ -373,7 +374,7 @@ return new class extends Migration
         Schema::dropIfExists('ruang_kelas');
         Schema::dropIfExists('rehabilitasi_ruang_kelas');
         Schema::dropIfExists('ruang_kelas_barus');
-        Schema::dropIfExists('jumlah_gurus');
+        Schema::dropIfExists('kondisi_gurus');
         Schema::dropIfExists('jumlah_rombels');
         Schema::dropIfExists('jumlah_siswas');
         Schema::dropIfExists('komputers');

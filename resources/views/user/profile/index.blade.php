@@ -413,25 +413,32 @@
                                     Status Kepegawaian
                                 </label>
 
-                                <div class="grid grid-cols-3 gap-2 mt-1">
+                                <div class="grid grid-cols-4 gap-2 mt-1">
                                     <div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">PNS</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
-                                            {{ (int) ($profileSekolah->jumlahGuru?->pns ?? 0) }}
+                                            {{ (int) ($profileSekolah->kondisiGuru?->pns ?? 0) }}
                                         </p>
                                     </div>
 
                                     <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">PPPK</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
-                                            {{ (int) ($profileSekolah->jumlahGuru?->pppk ?? 0) }}
+                                            {{ (int) ($profileSekolah->kondisiGuru?->pppk ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                        <p class="text-[0.6rem] text-gray-500 dark:text-gray-400">PPPK Paruh Waktu</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->kondisiGuru?->pppk_paruh_waktu ?? 0) }}
                                         </p>
                                     </div>
 
                                     <div class="bg-violet-50 dark:bg-violet-900/20 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Honor</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
-                                            {{ (int) ($profileSekolah->jumlahGuru?->honor ?? 0) }}
+                                            {{ (int) ($profileSekolah->kondisiGuru?->honor ?? 0) }}
                                         </p>
                                     </div>
                                 </div>
@@ -443,9 +450,10 @@
                                         </span>
 
                                         <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
-                                            {{ (int) ($profileSekolah->jumlahGuru?->pns ?? 0) +
-                                                (int) ($profileSekolah->jumlahGuru?->pppk ?? 0) +
-                                                (int) ($profileSekolah->jumlahGuru?->honor ?? 0) }}
+                                            {{ (int) ($profileSekolah->kondisiGuru?->pns ?? 0) +
+                                                (int) ($profileSekolah->kondisiGuru?->pppk ?? 0) +
+                                                (int) ($profileSekolah->kondisiGuru?->pppk_prauh_waktu ?? 0) +
+                                                (int) ($profileSekolah->kondisiGuru?->honor ?? 0) }}
                                         </span>
                                     </div>
                                 </div>
@@ -465,28 +473,28 @@
                                     <div class="bg-slate-50 dark:bg-slate-900/20 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol I</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
-                                            {{ (int) ($profileSekolah->jumlahGuru?->i ?? 0) }}
+                                            {{ (int) ($profileSekolah->kondisiGuru?->i ?? 0) }}
                                         </p>
                                     </div>
 
                                     <div class="bg-slate-100 dark:bg-slate-900/30 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol II</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
-                                            {{ (int) ($profileSekolah->jumlahGuru?->ii ?? 0) }}
+                                            {{ (int) ($profileSekolah->kondisiGuru?->ii ?? 0) }}
                                         </p>
                                     </div>
 
                                     <div class="bg-slate-200 dark:bg-slate-900/40 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol III</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
-                                            {{ (int) ($profileSekolah->jumlahGuru?->iii ?? 0) }}
+                                            {{ (int) ($profileSekolah->kondisiGuru?->iii ?? 0) }}
                                         </p>
                                     </div>
 
                                     <div class="bg-slate-300 dark:bg-slate-900/50 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol IV</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
-                                            {{ (int) ($profileSekolah->jumlahGuru?->iv ?? 0) }}
+                                            {{ (int) ($profileSekolah->kondisiGuru?->iv ?? 0) }}
                                         </p>
                                     </div>
                                 </div>
@@ -498,10 +506,10 @@
                                         </span>
 
                                         <span class="text-sm font-bold text-slate-600 dark:text-slate-400">
-                                            {{ (int) ($profileSekolah->jumlahGuru?->i ?? 0) +
-                                                (int) ($profileSekolah->jumlahGuru?->ii ?? 0) +
-                                                (int) ($profileSekolah->jumlahGuru?->iii ?? 0) +
-                                                (int) ($profileSekolah->jumlahGuru?->iv ?? 0) }}
+                                            {{ (int) ($profileSekolah->kondisiGuru?->i ?? 0) +
+                                                (int) ($profileSekolah->kondisiGuru?->ii ?? 0) +
+                                                (int) ($profileSekolah->kondisiGuru?->iii ?? 0) +
+                                                (int) ($profileSekolah->kondisiGuru?->iv ?? 0) }}
                                         </span>
                                     </div>
                                 </div>
@@ -1455,13 +1463,14 @@
                 new Chart(document.getElementById('guruStatusChart'), {
                     type: 'bar',
                     data: {
-                        labels: ['PNS', 'PPPK', 'Honor'],
+                        labels: ['PNS', 'PPPK', 'PPPK Paruh Wakru', 'Honor'],
                         datasets: [{
                             label: 'Jumlah Guru',
                             data: [
-                                {{ (int) ($profileSekolah->jumlahGuru?->pns ?? 0) }},
-                                {{ (int) ($profileSekolah->jumlahGuru?->pppk ?? 0) }},
-                                {{ (int) ($profileSekolah->jumlahGuru?->honor ?? 0) }}
+                                {{ (int) ($profileSekolah->kondisiGuru?->pns ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiGuru?->pppk ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiGuru?->pppk_paruh_waktu ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiGuru?->honor ?? 0) }}
                             ],
                             backgroundColor: ['#2563eb', '#6366f1', '#8b5cf6'],
                             borderRadius: 6,
@@ -1478,10 +1487,10 @@
                         datasets: [{
                             label: 'Jumlah Guru',
                             data: [
-                                {{ (int) ($profileSekolah->jumlahGuru?->i ?? 0) }},
-                                {{ (int) ($profileSekolah->jumlahGuru?->ii ?? 0) }},
-                                {{ (int) ($profileSekolah->jumlahGuru?->iii ?? 0) }},
-                                {{ (int) ($profileSekolah->jumlahGuru?->iv ?? 0) }}
+                                {{ (int) ($profileSekolah->kondisiGuru?->i ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiGuru?->ii ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiGuru?->iii ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiGuru?->iv ?? 0) }}
                             ],
                             backgroundColor: ['#94a3b8', '#64748b', '#475569', '#334155'],
                             borderRadius: 6,
