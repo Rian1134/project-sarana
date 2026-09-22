@@ -37,7 +37,7 @@
                             {{ $no }}
                         </x-table.cell>
                         <x-table.cell>
-                            <a class="link" href="{{ $item->profileSekolah->id ?? '#' }}">
+                            <a class="link" href="{{ route('user.show', $item->id ?? '#') }}">
                                 {{ $item->profileSekolah->nama_sekolah ?? '-' }}
                             </a>
                         </x-table.cell>
