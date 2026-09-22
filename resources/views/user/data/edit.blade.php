@@ -203,7 +203,7 @@
                         <div
                             class="flex items-center gap-2 text-orange-700 dark:text-orange-400 font-semibold text-xs sm:text-sm">
                             <i class="bi bi-tools"></i>
-                            <span class="inline">E. Rehabilitasi Ruang</span>
+                            <span class="inline">Rehabilitasi Ruang</span>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4">
