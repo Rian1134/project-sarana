@@ -16,24 +16,6 @@
         </div>
     </div>
 
-    @if (session('success'))
-        <div class="alert alert-success mb-4" data-alert>
-            {{ session('success') }}
-            <button type="button" data-dismiss="alert" class="btn-close ml-auto">
-                <i class="bi bi-x-lg"></i>
-            </button>
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger mb-4" data-alert>
-            {{ session('error') }}
-            <button type="button" data-dismiss="alert" class="btn-close ml-auto">
-                <i class="bi bi-x-lg"></i>
-            </button>
-        </div>
-    @endif
-
     <x-card>
         <x-table bordered class="text-[11px]">
 
@@ -55,7 +37,7 @@
                             {{ $no }}
                         </x-table.cell>
                         <x-table.cell>
-                            <a class="link" href="{{ $item->profileSekolah->nama_sekolah ?? '#' }}">
+                            <a class="link" href="{{ $item->profileSekolah->id ?? '#' }}">
                                 {{ $item->profileSekolah->nama_sekolah ?? '-' }}
                             </a>
                         </x-table.cell>
