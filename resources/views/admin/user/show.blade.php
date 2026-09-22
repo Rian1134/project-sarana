@@ -455,7 +455,6 @@
                 <x-table striped hover>
                     <x-slot:head>
                         <tr>
-                            <x-table.heading>Judul</x-table.heading>
                             <x-table.heading>Kategori</x-table.heading>
                             <x-table.heading>Rincian Kerusakan</x-table.heading>
                             <x-table.heading>Status</x-table.heading>
@@ -484,10 +483,6 @@
                         @endphp
 
                         <x-table.row>
-                            <x-table.cell class="font-medium">
-                                {{ $item->judul ?? '-' }}
-                            </x-table.cell>
-
                             <x-table.cell>
                                 <ul class="space-y-1">
                                     @foreach ($kategoriKeys as $kunci)
