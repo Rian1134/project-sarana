@@ -5,31 +5,38 @@
 @section('content')
 
     {{-- ===== HERO ===== --}}
-    <section class="relative overflow-hidden bg-linear-to-br from-green-50 via-white to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            <div class="flex flex-col gap-5 text-center lg:text-left">
+    <section class="relative overflow-hidden">
+        {{-- Background Photo --}}
+        <div
+            class="absolute inset-0 bg-cover bg-center"
+            style="background-image: url('{{ asset('assets/img/foto-disdik.webp') }}');"
+        ></div>
 
-                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-800 dark:text-gray-100 leading-tight">
-                    Kelola Data Sarana &amp; Prasarana Sekolah dengan Mudah
-                </h1>
+        {{-- Blue Gradient Overlay --}}
+        <div class="absolute inset-0 bg-linear-to-br from-[#2E86C1]/85 to-[#164C74]/85 dark:from-[#1a1a2e]/85 dark:to-[#16213e]/85"></div>
 
-                <p class="text-base sm:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto lg:mx-0">
-                    Satu sistem untuk mencatat, memantau, dan melaporkan kondisi sarana prasarana
-                    seluruh sekolah dari ruang kelas sampai laptop.
-                </p>    
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 py-24 sm:py-32 flex flex-col items-center gap-5 text-center">
 
-                <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-2">
-                    <a href="{{ route('auth.register') }}" class="inline-flex">
-                        <x-button variant="success" size="lg" fullWidth>
-                            <i class="bi bi-person-plus-fill me-2"></i> Mulai Sekarang
-                        </x-button>
-                    </a>
-                    <a href="{{ route('login') }}" class="inline-flex">
-                        <x-button variant="outline-secondary" size="lg" fullWidth>
-                            <i class="bi bi-box-arrow-in-right me-2"></i> Masuk ke Akun
-                        </x-button>
-                    </a>
-                </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight">
+                Kelola Data Sarana &amp; Prasarana Sekolah dengan Mudah
+            </h1>
+
+            <p class="text-base sm:text-lg text-white/90 max-w-xl">
+                Satu sistem untuk mencatat, memantau, dan melaporkan kondisi sarana prasarana
+                sekolah menegah pertama kabupaten Lahat.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center mt-2">
+                <a href="{{ route('auth.register') }}" class="inline-flex">
+                    <x-button variant="light" size="lg" fullWidth>
+                        <i class="bi bi-person-plus-fill me-2"></i> Mulai Sekarang
+                    </x-button>
+                </a>
+                <a href="{{ route('login') }}" class="inline-flex">
+                    <x-button variant="outline-light" size="lg" fullWidth>
+                        <i class="bi bi-box-arrow-in-right me-2"></i> Masuk ke Akun
+                    </x-button>
+                </a>
             </div>
         </div>
     </section>

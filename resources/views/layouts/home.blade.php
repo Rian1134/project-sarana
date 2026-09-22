@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sarpras - @yield('title', 'Sistem Data Sarana & Prasarana Sekolah')</title>
+    <title>SIMSARPRAS - @yield('title', 'Sistem Data Sarana & Prasarana Sekolah')</title>
 
     @vite(['resources/css/app.css'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -29,10 +29,9 @@
         <x-slot:brand>
             <a href="{{ url('/') }}"
                 class="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-gray-100">
-                <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-600 text-white">
-                    <i class="bi bi-building"></i>
-                </span>
-                Sarpras
+                <img src="{{ asset('assets/img/icon-tut-wuri-rm.webp') }}" alt="Tut Wuri Handayani"
+                    class="h-10 w-10 object-cover">
+                SIMSARPRAS
             </a>
         </x-slot:brand>
 
@@ -57,7 +56,7 @@
                     <x-button variant="light" size="sm">Login</x-button>
                 </a>
                 <a href="{{ route('auth.register') }}" class="inline-flex">
-                    <x-button variant="success" size="sm">
+                    <x-button variant="primary" size="sm" class="bg-[#2E86C1]! hover:bg-[#256a9c]! border-[#2E86C1]!">
                         <span class="hidden sm:inline">Daftar Sekarang</span>
                         <span class="sm:hidden">Daftar</span>
                     </x-button>
@@ -76,10 +75,9 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div>
                 <div class="flex items-center gap-2 font-bold text-gray-800 dark:text-gray-100 mb-2">
-                    <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-green-600 text-white text-sm">
-                        <i class="bi bi-building"></i>
-                    </span>
-                    Sarpras
+                    <img src="{{ asset('assets/img/icon-tut-wuri-rm.webp') }}" alt="Tut Wuri Handayani"
+                        class="h-10 w-10 object-cover">
+                    SIMSARPRAS
                 </div>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
                     Sistem pendataan sarana &amp; prasarana sekolah — cepat, rapi, dan mudah dipantau.
@@ -90,9 +88,9 @@
                 <p class="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Tautan</p>
                 <ul class="flex flex-col gap-1.5 text-sm text-gray-500 dark:text-gray-400">
                     <li><a href="{{ route('login') }}"
-                            class="hover:text-green-600 dark:hover:text-green-400 transition-colors">Login</a></li>
+                            class="hover:text-[#2E86C1] dark:hover:text-[#5DADE2] transition-colors">Login</a></li>
                     <li><a href="{{ route('auth.register') }}"
-                            class="hover:text-green-600 dark:hover:text-green-400 transition-colors">Daftar</a></li>
+                            class="hover:text-[#2E86C1] dark:hover:text-[#5DADE2] transition-colors">Daftar</a></li>
                 </ul>
             </div>
 
@@ -108,7 +106,7 @@
 
         <div
             class="border-t border-gray-100 dark:border-gray-800 py-4 text-center text-xs text-gray-400 dark:text-gray-600">
-            &copy; {{ date('Y') }} Sarpras — Sistem Data Sarana &amp; Prasarana Sekolah.
+            &copy; {{ date('Y') }} SIMSARPRAS — Sistem Data Sarana &amp; Prasarana Sekolah.
         </div>
     </footer>
 

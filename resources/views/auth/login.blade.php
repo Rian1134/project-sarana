@@ -23,7 +23,20 @@
 
 <body>
     <div class="min-h-screen grid grid-cols-1 md:grid-cols-2">
-        {{-- Left Side: Form --}}
+        {{-- Left Side: Hero/Illustration --}}
+        <div
+            class="hidden md:flex flex-col items-center justify-center gap-1 p-8 text-white text-center bg-linear-to-br from-[#2E86C1] to-[#164C74] dark:from-[#1a1a2e] dark:to-[#16213e]">
+            <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo Kementerian Pendidikan Dasar dan Menengah"
+                class="w-48 h-48 lg:w-100 lg:h-100 xl:w-full xl:h-full object-cover mb-4 drop-shadow-lg">
+            <h1 class="text-3xl font-bold">Sistem Manajemen</h1>
+            <p class="opacity-90 mt-1">Kelola data sarana & prasarana sekolah menegah pertama kabupaten Lahat</p>
+            <div class="mt-8 flex gap-2 text-sm opacity-80">
+                <span class="px-3 py-1 bg-white/20 rounded-full">✓ Aman & Terpercaya</span>
+                <span class="px-3 py-1 bg-white/20 rounded-full">✓ 24/7 Support</span>
+            </div>
+        </div>
+
+        {{-- Right Side: Form --}}
         <div class="flex items-start md:items-center justify-center bg-white dark:bg-gray-800 p-8 pt-12 md:pt-8">
             <div class="w-full max-w-100">
                 <div class="mb-6">
@@ -94,18 +107,6 @@
                     </div>
                 </form>
             </div>
-        </div>
-
-        {{-- Right Side: Hero/Illustration --}}
-        <div
-            class="hidden md:flex flex-col items-center justify-center gap-1 p-8 text-white text-center bg-linear-to-br from-[#2E86C1] to-[#164C74] dark:from-[#1a1a2e] dark:to-[#16213e]">
-            <div class="flex flex-col justify-center items-center gap-0">
-                <img src="{{ asset('assets/img/logo-fix.png') }}"
-                    alt="Logo Kementerian Pendidikan Dasar dan Menengah" class="w-full h-full object-cover drop-shadow-lg">
-            </div>
-            <h1 class="text-3xl font-bold">Sistem Manajemen</h1>
-            <p class="opacity-90 mt-1">Kelola data sarana & prasarana SMP kabupaten Lahat</p>
-
         </div>
     </div>
 
