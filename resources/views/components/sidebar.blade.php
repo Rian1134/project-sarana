@@ -44,7 +44,6 @@
         'fixed sm:sticky top-0 z-50 sm:z-0 h-screen sm:h-[calc(100vh)]',
         'w-64 -translate-x-full sm:translate-x-0',
         'transition-all duration-200 ease-in-out',
-        'bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700',
         'sm:w-16' => $collapsed,
     ]) }}
 >

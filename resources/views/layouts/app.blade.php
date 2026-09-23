@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarpras - @yield('title')</title>
+    <title>SIMSARPRAS-SMP - @yield('title')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     {{-- Set dark mode SEBELUM CSS dimuat, supaya tidak ada "flash" warna terang sesaat.
@@ -65,44 +65,41 @@
     {{-- ===== SHELL: sidebar (kiri, full height) + kolom kanan (navbar + konten) ===== --}}
     <div class="flex min-h-screen">
 
-        {{-- Sidebar: overlay drawer di mobile, kolom sticky full-height di desktop.
-             Bisa di-collapse jadi mode ikon saja lewat tombol bawaan komponen
-             (disamakan dengan sidebar Admin). --}}
-        <x-sidebar id="mainSidebar">
+        {{-- Sidebar biru — disamakan dengan sidebar Admin supaya identitas visual
+             konsisten di kedua area (admin & user). --}}
+        <x-sidebar id="mainSidebar" class="bg-sky-800 dark:bg-sky-950 border-sky-700 dark:border-sky-900 text-sky-100">
             {{-- Info user --}}
-            <div class="flex items-center gap-3 border-b border-gray-200 dark:border-gray-700 pb-4 mb-3">
+            <div class="flex items-center gap-3 border-b border-sky-700/70 dark:border-sky-800 pb-4 mb-3">
                 <x-avatar :name="Auth::user()->name ?? 'U'" size="md" />
                 <div class="min-w-0 flex-1" data-sidebar-label>
-                    <p class="truncate text-sm font-semibold text-gray-800 dark:text-gray-100">{{ Auth::user()->name }}
-                    </p>
-                    <p class="truncate text-xs text-gray-500 dark:text-gray-400">
-                        {{ ucfirst(Auth::user()->role ?? 'Pengguna') }}</p>
+                    <p class="truncate text-sm font-semibold text-white">{{ Auth::user()->name }}</p>
+                    <p class="truncate text-xs text-sky-200">{{ ucfirst(Auth::user()->role ?? 'Pengguna') }}</p>
                 </div>
             </div>
 
             {{-- Label section menu --}}
-            <p class="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500" data-sidebar-label>
+            <p class="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-sky-300" data-sidebar-label>
                 Menu Utama
             </p>
 
             {{-- Menu utama — user hanya bisa akses data sarana sekolahnya sendiri. --}}
 
             <a href="{{ route('user.profile.index') }}"
-                class="sidebar-link {{ request()->routeIs('user.profile.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
+                class="sidebar-link text-sky-100 hover:bg-sky-700/60 hover:text-white {{ request()->routeIs('user.profile.*') ? 'bg-white/15 text-white font-semibold' : '' }}"
                 @if (request()->routeIs('user.profile.*')) aria-current="page" @endif>
                 <i class="bi bi-house-fill text-base shrink-0"></i>
                 <span data-sidebar-label>Profil</span>
             </a>
 
             <a href="{{ route('user.pengajuan.index') }}"
-                class="sidebar-link {{ request()->routeIs('user.pengajuan.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
+                class="sidebar-link text-sky-100 hover:bg-sky-700/60 hover:text-white {{ request()->routeIs('user.pengajuan.*') ? 'bg-white/15 text-white font-semibold' : '' }}"
                 @if (request()->routeIs('user.pengajuan.*')) aria-current="page" @endif>
                 <i class="bi bi-grid-1x2-fill text-base shrink-0"></i>
                 <span data-sidebar-label>Laporan</span>
             </a>
 
             <a href="{{ route('user.rencana-pembangunan.index') }}"
-                class="sidebar-link {{ request()->routeIs('user.rencana-pembangunan.*') ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 font-medium' : '' }}"
+                class="sidebar-link text-sky-100 hover:bg-sky-700/60 hover:text-white {{ request()->routeIs('user.rencana-pembangunan.*') ? 'bg-white/15 text-white font-semibold' : '' }}"
                 @if (request()->routeIs('user.rencana-pembangunan.*')) aria-current="page" @endif>
                 <i class="bi bi-building-fill text-base shrink-0"></i>
                 <span data-sidebar-label>Pembangunan</span>
@@ -110,7 +107,7 @@
 
             {{-- Logout — dengan modal konfirmasi, selalu menempel di bawah --}}
             <button type="button" data-modal-open="logoutModal"
-                class="sidebar-link mt-auto text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 w-full text-left border-t border-gray-200 dark:border-gray-700 pt-3">
+                class="sidebar-link mt-auto text-sky-100 hover:bg-sky-700/60 hover:text-white w-full text-left border-t border-sky-700/70 dark:border-sky-800 pt-3">
                 <i class="bi bi-box-arrow-right text-base shrink-0"></i>
                 <span data-sidebar-label>Logout</span>
             </button>
@@ -129,8 +126,11 @@
                             <i class="bi bi-list text-2xl leading-none"></i>
                         </button>
                         <span class="flex items-center gap-1.5 font-semibold text-gray-800 dark:text-gray-100 truncate">
-                            <i class="bi bi-building"></i>
-                            <span>Sarpras</span>
+                            <span
+                                class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-sky-700 text-white text-sm shrink-0">
+                                <i class="bi bi-building"></i>
+                            </span>
+                            <span class="truncate text-sm sm:text-base">SIMSARPRAS-SMP</span>
                         </span>
                         <x-badge variant="primary" class="hidden sm:inline-flex">User</x-badge>
                         @hasSection('title')
@@ -151,13 +151,12 @@
                         <span class="sm:hidden"> <i class="bi bi-question-circle-fill me-1"></i></span>
                     </a>
 
-                    {{-- Toggle dark mode --}}  
+                    {{-- Toggle dark mode --}}
                     <button data-theme-toggle aria-label="Ganti tema"
                         class="inline-flex items-center justify-center rounded-md p-1.5 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shrink-0">
                         <i class="bi bi-moon-stars-fill" data-theme-icon-dark></i>
                         <i class="bi bi-sun-fill hidden" data-theme-icon-light></i>
                     </button>
-
 
                     {{-- Info user & logout --}}
                     <x-dropdown align="right" width="sm">
@@ -186,8 +185,8 @@
             </x-navbar>
 
             {{-- ===== KONTEN UTAMA ===== --}}
-            <main class="flex-1 w-full">
-                <div class="p-3 sm:p-4 lg:p-6 max-w-[1600px] mx-auto flex flex-col gap-4">
+            <main class="flex-1 w-full min-w-0">
+                <div class="p-3 sm:p-4 lg:p-6 max-w-[1600px] mx-auto flex flex-col gap-4 min-w-0">
                     {{-- ============================================================
                          ALERT / FLASH MESSAGE — global, satu tempat untuk semua
                          halaman. Jangan taruh alert serupa lagi di masing-masing
@@ -226,7 +225,7 @@
 
             <footer
                 class="px-3 sm:px-4 lg:px-6 py-4 text-center text-xs text-gray-400 dark:text-gray-600 border-t border-gray-200 dark:border-gray-800">
-                &copy; {{ date('Y') }} Sarpras — Sistem Data Sarana &amp; Prasarana Sekolah
+                &copy; {{ date('Y') }} SIMSARPRAS-SMP — Sistem Informasi Manajemen Sarana &amp; Prasarana Sekolah
             </footer>
         </div>
     </div>

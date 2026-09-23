@@ -77,7 +77,7 @@
                 <div class="flex items-center gap-2 font-bold text-gray-800 dark:text-gray-100 mb-2">
                     <img src="{{ asset('assets/img/icon-tut-wuri-rm.webp') }}" alt="Tut Wuri Handayani"
                         class="h-10 w-10 object-cover">
-                    SIMSARPRAS
+                    SIMSARPRAS-SMP
                 </div>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
                     Sistem pendataan sarana &amp; prasarana sekolah — cepat, rapi, dan mudah dipantau.
