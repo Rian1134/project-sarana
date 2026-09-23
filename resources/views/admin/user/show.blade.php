@@ -32,8 +32,8 @@
             </div>
 
             <!-- ============================================================
-                                 Profil User (kiri) & Data Sekolah (kanan)
-                                 ============================================================ -->
+                                                 Profil User (kiri) & Data Sekolah (kanan)
+                                                 ============================================================ -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <!-- Kiri: Profil User -->
                 <x-card>
@@ -203,399 +203,254 @@
                 @endif
             </div>
 
-            <x-card class="p-2 md:p-4">
+            <x-card>
                 <x-slot:header>
-                    <div class="flex flex-wrap items-center justify-between gap-3 px-2 md:px-0">
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-bar-chart-line"></i>
-                            Riwayat Pengajuan per Bulan
-                        </div>
-
-                        <div class="flex flex-wrap gap-2">
-                            <select id="riwayatTahunFilter" class="form-select form-select-sm w-auto">
-                                @foreach ($tahunTersedia as $tahun)
-                                    <option value="{{ $tahun }}">{{ $tahun }}</option>
-                                @endforeach
-                            </select>
-
-                            <select id="riwayatKategoriFilter" class="form-select form-select-sm w-auto">
-                                <option value="">Semua Kategori</option>
-                                @foreach ($kategoriListChart as $key => $kat)
-                                    <option value="{{ $key }}">{{ $kat['label'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                        <i class="bi bi-person-video3"></i>
+                        Kondisi tenaga pendidik
                     </div>
                 </x-slot:header>
 
-                <div class="h-64 sm:h-80 px-2 md:px-0">
-                    <canvas id="riwayatPengajuanChart"></canvas>
+                <div class="flex flex-col gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {{-- Status Kepegawaian --}}
+                        <div>
+                            <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                Status Kepegawaian
+                            </label>
+
+                            <div class="grid grid-cols-4 gap-2 mt-1">
+                                <div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">PNS</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiGuru?->pns ?? 0) }}
+                                    </p>
+                                </div>
+
+                                <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">PPPK</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiGuru?->pppk ?? 0) }}
+                                    </p>
+                                </div>
+
+                                <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                    <p class="text-[0.6rem] text-gray-500 dark:text-gray-400">PPPK Paruh Waktu</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiGuru?->pppk_paruh_waktu ?? 0) }}
+                                    </p>
+                                </div>
+
+                                <div class="bg-violet-50 dark:bg-violet-900/20 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Honor</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiGuru?->honor ?? 0) }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                                        Total
+                                    </span>
+
+                                    <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
+                                        {{ (int) ($profileSekolah->kondisiGuru?->pns ?? 0) +
+                                            (int) ($profileSekolah->kondisiGuru?->pppk ?? 0) +
+                                            (int) ($profileSekolah->kondisiGuru?->pppk_prauh_waktu ?? 0) +
+                                            (int) ($profileSekolah->kondisiGuru?->honor ?? 0) }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 h-36 sm:h-40">
+                                <canvas id="guruStatusChart"></canvas>
+                            </div>
+                        </div>
+
+                        {{-- Golongan --}}
+                        <div>
+                            <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                Golongan
+                            </label>
+
+                            <div class="grid grid-cols-4 gap-2 mt-1">
+                                <div class="bg-slate-50 dark:bg-slate-900/20 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Gol I</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiGuru?->i ?? 0) }}
+                                    </p>
+                                </div>
+
+                                <div class="bg-slate-100 dark:bg-slate-900/30 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Gol II</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiGuru?->ii ?? 0) }}
+                                    </p>
+                                </div>
+
+                                <div class="bg-slate-200 dark:bg-slate-900/40 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Gol III</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiGuru?->iii ?? 0) }}
+                                    </p>
+                                </div>
+
+                                <div class="bg-slate-300 dark:bg-slate-900/50 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Gol IV</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiGuru?->iv ?? 0) }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                                        Total
+                                    </span>
+
+                                    <span class="text-sm font-bold text-slate-600 dark:text-slate-400">
+                                        {{ (int) ($profileSekolah->kondisiGuru?->i ?? 0) +
+                                            (int) ($profileSekolah->kondisiGuru?->ii ?? 0) +
+                                            (int) ($profileSekolah->kondisiGuru?->iii ?? 0) +
+                                            (int) ($profileSekolah->kondisiGuru?->iv ?? 0) }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 h-36 sm:h-40">
+                                <canvas id="guruGolonganChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </x-card>
 
-            @php
-                // Dipakai untuk menentukan section mana yang cocok untuk tiap baris
-                // $pengajuans — satu baris normalnya murni salah satu jenis saja
-                // (lihat catatan store() di masing-masing User\...Controller).
-                $rencanaPembangunanKeys = array_keys(\App\Http\Controllers\User\RencanaPembangunanController::kategoriList());
-                $laporanKerusakanKeys = array_keys(\App\Http\Controllers\User\PengajuanController::kategoriList());
-
-                // Helper lokal: ambil array kategori key yang valid dari satu item
-                // $pengajuans (dipakai dua kali di bawah, jadi disatukan di sini
-                // supaya tidak duplikasi logic parsing-nya).
-                $ambilKategoriKeys = function ($item) {
-                    $pengajuanData = $item->pengajuan ?? [];
-
-                    if (!is_array($pengajuanData)) {
-                        $pengajuanData = [$pengajuanData];
-                    }
-
-                    $keys = [];
-
-                    foreach ($pengajuanData as $key => $value) {
-                        if (is_string($value)) {
-                            $keys[] = $value;
-                        } elseif (is_string($key)) {
-                            $keys[] = $key;
-                        }
-                    }
-
-                    return array_values(
-                        array_unique(
-                            array_filter($keys, fn($value) => is_string($value) && $value !== ''),
-                        ),
-                    );
-                };
-            @endphp
-
-            {{-- ============================================================
-                 Rencana Pembangunan — DI ATAS Laporan Kerusakan.
-                 ============================================================ --}}
-            <x-card class="p-2 md:p-4">
+            <x-card>
                 <x-slot:header>
-                    <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-building-add"></i>
-                            Rencana Pembangunan
-                        </div>
+                    <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                        <i class="bi bi-person-workspace"></i>
+                        Kondisi Staff Tata Usaha
                     </div>
                 </x-slot:header>
 
-                <x-table striped hover>
-                    <x-slot:head>
-                        <tr>
-                            <x-table.heading>Kategori</x-table.heading>
-                            <x-table.heading>Rincian</x-table.heading>
-                            <x-table.heading>Status</x-table.heading>
-                            <x-table.heading>Diajukan</x-table.heading>
-                            <x-table.heading class="text-right">Aksi</x-table.heading>
-                        </tr>
-                    </x-slot:head>
+                <div class="flex flex-col gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {{-- Status Kepegawaian --}}
+                        <div>
+                            <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                Status Kepegawaian
+                            </label>
 
-                    @php $adaRencana = false; @endphp
-                    @forelse ($pengajuans ?? [] as $item)
-                        @php
-                            $kategoriKeys = $ambilKategoriKeys($item);
-                        @endphp
-
-                        @continue(!count(array_intersect($kategoriKeys, $rencanaPembangunanKeys)))
-                        @php $adaRencana = true; @endphp
-
-                        @php
-                            $perubahanData = $item->perubahan ?? [];
-
-                            if (!is_array($perubahanData)) {
-                                $perubahanData = [];
-                            }
-
-                            $tambahanKeys = array_keys(array_diff_key($perubahanData, array_flip($kategoriKeys)));
-                        @endphp
-
-                        <x-table.row>
-                            <x-table.cell>
-                                <ul class="space-y-1">
-                                    @foreach ($kategoriKeys as $kunci)
-                                        <li>
-                                            {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </x-table.cell>
-
-                            <x-table.cell>
-                                <ul class="space-y-1 text-sm">
-                                    @foreach ($kategoriKeys as $kunci)
-                                        @php
-                                            $kategoriPerubahan = $perubahanData[$kunci] ?? [];
-
-                                            if (!is_array($kategoriPerubahan)) {
-                                                $kategoriPerubahan = [
-                                                    'value' => $kategoriPerubahan,
-                                                ];
-                                            }
-                                        @endphp
-
-                                        <li>
-                                            @if (count($kategoriKeys) > 1)
-                                                <div class="text-xs font-semibold text-gray-400 uppercase mb-1">
-                                                    {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
-                                                </div>
-                                            @endif
-
-                                            <ul class="space-y-0.5 pl-2">
-                                                @forelse ($kategoriPerubahan as $field => $value)
-                                                    @php
-                                                        if (is_array($value)) {
-                                                            $value = implode(
-                                                                ', ',
-                                                                array_map(
-                                                                    fn($item) => is_scalar($item)
-                                                                        ? (string) $item
-                                                                        : json_encode($item),
-                                                                    $value,
-                                                                ),
-                                                            );
-                                                        }
-                                                    @endphp
-
-                                                    <li>
-                                                        <span class="text-gray-500 dark:text-gray-400">
-                                                            {{ \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel($kunci, $field) }}:
-                                                        </span>
-
-                                                        <span class="font-medium">
-                                                            {{ $value }}
-                                                        </span>
-                                                    </li>
-                                                @empty
-                                                    {{-- Kategori tipe ada_kondisi sengaja tanpa field — mencentang
-                                                         kategorinya saja sudah berarti "diajukan untuk dibangun". --}}
-                                                    <li class="text-gray-400 italic">
-                                                        Diajukan untuk dibangun
-                                                    </li>
-                                                @endforelse
-                                            </ul>
-                                        </li>
-                                    @endforeach
-
-                                    @foreach ($tambahanKeys as $namaField)
-                                        <li class="pt-1">
-                                            <span class="text-gray-500 dark:text-gray-400">
-                                                {{ ucwords(str_replace('_', ' ', $namaField)) }}:
-                                            </span>
-
-                                            <span class="font-medium">
-                                                {{ $perubahanData[$namaField] ?? '-' }}
-                                            </span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </x-table.cell>
-
-                            <x-table.cell>
-                                @if ($item->status === 'pending')
-                                    <x-badge variant="warning">
-                                        Menunggu Review
-                                    </x-badge>
-                                @elseif ($item->status === 'approved')
-                                    <x-badge variant="success">
-                                        Disetujui
-                                    </x-badge>
-                                @elseif ($item->status === 'rejected')
-                                    <x-badge variant="danger">
-                                        Ditolak
-                                    </x-badge>
-                                @else
-                                    <x-badge variant="secondary">
-                                        {{ ucfirst($item->status) }}
-                                    </x-badge>
-                                @endif
-                            </x-table.cell>
-
-                            <x-table.cell>
-                                {{ $item->created_at?->format('d M Y H:i') }}
-                            </x-table.cell>
-
-                            <x-table.cell class="text-right">
-                                <div class="flex justify-end gap-1">
-                                    <x-button href="{{ route('pengajuan.show', $item) }}" variant="info"
-                                        size="xs">
-                                        <i class="bi bi-eye-fill"></i>
-                                    </x-button>
+                            <div class="grid grid-cols-4 gap-2 mt-1">
+                                <div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">PNS</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiStaff?->pns ?? 0) }}
+                                    </p>
                                 </div>
-                            </x-table.cell>
-                        </x-table.row>
-                    @empty
-                    @endforelse
 
-                    @if (!$adaRencana)
-                        <x-table.empty colspan="6" message="Belum ada rencana pembangunan yang diajukan." />
-                    @endif
-                </x-table>
-            </x-card>
+                                <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">PPPK</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiStaff?->pppk ?? 0) }}
+                                    </p>
+                                </div>
 
-            {{-- ============================================================
-                 Laporan Kerusakan — DI BAWAH Rencana Pembangunan.
-                 ============================================================ --}}
-            <x-card class="p-2 md:p-4">
-                <x-slot:header>
-                    <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-list-check"></i>
-                            Laporan Kerusakan
+                                <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                    <p class="text-[0.6rem] text-gray-500 dark:text-gray-400">PPPK Paruh Waktu</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiStaff?->pppk_paruh_waktu ?? 0) }}
+                                    </p>
+                                </div>
+
+                                <div class="bg-violet-50 dark:bg-violet-900/20 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Honor</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiStaff?->honor ?? 0) }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                                        Total
+                                    </span>
+
+                                    <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
+                                        {{ (int) ($profileSekolah->kondisiStaff?->pns ?? 0) +
+                                            (int) ($profileSekolah->kondisiStaff?->pppk ?? 0) +
+                                            (int) ($profileSekolah->kondisiStaff?->pppk_prauh_waktu ?? 0) +
+                                            (int) ($profileSekolah->kondisiStaff?->honor ?? 0) }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 h-36 sm:h-40">
+                                <canvas id="staffStatusChart"></canvas>
+                            </div>
+                        </div>
+
+                        {{-- Golongan --}}
+                        <div>
+                            <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                Golongan
+                            </label>
+
+                            <div class="grid grid-cols-4 gap-2 mt-1">
+                                <div class="bg-slate-50 dark:bg-slate-900/20 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Gol I</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiStaff?->i ?? 0) }}
+                                    </p>
+                                </div>
+
+                                <div class="bg-slate-100 dark:bg-slate-900/30 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Gol II</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiStaff?->ii ?? 0) }}
+                                    </p>
+                                </div>
+
+                                <div class="bg-slate-200 dark:bg-slate-900/40 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Gol III</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiStaff?->iii ?? 0) }}
+                                    </p>
+                                </div>
+
+                                <div class="bg-slate-300 dark:bg-slate-900/50 p-2 rounded-lg text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Gol IV</p>
+                                    <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                        {{ (int) ($profileSekolah->kondisiStaff?->iv ?? 0) }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                                        Total
+                                    </span>
+
+                                    <span class="text-sm font-bold text-slate-600 dark:text-slate-400">
+                                        {{ (int) ($profileSekolah->kondisiStaff?->i ?? 0) +
+                                            (int) ($profileSekolah->kondisiStaff?->ii ?? 0) +
+                                            (int) ($profileSekolah->kondisiStaff?->iii ?? 0) +
+                                            (int) ($profileSekolah->kondisiStaff?->iv ?? 0) }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 h-36 sm:h-40">
+                                <canvas id="staffGolonganChart"></canvas>
+                            </div>
                         </div>
                     </div>
-                </x-slot:header>
-
-                <x-table striped hover>
-                    <x-slot:head>
-                        <tr>
-                            <x-table.heading>Kategori</x-table.heading>
-                            <x-table.heading>Rincian Kerusakan</x-table.heading>
-                            <x-table.heading>Status</x-table.heading>
-                            <x-table.heading>Diajukan</x-table.heading>
-                            <x-table.heading class="text-right">Aksi</x-table.heading>
-                        </tr>
-                    </x-slot:head>
-
-                    @php $adaLaporan = false; @endphp
-                    @forelse ($pengajuans ?? [] as $item)
-                        @php
-                            $kategoriKeys = $ambilKategoriKeys($item);
-                        @endphp
-
-                        @continue(!count(array_intersect($kategoriKeys, $laporanKerusakanKeys)))
-                        @php $adaLaporan = true; @endphp
-
-                        @php
-                            $perubahanData = $item->perubahan ?? [];
-
-                            if (!is_array($perubahanData)) {
-                                $perubahanData = [];
-                            }
-
-                            $tambahanKeys = array_keys(array_diff_key($perubahanData, array_flip($kategoriKeys)));
-                        @endphp
-
-                        <x-table.row>
-                            <x-table.cell>
-                                <ul class="space-y-1">
-                                    @foreach ($kategoriKeys as $kunci)
-                                        <li>
-                                            {{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </x-table.cell>
-
-                            <x-table.cell>
-                                <ul class="space-y-1 text-sm">
-                                    @foreach ($kategoriKeys as $kunci)
-                                        @php
-                                            $kategoriPerubahan = $perubahanData[$kunci] ?? [];
-
-                                            if (!is_array($kategoriPerubahan)) {
-                                                $kategoriPerubahan = [
-                                                    'value' => $kategoriPerubahan,
-                                                ];
-                                            }
-                                        @endphp
-
-                                        <li>
-                                            @if (count($kategoriKeys) > 1)
-                                                <div class="text-xs font-semibold text-gray-400 uppercase mb-1">
-                                                    {{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}
-                                                </div>
-                                            @endif
-
-                                            <ul class="space-y-0.5 pl-2">
-                                                @foreach ($kategoriPerubahan as $field => $value)
-                                                    @php
-                                                        if (is_array($value)) {
-                                                            $value = implode(
-                                                                ', ',
-                                                                array_map(
-                                                                    fn($item) => is_scalar($item)
-                                                                        ? (string) $item
-                                                                        : json_encode($item),
-                                                                    $value,
-                                                                ),
-                                                            );
-                                                        }
-                                                    @endphp
-
-                                                    <li>
-                                                        <span class="text-gray-500 dark:text-gray-400">
-                                                            {{ \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) }}:
-                                                        </span>
-
-                                                        <span class="font-medium">
-                                                            {{ $value }}
-                                                        </span>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </li>
-                                    @endforeach
-
-                                    @foreach ($tambahanKeys as $namaField)
-                                        <li class="pt-1">
-                                            <span class="text-gray-500 dark:text-gray-400">
-                                                {{ ucwords(str_replace('_', ' ', $namaField)) }}:
-                                            </span>
-
-                                            <span class="font-medium">
-                                                {{ $perubahanData[$namaField] ?? '-' }}
-                                            </span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </x-table.cell>
-
-                            <x-table.cell>
-                                @if ($item->status === 'pending')
-                                    <x-badge variant="warning">
-                                        Menunggu Review
-                                    </x-badge>
-                                @elseif ($item->status === 'approved')
-                                    <x-badge variant="success">
-                                        Disetujui
-                                    </x-badge>
-                                @elseif ($item->status === 'rejected')
-                                    <x-badge variant="danger">
-                                        Ditolak
-                                    </x-badge>
-                                @else
-                                    <x-badge variant="secondary">
-                                        {{ ucfirst($item->status) }}
-                                    </x-badge>
-                                @endif
-                            </x-table.cell>
-
-                            <x-table.cell>
-                                {{ $item->created_at?->format('d M Y H:i') }}
-                            </x-table.cell>
-
-                            <x-table.cell class="text-right">
-                                <div class="flex justify-end gap-1">
-                                    <x-button href="{{ route('pengajuan.show', $item) }}" variant="info"
-                                        size="xs">
-                                        <i class="bi bi-eye-fill"></i>
-                                    </x-button>
-                                </div>
-                            </x-table.cell>
-                        </x-table.row>
-                    @empty
-                    @endforelse
-
-                    @if (!$adaLaporan)
-                        <x-table.empty colspan="6" message="Belum ada laporan kerusakan." />
-                    @endif
-                </x-table>
-
-                @if (isset($pengajuans) && method_exists($pengajuans, 'links'))
-                    <x-pagination :paginator="$pengajuans" class="mt-4" />
-                @endif
+                </div>
             </x-card>
 
             @if ($profileSekolah)
@@ -690,8 +545,8 @@
                 @endphp
 
                 <!-- ============================================================
-                                     RKB & Rehabilitasi Ruang Kelas
-                                     ============================================================ -->
+                                                     RKB & Rehabilitasi Ruang Kelas
+                                                     ============================================================ -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
@@ -736,8 +591,8 @@
                 </x-card>
 
                 <!-- ============================================================
-                                     Jumlah Siswa, Rombongan Belajar & Ruang Kelas
-                                     ============================================================ -->
+                                                     Jumlah Siswa, Rombongan Belajar & Ruang Kelas
+                                                     ============================================================ -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
@@ -852,8 +707,8 @@
                 </x-card>
 
                 <!-- ============================================================
-                                     Fasilitas Ruang & Bangunan Sekolah
-                                     ============================================================ -->
+                                                     Fasilitas Ruang & Bangunan Sekolah
+                                                     ============================================================ -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
@@ -919,8 +774,8 @@
                 </x-card>
 
                 <!-- ============================================================
-                                     Furnitur, Toilet & Elektronik
-                                     ============================================================ -->
+                                                     Furnitur, Toilet & Elektronik
+                                                     ============================================================ -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
@@ -962,281 +817,465 @@
                         </div>
                     </div>
                 </x-card>
-            @endif
+                <x-card class="p-2 md:p-4">
+                    <x-slot:header>
+                        <div class="flex flex-wrap items-center justify-between gap-3 px-2 md:px-0">
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-bar-chart-line"></i>
+                                Riwayat Pengajuan per Bulan
+                            </div>
 
-            <!-- ===== MODAL KONFIRMASI HAPUS USER ===== -->
-            <x-modal id="hapusUserModal" size="sm" centered>
-                <x-slot:header>
-                    <div class="flex items-center gap-2 text-red-600">
-                        <i class="bi bi-exclamation-triangle-fill text-xl"></i>
-                        <span>Konfirmasi Hapus User</span>
+                            <div class="flex flex-wrap gap-2">
+                                <select id="riwayatTahunFilter" class="form-select form-select-sm w-auto">
+                                    @foreach ($tahunTersedia as $tahun)
+                                        <option value="{{ $tahun }}">{{ $tahun }}</option>
+                                    @endforeach
+                                </select>
+
+                                <select id="riwayatKategoriFilter" class="form-select form-select-sm w-auto">
+                                    <option value="">Semua Kategori</option>
+                                    @foreach ($kategoriListChart as $key => $kat)
+                                        <option value="{{ $key }}">{{ $kat['label'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </x-slot:header>
+
+                    <div class="h-64 sm:h-80 px-2 md:px-0">
+                        <canvas id="riwayatPengajuanChart"></canvas>
                     </div>
-                </x-slot:header>
+                </x-card>
 
-                <div class="text-center py-4">
-                    <div class="text-5xl text-red-500 mb-4">
-                        <i class="bi bi-trash"></i>
-                    </div>
-                    <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
-                        Yakin ingin menghapus user ini?
-                    </h4>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        User <strong>{{ $user->name }}</strong> akan dihapus permanen.
-                        @if ($profileSekolah)
-                            <br>Data sekolah <strong>{{ $profileSekolah->nama_sekolah }}</strong> juga akan ikut terhapus.
-                        @endif
-                        Tindakan ini tidak bisa dibatalkan.
-                    </p>
-                </div>
+                @php
+                    // Dipakai untuk menentukan section mana yang cocok untuk tiap baris
+                    // $pengajuans — satu baris normalnya murni salah satu jenis saja
+                    // (lihat catatan store() di masing-masing User\...Controller).
+                    $rencanaPembangunanKeys = array_keys(
+                        \App\Http\Controllers\User\RencanaPembangunanController::kategoriList(),
+                    );
+                    $laporanKerusakanKeys = array_keys(\App\Http\Controllers\User\PengajuanController::kategoriList());
 
-                <x-slot:footer>
-                    <div class="flex flex-wrap justify-end gap-2 w-full">
-                        <x-button variant="secondary" data-modal-close>
-                            <i class="bi bi-x-circle me-1"></i> Batal
-                        </x-button>
-                        <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <x-button variant="danger" type="submit">
-                                <i class="bi bi-trash me-1"></i> Ya, Hapus
-                            </x-button>
-                        </form>
-                    </div>
-                </x-slot:footer>
-            </x-modal>
-        </div>
-    </div>
+                    // Helper lokal: ambil array kategori key yang valid dari satu item
+                    // $pengajuans (dipakai dua kali di bawah, jadi disatukan di sini
+                    // supaya tidak duplikasi logic parsing-nya).
+                    $ambilKategoriKeys = function ($item) {
+                        $pengajuanData = $item->pengajuan ?? [];
 
-    @if ($profileSekolah)
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const isDark = document.documentElement.classList.contains('dark');
-                Chart.defaults.color = isDark ? '#9ca3af' : '#6b7280';
-                Chart.defaults.borderColor = isDark ? '#374151' : '#e5e7eb';
-                Chart.defaults.font.family = 'inherit';
-
-                const barOptions = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
+                        if (!is_array($pengajuanData)) {
+                            $pengajuanData = [$pengajuanData];
                         }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
+
+                        $keys = [];
+
+                        foreach ($pengajuanData as $key => $value) {
+                            if (is_string($value)) {
+                                $keys[] = $value;
+                            } elseif (is_string($key)) {
+                                $keys[] = $key;
                             }
-                        },
-                    },
-                };
+                        }
 
-                // ============================================================
-                // Riwayat Pengajuan per Bulan — data mentah dikirim dari server,
-                // agregasi per bulan dihitung di sini sesuai tahun & kategori yang
-                // dipilih di dropdown (tanpa reload halaman).
-                // ============================================================
-                const riwayatPengajuanData = @json($pengajuanChartData);
-                const namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+                        return array_values(
+                            array_unique(array_filter($keys, fn($value) => is_string($value) && $value !== '')),
+                        );
+                    };
+                @endphp
 
-                function hitungPerBulan(tahun, kategori) {
-                    const jumlah = new Array(12).fill(0);
+                {{-- ============================================================
+                 Rencana Pembangunan — DI ATAS Laporan Kerusakan.
+                 ============================================================ --}}
+                <x-card class="p-2 md:p-4">
+                    <x-slot:header>
+                        <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-building-add"></i>
+                                Rencana Pembangunan
+                            </div>
+                        </div>
+                    </x-slot:header>
 
-                    riwayatPengajuanData.forEach(function(item) {
-                        if (item.tahun !== tahun) return;
-                        if (kategori && !item.kategori.includes(kategori)) return;
-                        jumlah[item.bulan - 1]++;
-                    });
+                    <x-table striped hover>
+                        <x-slot:head>
+                            <tr>
+                                <x-table.heading>Kategori</x-table.heading>
+                                <x-table.heading>Rincian</x-table.heading>
+                                <x-table.heading>Status</x-table.heading>
+                                <x-table.heading>Diajukan</x-table.heading>
+                                <x-table.heading class="text-right">Aksi</x-table.heading>
+                            </tr>
+                        </x-slot:head>
 
-                    return jumlah;
-                }
+                        @php $adaRencana = false; @endphp
+                        @forelse ($pengajuans ?? [] as $item)
+                            @php
+                                $kategoriKeys = $ambilKategoriKeys($item);
+                            @endphp
 
-                const riwayatTahunFilter = document.getElementById('riwayatTahunFilter');
-                const riwayatKategoriFilter = document.getElementById('riwayatKategoriFilter');
-                const riwayatCanvas = document.getElementById('riwayatPengajuanChart');
+                            @continue(!count(array_intersect($kategoriKeys, $rencanaPembangunanKeys)))
+                            @php $adaRencana = true; @endphp
 
-                let riwayatChart = null;
+                            @php
+                                $perubahanData = $item->perubahan ?? [];
 
-                function renderRiwayatChart() {
-                    const tahun = parseInt(riwayatTahunFilter.value, 10);
-                    const kategori = riwayatKategoriFilter.value;
-                    const data = hitungPerBulan(tahun, kategori);
+                                if (!is_array($perubahanData)) {
+                                    $perubahanData = [];
+                                }
 
-                    if (riwayatChart) {
-                        riwayatChart.data.datasets[0].data = data;
-                        riwayatChart.update();
-                        return;
-                    }
+                                $tambahanKeys = array_keys(array_diff_key($perubahanData, array_flip($kategoriKeys)));
+                            @endphp
 
-                    riwayatChart = new Chart(riwayatCanvas, {
-                        type: 'bar',
-                        data: {
-                            labels: namaBulan,
-                            datasets: [{
-                                label: 'Jumlah Pengajuan',
-                                data: data,
-                                backgroundColor: '#2563eb',
-                                borderRadius: 6,
-                                maxBarThickness: 40,
-                            }],
-                        },
-                        options: barOptions,
-                    });
-                }
+                            <x-table.row>
+                                <x-table.cell>
+                                    <ul class="space-y-1">
+                                        @foreach ($kategoriKeys as $kunci)
+                                            <li>
+                                                {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </x-table.cell>
 
-                if (riwayatCanvas && riwayatTahunFilter && riwayatKategoriFilter) {
-                    renderRiwayatChart();
-                    riwayatTahunFilter.addEventListener('change', renderRiwayatChart);
-                    riwayatKategoriFilter.addEventListener('change', renderRiwayatChart);
-                }
+                                <x-table.cell>
+                                    <ul class="space-y-1 text-sm">
+                                        @foreach ($kategoriKeys as $kunci)
+                                            @php
+                                                $kategoriPerubahan = $perubahanData[$kunci] ?? [];
 
-                new Chart(document.getElementById('rkbRehabChart'), {
-                    type: 'bar',
-                    data: {
-                        labels: ['Pembangunan RKB', 'Rehabilitasi Ruang Kelas'],
-                        datasets: [{
-                            label: 'Jumlah Ruang Kelas',
-                            data: @json($chartRkbRehab),
-                            backgroundColor: ['#2563eb', '#ea580c'],
-                            borderRadius: 6,
-                            maxBarThickness: 64,
-                        }],
-                    },
-                    options: barOptions,
-                });
+                                                if (!is_array($kategoriPerubahan)) {
+                                                    $kategoriPerubahan = [
+                                                        'value' => $kategoriPerubahan,
+                                                    ];
+                                                }
+                                            @endphp
 
-                new Chart(document.getElementById('siswaChart'), {
-                    type: 'bar',
-                    data: {
-                        labels: ['Kelas VII', 'Kelas VIII', 'Kelas IX'],
-                        datasets: [{
-                            label: 'Jumlah Siswa',
-                            data: @json($chartSiswa),
-                            backgroundColor: ['#10b981', '#059669', '#0d9488'],
-                            borderRadius: 6,
-                            maxBarThickness: 48,
-                        }],
-                    },
-                    options: barOptions,
-                });
+                                            <li>
+                                                @if (count($kategoriKeys) > 1)
+                                                    <div class="text-xs font-semibold text-gray-400 uppercase mb-1">
+                                                        {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
+                                                    </div>
+                                                @endif
 
-                new Chart(document.getElementById('rombelChart'), {
-                    type: 'bar',
-                    data: {
-                        labels: ['Kelas VII', 'Kelas VIII', 'Kelas IX'],
-                        datasets: [{
-                            label: 'Jumlah Rombel',
-                            data: @json($chartRombel),
-                            backgroundColor: ['#a855f7', '#8b5cf6', '#6366f1'],
-                            borderRadius: 6,
-                            maxBarThickness: 48,
-                        }],
-                    },
-                    options: barOptions,
-                });
+                                                <ul class="space-y-0.5 pl-2">
+                                                    @forelse ($kategoriPerubahan as $field => $value)
+                                                        @php
+                                                            if (is_array($value)) {
+                                                                $value = implode(
+                                                                    ', ',
+                                                                    array_map(
+                                                                        fn($item) => is_scalar($item)
+                                                                            ? (string) $item
+                                                                            : json_encode($item),
+                                                                        $value,
+                                                                    ),
+                                                                );
+                                                            }
+                                                        @endphp
 
-                new Chart(document.getElementById('ruangKelasChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Baik', 'Rusak'],
-                        datasets: [{
-                            data: @json($chartRuangKelas),
-                            backgroundColor: ['#0ea5e9', '#f43f5e'],
-                            borderWidth: 0,
-                        }],
-                    },
-                    options: {
+                                                        <li>
+                                                            <span class="text-gray-500 dark:text-gray-400">
+                                                                {{ \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel($kunci, $field) }}:
+                                                            </span>
+
+                                                            <span class="font-medium">
+                                                                {{ $value }}
+                                                            </span>
+                                                        </li>
+                                                    @empty
+                                                        {{-- Kategori tipe ada_kondisi sengaja tanpa field — mencentang
+                                                         kategorinya saja sudah berarti "diajukan untuk dibangun". --}}
+                                                        <li class="text-gray-400 italic">
+                                                            Diajukan untuk dibangun
+                                                        </li>
+                                                    @endforelse
+                                                </ul>
+                                            </li>
+                                        @endforeach
+
+                                        @foreach ($tambahanKeys as $namaField)
+                                            <li class="pt-1">
+                                                <span class="text-gray-500 dark:text-gray-400">
+                                                    {{ ucwords(str_replace('_', ' ', $namaField)) }}:
+                                                </span>
+
+                                                <span class="font-medium">
+                                                    {{ $perubahanData[$namaField] ?? '-' }}
+                                                </span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </x-table.cell>
+
+                                <x-table.cell>
+                                    @if ($item->status === 'pending')
+                                        <x-badge variant="warning">
+                                            Menunggu Review
+                                        </x-badge>
+                                    @elseif ($item->status === 'approved')
+                                        <x-badge variant="success">
+                                            Disetujui
+                                        </x-badge>
+                                    @elseif ($item->status === 'rejected')
+                                        <x-badge variant="danger">
+                                            Ditolak
+                                        </x-badge>
+                                    @else
+                                        <x-badge variant="secondary">
+                                            {{ ucfirst($item->status) }}
+                                        </x-badge>
+                                    @endif
+                                </x-table.cell>
+
+                                <x-table.cell>
+                                    {{ $item->created_at?->format('d M Y H:i') }}
+                                </x-table.cell>
+
+                                <x-table.cell class="text-right">
+                                    <div class="flex justify-end gap-1">
+                                        <x-button href="{{ route('pengajuan.show', $item) }}" variant="info"
+                                            size="xs">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </x-button>
+                                    </div>
+                                </x-table.cell>
+                            </x-table.row>
+                            @empty
+                            @endforelse
+
+                            @if (!$adaRencana)
+                                <x-table.empty colspan="6" message="Belum ada rencana pembangunan yang diajukan." />
+                            @endif
+                        </x-table>
+                    </x-card>
+
+                    {{-- ============================================================
+                 Laporan Kerusakan — DI BAWAH Rencana Pembangunan.
+                 ============================================================ --}}
+                    <x-card class="p-2 md:p-4">
+                        <x-slot:header>
+                            <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
+                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                    <i class="bi bi-list-check"></i>
+                                    Laporan Kerusakan
+                                </div>
+                            </div>
+                        </x-slot:header>
+
+                        <x-table striped hover>
+                            <x-slot:head>
+                                <tr>
+                                    <x-table.heading>Kategori</x-table.heading>
+                                    <x-table.heading>Rincian Kerusakan</x-table.heading>
+                                    <x-table.heading>Status</x-table.heading>
+                                    <x-table.heading>Diajukan</x-table.heading>
+                                    <x-table.heading class="text-right">Aksi</x-table.heading>
+                                </tr>
+                            </x-slot:head>
+
+                            @php $adaLaporan = false; @endphp
+                            @forelse ($pengajuans ?? [] as $item)
+                                @php
+                                    $kategoriKeys = $ambilKategoriKeys($item);
+                                @endphp
+
+                                @continue(!count(array_intersect($kategoriKeys, $laporanKerusakanKeys)))
+                                @php $adaLaporan = true; @endphp
+
+                                @php
+                                    $perubahanData = $item->perubahan ?? [];
+
+                                    if (!is_array($perubahanData)) {
+                                        $perubahanData = [];
+                                    }
+
+                                    $tambahanKeys = array_keys(
+                                        array_diff_key($perubahanData, array_flip($kategoriKeys)),
+                                    );
+                                @endphp
+
+                                <x-table.row>
+                                    <x-table.cell>
+                                        <ul class="space-y-1">
+                                            @foreach ($kategoriKeys as $kunci)
+                                                <li>
+                                                    {{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </x-table.cell>
+
+                                    <x-table.cell>
+                                        <ul class="space-y-1 text-sm">
+                                            @foreach ($kategoriKeys as $kunci)
+                                                @php
+                                                    $kategoriPerubahan = $perubahanData[$kunci] ?? [];
+
+                                                    if (!is_array($kategoriPerubahan)) {
+                                                        $kategoriPerubahan = [
+                                                            'value' => $kategoriPerubahan,
+                                                        ];
+                                                    }
+                                                @endphp
+
+                                                <li>
+                                                    @if (count($kategoriKeys) > 1)
+                                                        <div class="text-xs font-semibold text-gray-400 uppercase mb-1">
+                                                            {{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}
+                                                        </div>
+                                                    @endif
+
+                                                    <ul class="space-y-0.5 pl-2">
+                                                        @foreach ($kategoriPerubahan as $field => $value)
+                                                            @php
+                                                                if (is_array($value)) {
+                                                                    $value = implode(
+                                                                        ', ',
+                                                                        array_map(
+                                                                            fn($item) => is_scalar($item)
+                                                                                ? (string) $item
+                                                                                : json_encode($item),
+                                                                            $value,
+                                                                        ),
+                                                                    );
+                                                                }
+                                                            @endphp
+
+                                                            <li>
+                                                                <span class="text-gray-500 dark:text-gray-400">
+                                                                    {{ \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) }}:
+                                                                </span>
+
+                                                                <span class="font-medium">
+                                                                    {{ $value }}
+                                                                </span>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </li>
+                                            @endforeach
+
+                                            @foreach ($tambahanKeys as $namaField)
+                                                <li class="pt-1">
+                                                    <span class="text-gray-500 dark:text-gray-400">
+                                                        {{ ucwords(str_replace('_', ' ', $namaField)) }}:
+                                                    </span>
+
+                                                    <span class="font-medium">
+                                                        {{ $perubahanData[$namaField] ?? '-' }}
+                                                    </span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </x-table.cell>
+
+                                    <x-table.cell>
+                                        @if ($item->status === 'pending')
+                                            <x-badge variant="warning">
+                                                Menunggu Review
+                                            </x-badge>
+                                        @elseif ($item->status === 'approved')
+                                            <x-badge variant="success">
+                                                Disetujui
+                                            </x-badge>
+                                        @elseif ($item->status === 'rejected')
+                                            <x-badge variant="danger">
+                                                Ditolak
+                                            </x-badge>
+                                        @else
+                                            <x-badge variant="secondary">
+                                                {{ ucfirst($item->status) }}
+                                            </x-badge>
+                                        @endif
+                                    </x-table.cell>
+
+                                    <x-table.cell>
+                                        {{ $item->created_at?->format('d M Y H:i') }}
+                                    </x-table.cell>
+
+                                    <x-table.cell class="text-right">
+                                        <div class="flex justify-end gap-1">
+                                            <x-button href="{{ route('pengajuan.show', $item) }}" variant="info"
+                                                size="xs">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </x-button>
+                                        </div>
+                                    </x-table.cell>
+                                </x-table.row>
+                            @empty
+                            @endforelse
+
+                            @if (!$adaLaporan)
+                                <x-table.empty colspan="6" message="Belum ada laporan kerusakan." />
+                            @endif
+                        </x-table>
+
+                        @if (isset($pengajuans) && method_exists($pengajuans, 'links'))
+                            <x-pagination :paginator="$pengajuans" class="mt-4" />
+                        @endif
+                    </x-card>
+                @endif
+
+                <!-- ===== MODAL KONFIRMASI HAPUS USER ===== -->
+                <x-modal id="hapusUserModal" size="sm" centered>
+                    <x-slot:header>
+                        <div class="flex items-center gap-2 text-red-600">
+                            <i class="bi bi-exclamation-triangle-fill text-xl"></i>
+                            <span>Konfirmasi Hapus User</span>
+                        </div>
+                    </x-slot:header>
+
+                    <div class="text-center py-4">
+                        <div class="text-5xl text-red-500 mb-4">
+                            <i class="bi bi-trash"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
+                            Yakin ingin menghapus user ini?
+                        </h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            User <strong>{{ $user->name }}</strong> akan dihapus permanen.
+                            @if ($profileSekolah)
+                                <br>Data sekolah <strong>{{ $profileSekolah->nama_sekolah }}</strong> juga akan ikut terhapus.
+                            @endif
+                            Tindakan ini tidak bisa dibatalkan.
+                        </p>
+                    </div>
+
+                    <x-slot:footer>
+                        <div class="flex flex-wrap justify-end gap-2 w-full">
+                            <x-button variant="secondary" data-modal-close>
+                                <i class="bi bi-x-circle me-1"></i> Batal
+                            </x-button>
+                            <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <x-button variant="danger" type="submit">
+                                    <i class="bi bi-trash me-1"></i> Ya, Hapus
+                                </x-button>
+                            </form>
+                        </div>
+                    </x-slot:footer>
+                </x-modal>
+            </div>
+        </div>
+
+        @if ($profileSekolah)
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    Chart.defaults.color = isDark ? '#9ca3af' : '#6b7280';
+                    Chart.defaults.borderColor = isDark ? '#374151' : '#e5e7eb';
+                    Chart.defaults.font.family = 'inherit';
+
+                    const barOptions = {
                         responsive: true,
                         maintainAspectRatio: false,
-                        cutout: '65%',
                         plugins: {
                             legend: {
-                                position: 'bottom'
-                            }
-                        },
-                    },
-                });
-
-                new Chart(document.getElementById('fasilitasChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Ada', 'Tidak Ada'],
-                        datasets: [{
-                            data: @json($chartFasilitas),
-                            backgroundColor: ['#22c55e', '#ef4444'],
-                            borderWidth: 0,
-                        }],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '65%',
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        },
-                    },
-                });
-
-                new Chart(document.getElementById('fasilitasKondisiChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Baik', 'Rusak', 'Nihil'],
-                        datasets: [{
-                            data: @json($chartFasilitasKondisi),
-                            backgroundColor: ['#22c55e', '#f59e0b', '#9ca3af'],
-                            borderWidth: 0,
-                        }],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '65%',
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
-                        },
-                    },
-                });
-
-                new Chart(document.getElementById('furniturChart'), {
-                    type: 'bar',
-                    data: {
-                        labels: @json($chartFurniturLabel),
-                        datasets: [{
-                            label: 'Baik',
-                            data: @json($chartFurniturBaik),
-                            backgroundColor: '#22c55e',
-                            borderRadius: 4,
-                        }, {
-                            label: 'Rusak',
-                            data: @json($chartFurniturRusak),
-                            backgroundColor: '#f59e0b',
-                            borderRadius: 4,
-                        }, ],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
+                                display: false
                             }
                         },
                         scales: {
-                            x: {
-                                stacked: false,
-                                ticks: {
-                                    autoSkip: false,
-                                    maxRotation: 40,
-                                    minRotation: 0
-                                }
-                            },
                             y: {
                                 beginAtZero: true,
                                 ticks: {
@@ -1244,31 +1283,322 @@
                                 }
                             },
                         },
-                    },
-                });
+                    };
 
-                new Chart(document.getElementById('furniturTotalChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Baik', 'Rusak'],
-                        datasets: [{
-                            data: @json($chartFurniturTotal),
-                            backgroundColor: ['#22c55e', '#f59e0b'],
-                            borderWidth: 0,
-                        }],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '65%',
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
+                    // ============================================================
+                    // Riwayat Pengajuan per Bulan — data mentah dikirim dari server,
+                    // agregasi per bulan dihitung di sini sesuai tahun & kategori yang
+                    // dipilih di dropdown (tanpa reload halaman).
+                    // ============================================================
+                    const riwayatPengajuanData = @json($pengajuanChartData);
+                    const namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+                    function hitungPerBulan(tahun, kategori) {
+                        const jumlah = new Array(12).fill(0);
+
+                        riwayatPengajuanData.forEach(function(item) {
+                            if (item.tahun !== tahun) return;
+                            if (kategori && !item.kategori.includes(kategori)) return;
+                            jumlah[item.bulan - 1]++;
+                        });
+
+                        return jumlah;
+                    }
+
+                    const riwayatTahunFilter = document.getElementById('riwayatTahunFilter');
+                    const riwayatKategoriFilter = document.getElementById('riwayatKategoriFilter');
+                    const riwayatCanvas = document.getElementById('riwayatPengajuanChart');
+
+                    let riwayatChart = null;
+
+                    function renderRiwayatChart() {
+                        const tahun = parseInt(riwayatTahunFilter.value, 10);
+                        const kategori = riwayatKategoriFilter.value;
+                        const data = hitungPerBulan(tahun, kategori);
+
+                        if (riwayatChart) {
+                            riwayatChart.data.datasets[0].data = data;
+                            riwayatChart.update();
+                            return;
+                        }
+
+                        riwayatChart = new Chart(riwayatCanvas, {
+                            type: 'bar',
+                            data: {
+                                labels: namaBulan,
+                                datasets: [{
+                                    label: 'Jumlah Pengajuan',
+                                    data: data,
+                                    backgroundColor: '#2563eb',
+                                    borderRadius: 6,
+                                    maxBarThickness: 40,
+                                }],
+                            },
+                            options: barOptions,
+                        });
+                    }
+
+                    if (riwayatCanvas && riwayatTahunFilter && riwayatKategoriFilter) {
+                        renderRiwayatChart();
+                        riwayatTahunFilter.addEventListener('change', renderRiwayatChart);
+                        riwayatKategoriFilter.addEventListener('change', renderRiwayatChart);
+                    }
+
+                    new Chart(document.getElementById('rkbRehabChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Pembangunan RKB', 'Rehabilitasi Ruang Kelas'],
+                            datasets: [{
+                                label: 'Jumlah Ruang Kelas',
+                                data: @json($chartRkbRehab),
+                                backgroundColor: ['#2563eb', '#ea580c'],
+                                borderRadius: 6,
+                                maxBarThickness: 64,
+                            }],
                         },
-                    },
+                        options: barOptions,
+                    });
+
+                    new Chart(document.getElementById('siswaChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Kelas VII', 'Kelas VIII', 'Kelas IX'],
+                            datasets: [{
+                                label: 'Jumlah Siswa',
+                                data: @json($chartSiswa),
+                                backgroundColor: ['#10b981', '#059669', '#0d9488'],
+                                borderRadius: 6,
+                                maxBarThickness: 48,
+                            }],
+                        },
+                        options: barOptions,
+                    });
+
+                    new Chart(document.getElementById('rombelChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Kelas VII', 'Kelas VIII', 'Kelas IX'],
+                            datasets: [{
+                                label: 'Jumlah Rombel',
+                                data: @json($chartRombel),
+                                backgroundColor: ['#a855f7', '#8b5cf6', '#6366f1'],
+                                borderRadius: 6,
+                                maxBarThickness: 48,
+                            }],
+                        },
+                        options: barOptions,
+                    });
+
+                    new Chart(document.getElementById('ruangKelasChart'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Baik', 'Rusak'],
+                            datasets: [{
+                                data: @json($chartRuangKelas),
+                                backgroundColor: ['#0ea5e9', '#f43f5e'],
+                                borderWidth: 0,
+                            }],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '65%',
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+                        },
+                    });
+
+                    new Chart(document.getElementById('fasilitasChart'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Ada', 'Tidak Ada'],
+                            datasets: [{
+                                data: @json($chartFasilitas),
+                                backgroundColor: ['#22c55e', '#ef4444'],
+                                borderWidth: 0,
+                            }],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '65%',
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+                        },
+                    });
+
+                    new Chart(document.getElementById('fasilitasKondisiChart'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Baik', 'Rusak', 'Nihil'],
+                            datasets: [{
+                                data: @json($chartFasilitasKondisi),
+                                backgroundColor: ['#22c55e', '#f59e0b', '#9ca3af'],
+                                borderWidth: 0,
+                            }],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '65%',
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+                        },
+                    });
+
+                    new Chart(document.getElementById('furniturChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: @json($chartFurniturLabel),
+                            datasets: [{
+                                label: 'Baik',
+                                data: @json($chartFurniturBaik),
+                                backgroundColor: '#22c55e',
+                                borderRadius: 4,
+                            }, {
+                                label: 'Rusak',
+                                data: @json($chartFurniturRusak),
+                                backgroundColor: '#f59e0b',
+                                borderRadius: 4,
+                            }, ],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    stacked: false,
+                                    ticks: {
+                                        autoSkip: false,
+                                        maxRotation: 40,
+                                        minRotation: 0
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        precision: 0
+                                    }
+                                },
+                            },
+                        },
+                    });
+
+                    new Chart(document.getElementById('furniturTotalChart'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Baik', 'Rusak'],
+                            datasets: [{
+                                data: @json($chartFurniturTotal),
+                                backgroundColor: ['#22c55e', '#f59e0b'],
+                                borderWidth: 0,
+                            }],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '65%',
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+                        },
+                    });
+                    new Chart(document.getElementById('staffStatusChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['PNS', 'PPPK', 'PPPK Paruh Wakru', 'Honor'],
+                            datasets: [{
+                                label: 'Jumlah Guru',
+                                data: [
+                                    {{ (int) ($profileSekolah->kondisiStaff?->pns ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiStaff?->pppk ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiStaff?->pppk_paruh_waktu ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiStaff?->honor ?? 0) }}
+                                ],
+                                backgroundColor: ['#2563eb', '#6366f1', '#8b5cf6'],
+                                borderRadius: 6,
+                                maxBarThickness: 48
+                            }]
+                        },
+                        options: barOptions
+                    });
+
+                    new Chart(document.getElementById('guruStatusChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['PNS', 'PPPK', 'PPPK Paruh Wakru', 'Honor'],
+                            datasets: [{
+                                label: 'Jumlah Guru',
+                                data: [
+                                    {{ (int) ($profileSekolah->kondisiGuru?->pns ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiGuru?->pppk ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiGuru?->pppk_paruh_waktu ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiGuru?->honor ?? 0) }}
+                                ],
+                                backgroundColor: ['#2563eb', '#6366f1', '#8b5cf6'],
+                                borderRadius: 6,
+                                maxBarThickness: 48
+                            }]
+                        },
+                        options: barOptions
+                    });
+
+                    new Chart(document.getElementById('guruGolonganChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Gol I', 'Gol II', 'Gol III', 'Gol IV'],
+                            datasets: [{
+                                label: 'Jumlah Guru',
+                                data: [
+                                    {{ (int) ($profileSekolah->kondisiGuru?->i ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiGuru?->ii ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiGuru?->iii ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiGuru?->iv ?? 0) }}
+                                ],
+                                backgroundColor: ['#94a3b8', '#64748b', '#475569', '#334155'],
+                                borderRadius: 6,
+                                maxBarThickness: 48
+                            }]
+                        },
+                        options: barOptions
+                    });
+
+                    new Chart(document.getElementById('staffGolonganChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Gol I', 'Gol II', 'Gol III', 'Gol IV'],
+                            datasets: [{
+                                label: 'Jumlah Guru',
+                                data: [
+                                    {{ (int) ($profileSekolah->kondisiStaff?->i ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiStaff?->ii ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiStaff?->iii ?? 0) }},
+                                    {{ (int) ($profileSekolah->kondisiStaff?->iv ?? 0) }}
+                                ],
+                                backgroundColor: ['#94a3b8', '#64748b', '#475569', '#334155'],
+                                borderRadius: 6,
+                                maxBarThickness: 48
+                            }]
+                        },
+                        options: barOptions
+                    });
                 });
-            });
-        </script>
-    @endif
-@endsection
+            </script>
+        @endif
+    @endsection

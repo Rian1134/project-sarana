@@ -27,6 +27,11 @@ class ProfileSekolah extends Model
         return $this->hasOne(KondisiGuru::class);
     }
 
+    public function kondisiStaff()
+    {
+        return $this->hasOne(KondisiStaff::class);
+    }
+
     public function pagarSekolah()
     {
         return $this->hasOne(PagarSekolah::class);

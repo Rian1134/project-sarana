@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\AirBersih;
 use App\Models\JumlahRombel;
 use App\Models\JumlahSiswa;
-use App\Models\JumlahGuru;
 use App\Models\Komputer;
+use App\Models\KondisiGuru;
+use App\Models\KondisiStaff;
 use App\Models\KursiGuru;
 use App\Models\KursiSiswa;
 use App\Models\LabIpa;
@@ -49,7 +50,8 @@ class DataController extends Controller
             'laptop',
             'komputer',
             'jumlahSiswa',
-            'jumlahGuru',
+            'kondisiGuru',
+            'kondisiStaff',
             'jumlahRombel',
             'ruangKelasBaru',
             'rehabilitasiRuangKelas',
@@ -128,14 +130,26 @@ class DataController extends Controller
             'jumlah_rombel_viii' => 'required|integer|min:0',
             'jumlah_rombel_ix' => 'required|integer|min:0',
 
+            // Kondisi Guru
             'jumlah_guru_pns' => 'required|integer|min:0',
             'jumlah_guru_pppk' => 'required|integer|min:0',
+            'jumlah_guru_pppk_paruh_waktu' => 'required|integer|min:0',
             'jumlah_guru_honor' => 'required|integer|min:0',
             'jumlah_guru_i' => 'required|integer|min:0',
             'jumlah_guru_ii' => 'required|integer|min:0',
             'jumlah_guru_iii' => 'required|integer|min:0',
             'jumlah_guru_iv' => 'required|integer|min:0',
-            
+
+            // Kondisi Staff Tata Usaha
+            'jumlah_staff_tu_pns' => 'required|integer|min:0',
+            'jumlah_staff_tu_pppk' => 'required|integer|min:0',
+            'jumlah_staff_tu_pppk_paruh_waktu' => 'required|integer|min:0',
+            'jumlah_staff_tu_honor' => 'required|integer|min:0',
+            'jumlah_staff_tu_i' => 'required|integer|min:0',
+            'jumlah_staff_tu_ii' => 'required|integer|min:0',
+            'jumlah_staff_tu_iii' => 'required|integer|min:0',
+            'jumlah_staff_tu_iv' => 'required|integer|min:0',
+
             'rkb_jumlah' => 'required|integer|min:0',
             'rehabilitasi_jumlah' => 'required|integer|min:0',
             'ruang_kelas_baik' => 'required|integer|min:0',
@@ -234,16 +248,30 @@ class DataController extends Controller
                 'rusak' => $request->komputer_rusak,
             ]);
 
-            JumlahGuru::create([
+            // Kondisi Guru
+            KondisiGuru::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'pns' => $request->jumlah_guru_pns,
                 'pppk' => $request->jumlah_guru_pppk,
+                'pppk_paruh_waktu' => $request->jumlah_guru_pppk_paruh_waktu,
                 'honor' => $request->jumlah_guru_honor,
-        
                 'i' => $request->jumlah_guru_i,
                 'ii' => $request->jumlah_guru_ii,
                 'iii' => $request->jumlah_guru_iii,
                 'iv' => $request->jumlah_guru_iv,
+            ]);
+
+            // Kondisi Staff Tata Usaha
+            KondisiStaff::create([
+                'profile_sekolah_id' => $profileSekolah->id,
+                'pns' => $request->jumlah_staff_tu_pns,
+                'pppk' => $request->jumlah_staff_tu_pppk,
+                'pppk_paruh_waktu' => $request->jumlah_staff_tu_pppk_paruh_waktu,
+                'honor' => $request->jumlah_staff_tu_honor,
+                'i' => $request->jumlah_staff_tu_i,
+                'ii' => $request->jumlah_staff_tu_ii,
+                'iii' => $request->jumlah_staff_tu_iii,
+                'iv' => $request->jumlah_staff_tu_iv,
             ]);
 
             JumlahSiswa::create([
@@ -373,7 +401,8 @@ class DataController extends Controller
             'mejaGuru',
             'laptop',
             'komputer',
-            'jumlahGuru',
+            'kondisiGuru',
+            'kondisiStaff',
             'jumlahSiswa',
             'jumlahRombel',
             'ruangKelasBaru',
@@ -406,7 +435,7 @@ class DataController extends Controller
                 ->with('error', 'Anda tidak memiliki akses untuk mengupdate data ini.');
         }
 
-        $validator = Validator::make($request->all(), [ 
+        $validator = Validator::make($request->all(), [
             'nama_sekolah' => 'required|string|max:255',
             'NPSN' => 'required|string|max:20|unique:profile_sekolahs,NPSN,'.$profileSekolah->id,
             'alamat_sekolah' => 'required|string',
@@ -434,13 +463,25 @@ class DataController extends Controller
             'komputer_baik' => 'required|integer|min:0',
             'komputer_rusak' => 'required|integer|min:0',
 
+            // Kondisi Guru
             'jumlah_guru_pns' => 'required|integer|min:0',
             'jumlah_guru_pppk' => 'required|integer|min:0',
+            'jumlah_guru_pppk_paruh_waktu' => 'required|integer|min:0',
             'jumlah_guru_honor' => 'required|integer|min:0',
             'jumlah_guru_i' => 'required|integer|min:0',
             'jumlah_guru_ii' => 'required|integer|min:0',
             'jumlah_guru_iii' => 'required|integer|min:0',
             'jumlah_guru_iv' => 'required|integer|min:0',
+
+            // Kondisi Staff Tata Usaha
+            'jumlah_staff_tu_pns' => 'required|integer|min:0',
+            'jumlah_staff_tu_pppk' => 'required|integer|min:0',
+            'jumlah_staff_tu_pppk_paruh_waktu' => 'required|integer|min:0',
+            'jumlah_staff_tu_honor' => 'required|integer|min:0',
+            'jumlah_staff_tu_i' => 'required|integer|min:0',
+            'jumlah_staff_tu_ii' => 'required|integer|min:0',
+            'jumlah_staff_tu_iii' => 'required|integer|min:0',
+            'jumlah_staff_tu_iv' => 'required|integer|min:0',
 
             'jumlah_siswa_vii' => 'required|integer|min:0',
             'jumlah_siswa_viii' => 'required|integer|min:0',
@@ -561,17 +602,35 @@ class DataController extends Controller
                 ]
             );
 
-            JumlahGuru::updateOrCreate([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'pns' => $request->jumlah_guru_pns,
-                'pppk' => $request->jumlah_guru_pppk,
-                'honor' => $request->jumlah_guru_honor,
-        
-                'i' => $request->jumlah_guru_i,
-                'ii' => $request->jumlah_guru_ii,
-                'iii' => $request->jumlah_guru_iii,
-                'iv' => $request->jumlah_guru_iv,
-            ]);
+            // Kondisi Guru
+            KondisiGuru::updateOrCreate(
+                ['profile_sekolah_id' => $profileSekolah->id],
+                [
+                    'pns' => $request->jumlah_guru_pns,
+                    'pppk' => $request->jumlah_guru_pppk,
+                    'pppk_paruh_waktu' => $request->jumlah_guru_pppk_paruh_waktu,
+                    'honor' => $request->jumlah_guru_honor,
+                    'i' => $request->jumlah_guru_i,
+                    'ii' => $request->jumlah_guru_ii,
+                    'iii' => $request->jumlah_guru_iii,
+                    'iv' => $request->jumlah_guru_iv,
+                ]
+            );
+
+            // Kondisi Staff Tata Usaha
+            KondisiStaff::updateOrCreate(
+                ['profile_sekolah_id' => $profileSekolah->id],
+                [
+                    'pns' => $request->jumlah_staff_tu_pns,
+                    'pppk' => $request->jumlah_staff_tu_pppk,
+                    'pppk_paruh_waktu' => $request->jumlah_staff_tu_pppk_paruh_waktu,
+                    'honor' => $request->jumlah_staff_tu_honor,
+                    'i' => $request->jumlah_staff_tu_i,
+                    'ii' => $request->jumlah_staff_tu_ii,
+                    'iii' => $request->jumlah_staff_tu_iii,
+                    'iv' => $request->jumlah_staff_tu_iv,
+                ]
+            );
 
             JumlahSiswa::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
@@ -730,7 +789,8 @@ class DataController extends Controller
             $profileSekolah->mejaGuru()->delete();
             $profileSekolah->laptop()->delete();
             $profileSekolah->komputer()->delete();
-            $profileSekolah->jumlahgGuru()->delete();
+            $profileSekolah->kondisiGuru()->delete();
+            $profileSekolah->kondisiStaff()->delete();
             $profileSekolah->jumlahSiswa()->delete();
             $profileSekolah->jumlahRombel()->delete();
             $profileSekolah->ruangKelasBaru()->delete();

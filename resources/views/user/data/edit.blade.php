@@ -8,12 +8,19 @@
     <div class="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
         <div class="flex flex-col gap-3 sm:gap-4">
             <!-- Header -->
-            <div class="flex flex-wrap items-center justify-between gap-2">
-                <h1 class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                    <i class="bi bi-pencil-square text-yellow-600 dark:text-yellow-400"></i>
-                    <span class="hidden sm:inline">Form Edit Data Sarana & Prasarana Sekolah</span>
-                    <span class="sm:hidden">Edit Data</span>
-                </h1>
+            <div
+                class="sticky top-0 z-20 -mx-3 sm:-mx-4 px-3 sm:px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 bg-white/95 dark:bg-gray-800/95 backdrop-blur border-b border-gray-200 dark:border-gray-700">
+                <div>
+                    <h1
+                        class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                        <i class="bi bi-pencil-square text-yellow-600 dark:text-yellow-400"></i>
+                        <span class="hidden sm:inline">Form Edit Data Sarana & Prasarana Sekolah</span>
+                        <span class="sm:hidden">Edit Data</span>
+                    </h1>
+                    <p class="hidden sm:block text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                        Perbarui data sesuai kondisi sekolah terkini
+                    </p>
+                </div>
                 <a href="{{ route('user.profile.index') }}" class="inline-flex">
                     <x-button variant="secondary" size="sm">
                         <i class="bi bi-arrow-left me-1"></i>
@@ -29,9 +36,18 @@
                 @csrf
                 @method('PUT')
 
+                <!-- ===== Kelompok: Data Pokok Sekolah ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-building text-blue-600 dark:text-blue-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap">
+                        Data Pokok Sekolah
+                    </h2>
+                    <div class="flex-1 border-t-2 border-blue-200 dark:border-blue-900"></div>
+                </div>
+
                 <!-- A. Data Sekolah -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
                         <div
@@ -90,42 +106,163 @@
                     </div>
                 </div>
 
-                <!-- B. Jumlah Guru -->
-                <x-card>
+                <!-- ===== Kelompok: Sumber Daya Manusia ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-people-fill text-violet-600 dark:text-violet-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-violet-600 dark:text-violet-400 whitespace-nowrap">
+                        Sumber Daya Manusia
+                    </h2>
+                    <div class="flex-1 border-t-2 border-violet-200 dark:border-violet-900"></div>
+                </div>
+
+                <!-- B. Jumlah & Kondisi Guru -->
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-person-badge"></i>
-                            Jumlah Guru
+                        <div class="flex flex-wrap items-center justify-between gap-2 ">
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400 ">
+                                <i class="bi bi-person-badge"></i>
+                                Jumlah &amp; Kondisi Guru
+                            </div>
+                            <span id="totalGuru"
+                                class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
+                                Total: 0 Guru
+                            </span>
                         </div>
                     </x-slot:header>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <x-form.input name="jumlah_guru_pns" label="Guru PNS" type="number" min="0" required
-                            :value="old('jumlah_guru_pns', $profileSekolah->jumlahGuru->pns ?? 0)" />
+                    <div class="flex flex-col gap-5">
+                        <!-- Status Kepegawaian -->
+                        <div>
+                            <p
+                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                <i class="bi bi-people-fill"></i> Status Kepegawaian
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <x-form.input name="jumlah_guru_pns" label="Guru PNS" type="number" min="0" required
+                                    :value="old('jumlah_guru_pns', $profileSekolah->jumlahGuru->pns ?? 0)" />
 
-                        <x-form.input name="jumlah_guru_pppk" label="Guru PPPK" type="number" min="0" required
-                            :value="old('jumlah_guru_pppk', $profileSekolah->jumlahGuru->pppk ?? 0)" />
+                                <x-form.input name="jumlah_guru_pppk" label="Guru PPPK" type="number" min="0" required
+                                    :value="old('jumlah_guru_pppk', $profileSekolah->jumlahGuru->pppk ?? 0)" />
 
-                        <x-form.input name="jumlah_guru_honor" label="Guru Honor" type="number" min="0" required
-                            :value="old('jumlah_guru_honor', $profileSekolah->jumlahGuru->honor ?? 0)" />
+                                <x-form.input name="jumlah_guru_pppk_paruh_waktu" label="PPPK Paruh Waktu"
+                                    type="number" min="0" required
+                                    :value="old(
+                                        'jumlah_guru_pppk_paruh_waktu',
+                                        $profileSekolah->jumlahGuru->pppk_paruh_waktu ?? 0,
+                                    )" />
 
-                        <x-form.input name="jumlah_guru_i" label="Golongan I" type="number" min="0" required
-                            :value="old('jumlah_guru_i', $profileSekolah->jumlahGuru->i ?? 0)" />
+                                <x-form.input name="jumlah_guru_honor" label="Guru Honor" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_guru_honor', $profileSekolah->jumlahGuru->honor ?? 0)" />
+                            </div>
+                        </div>
 
-                        <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number" min="0" required
-                            :value="old('jumlah_guru_ii', $profileSekolah->jumlahGuru->ii ?? 0)" />
+                        <!-- Golongan -->
+                        <div>
+                            <p
+                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                <i class="bi bi-bar-chart-steps"></i> Golongan (Khusus PNS)
+                            </p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                <x-form.input name="jumlah_guru_i" label="Golongan I" type="number" min="0" required
+                                    :value="old('jumlah_guru_i', $profileSekolah->jumlahGuru->i ?? 0)" />
 
-                        <x-form.input name="jumlah_guru_iii" label="Golongan III" type="number" min="0" required
-                            :value="old('jumlah_guru_iii', $profileSekolah->jumlahGuru->iii ?? 0)" />
+                                <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number" min="0" required
+                                    :value="old('jumlah_guru_ii', $profileSekolah->jumlahGuru->ii ?? 0)" />
 
-                        <x-form.input name="jumlah_guru_iv" label="Golongan IV" type="number" min="0" required
-                            :value="old('jumlah_guru_iv', $profileSekolah->jumlahGuru->iv ?? 0)" />
+                                <x-form.input name="jumlah_guru_iii" label="Golongan III" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_guru_iii', $profileSekolah->jumlahGuru->iii ?? 0)" />
+
+                                <x-form.input name="jumlah_guru_iv" label="Golongan IV" type="number" min="0" required
+                                    :value="old('jumlah_guru_iv', $profileSekolah->jumlahGuru->iv ?? 0)" />
+                            </div>
+                        </div>
                     </div>
                 </x-card>
 
+                <!-- B2. Jumlah & Kondisi Staff Tata Usaha -->
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <x-slot:header>
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-person-workspace"></i>
+                                Jumlah &amp; Kondisi Staff Tata Usaha
+                            </div>
+                            <span id="totalStaffTu"
+                                class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
+                                Total: 0 Staff
+                            </span>
+                        </div>
+                    </x-slot:header>
+
+                    <div class="flex flex-col gap-5">
+                        <!-- Status Kepegawaian -->
+                        <div>
+                            <p
+                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                <i class="bi bi-people-fill"></i> Status Kepegawaian
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <x-form.input name="jumlah_staff_tu_pns" label="Staff PNS" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_pns', $profileSekolah->kondisiStaff->pns ?? 0)" />
+
+                                <x-form.input name="jumlah_staff_tu_pppk" label="Staff PPPK" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_pppk', $profileSekolah->kondisiStaff->pppk ?? 0)" />
+
+                                <x-form.input name="jumlah_staff_tu_pppk_paruh_waktu" label="PPPK Paruh Waktu"
+                                    type="number" min="0" required
+                                    :value="old(
+                                        'jumlah_staff_tu_pppk_paruh_waktu',
+                                        $profileSekolah->kondisiStaff->pppk_paruh_waktu ?? 0,
+                                    )" />
+
+                                <x-form.input name="jumlah_staff_tu_honor" label="Staff Honor" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_honor', $profileSekolah->kondisiStaff->honor ?? 0)" />
+                            </div>
+                        </div>
+
+                        <!-- Golongan -->
+                        <div>
+                            <p
+                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                <i class="bi bi-bar-chart-steps"></i> Golongan (Khusus PNS)
+                            </p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                <x-form.input name="jumlah_staff_tu_i" label="Golongan I" type="number" min="0"
+                                    required :value="old('jumlah_staff_tu_i', $profileSekolah->kondisiStaff->i ?? 0)" />
+
+                                <x-form.input name="jumlah_staff_tu_ii" label="Golongan II" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_ii', $profileSekolah->kondisiStaff->ii ?? 0)" />
+
+                                <x-form.input name="jumlah_staff_tu_iii" label="Golongan III" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_iii', $profileSekolah->kondisiStaff->iii ?? 0)" />
+
+                                <x-form.input name="jumlah_staff_tu_iv" label="Golongan IV" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_iv', $profileSekolah->kondisiStaff->iv ?? 0)" />
+                            </div>
+                        </div>
+                    </div>
+                </x-card>
+
+                <!-- ===== Kelompok: Data Siswa & Rombel ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-mortarboard text-indigo-600 dark:text-indigo-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-indigo-600 dark:text-indigo-400 whitespace-nowrap">
+                        Data Siswa & Rombel
+                    </h2>
+                    <div class="flex-1 border-t-2 border-indigo-200 dark:border-indigo-900"></div>
+                </div>
+
                 <!-- B. Jumlah Siswa -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
                         <div
@@ -148,7 +285,7 @@
 
                 <!-- C. Jumlah Rombongan Belajar -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20">
                         <div
@@ -169,9 +306,18 @@
                     </div>
                 </div>
 
+                <!-- ===== Kelompok: Ruang Kelas ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-door-open text-cyan-600 dark:text-cyan-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-cyan-600 dark:text-cyan-400 whitespace-nowrap">
+                        Ruang Kelas
+                    </h2>
+                    <div class="flex-1 border-t-2 border-cyan-200 dark:border-cyan-900"></div>
+                </div>
+
                 <!-- D. RKB (Ruang Kelas Baru) -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20">
                         <div
@@ -197,7 +343,7 @@
 
                 <!-- E. Rehabilitasi Ruang Kelas -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20">
                         <div
@@ -226,7 +372,7 @@
 
                 <!-- F. Ruang Kelas -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-sky-50 dark:from-blue-900/20 dark:to-sky-900/20">
                         <div
@@ -245,10 +391,19 @@
                     </div>
                 </div>
 
+                <!-- ===== Kelompok: Toilet ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-droplet text-teal-600 dark:text-teal-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-teal-600 dark:text-teal-400 whitespace-nowrap">
+                        Toilet
+                    </h2>
+                    <div class="flex-1 border-t-2 border-teal-200 dark:border-teal-900"></div>
+                </div>
+
                 <!-- G. Toilet Siswa & H. Toilet Guru -->
                 <div class="grid grid-cols-1 gap-3 sm:gap-4">
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-cyan-50 to-teal-50 dark:from-cyan-900/20 dark:to-teal-900/20">
                             <div
@@ -268,7 +423,7 @@
                     </div>
 
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20">
                             <div
@@ -288,9 +443,18 @@
                     </div>
                 </div>
 
+                <!-- ===== Kelompok: Ruang & Fasilitas Sekolah ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-house-gear text-orange-600 dark:text-orange-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-orange-600 dark:text-orange-400 whitespace-nowrap">
+                        Ruang & Fasilitas Sekolah
+                    </h2>
+                    <div class="flex-1 border-t-2 border-orange-200 dark:border-orange-900"></div>
+                </div>
+
                 <!-- I. Ruang Perpustakaan -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20">
                         <div
@@ -337,7 +501,7 @@
 
                 <!-- J. Ruang Kepala Sekolah -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20">
                         <div
@@ -384,7 +548,7 @@
 
                 <!-- K. Ruang Guru -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20">
                         <div
@@ -431,7 +595,7 @@
 
                 <!-- L. Ruang Kantor/Tata Usaha -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20">
                         <div
@@ -479,7 +643,7 @@
                 <!-- M. Lab IPA & N. Lab Komputer -->
                 <div class="grid grid-cols-1 gap-3 sm:gap-4">
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20">
                             <div
@@ -526,7 +690,7 @@
                     </div>
 
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20">
                             <div
@@ -575,7 +739,7 @@
 
                 <!-- O. UKS -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                     <div
                         class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20">
                         <div
@@ -622,7 +786,7 @@
                 <!-- P. Rumah Dinas & Q. Rumah Ibadah & R. Lapangan Sekolah -->
                 <div class="grid grid-cols-1 gap-3 sm:gap-4">
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20">
                             <div
@@ -669,7 +833,7 @@
                     </div>
 
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20">
                             <div
@@ -716,7 +880,7 @@
                     </div>
 
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-lime-50 to-green-50 dark:from-lime-900/20 dark:to-green-900/20">
                             <div
@@ -769,7 +933,7 @@
                 <!-- S. Pagar & T. Air -->
                 <div class="grid grid-cols-1 gap-3 sm:gap-4">
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-gray-100 to-slate-100 dark:from-gray-700/50 dark:to-slate-700/50">
                             <div
@@ -816,7 +980,7 @@
                     </div>
 
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-blue-50 to-sky-50 dark:from-blue-900/20 dark:to-sky-900/20">
                             <div
@@ -862,11 +1026,20 @@
                     </div>
                 </div>
 
+                <!-- ===== Kelompok: Furnitur & Perangkat ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-pc-display text-rose-600 dark:text-rose-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-rose-600 dark:text-rose-400 whitespace-nowrap">
+                        Furnitur & Perangkat
+                    </h2>
+                    <div class="flex-1 border-t-2 border-rose-200 dark:border-rose-900"></div>
+                </div>
+
                 <!-- U-Z: Furniture & Elektronik -->
                 <div class="grid grid-cols-1 gap-3 sm:gap-4">
                     <!-- Furniture -->
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20">
                             <div
@@ -933,7 +1106,7 @@
 
                     <!-- Elektronik -->
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                        class="bg-slate-50 dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div
                             class="p-2.5 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
                             <div
@@ -970,22 +1143,24 @@
                     </div>
                 </div>
 
-                <!-- Tombol Aksi -->
+                <!-- Tombol Aksi (Sticky) -->
                 <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    class="sticky bottom-2 z-20 shadow-lg backdrop-blur bg-white/95 dark:bg-gray-800/95 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
                     <div class="p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700">
-                        <div class="flex flex-wrap gap-2">
-                            <x-button type="button" variant="warning" size="md"
-                                data-modal-open="confirmEditModal">
-                                <i class="bi bi-save me-1"></i>
-                                <span class="hidden sm:inline">Update Data</span>
-                                <span class="sm:hidden">Update</span>
-                            </x-button>
-                            <x-button type="reset" variant="secondary" size="md">
-                                <i class="bi bi-arrow-counterclockwise me-1"></i>
-                                <span class="hidden sm:inline">Reset</span>
-                                <span class="sm:hidden">Reset</span>
-                            </x-button>
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex flex-wrap gap-2">
+                                <x-button type="button" variant="warning" size="md"
+                                    data-modal-open="confirmEditModal">
+                                    <i class="bi bi-save me-1"></i>
+                                    <span class="hidden sm:inline">Update Data</span>
+                                    <span class="sm:hidden">Update</span>
+                                </x-button>
+                                <x-button type="reset" variant="secondary" size="md">
+                                    <i class="bi bi-arrow-counterclockwise me-1"></i>
+                                    <span class="hidden sm:inline">Reset</span>
+                                    <span class="sm:hidden">Reset</span>
+                                </x-button>
+                            </div>
                             <a href="{{ route('user.profile.index') }}" class="inline-flex">
                                 <x-button variant="secondary" size="md">
                                     <i class="bi bi-x-circle me-1"></i>
@@ -1083,6 +1258,30 @@
                         `${facility}_kondisi`
                     );
                 });
+
+                // Fungsi untuk menghitung total otomatis (Guru & Staff TU)
+                function setupTotalCounter(fieldNames, totalElId, suffix) {
+                    const totalEl = document.getElementById(totalElId);
+                    if (!totalEl) return;
+
+                    const inputs = fieldNames
+                        .map(name => document.querySelector(`input[name="${name}"]`))
+                        .filter(Boolean);
+
+                    function updateTotal() {
+                        const total = inputs.reduce((sum, input) => sum + (parseInt(input.value, 10) || 0), 0);
+                        totalEl.textContent = `Total: ${total} ${suffix}`;
+                    }
+
+                    inputs.forEach(input => input.addEventListener('input', updateTotal));
+                    updateTotal();
+                }
+
+                setupTotalCounter(['jumlah_guru_pns', 'jumlah_guru_pppk', 'jumlah_guru_pppk_paruh_waktu', 'jumlah_guru_honor'], 'totalGuru', 'Guru');
+                setupTotalCounter([
+                    'jumlah_staff_tu_pns', 'jumlah_staff_tu_pppk', 'jumlah_staff_tu_pppk_paruh_waktu',
+                    'jumlah_staff_tu_honor'
+                ], 'totalStaffTu', 'Staff');
             });
         </script>
     @endpush

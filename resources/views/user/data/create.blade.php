@@ -8,12 +8,19 @@
     <div class="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
         <div class="flex flex-col gap-3 sm:gap-4">
             <!-- Header -->
-            <div class="flex flex-wrap items-center justify-between gap-2">
-                <h1 class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                    <i class="bi bi-plus-circle"></i>
-                    <span class="hidden sm:inline">Form Tambah Data Sarana & Prasarana Sekolah</span>
-                    <span class="sm:hidden">Tambah Data</span>
-                </h1>
+            <div
+                class="sticky top-0 z-20 -mx-3 sm:-mx-4 px-3 sm:px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 bg-white/95 dark:bg-gray-800/95 backdrop-blur border-b border-gray-200 dark:border-gray-700">
+                <div>
+                    <h1
+                        class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                        <i class="bi bi-plus-circle text-blue-600 dark:text-blue-400"></i>
+                        <span class="hidden sm:inline">Form Tambah Data Sarana & Prasarana Sekolah</span>
+                        <span class="sm:hidden">Tambah Data</span>
+                    </h1>
+                    <p class="hidden sm:block text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+                        Lengkapi seluruh bagian di bawah ini sesuai kondisi sekolah saat ini
+                    </p>
+                </div>
                 <a href="{{ route('user.profile.index') }}" class="inline-flex">
                     <x-button variant="secondary" size="sm">
                         <i class="bi bi-arrow-left me-1"></i>
@@ -29,8 +36,17 @@
             <form action="{{ route('user.data.store') }}" method="POST" id="saranaForm" class="flex flex-col gap-4">
                 @csrf
 
+                <!-- ===== Kelompok: Data Pokok Sekolah ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-building text-blue-600 dark:text-blue-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap">
+                        Data Pokok Sekolah
+                    </h2>
+                    <div class="flex-1 border-t-2 border-blue-200 dark:border-blue-900"></div>
+                </div>
+
                 <!-- A. Data Sekolah -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-building"></i>
@@ -81,44 +97,165 @@
                     </div>
                 </x-card>
 
-                <!-- B. Jumlah Guru -->
-                <x-card>
+                <!-- ===== Kelompok: Sumber Daya Manusia ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-people-fill text-violet-600 dark:text-violet-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-violet-600 dark:text-violet-400 whitespace-nowrap">
+                        Sumber Daya Manusia
+                    </h2>
+                    <div class="flex-1 border-t-2 border-violet-200 dark:border-violet-900"></div>
+                </div>
+
+                <!-- B. Jumlah & Kondisi Guru -->
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-person-badge"></i>
-                            Jumlah Guru
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-person-badge"></i>
+                                Jumlah &amp; Kondisi Guru
+                            </div>
+                            <span id="totalGuru"
+                                class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
+                                Total: 0 Guru
+                            </span>
                         </div>
                     </x-slot:header>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <x-form.input name="jumlah_guru_pns" label="Guru PNS" type="number" min="0" required
-                            :value="old('jumlah_guru_pns', $profileSekolah->jumlahGuru->pns ?? 0)" />
+                    <div class="flex flex-col gap-5">
+                        <!-- Status Kepegawaian -->
+                        <div>
+                            <p
+                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                <i class="bi bi-people-fill"></i> Status Kepegawaian
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <x-form.input name="jumlah_guru_pns" label="Guru PNS" type="number" min="0" required
+                                    :value="old('jumlah_guru_pns', $profileSekolah->jumlahGuru->pns ?? 0)" />
 
-                        <x-form.input name="jumlah_guru_pppk" label="Guru PPPK" type="number" min="0" required
-                            :value="old('jumlah_guru_pppk', $profileSekolah->jumlahGuru->pppk ?? 0)" />
+                                <x-form.input name="jumlah_guru_pppk" label="Guru PPPK" type="number" min="0" required
+                                    :value="old('jumlah_guru_pppk', $profileSekolah->jumlahGuru->pppk ?? 0)" />
 
-                        <x-form.input name="jumlah_guru_honor" label="Guru Honor" type="number" min="0" required
-                            :value="old('jumlah_guru_honor', $profileSekolah->jumlahGuru->honor ?? 0)" />
+                                <x-form.input name="jumlah_guru_pppk_paruh_waktu" label="PPPK Paruh Waktu"
+                                    type="number" min="0" required
+                                    :value="old(
+                                        'jumlah_guru_pppk_paruh_waktu',
+                                        $profileSekolah->jumlahGuru->pppk_paruh_waktu ?? 0,
+                                    )" />
 
-                        <x-form.input name="jumlah_guru_i" label="Golongan I" type="number" min="0" required
-                            :value="old('jumlah_guru_i', $profileSekolah->jumlahGuru->i ?? 0)" />
+                                <x-form.input name="jumlah_guru_honor" label="Guru Honor" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_guru_honor', $profileSekolah->jumlahGuru->honor ?? 0)" />
+                            </div>
+                        </div>
 
-                        <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number" min="0" required
-                            :value="old('jumlah_guru_ii', $profileSekolah->jumlahGuru->ii ?? 0)" />
+                        <!-- Golongan -->
+                        <div>
+                            <p
+                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                <i class="bi bi-bar-chart-steps"></i> Golongan (Khusus PNS)
+                            </p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                <x-form.input name="jumlah_guru_i" label="Golongan I" type="number" min="0" required
+                                    :value="old('jumlah_guru_i', $profileSekolah->jumlahGuru->i ?? 0)" />
 
-                        <x-form.input name="jumlah_guru_iii" label="Golongan III" type="number" min="0" required
-                            :value="old('jumlah_guru_iii', $profileSekolah->jumlahGuru->iii ?? 0)" />
+                                <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number" min="0" required
+                                    :value="old('jumlah_guru_ii', $profileSekolah->jumlahGuru->ii ?? 0)" />
 
-                        <x-form.input name="jumlah_guru_iv" label="Golongan IV" type="number" min="0" required
-                            :value="old('jumlah_guru_iv', $profileSekolah->jumlahGuru->iv ?? 0)" />
+                                <x-form.input name="jumlah_guru_iii" label="Golongan III" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_guru_iii', $profileSekolah->jumlahGuru->iii ?? 0)" />
+
+                                <x-form.input name="jumlah_guru_iv" label="Golongan IV" type="number" min="0" required
+                                    :value="old('jumlah_guru_iv', $profileSekolah->jumlahGuru->iv ?? 0)" />
+                            </div>
+                        </div>
                     </div>
                 </x-card>
 
+                <!-- B2. Jumlah & Kondisi Staff Tata Usaha -->
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <x-slot:header>
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-person-workspace"></i>
+                                Jumlah &amp; Kondisi Staff Tata Usaha
+                            </div>
+                            <span id="totalStaffTu"
+                                class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
+                                Total: 0 Staff
+                            </span>
+                        </div>
+                    </x-slot:header>
+
+                    <div class="flex flex-col gap-5">
+                        <!-- Status Kepegawaian -->
+                        <div>
+                            <p
+                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                <i class="bi bi-people-fill"></i> Status Kepegawaian
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <x-form.input name="jumlah_staff_tu_pns" label="Staff PNS" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_pns', $profileSekolah->kondisiStaff->pns ?? 0)" />
+
+                                <x-form.input name="jumlah_staff_tu_pppk" label="Staff PPPK" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_pppk', $profileSekolah->kondisiStaff->pppk ?? 0)" />
+
+                                <x-form.input name="jumlah_staff_tu_pppk_paruh_waktu" label="PPPK Paruh Waktu"
+                                    type="number" min="0" required
+                                    :value="old(
+                                        'jumlah_staff_tu_pppk_paruh_waktu',
+                                        $profileSekolah->kondisiStaff->pppk_paruh_waktu ?? 0,
+                                    )" />
+
+                                <x-form.input name="jumlah_staff_tu_honor" label="Staff Honor" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_honor', $profileSekolah->kondisiStaff->honor ?? 0)" />
+                            </div>
+                        </div>
+
+                        <!-- Golongan -->
+                        <div>
+                            <p
+                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                <i class="bi bi-bar-chart-steps"></i> Golongan (Khusus PNS)
+                            </p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                <x-form.input name="jumlah_staff_tu_i" label="Golongan I" type="number" min="0"
+                                    required :value="old('jumlah_staff_tu_i', $profileSekolah->kondisiStaff->i ?? 0)" />
+
+                                <x-form.input name="jumlah_staff_tu_ii" label="Golongan II" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_ii', $profileSekolah->kondisiStaff->ii ?? 0)" />
+
+                                <x-form.input name="jumlah_staff_tu_iii" label="Golongan III" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_iii', $profileSekolah->kondisiStaff->iii ?? 0)" />
+
+                                <x-form.input name="jumlah_staff_tu_iv" label="Golongan IV" type="number" min="0"
+                                    required
+                                    :value="old('jumlah_staff_tu_iv', $profileSekolah->kondisiStaff->iv ?? 0)" />
+                            </div>
+                        </div>
+                    </div>
+                </x-card>
+
+                <!-- ===== Kelompok: Data Siswa & Rombel ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-mortarboard text-indigo-600 dark:text-indigo-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-indigo-600 dark:text-indigo-400 whitespace-nowrap">
+                        Data Siswa & Rombel
+                    </h2>
+                    <div class="flex-1 border-t-2 border-indigo-200 dark:border-indigo-900"></div>
+                </div>
+
                 <!-- B. Jumlah Siswa -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-mortarboard"></i>
+                            <i class="bi bi-mortarboard"></i>
                             Jumlah Siswa
                         </div>
                     </x-slot:header>
@@ -134,10 +271,10 @@
                 </x-card>
 
                 <!-- C. Jumlah Rombongan Belajar -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-diagram-3"></i>
+                            <i class="bi bi-diagram-3"></i>
                             Jumlah Rombongan Belajar
                         </div>
                     </x-slot:header>
@@ -152,11 +289,20 @@
                     </div>
                 </x-card>
 
+                <!-- ===== Kelompok: Ruang Kelas ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-door-open text-cyan-600 dark:text-cyan-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-cyan-600 dark:text-cyan-400 whitespace-nowrap">
+                        Ruang Kelas
+                    </h2>
+                    <div class="flex-1 border-t-2 border-cyan-200 dark:border-cyan-900"></div>
+                </div>
+
                 <!-- D. RKB (Ruang Kelas Baru) -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-building-add"></i>
+                            <i class="bi bi-building-add"></i>
                             Pembangunan Ruang Kelas Baru (RKB)
                         </div>
                     </x-slot:header>
@@ -174,10 +320,10 @@
                 </x-card>
 
                 <!-- E. Rehabilitasi Ruang Kelas -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-tools"></i>
+                            <i class="bi bi-tools"></i>
                             Rehabilitasi Ruang Kelas
                         </div>
                     </x-slot:header>
@@ -195,10 +341,10 @@
                 </x-card>
 
                 <!-- F. Ruang Kelas -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-door-closed"></i>
+                            <i class="bi bi-door-closed"></i>
                             Ruang Kelas
                         </div>
                     </x-slot:header>
@@ -211,11 +357,20 @@
                     </div>
                 </x-card>
 
+                <!-- ===== Kelompok: Toilet ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-droplet text-teal-600 dark:text-teal-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-teal-600 dark:text-teal-400 whitespace-nowrap">
+                        Toilet
+                    </h2>
+                    <div class="flex-1 border-t-2 border-teal-200 dark:border-teal-900"></div>
+                </div>
+
                 <!-- G. Toilet Siswa -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-droplet-half"></i>
+                            <i class="bi bi-droplet-half"></i>
                             Toilet Siswa
                         </div>
                     </x-slot:header>
@@ -229,10 +384,10 @@
                 </x-card>
 
                 <!-- H. Toilet Guru -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-droplet"></i>
+                            <i class="bi bi-droplet"></i>
                             Toilet Guru
                         </div>
                     </x-slot:header>
@@ -245,11 +400,20 @@
                     </div>
                 </x-card>
 
+                <!-- ===== Kelompok: Ruang & Fasilitas Sekolah ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-house-gear text-orange-600 dark:text-orange-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-orange-600 dark:text-orange-400 whitespace-nowrap">
+                        Ruang & Fasilitas Sekolah
+                    </h2>
+                    <div class="flex-1 border-t-2 border-orange-200 dark:border-orange-900"></div>
+                </div>
+
                 <!-- I. Ruang Perpustakaan -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-book"></i>
+                            <i class="bi bi-book"></i>
                             Ruang Perpustakaan
                         </div>
                     </x-slot:header>
@@ -278,10 +442,10 @@
                 </x-card>
 
                 <!-- J. Ruang Kepala Sekolah -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-person-workspace"></i>
+                            <i class="bi bi-person-workspace"></i>
                             Ruang Kepala Sekolah
                         </div>
                     </x-slot:header>
@@ -310,10 +474,10 @@
                 </x-card>
 
                 <!-- K. Ruang Guru -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-easel2"></i>
+                            <i class="bi bi-easel2"></i>
                             Ruang Guru
                         </div>
                     </x-slot:header>
@@ -342,10 +506,10 @@
                 </x-card>
 
                 <!-- L. Ruang Kantor/Tata Usaha -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-briefcase"></i>
+                            <i class="bi bi-briefcase"></i>
                             Ruang Kantor/Tata Usaha
                         </div>
                     </x-slot:header>
@@ -374,10 +538,10 @@
                 </x-card>
 
                 <!-- M. Lab IPA -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-flask"></i>
+                            <i class="bi bi-flask"></i>
                             Lab IPA
                         </div>
                     </x-slot:header>
@@ -406,10 +570,10 @@
                 </x-card>
 
                 <!-- N. Lab Komputer -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-pc-display-horizontal"></i>
+                            <i class="bi bi-pc-display-horizontal"></i>
                             Lab Komputer
                         </div>
                     </x-slot:header>
@@ -438,10 +602,10 @@
                 </x-card>
 
                 <!-- O. UKS -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-heart-pulse"></i>
+                            <i class="bi bi-heart-pulse"></i>
                             UKS
                         </div>
                     </x-slot:header>
@@ -470,10 +634,10 @@
                 </x-card>
 
                 <!-- P. Rumah Dinas -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-house-door"></i>
+                            <i class="bi bi-house-door"></i>
                             Rumah Dinas
                         </div>
                     </x-slot:header>
@@ -502,10 +666,10 @@
                 </x-card>
 
                 <!-- Q. Rumah Ibadah -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-building"></i>
+                            <i class="bi bi-building"></i>
                             Rumah Ibadah
                         </div>
                     </x-slot:header>
@@ -534,10 +698,10 @@
                 </x-card>
 
                 <!-- R. Lapangan Sekolah -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-flag"></i>
+                            <i class="bi bi-flag"></i>
                             Lapangan Sekolah
                         </div>
                     </x-slot:header>
@@ -566,10 +730,10 @@
                 </x-card>
 
                 <!-- S. Pagar -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-border-all"></i>
+                            <i class="bi bi-border-all"></i>
                             Pagar
                         </div>
                     </x-slot:header>
@@ -598,10 +762,10 @@
                 </x-card>
 
                 <!-- T. Air -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-droplet"></i>
+                            <i class="bi bi-droplet"></i>
                             Air
                         </div>
                     </x-slot:header>
@@ -629,11 +793,20 @@
                     </div>
                 </x-card>
 
+                <!-- ===== Kelompok: Furnitur & Perangkat ===== -->
+                <div class="flex items-center gap-2 pt-2">
+                    <i class="bi bi-pc-display text-rose-600 dark:text-rose-400"></i>
+                    <h2 class="text-sm sm:text-base font-bold text-rose-600 dark:text-rose-400 whitespace-nowrap">
+                        Furnitur & Perangkat
+                    </h2>
+                    <div class="flex-1 border-t-2 border-rose-200 dark:border-rose-900"></div>
+                </div>
+
                 <!-- U. Kursi Siswa -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-person"></i>
+                            <i class="bi bi-person"></i>
                             Kursi Siswa
                         </div>
                     </x-slot:header>
@@ -647,10 +820,10 @@
                 </x-card>
 
                 <!-- V. Meja Siswa -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-table"></i>
+                            <i class="bi bi-table"></i>
                             Meja Siswa
                         </div>
                     </x-slot:header>
@@ -664,10 +837,10 @@
                 </x-card>
 
                 <!-- W. Kursi Guru -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-person-badge"></i>
+                            <i class="bi bi-person-badge"></i>
                             Kursi Guru
                         </div>
                     </x-slot:header>
@@ -681,10 +854,10 @@
                 </x-card>
 
                 <!-- X. Meja Guru -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-table"></i>
+                            <i class="bi bi-table"></i>
                             Meja Guru
                         </div>
                     </x-slot:header>
@@ -698,10 +871,10 @@
                 </x-card>
 
                 <!-- Y. Laptop -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-laptop"></i>
+                            <i class="bi bi-laptop"></i>
                             Laptop
                         </div>
                     </x-slot:header>
@@ -715,10 +888,10 @@
                 </x-card>
 
                 <!-- Z. Komputer -->
-                <x-card>
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi-pc-display"></i>
+                            <i class="bi bi-pc-display"></i>
                             Komputer
                         </div>
                     </x-slot:header>
@@ -731,16 +904,18 @@
                     </div>
                 </x-card>
 
-                <!-- Tombol Aksi -->
-                <x-card>
+                <!-- Tombol Aksi (Sticky) -->
+                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200 sticky bottom-2 z-20 backdrop-blur">
                     <x-slot:footer>
-                        <div class="flex flex-wrap gap-2">
-                            <x-button variant="primary" type="submit">
-                                <i class="bi bi-save"></i> Simpan Data
-                            </x-button>
-                            <x-button variant="warning" type="reset">
-                                <i class="bi bi-arrow-counterclockwise"></i> Reset
-                            </x-button>
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex flex-wrap gap-2">
+                                <x-button variant="primary" type="submit">
+                                    <i class="bi bi-save"></i> Simpan Data
+                                </x-button>
+                                <x-button variant="warning" type="reset">
+                                    <i class="bi bi-arrow-counterclockwise"></i> Reset
+                                </x-button>
+                            </div>
                             <a href="{{ route('user.profile.index') }}" class="inline-flex">
                                 <x-button variant="secondary">
                                     <i class="bi bi-x-circle me-1"></i> Batal
@@ -798,6 +973,30 @@
             setupConditionAuto('lapangan_sekolah_ada_tidak', 'lapangan_sekolah_kondisi');
             setupConditionAuto('pagar_ada_tidak', 'pagar_kondisi');
             setupConditionAuto('air_ada_tidak', 'air_kondisi');
+
+            // Fungsi untuk menghitung total otomatis (Guru & Staff TU)
+            function setupTotalCounter(fieldNames, totalElId, suffix) {
+                const totalEl = document.getElementById(totalElId);
+                if (!totalEl) return;
+
+                const inputs = fieldNames
+                    .map(name => document.querySelector(`input[name="${name}"]`))
+                    .filter(Boolean);
+
+                function updateTotal() {
+                    const total = inputs.reduce((sum, input) => sum + (parseInt(input.value, 10) || 0), 0);
+                    totalEl.textContent = `Total: ${total} ${suffix}`;
+                }
+
+                inputs.forEach(input => input.addEventListener('input', updateTotal));
+                updateTotal();
+            }
+
+            setupTotalCounter(['jumlah_guru_pns', 'jumlah_guru_pppk', 'jumlah_guru_pppk_paruh_waktu', 'jumlah_guru_honor'], 'totalGuru', 'Guru');
+            setupTotalCounter([
+                'jumlah_staff_tu_pns', 'jumlah_staff_tu_pppk', 'jumlah_staff_tu_pppk_paruh_waktu',
+                'jumlah_staff_tu_honor'
+            ], 'totalStaffTu', 'Staff');
         });
     </script>
 @endpush

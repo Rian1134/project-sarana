@@ -401,7 +401,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
                             <i class="bi bi-person-video3"></i>
-                            Jumlah Guru
+                            Kondisi tenaga pendidik
                         </div>
                     </x-slot:header>
 
@@ -521,7 +521,131 @@
                         </div>
                     </div>
                 </x-card>
+                
+                <x-card>
+                    <x-slot:header>
+                        <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                            <i class="bi bi-person-workspace"></i>
+                            Kondisi Staff Tata Usaha
+                        </div>
+                    </x-slot:header>
 
+                    <div class="flex flex-col gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {{-- Status Kepegawaian --}}
+                            <div>
+                                <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                    Status Kepegawaian
+                                </label>
+
+                                <div class="grid grid-cols-4 gap-2 mt-1">
+                                    <div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">PNS</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->kondisiStaff?->pns ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">PPPK</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->kondisiStaff?->pppk ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                        <p class="text-[0.6rem] text-gray-500 dark:text-gray-400">PPPK Paruh Waktu</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->kondisiStaff?->pppk_paruh_waktu ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-violet-50 dark:bg-violet-900/20 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Honor</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->kondisiStaff?->honor ?? 0) }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                                            Total
+                                        </span>
+
+                                        <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
+                                            {{ (int) ($profileSekolah->kondisiStaff?->pns ?? 0) +
+                                                (int) ($profileSekolah->kondisiStaff?->pppk ?? 0) +
+                                                (int) ($profileSekolah->kondisiStaff?->pppk_prauh_waktu ?? 0) +
+                                                (int) ($profileSekolah->kondisiStaff?->honor ?? 0) }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 h-36 sm:h-40">
+                                    <canvas id="staffStatusChart"></canvas>
+                                </div>
+                            </div>
+
+                            {{-- Golongan --}}
+                            <div>
+                                <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                    Golongan
+                                </label>
+
+                                <div class="grid grid-cols-4 gap-2 mt-1">
+                                    <div class="bg-slate-50 dark:bg-slate-900/20 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Gol I</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->kondisiStaff?->i ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-slate-100 dark:bg-slate-900/30 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Gol II</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->kondisiStaff?->ii ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-slate-200 dark:bg-slate-900/40 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Gol III</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->kondisiStaff?->iii ?? 0) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-slate-300 dark:bg-slate-900/50 p-2 rounded-lg text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Gol IV</p>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            {{ (int) ($profileSekolah->kondisiStaff?->iv ?? 0) }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                                            Total
+                                        </span>
+
+                                        <span class="text-sm font-bold text-slate-600 dark:text-slate-400">
+                                            {{ (int) ($profileSekolah->kondisiStaff?->i ?? 0) +
+                                                (int) ($profileSekolah->kondisiStaff?->ii ?? 0) +
+                                                (int) ($profileSekolah->kondisiStaff?->iii ?? 0) +
+                                                (int) ($profileSekolah->kondisiStaff?->iv ?? 0) }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 h-36 sm:h-40">
+                                    <canvas id="staffGolonganChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </x-card>
 
                 <x-card>
                     <x-slot:header>
@@ -1491,6 +1615,46 @@
                                 {{ (int) ($profileSekolah->kondisiGuru?->ii ?? 0) }},
                                 {{ (int) ($profileSekolah->kondisiGuru?->iii ?? 0) }},
                                 {{ (int) ($profileSekolah->kondisiGuru?->iv ?? 0) }}
+                            ],
+                            backgroundColor: ['#94a3b8', '#64748b', '#475569', '#334155'],
+                            borderRadius: 6,
+                            maxBarThickness: 48
+                        }]
+                    },
+                    options: barOptions
+                });
+
+                new Chart(document.getElementById('staffStatusChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['PNS', 'PPPK', 'PPPK Paruh Wakru', 'Honor'],
+                        datasets: [{
+                            label: 'Jumlah Guru',
+                            data: [
+                                {{ (int) ($profileSekolah->kondisiStaff?->pns ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiStaff?->pppk ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiStaff?->pppk_paruh_waktu ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiStaff?->honor ?? 0) }}
+                            ],
+                            backgroundColor: ['#2563eb', '#6366f1', '#8b5cf6'],
+                            borderRadius: 6,
+                            maxBarThickness: 48
+                        }]
+                    },
+                    options: barOptions
+                });
+
+                new Chart(document.getElementById('staffGolonganChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Gol I', 'Gol II', 'Gol III', 'Gol IV'],
+                        datasets: [{
+                            label: 'Jumlah Guru',
+                            data: [
+                                {{ (int) ($profileSekolah->kondisiStaff?->i ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiStaff?->ii ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiStaff?->iii ?? 0) }},
+                                {{ (int) ($profileSekolah->kondisiStaff?->iv ?? 0) }}
                             ],
                             backgroundColor: ['#94a3b8', '#64748b', '#475569', '#334155'],
                             borderRadius: 6,

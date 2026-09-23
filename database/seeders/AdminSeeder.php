@@ -50,8 +50,8 @@ class AdminSeeder extends Seeder
         $admin->assignRole('admin');
 
         $user = User::create([
-            'name' => 'rian',
-            'email' => 'rianjapingw@gmail.com',
+            'name' => 'User',
+            'email' => 'user@gmail.com',
             'email_verified_at' => Carbon::now(),
             'password' => bcrypt('12345678'),
         ]);

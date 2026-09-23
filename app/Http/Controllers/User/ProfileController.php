@@ -25,6 +25,7 @@ class ProfileController extends Controller
         $profileSekolah = ProfileSekolah::with([
             'pagarSekolah',
             'kondisiGuru',
+            'kondisiStaff',
             'airBersih',
             'kursiSiswa',
             'mejaSiswa',

@@ -75,6 +75,8 @@ class UserController extends Controller
         // Load data profile sekolah dengan relasi lengkap
         $profileSekolah = ProfileSekolah::with([
             'pagarSekolah',
+            'kondisiGuru',
+            'kondisiStaff',
             'airBersih',
             'kursiSiswa',
             'mejaSiswa',
