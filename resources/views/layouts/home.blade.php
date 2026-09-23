@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SIMSARPRAS - @yield('title', 'Sistem Data Sarana & Prasarana Sekolah')</title>
+    <title>SIMSARPRAS-SMP - @yield('title', 'Sistem Data Sarana & Prasarana Sekolah')</title>
 
     @vite(['resources/css/app.css'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -31,7 +31,7 @@
                 class="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-gray-100">
                 <img src="{{ asset('assets/img/icon-tut-wuri-rm.webp') }}" alt="Tut Wuri Handayani"
                     class="h-10 w-10 object-cover">
-                SIMSARPRAS
+                SIMSARPRAS-SMP
             </a>
         </x-slot:brand>
 
@@ -106,7 +106,7 @@
 
         <div
             class="border-t border-gray-100 dark:border-gray-800 py-4 text-center text-xs text-gray-400 dark:text-gray-600">
-            &copy; {{ date('Y') }} SIMSARPRAS — Sistem Data Sarana &amp; Prasarana Sekolah.
+            &copy; {{ date('Y') }} SIMSARPRAS-SMP — Sistem Data Sarana &amp; Prasarana Sekolah.
         </div>
     </footer>
 

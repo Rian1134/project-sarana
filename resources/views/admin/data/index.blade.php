@@ -19,7 +19,7 @@
             <div class="relative w-full">
                 <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                 <input type="text" id="searchSarana" placeholder="Cari" autocomplete="off"
-                    class="w-full pl-9 pr-8 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    class="w-full pl-9 pr-8 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-sky-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500">
                 <button type="button" id="searchSaranaClear"
                     class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
                     title="Hapus pencarian">
@@ -158,7 +158,7 @@
                     {{-- ============================================================
                          BARIS 1: JUDUL UTAMA
                          ============================================================ --}}
-                    <tr class="bg-gray-800 text-white text-center">
+                    <tr class="bg-sky-700 text-white text-center">
                         {{-- DATA SEKOLAH (7 kolom) --}}
                         <x-table.heading rowspan="3" class="text-white! align-middle w-7 px-1 py-1">No</x-table.heading>
                         <x-table.heading rowspan="3" class="text-white! align-middle min-w-25 px-1 py-1">Nama
@@ -186,7 +186,7 @@
                     {{-- ============================================================
                          BARIS 2: KATEGORI
                          ============================================================ --}}
-                    <tr class="bg-gray-800 text-white text-center">
+                    <tr class="bg-sky-700 text-white text-center">
                         {{-- URUTAN 1: JUMLAH SISWA (4 kolom) --}}
                         <x-table.heading colspan="4" class="text-white! min-w-16 px-1 py-1">Jumlah
                             Siswa</x-table.heading>
@@ -286,7 +286,7 @@
                     {{-- ============================================================
                          BARIS 3: DETAIL
                          ============================================================ --}}
-                    <tr class="bg-gray-100 dark:bg-gray-700 text-center">
+                    <tr class="bg-sky-100 dark:bg-sky-900/40 text-center">
 
                         {{-- URUTAN 1: JUMLAH SISWA --}}
 
@@ -294,7 +294,7 @@
                         <x-table.heading class="text-[10px] px-1 py-0.5">VIII</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">IX</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 2: JUMLAH ROMBONGAN BELAJAR --}}
 
@@ -302,36 +302,36 @@
                         <x-table.heading class="text-[10px] px-1 py-0.5">VIII</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">IX</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 3: RKB (RUANG KELAS BARU) --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Jumlah</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 4: REHABILITASI RUANG KELAS --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5">Jumlah</x-table.heading>
+                        <x-table.heading class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 5: RUANG KELAS --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 6: TOILET SISWA --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 7: TOILET GURU --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 8: R. PERPUSTAKAAN --}}
 
@@ -398,35 +398,35 @@
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 21: MEJA SISWA --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 22: KURSI GURU --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 23: MEJA GURU --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 24: LAPTOP --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
 
                         {{-- URUTAN 25: KOMPUTER --}}
@@ -434,7 +434,7 @@
                         <x-table.heading class="text-[10px] px-1 py-0.5">Baik</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Rusak</x-table.heading>
                         <x-table.heading
-                            class="text-[10px] px-1 py-0.5 bg-gray-300 dark:bg-gray-600 font-bold">Jumlah</x-table.heading>
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                     </tr>
 
@@ -468,7 +468,7 @@
                         </x-table.cell>
 
                         {{-- total jumlah --}}
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->jumlahSiswa?->vii ?? 0) + ($item->jumlahSiswa?->viii ?? 0) + ($item->jumlahSiswa?->ix ?? 0)) }}
                         </x-table.cell>
 
@@ -488,17 +488,17 @@
                             {{ $profileSekolahs->sum(fn($item) => $item->jumlahRombel?->ix ?? 0) }}
                         </x-table.cell>
 
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->jumlahRombel?->vii ?? 0) + ($item->jumlahRombel?->viii ?? 0) + ($item->jumlahRombel?->ix ?? 0)) }}
                         </x-table.cell>
 
                         {{-- URUTAN 3: RKB (RUANG KELAS BARU) --}}
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => $item->ruangKelasBaru?->jumlah ?? 0) }}
                         </x-table.cell>
 
                         {{-- URUTAN 4: REHABILITASI RUANG KELAS --}}
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => $item->rehabilitasiRuangKelas?->jumlah ?? 0) }}
                         </x-table.cell>
 
@@ -515,7 +515,7 @@
                         </x-table.cell>
 
                         {{-- TOTAL --}}
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->ruangKelas?->baik ?? 0) + ($item->ruangKelas?->rusak ?? 0)) }}
                         </x-table.cell>
 
@@ -532,7 +532,7 @@
                         </x-table.cell>
 
                         {{-- TOTAL --}}
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->toiletSiswa?->baik ?? 0) + ($item->toiletSiswa?->rusak ?? 0)) }}
                         </x-table.cell>
 
@@ -549,7 +549,7 @@
                         </x-table.cell>
 
                         {{-- TOTAL --}}
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->toiletGuru?->baik ?? 0) + ($item->toiletGuru?->rusak ?? 0)) }}
                         </x-table.cell>
 
@@ -779,7 +779,7 @@
                             {{ $profileSekolahs->sum(fn($item) => $item->kusriSiswa?->rusak ?? 0) }}
                         </x-table.cell>
 
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->kursiSiswa?->baik ?? 0) + ($item->kursiSiswa?->rusak ?? 0)) }}
                         </x-table.cell>
 
@@ -795,7 +795,7 @@
                             {{ $profileSekolahs->sum(fn($item) => $item->mejaSiswa?->rusak ?? 0) }}
                         </x-table.cell>
 
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->mejaSiswa?->baik ?? 0) + ($item->mejaSiswa?->rusak ?? 0)) }}
                         </x-table.cell>
 
@@ -810,7 +810,7 @@
                             {{ $profileSekolahs->sum(fn($item) => $item->kursiGuru?->rusak ?? 0) }}
                         </x-table.cell>
 
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->kursiGuru?->baik ?? 0) + ($item->kursiGuru?->rusak ?? 0)) }}
                         </x-table.cell>
 
@@ -826,7 +826,7 @@
                             {{ $profileSekolahs->sum(fn($item) => $item->mejaGuru?->rusak ?? 0) }}
                         </x-table.cell>
 
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->mejaGuru?->baik ?? 0) + ($item->mejaGuru?->rusak ?? 0)) }}
                         </x-table.cell>
 
@@ -842,7 +842,7 @@
                             {{ $profileSekolahs->sum(fn($item) => $item->laptop?->rusak ?? 0) }}
                         </x-table.cell>
 
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->laptop?->baik ?? 0) + ($item->laptop?->rusak ?? 0)) }}
                         </x-table.cell>
 
@@ -858,7 +858,7 @@
                             {{ $profileSekolahs->sum(fn($item) => $item->komputer?->rusak ?? 0) }}
                         </x-table.cell>
 
-                        <x-table.cell class="text-center font-bold bg-gray-300 dark:bg-gray-600">
+                        <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
                             {{ $profileSekolahs->sum(fn($item) => ($item->komputer?->baik ?? 0) + ($item->komputer?->rusak ?? 0)) }}
                         </x-table.cell>
 
@@ -1123,40 +1123,40 @@
                         <x-table.cell class="text-center">{{ $item->jumlahSiswa?->viii ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->jumlahSiswa?->ix ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlJumlahSiswa }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlJumlahSiswa }}</x-table.cell>
 
                         {{-- URUTAN 2: JUMLAH ROMBONGAN BELAJAR (4 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->jumlahRombel?->vii ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->jumlahRombel?->viii ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->jumlahRombel?->ix ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlJumlahRombel }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlJumlahRombel }}</x-table.cell>
 
                         {{-- URUTAN 3: RKB (RUANG KELAS BARU) (1 kolom) --}}
                         <x-table.cell
-                            class="text-center font-bold">{{ $item->ruangKelasBaru?->jumlah ?? 0 }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $item->ruangKelasBaru?->jumlah ?? 0 }}</x-table.cell>
 
                         {{-- URUTAN 4: REHABILITASI RUANG KELAS (1 kolom) --}}
                         <x-table.cell
-                            class="text-center font-bold">{{ $item->rehabilitasiRuangKelas?->jumlah ?? 0 }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $item->rehabilitasiRuangKelas?->jumlah ?? 0 }}</x-table.cell>
 
                         {{-- URUTAN 5: RUANG KELAS (3 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->ruangKelas?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->ruangKelas?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlRuangKelas }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlRuangKelas }}</x-table.cell>
 
                         {{-- URUTAN 6: TOILET SISWA (3 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->toiletSiswa?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->toiletSiswa?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlToiletSiswa }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlToiletSiswa }}</x-table.cell>
 
                         {{-- URUTAN 7: TOILET GURU (3 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->toiletGuru?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->toiletGuru?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlToiletGuru }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlToiletGuru }}</x-table.cell>
 
                         {{-- URUTAN 8: R. PERPUSTAKAAN (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangPerpustakaanBadge }}"
@@ -1234,38 +1234,38 @@
                         <x-table.cell class="text-center">{{ $item->kursiSiswa?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->kursiSiswa?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlKursiSiswa }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlKursiSiswa }}</x-table.cell>
 
                         {{-- URUTAN 21: MEJA SISWA (3 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->mejaSiswa?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->mejaSiswa?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlMejaSiswa }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlMejaSiswa }}</x-table.cell>
 
                         {{-- URUTAN 22: KURSI GURU (3 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->kursiGuru?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->kursiGuru?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlKursiGuru }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlKursiGuru }}</x-table.cell>
 
                         {{-- URUTAN 23: MEJA GURU (3 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->mejaGuru?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->mejaGuru?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlMejaGuru }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlMejaGuru }}</x-table.cell>
 
                         {{-- URUTAN 24: LAPTOP (3 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->laptop?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->laptop?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlLaptop }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlLaptop }}</x-table.cell>
 
 
                         {{-- URUTAN 25: KOMPUTER (3 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->komputer?->baik ?? 0 }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->komputer?->rusak ?? 0 }}</x-table.cell>
                         <x-table.cell
-                            class="text-center font-bold bg-gray-100 dark:bg-gray-700">{{ $jmlKomputer }}</x-table.cell>
+                            class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlKomputer }}</x-table.cell>
 
                         {{-- ============================================================
                              AKSI (Tombol Lihat, Edit, Hapus)

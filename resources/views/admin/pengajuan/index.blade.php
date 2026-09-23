@@ -1,258 +1,225 @@
 @extends('layouts.admin')
 
 @section('title', 'Laporan Kerusakan')
-
 @section('content')
 
-    <div class="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-6">
-            <h1 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                <i class="bi bi-exclamation-triangle"></i>
-                Laporan Kerusakan
+    {{-- ============================================================
+         HEADER HALAMAN (Judul)
+         ============================================================
+         Catatan: sesuaikan $laporanKerusakans dengan nama variabel
+         yang dikirim dari controller (bisa jadi paginated collection).
+         ============================================================ --}}
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-5">
+        <div>
+            <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                <i class="bi bi-exclamation-triangle-fill text-amber-500"></i> Laporan Kerusakan
             </h1>
         </div>
 
-        {{-- ============================================================
-             MOBILE (< sm): satu pengajuan = satu kartu.
-             ============================================================ --}}
-        <div class="sm:hidden flex flex-col gap-3">
-            @forelse ($laporanKerusakans as $item)
-                @php
-                    $kategoriKeys = is_array($item->pengajuan) ? $item->pengajuan : array_filter([$item->pengajuan]);
-                    $perubahan = is_array($item->perubahan) ? $item->perubahan : [];
-                    $tambahanKeys = array_keys(array_diff_key($perubahan, array_flip($kategoriKeys)));
-                @endphp
+        {{-- SEARCH BAR (Cari Nama Sekolah) --}}
+        <div class="flex items-center gap-2 w-full lg:w-auto lg:flex-1 lg:max-w-sm">
+            <div class="relative w-full">
+                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                <input type="text" id="searchLaporan" placeholder="Cari sekolah" autocomplete="off"
+                    class="w-full pl-9 pr-8 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-sky-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                <button type="button" id="searchLaporanClear"
+                    class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                    title="Hapus pencarian">
+                    <i class="bi bi-x-lg text-xs"></i>
+                </button>
+            </div>
+            <span id="searchLaporanCount" class="hidden text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap"></span>
+        </div>
+    </div>
 
-                <x-card class="p-3">
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <p class="font-semibold text-gray-800 dark:text-gray-100 wrap-break-word">
-                            {{ $item->judul }}
-                        </p>
+    {{-- ============================================================
+         CARD & TABEL UTAMA
+         ============================================================ --}}
+    <div class="card">
+        <div class="card-body">
 
-                        @if ($item->status === 'pending')
-                            <x-badge variant="warning" class="shrink-0">Menunggu</x-badge>
-                        @elseif ($item->status === 'approved')
-                            <x-badge variant="success" class="shrink-0">Disetujui</x-badge>
-                        @elseif ($item->status === 'rejected')
-                            <x-badge variant="danger" class="shrink-0">Ditolak</x-badge>
-                        @else
-                            <x-badge variant="secondary" class="shrink-0">{{ ucfirst($item->status) }}</x-badge>
-                        @endif
-                    </div>
+            <x-table bordered hover id="tabelLaporanKerusakan">
 
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-2 space-y-1">
-                        <div><span class="font-semibold">User ID:</span> {{ $item->user_id }}</div>
-                        <div><span class="font-semibold">Sekolah:</span> {{ $item->profileSekolah->nama_sekolah ?? '-' }}
-                        </div>
-                        <div><span class="font-semibold">Diajukan:</span> {{ $item->created_at->format('d M Y H:i') }}</div>
-                    </div>
+                <x-slot:head>
+                    <tr class="bg-sky-700 text-white text-center">
+                        <x-table.heading class="text-white! align-middle w-10 px-2 py-2">No</x-table.heading>
+                        <x-table.heading class="text-white! align-middle min-w-40 px-2 py-2 text-left">Sekolah</x-table.heading>
+                        <x-table.heading class="text-white! align-middle min-w-56 px-2 py-2 text-left">Perubahan</x-table.heading>
+                        <x-table.heading class="text-white! align-middle w-28 px-2 py-2">Status</x-table.heading>
+                        <x-table.heading class="text-white! align-middle w-32 px-2 py-2">Diajukan</x-table.heading>
+                        <x-table.heading class="text-white! align-middle w-32 px-2 py-2">Aksi</x-table.heading>
+                    </tr>
+                </x-slot:head>
 
-                    <div class="text-sm mb-3">
-                        @foreach ($kategoriKeys as $kunci)
-                            <div class="mb-2">
-                                <div class="text-xs font-semibold text-gray-400 uppercase mb-1">
-                                    {{ \App\Http\Controllers\Admin\PengajuanController::categoryLabel($kunci) }}
-                                </div>
-                                <ul class="space-y-0.5">
-                                    @foreach ($perubahan[$kunci] ?? [] as $field => $value)
+                @forelse ($laporanKerusakans as $item)
+                    <x-table.row data-search-row data-search-text="{{ strtolower($item->profileSekolah->nama_sekolah ?? $item->sekolah->nama_sekolah ?? '') }}">
+                        <x-table.cell class="text-center">
+                            {{ $loop->iteration + ($laporanKerusakans instanceof \Illuminate\Pagination\AbstractPaginator ? $laporanKerusakans->firstItem() - 1 : 0) }}
+                        </x-table.cell>
+
+                        {{-- SEKOLAH --}}
+                        <x-table.cell>
+                            <span class="font-medium text-gray-700 dark:text-gray-200">
+                                {{ $item->profileSekolah->nama_sekolah ?? $item->sekolah->nama_sekolah ?? '-' }}
+                            </span>
+                        </x-table.cell>
+
+                        {{-- PERUBAHAN --}}
+                        <x-table.cell>
+                            @if (!empty($item->perubahan) && is_iterable($item->perubahan))
+                                <ul class="list-disc list-inside space-y-0.5 text-xs">
+                                    @foreach ($item->perubahan as $field => $perubahan)
                                         <li>
-                                            <span class="text-gray-500 dark:text-gray-400">
-                                                {{ \App\Http\Controllers\Admin\PengajuanController::fieldLabel($kunci, $field) }}:
-                                            </span>
-                                            <span class="font-medium text-gray-800 dark:text-gray-200">
-                                                {{ is_array($value) ? json_encode($value) : $value }}
-                                            </span>
+                                            <span class="font-medium">{{ is_string($field) ? \Illuminate\Support\Str::headline($field) : ($perubahan['label'] ?? '') }}:</span>
+                                            <span class="text-red-500 line-through">{{ $perubahan['lama'] ?? $perubahan['old'] ?? '-' }}</span>
+                                            <i class="bi bi-arrow-right mx-1 text-gray-400"></i>
+                                            <span class="text-green-600 font-medium">{{ $perubahan['baru'] ?? $perubahan['new'] ?? '-' }}</span>
                                         </li>
                                     @endforeach
                                 </ul>
-                            </div>
-                        @endforeach
+                            @else
+                                <span class="text-gray-600 dark:text-gray-300 text-xs">
+                                    {{ $item->deskripsi ?? $item->keterangan ?? '-' }}
+                                </span>
+                            @endif
+                        </x-table.cell>
 
-                        @if (count($tambahanKeys))
-                            <div>
-                                <div class="text-xs font-semibold text-gray-400 uppercase mb-1">Perubahan Lainnya</div>
-                                <ul class="space-y-0.5">
-                                    @foreach ($tambahanKeys as $namaField)
-                                        <li>
-                                            <span
-                                                class="text-gray-500 dark:text-gray-400">{{ ucwords(str_replace('_', ' ', $namaField)) }}:</span>
-                                            <span class="font-medium text-gray-800 dark:text-gray-200">
-                                                {{ is_array($perubahan[$namaField] ?? null) ? json_encode($perubahan[$namaField]) : $perubahan[$namaField] ?? '-' }}
-                                            </span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                    </div>
+                        {{-- STATUS --}}
+                        <x-table.cell class="text-center">
+                            @php
+                                $statusVariant = match ($item->status) {
+                                    'disetujui', 'approved' => 'success',
+                                    'ditolak', 'rejected' => 'danger',
+                                    default => 'warning',
+                                };
+                                $statusLabel = match ($item->status) {
+                                    'disetujui', 'approved' => 'Disetujui',
+                                    'ditolak', 'rejected' => 'Ditolak',
+                                    default => 'Menunggu',
+                                };
+                            @endphp
+                            <x-badge :variant="$statusVariant" pill>{{ $statusLabel }}</x-badge>
+                        </x-table.cell>
 
-                    <div class="flex items-center justify-end pt-2 border-t border-gray-200 dark:border-gray-700">
-                        <div class="flex gap-1">
-                            <x-button href="{{ route('pengajuan.show', $item) }}" variant="info" size="xs"
-                                title="Lihat">
-                                <i class="bi bi-eye-fill"></i>
-                            </x-button>
+                        {{-- DIAJUKAN --}}
+                        <x-table.cell class="text-center text-xs whitespace-nowrap">
+                            {{ optional($item->created_at)->translatedFormat('d M Y H:i') ?? '-' }}
+                        </x-table.cell>
 
-                            @if ($item->status === 'pending')
-                                <form action="{{ route('pengajuan.approve', $item) }}" method="POST" class="inline"
-                                    onsubmit="return confirm('Setujui pengajuan ini? Data sarana sekolah akan diperbarui sesuai isi pengajuan.');">
-                                    @csrf
-                                    <x-button type="submit" variant="success" size="xs" title="Setujui">
-                                        <i class="bi bi-check-lg"></i>
-                                    </x-button>
-                                </form>
+                        {{-- AKSI --}}
+                        <x-table.cell class="text-center">
+                            <div class="flex justify-center gap-1">
+                                <x-button href="{{ route('laporan-kerusakan.show', $item->id) }}" variant="info"
+                                    size="xs" class="p-1.5!" title="Lihat Detail">
+                                    <i class="bi bi-eye-fill"></i>
+                                </x-button>
 
-                                <form action="{{ route('pengajuan.reject', $item) }}" method="POST" class="inline"
-                                    onsubmit="return confirm('Tolak pengajuan ini?');">
-                                    @csrf
-                                    <x-button type="submit" variant="danger" size="xs" title="Tolak">
+                                @if ($item->status === 'pending' || $item->status === null)
+                                    <form action="{{ route('pengajuan.approve', $item->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        <x-button type="submit" variant="success" size="xs" class="p-1.5!" title="Setujui">
+                                            <i class="bi bi-check-lg"></i>
+                                        </x-button>
+                                    </form>
+                                    <x-button variant="danger" size="xs" class="p-1.5!" title="Tolak"
+                                        data-modal-open="rejectModal{{ $item->id }}">
                                         <i class="bi bi-x-lg"></i>
                                     </x-button>
-                                </form>
-                            @endif
-                        </div>
-                    </div>
-                </x-card>
-            @empty
-                <x-card class="p-6 text-center text-gray-500 dark:text-gray-400">
-                    <i class="bi bi-inbox text-2xl block mb-2"></i>
-                    Belum ada laporan kerusakan.
-                </x-card>
-            @endforelse
-        </div>
-
-        {{-- ============================================================
-             DESKTOP (>= sm): tabel dipadatkan jadi 5 kolom saja — Sekolah &
-             Judul digabung satu kolom, Perubahan & Rincian Pembaruan juga
-             digabung satu kolom (kategori jadi sub-judul, field-nya di bawahnya).
-             ============================================================ --}}
-        <div class="hidden sm:block">
-            <x-card class="p-4">
-                <x-table bordered class="text-sm">
-                    <x-slot:head>
-                        <tr class="bg-gray-800 text-white text-center">
-                            <x-table.heading class="text-white! align-middle px-3 py-2">
-                                Sekolah
-                            </x-table.heading>
-                            <x-table.heading class="text-white! align-middle px-3 py-2">
-                                Perubahan
-                            </x-table.heading>
-                            <x-table.heading class="text-white! align-middle px-3 py-2 whitespace-nowrap">
-                                Status
-                            </x-table.heading>
-                            <x-table.heading class="text-white! align-middle px-3 py-2 whitespace-nowrap">
-                                Diajukan
-                            </x-table.heading>
-                            <x-table.heading class="text-white! align-middle px-3 py-2 whitespace-nowrap">
-                                Aksi
-                            </x-table.heading>
-                        </tr>
-                    </x-slot:head>
-
-                    @forelse ($laporanKerusakans as $item)
-                        @php
-                            $kategoriKeys = is_array($item->pengajuan)
-                                ? $item->pengajuan
-                                : array_filter([$item->pengajuan]);
-                            $perubahan = is_array($item->perubahan) ? $item->perubahan : [];
-                            $tambahanKeys = array_keys(array_diff_key($perubahan, array_flip($kategoriKeys)));
-                            $jumlahField =
-                                collect($kategoriKeys)->sum(fn($k) => count($perubahan[$k] ?? [])) +
-                                count($tambahanKeys);
-                        @endphp
-
-                        <x-table.row class="align-top">
-                            {{-- SEKOLAH & JUDUL --}}
-                            <x-table.cell class="px-3 py-3 align-top">
-                                <div class="font-medium text-gray-800 dark:text-gray-100 wrap-break-word">
-                                    {{ $item->judul }}</div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 wrap-break-word">
-                                    {{ $item->profileSekolah->nama_sekolah ?? '-' }} &middot; User #{{ $item->user_id }}
-                                </div>
-                            </x-table.cell>
-
-                            {{-- PERUBAHAN: cuma ringkasan kategori + jumlah field, rincian
-                                 lengkapnya dilihat lewat tombol "Lihat" (halaman show). --}}
-                            <x-table.cell class="px-3 py-3 align-top">
-                                <div class="flex flex-wrap gap-1">
-                                    @foreach ($kategoriKeys as $kunci)
-                                        <span
-                                            class="inline-block text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-                                            {{ \App\Http\Controllers\Admin\PengajuanController::categoryLabel($kunci) }}
-                                        </span>
-                                    @endforeach
-                                    @if (count($tambahanKeys))
-                                        <span
-                                            class="inline-block text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-                                            Perubahan Lainnya
-                                        </span>
-                                    @endif
-                                </div>
-                                <div class="text-xs text-gray-400 mt-1">{{ $jumlahField }} field diubah</div>
-                            </x-table.cell>
-
-                            {{-- STATUS --}}
-                            <x-table.cell class="text-center px-3 py-3 whitespace-nowrap">
-                                @if ($item->status === 'pending')
-                                    <x-badge variant="warning">Menunggu Review</x-badge>
-                                @elseif ($item->status === 'approved')
-                                    <x-badge variant="success">Disetujui</x-badge>
-                                @elseif ($item->status === 'rejected')
-                                    <x-badge variant="danger">Ditolak</x-badge>
-                                @else
-                                    <x-badge variant="secondary">{{ ucfirst($item->status) }}</x-badge>
                                 @endif
-                            </x-table.cell>
+                            </div>
+                        </x-table.cell>
+                    </x-table.row>
+                @empty
+                    <x-table.empty colspan="6" message="Belum ada laporan kerusakan." />
+                @endforelse
 
-                            {{-- DIAJUKAN --}}
-                            <x-table.cell class="text-center whitespace-nowrap px-3 py-3">
-                                {{ $item->created_at->format('d M Y H:i') }}
-                            </x-table.cell>
+                {{-- Baris disembunyikan default, dimunculkan JS saat hasil pencarian kosong --}}
+                <x-table.empty id="searchLaporanNoResult" class="hidden" colspan="6"
+                    message="Tidak ada sekolah yang cocok dengan pencarian" />
+            </x-table>
 
-                            {{-- AKSI --}}
-                            <x-table.cell class="text-center px-3 py-3 whitespace-nowrap">
-                                <div class="flex justify-center gap-1">
-                                    <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener"
-                                        variant="secondary" size="xs">
-                                        <i class="bi bi-paperclip"></i>
-                                    </x-button>
+            @if (method_exists($laporanKerusakans, 'links'))
+                <x-pagination :paginator="$laporanKerusakans" class="mt-3" />
+            @endif
 
-                                    <x-button href="{{ route('pengajuan.show', $item) }}" variant="info" size="xs"
-                                        class="p-1.5" title="Lihat rincian">
-                                        <i class="bi bi-eye-fill"></i>
-                                    </x-button>
-
-                                    @if ($item->status === 'pending')
-                                        <form action="{{ route('pengajuan.approve', $item) }}" method="POST"
-                                            class="inline"
-                                            onsubmit="return confirm('Setujui pengajuan ini? Data sarana sekolah akan diperbarui sesuai isi pengajuan.');">
-                                            @csrf
-                                            <x-button type="submit" variant="success" size="xs" class="p-1.5"
-                                                title="Setujui">
-                                                <i class="bi bi-check-lg"></i>
-                                            </x-button>
-                                        </form>
-
-                                        <form action="{{ route('pengajuan.reject', $item) }}" method="POST"
-                                            class="inline" onsubmit="return confirm('Tolak pengajuan ini?');">
-                                            @csrf
-                                            <x-button type="submit" variant="danger" size="xs" class="p-1.5"
-                                                title="Tolak">
-                                                <i class="bi bi-x-lg"></i>
-                                            </x-button>
-                                        </form>
-                                    @endif
-                                </div>
-                            </x-table.cell>
-                        </x-table.row>
-                    @empty
-                        <x-table.empty colspan="5" message="Belum ada laporan kerusakan." />
-                    @endforelse
-                </x-table>
-            </x-card>
         </div>
-
-        <x-pagination :paginator="$laporanKerusakans" class="mt-4" />
-
     </div>
+
+    {{-- ============================================================
+         MODAL TOLAK (Loop untuk setiap item berstatus pending)
+         ============================================================ --}}
+    @foreach ($laporanKerusakans as $item)
+        @if ($item->status === 'pending' || $item->status === null)
+            <x-modal id="rejectModal{{ $item->id }}" size="sm" centered>
+                <x-slot:header>
+                    <div class="flex items-center gap-2 text-red-600">
+                        <i class="bi bi-x-circle-fill text-xl"></i>
+                        <span>Tolak Laporan</span>
+                    </div>
+                </x-slot:header>
+
+                <form action="{{ route('pengajuan.reject', $item->id) }}" method="POST">
+                    @csrf
+                    <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mb-3">
+                        {{ $item->profileSekolah->nama_sekolah ?? $item->sekolah->nama_sekolah ?? '-' }}
+                    </p>
+                    <x-form.textarea name="alasan_penolakan" label="Alasan Penolakan" rows="3" required />
+
+                    <x-slot:footer>
+                        <div class="flex flex-wrap justify-end gap-2 w-full">
+                            <x-button type="button" variant="secondary" data-modal-close>
+                                <i class="bi bi-x-circle me-1"></i> Batal
+                            </x-button>
+                            <x-button type="submit" variant="danger">
+                                <i class="bi bi-x-lg me-1"></i> Ya, Tolak
+                            </x-button>
+                        </div>
+                    </x-slot:footer>
+                </form>
+            </x-modal>
+        @endif
+    @endforeach
+
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchLaporan');
+            const clearBtn = document.getElementById('searchLaporanClear');
+            const countEl = document.getElementById('searchLaporanCount');
+            const noResultRow = document.getElementById('searchLaporanNoResult');
+            const rows = Array.from(document.querySelectorAll('#tabelLaporanKerusakan tbody tr[data-search-row]'));
+
+            function applyFilter() {
+                const q = searchInput.value.trim().toLowerCase();
+                clearBtn.classList.toggle('hidden', q === '');
+
+                let visibleCount = 0;
+                rows.forEach(function (row) {
+                    const match = row.dataset.searchText.includes(q);
+                    row.classList.toggle('hidden', !match);
+                    if (match) visibleCount++;
+                });
+
+                if (q === '') {
+                    countEl.classList.add('hidden');
+                    noResultRow.classList.add('hidden');
+                } else {
+                    countEl.textContent = visibleCount + ' hasil';
+                    countEl.classList.remove('hidden');
+                    noResultRow.classList.toggle('hidden', visibleCount !== 0 || rows.length === 0);
+                }
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', applyFilter);
+                clearBtn.addEventListener('click', function () {
+                    searchInput.value = '';
+                    applyFilter();
+                    searchInput.focus();
+                });
+            }
+        });
+    </script>
+@endpush

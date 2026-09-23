@@ -17,7 +17,9 @@
     {{-- ============================================================
          MOBILE (< sm): daftar berbentuk kartu, satu pengajuan = satu kartu,
          supaya tidak perlu scroll horizontal / tabel tidak "kepanjangan".
-         DESKTOP (>= sm): tabel biasa, mengikuti style tabel index admin data.
+         DESKTOP (>= sm): tabel statik — lebar tiap kolom tetap (tidak
+         menyesuaikan isi), dibungkus overflow-x-auto sendiri supaya kalau
+         layar sempit yang scroll cuma tabelnya, bukan seluruh halaman.
          ============================================================ --}}
     <div class="sm:hidden flex flex-col gap-3">
         @forelse ($pengajuans as $item)
@@ -47,7 +49,7 @@
                     @endif
                 </ul>
 
-                <div class="text-sm mb-2">
+                <div class="text-sm mb-2 wrap-break-wordword">
                     @foreach ($kategoriKeys as $kunci)
                         <div class="mb-1.5">
                             @if (count($kategoriKeys) > 1 || count($tambahanKeys))
@@ -57,7 +59,7 @@
                                 @forelse (($item->perubahan[$kunci] ?? []) as $field => $value)
                                     <li>
                                         <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) }}:</span>
-                                        <span class="font-medium">{{ $value }}</span>
+                                        <span class="font-medium wrap-break-word">{{ $value }}</span>
                                     </li>
                                 @empty
                                     <li class="text-gray-400 italic">Tidak ada rincian</li>
@@ -74,7 +76,7 @@
                                 @foreach ($tambahanKeys as $namaField)
                                     <li>
                                         <span class="text-gray-500 dark:text-gray-400">{{ ucwords(str_replace('_', ' ', $namaField)) }}:</span>
-                                        <span class="font-medium">{{ $item->perubahan[$namaField] }}</span>
+                                        <span class="font-medium wrap-break-word">{{ $item->perubahan[$namaField] }}</span>
                                     </li>
                                 @endforeach
                             </ul>
@@ -118,22 +120,28 @@
 
     <div class="hidden sm:block card">
         <div class="card-body p-4">
-            <x-table bordered class="text-sm">
+            {{-- overflow-x-auto: pembungkus tambahan di luar x-table (yang
+                 sudah responsif bawaan) supaya tabel lebar tidak pernah
+                 mendorong body halaman melebar ke samping. min-width lewat
+                 style, BUKAN class arbitrary-value Tailwind (mis. min-w-[900px]),
+                 supaya tidak dirusak auto-formatter editor. --}}
+            <div class="w-full overflow-x-auto">
+            <x-table bordered class="text-sm" style="min-width: 860px;">
                 <x-slot:head>
-                    <tr class="bg-gray-800 text-white text-center">
-                        <x-table.heading class="text-white! align-middle px-3 py-2">
+                    <tr class="bg-sky-700 text-white text-center">
+                        <x-table.heading class="text-white! align-middle px-3 py-2 w-36">
                             Kategori
                         </x-table.heading>
-                        <x-table.heading class="text-white! align-middle px-3 py-2">
+                        <x-table.heading class="text-white! align-middle px-3 py-2 min-w-80">
                             Rincian Kerusakan
                         </x-table.heading>
-                        <x-table.heading class="text-white! align-middle px-3 py-2">
+                        <x-table.heading class="text-white! align-middle px-3 py-2 w-32">
                             Status
                         </x-table.heading>
-                        <x-table.heading class="text-white! align-middle px-3 py-2">
+                        <x-table.heading class="text-white! align-middle px-3 py-2 w-32">
                             Diajukan
                         </x-table.heading>
-                        <x-table.heading class="text-white! align-middle px-3 py-2">
+                        <x-table.heading class="text-white! align-middle px-3 py-2 w-28">
                             Aksi
                         </x-table.heading>
                     </tr>
@@ -144,8 +152,8 @@
                     $kategoriKeys = is_array($item->pengajuan) ? $item->pengajuan : array_filter([$item->pengajuan]);
                     $tambahanKeys = array_keys(array_diff_key($item->perubahan ?? [], array_flip($kategoriKeys)));
                 @endphp
-                <x-table.row class="align-middle">
-                    <x-table.cell class="font-medium px-3 py-2.5">
+                <x-table.row class="align-top">
+                    <x-table.cell class="font-medium px-3 py-2.5 align-top wrap-break-word">
                         <ul class="space-y-0.5">
                             @foreach ($kategoriKeys as $kunci)
                                 <li>{{ \App\Http\Controllers\User\PengajuanController::categoryLabel($kunci) }}</li>
@@ -155,7 +163,7 @@
                             @endif
                         </ul>
                     </x-table.cell>
-                    <x-table.cell class="px-3 py-2.5">
+                    <x-table.cell class="px-3 py-2.5 align-top wrap-break-wordword">
                         <ul class="space-y-1 text-sm">
                             @foreach ($kategoriKeys as $kunci)
                                 <li>
@@ -166,7 +174,7 @@
                                         @forelse (($item->perubahan[$kunci] ?? []) as $field => $value)
                                             <li>
                                                 <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\PengajuanController::fieldLabel($kunci, $field) }}:</span>
-                                                <span class="font-medium">{{ $value }}</span>
+                                                <span class="font-medium wrap-break-word">{{ $value }}</span>
                                             </li>
                                         @empty
                                             <li class="text-gray-400 italic">Tidak ada rincian</li>
@@ -183,7 +191,7 @@
                                         @foreach ($tambahanKeys as $namaField)
                                             <li>
                                                 <span class="text-gray-500 dark:text-gray-400">{{ ucwords(str_replace('_', ' ', $namaField)) }}:</span>
-                                                <span class="font-medium">{{ $item->perubahan[$namaField] }}</span>
+                                                <span class="font-medium wrap-break-word">{{ $item->perubahan[$namaField] }}</span>
                                             </li>
                                         @endforeach
                                     </ul>
@@ -191,7 +199,7 @@
                             @endif
                         </ul>
                     </x-table.cell>
-                    <x-table.cell class="text-center px-3 py-2.5 whitespace-nowrap">
+                    <x-table.cell class="text-center px-3 py-2.5 align-top whitespace-nowrap">
                         @if ($item->status === 'pending')
                             <x-badge variant="warning">Menunggu Review</x-badge>
                         @elseif ($item->status === 'approved')
@@ -202,10 +210,10 @@
                             <x-badge variant="secondary">{{ ucfirst($item->status) }}</x-badge>
                         @endif
                     </x-table.cell>
-                    <x-table.cell class="text-center whitespace-nowrap px-3 py-2.5">
+                    <x-table.cell class="text-center whitespace-nowrap px-3 py-2.5 align-top">
                         {{ $item->created_at->format('d M Y H:i') }}
                     </x-table.cell>
-                    <x-table.cell class="text-center px-3 py-2.5">
+                    <x-table.cell class="text-center px-3 py-2.5 align-top">
                         <div class="flex justify-center gap-1">
                             @if (!empty($item->lampiran))
                                 <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener" variant="secondary" size="xs">
@@ -234,6 +242,7 @@
                 <x-table.empty colspan="5" message="Belum ada laporan kerusakan." />
             @endforelse
             </x-table>
+            </div>
         </div>
     </div>
 
