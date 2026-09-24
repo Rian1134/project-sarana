@@ -17,8 +17,10 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400">Informasi akun dan data sekolah user</p>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary btn-sm">
-                        <i class="bi bi-arrow-left"></i> Kembali
+                    <a href="{{ url()->previous() }}" class="inline-flex">
+                        <x-button variant="secondary" size="sm">
+                            <i class="bi bi-arrow-left me-1"></i> Kembali
+                        </x-button>
                     </a>
                     <a href="{{ route('user.edit', $user->id) }}" class="inline-flex">
                         <x-button variant="warning" size="sm">
@@ -32,8 +34,8 @@
             </div>
 
             <!-- ============================================================
-                                                 Profil User (kiri) & Data Sekolah (kanan)
-                                                 ============================================================ -->
+                                                     Profil User (kiri) & Data Sekolah (kanan)
+                                                     ============================================================ -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <!-- Kiri: Profil User -->
                 <x-card>
@@ -107,7 +109,7 @@
                 @if ($profileSekolah)
                     <x-card>
                         <x-slot:header>
-                            <div class="flex items-center gap-2 text-green-600 dark:text-green-400">
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                                 <i class="bi bi-building"></i>
                                 Data Sekolah
                             </div>
@@ -182,7 +184,7 @@
                 @else
                     <x-card>
                         <x-slot:header>
-                            <div class="flex items-center gap-2 text-green-600 dark:text-green-400">
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                                 <i class="bi bi-building"></i>
                                 Data Sekolah
                             </div>
@@ -205,7 +207,7 @@
 
             <x-card>
                 <x-slot:header>
-                    <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                    <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                         <i class="bi bi-person-video3"></i>
                         Kondisi tenaga pendidik
                     </div>
@@ -219,29 +221,33 @@
                                 Status Kepegawaian
                             </label>
 
-                            <div class="grid grid-cols-4 gap-2 mt-1">
-                                <div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-center">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">PNS</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiGuru?->pns ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">PPPK</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiGuru?->pppk ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-[0.6rem] text-gray-500 dark:text-gray-400">PPPK Paruh Waktu</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiGuru?->pppk_paruh_waktu ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-violet-50 dark:bg-violet-900/20 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Honor</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiGuru?->honor ?? 0) }}
@@ -258,7 +264,7 @@
                                     <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
                                         {{ (int) ($profileSekolah->kondisiGuru?->pns ?? 0) +
                                             (int) ($profileSekolah->kondisiGuru?->pppk ?? 0) +
-                                            (int) ($profileSekolah->kondisiGuru?->pppk_prauh_waktu ?? 0) +
+                                            (int) ($profileSekolah->kondisiGuru?->pppk_paruh_waktu ?? 0) +
                                             (int) ($profileSekolah->kondisiGuru?->honor ?? 0) }}
                                     </span>
                                 </div>
@@ -275,29 +281,33 @@
                                 Golongan
                             </label>
 
-                            <div class="grid grid-cols-4 gap-2 mt-1">
-                                <div class="bg-slate-50 dark:bg-slate-900/20 p-2 rounded-lg text-center">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Gol I</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiGuru?->i ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-slate-100 dark:bg-slate-900/30 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Gol II</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiGuru?->ii ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-slate-200 dark:bg-slate-900/40 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Gol III</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiGuru?->iii ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-slate-300 dark:bg-slate-900/50 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Gol IV</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiGuru?->iv ?? 0) }}
@@ -311,7 +321,7 @@
                                         Total
                                     </span>
 
-                                    <span class="text-sm font-bold text-slate-600 dark:text-slate-400">
+                                    <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
                                         {{ (int) ($profileSekolah->kondisiGuru?->i ?? 0) +
                                             (int) ($profileSekolah->kondisiGuru?->ii ?? 0) +
                                             (int) ($profileSekolah->kondisiGuru?->iii ?? 0) +
@@ -330,7 +340,7 @@
 
             <x-card>
                 <x-slot:header>
-                    <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                    <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                         <i class="bi bi-person-workspace"></i>
                         Kondisi Staff Tata Usaha
                     </div>
@@ -344,29 +354,33 @@
                                 Status Kepegawaian
                             </label>
 
-                            <div class="grid grid-cols-4 gap-2 mt-1">
-                                <div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-center">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">PNS</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiStaff?->pns ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">PPPK</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiStaff?->pppk ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-[0.6rem] text-gray-500 dark:text-gray-400">PPPK Paruh Waktu</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiStaff?->pppk_paruh_waktu ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-violet-50 dark:bg-violet-900/20 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Honor</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiStaff?->honor ?? 0) }}
@@ -383,7 +397,7 @@
                                     <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
                                         {{ (int) ($profileSekolah->kondisiStaff?->pns ?? 0) +
                                             (int) ($profileSekolah->kondisiStaff?->pppk ?? 0) +
-                                            (int) ($profileSekolah->kondisiStaff?->pppk_prauh_waktu ?? 0) +
+                                            (int) ($profileSekolah->kondisiStaff?->pppk_paruh_waktu ?? 0) +
                                             (int) ($profileSekolah->kondisiStaff?->honor ?? 0) }}
                                     </span>
                                 </div>
@@ -400,29 +414,33 @@
                                 Golongan
                             </label>
 
-                            <div class="grid grid-cols-4 gap-2 mt-1">
-                                <div class="bg-slate-50 dark:bg-slate-900/20 p-2 rounded-lg text-center">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Gol I</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiStaff?->i ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-slate-100 dark:bg-slate-900/30 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Gol II</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiStaff?->ii ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-slate-200 dark:bg-slate-900/40 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Gol III</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiStaff?->iii ?? 0) }}
                                     </p>
                                 </div>
 
-                                <div class="bg-slate-300 dark:bg-slate-900/50 p-2 rounded-lg text-center">
+                                <div
+                                    class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Gol IV</p>
                                     <p class="text-lg font-bold text-gray-900 dark:text-white">
                                         {{ (int) ($profileSekolah->kondisiStaff?->iv ?? 0) }}
@@ -436,7 +454,7 @@
                                         Total
                                     </span>
 
-                                    <span class="text-sm font-bold text-slate-600 dark:text-slate-400">
+                                    <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
                                         {{ (int) ($profileSekolah->kondisiStaff?->i ?? 0) +
                                             (int) ($profileSekolah->kondisiStaff?->ii ?? 0) +
                                             (int) ($profileSekolah->kondisiStaff?->iii ?? 0) +
@@ -545,11 +563,11 @@
                 @endphp
 
                 <!-- ============================================================
-                                                     RKB & Rehabilitasi Ruang Kelas
-                                                     ============================================================ -->
+                                                         RKB & Rehabilitasi Ruang Kelas
+                                                         ============================================================ -->
                 <x-card>
                     <x-slot:header>
-                        <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-tools"></i>
                             Rencana Pembangunan &amp; Rehabilitasi Ruang Kelas
                         </div>
@@ -560,7 +578,8 @@
                             <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">Pembangunan Ruang Kelas
                                 Baru
                                 (RKB)</label>
-                            <div class="bg-blue-50 dark:bg-blue-900/20 p-3 sm:p-4 rounded-lg text-center mt-1.5">
+                            <div
+                                class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-3 sm:p-4 rounded-lg text-center mt-1.5">
                                 <p class="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">
                                     {{ $chartRkbRehab[0] }}
                                 </p>
@@ -573,8 +592,9 @@
                         <div>
                             <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">Rehabilitasi Ruang
                                 Kelas</label>
-                            <div class="bg-orange-50 dark:bg-orange-900/20 p-3 sm:p-4 rounded-lg text-center mt-1.5">
-                                <p class="text-2xl sm:text-3xl font-bold text-orange-600 dark:text-orange-400">
+                            <div
+                                class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-3 sm:p-4 rounded-lg text-center mt-1.5">
+                                <p class="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">
                                     {{ $chartRkbRehab[1] }}
                                 </p>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Ruang Kelas</p>
@@ -591,11 +611,11 @@
                 </x-card>
 
                 <!-- ============================================================
-                                                     Jumlah Siswa, Rombongan Belajar & Ruang Kelas
-                                                     ============================================================ -->
+                                                         Jumlah Siswa, Rombongan Belajar & Ruang Kelas
+                                                         ============================================================ -->
                 <x-card>
                     <x-slot:header>
-                        <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-bar-chart-fill"></i>
                             Jumlah Siswa, Rombongan Belajar &amp; Ruang Kelas
                         </div>
@@ -608,17 +628,20 @@
                             <div>
                                 <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">Jumlah Siswa</label>
                                 <div class="grid grid-cols-3 gap-2 mt-1">
-                                    <div class="bg-green-50 dark:bg-green-900/20 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas VII</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartSiswa[0] }}</p>
                                     </div>
-                                    <div class="bg-emerald-50 dark:bg-emerald-900/20 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas VIII</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartSiswa[1] }}</p>
                                     </div>
-                                    <div class="bg-teal-50 dark:bg-teal-900/20 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas IX</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartSiswa[2] }}</p>
@@ -627,7 +650,7 @@
                                 <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                                     <div class="flex justify-between items-center">
                                         <span class="text-xs text-gray-500 dark:text-gray-400">Total</span>
-                                        <span class="text-sm font-bold text-green-600 dark:text-green-400">
+                                        <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
                                             {{ array_sum($chartSiswa) }}
                                         </span>
                                     </div>
@@ -642,17 +665,20 @@
                                 <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">Jumlah Rombongan
                                     Belajar</label>
                                 <div class="grid grid-cols-3 gap-2 mt-1">
-                                    <div class="bg-purple-50 dark:bg-purple-900/20 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas VII</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartRombel[0] }}</p>
                                     </div>
-                                    <div class="bg-violet-50 dark:bg-violet-900/20 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas VIII</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartRombel[1] }}</p>
                                     </div>
-                                    <div class="bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas IX</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartRombel[2] }}</p>
@@ -661,7 +687,7 @@
                                 <div class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                                     <div class="flex justify-between items-center">
                                         <span class="text-xs text-gray-500 dark:text-gray-400">Total</span>
-                                        <span class="text-sm font-bold text-purple-600 dark:text-purple-400">
+                                        <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
                                             {{ array_sum($chartRombel) }}
                                         </span>
                                     </div>
@@ -679,21 +705,21 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-3 items-center">
                                 <div class="grid grid-cols-3 gap-2 sm:gap-4">
                                     <div
-                                        class="bg-sky-50 dark:bg-sky-900/20 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
                                         <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Baik</p>
                                         <p class="text-xl sm:text-4xl font-bold text-gray-900 dark:text-white">
                                             {{ $chartRuangKelas[0] }}</p>
                                     </div>
                                     <div
-                                        class="bg-rose-50 dark:bg-red-900/20 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
                                         <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Rusak</p>
                                         <p class="text-xl sm:text-4xl font-bold text-gray-900 dark:text-white">
                                             {{ $chartRuangKelas[1] }}</p>
                                     </div>
                                     <div
-                                        class="bg-sky-100 dark:bg-sky-900/40 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-3 sm:p-6 rounded-lg text-center flex flex-col items-center justify-center">
                                         <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Total</p>
-                                        <p class="text-xl sm:text-4xl font-bold text-sky-700 dark:text-sky-300">
+                                        <p class="text-xl sm:text-4xl font-bold text-blue-600 dark:text-blue-400">
                                             {{ array_sum($chartRuangKelas) }}
                                         </p>
                                     </div>
@@ -707,11 +733,11 @@
                 </x-card>
 
                 <!-- ============================================================
-                                                     Fasilitas Ruang & Bangunan Sekolah
-                                                     ============================================================ -->
+                                                         Fasilitas Ruang & Bangunan Sekolah
+                                                         ============================================================ -->
                 <x-card>
                     <x-slot:header>
-                        <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-buildings"></i>
                             Fasilitas Ruang &amp; Bangunan Sekolah
                         </div>
@@ -774,11 +800,11 @@
                 </x-card>
 
                 <!-- ============================================================
-                                                     Furnitur, Toilet & Elektronik
-                                                     ============================================================ -->
+                                                         Furnitur, Toilet & Elektronik
+                                                         ============================================================ -->
                 <x-card>
                     <x-slot:header>
-                        <div class="flex items-center gap-2 text-gray-700 dark:text-gray-200">
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-inboxes"></i>
                             Furnitur, Toilet &amp; Elektronik
                         </div>
@@ -1522,7 +1548,7 @@
                     new Chart(document.getElementById('staffStatusChart'), {
                         type: 'bar',
                         data: {
-                            labels: ['PNS', 'PPPK', 'PPPK Paruh Wakru', 'Honor'],
+                            labels: ['PNS', 'PPPK', 'PPPK Paruh Waktu', 'Honor'],
                             datasets: [{
                                 label: 'Jumlah Guru',
                                 data: [
@@ -1542,7 +1568,7 @@
                     new Chart(document.getElementById('guruStatusChart'), {
                         type: 'bar',
                         data: {
-                            labels: ['PNS', 'PPPK', 'PPPK Paruh Wakru', 'Honor'],
+                            labels: ['PNS', 'PPPK', 'PPPK Paruh Waktu', 'Honor'],
                             datasets: [{
                                 label: 'Jumlah Guru',
                                 data: [

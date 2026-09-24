@@ -12,7 +12,7 @@
     <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-5">
         <div>
             <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                <i class="bi bi-exclamation-triangle-fill text-amber-500"></i> Laporan Kerusakan
+                <i class="bi bi-exclamation-triangle-fill text-sky-600"></i> Laporan Kerusakan
             </h1>
         </div>
 

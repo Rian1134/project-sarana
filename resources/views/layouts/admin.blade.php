@@ -88,21 +88,21 @@
                 class="sidebar-link text-sky-100 hover:bg-sky-700/60 hover:text-white {{ request()->routeIs('sarana.*') ? 'bg-white/15 text-white font-semibold' : '' }}"
                 @if (request()->routeIs('sarana.*')) aria-current="page" @endif>
                 <i class="bi bi-grid-1x2-fill text-base shrink-0"></i>
-                <span data-sidebar-label>Sarana</span>
+                <span data-sidebar-label>Data</span>
             </a>
 
             <a href="{{ route('user.index') }}"
                 class="sidebar-link text-sky-100 hover:bg-sky-700/60 hover:text-white {{ request()->routeIs('user.*') ? 'bg-white/15 text-white font-semibold' : '' }}"
                 @if (request()->routeIs('user.*')) aria-current="page" @endif>
                 <i class="bi bi-people-fill text-base shrink-0"></i>
-                <span data-sidebar-label>User</span>
+                <span data-sidebar-label>List User</span>
             </a>
 
             <a href="{{ route('pengajuan.index') }}"
                 class="sidebar-link text-sky-100 hover:bg-sky-700/60 hover:text-white {{ request()->routeIs('pengajuan.*') ? 'bg-white/15 text-white font-semibold' : '' }}"
                 @if (request()->routeIs('pengajuan.*')) aria-current="page" @endif>
                 <i class="bi bi-clipboard-data-fill text-base shrink-0"></i>
-                <span data-sidebar-label>Laporan</span>
+                <span data-sidebar-label>Laporan Kerusakan</span>
             </a>
 
             <a href="{{ route('rencana.index') }}"

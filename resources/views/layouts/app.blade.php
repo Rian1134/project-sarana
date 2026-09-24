@@ -94,8 +94,8 @@
             <a href="{{ route('user.pengajuan.index') }}"
                 class="sidebar-link text-sky-100 hover:bg-sky-700/60 hover:text-white {{ request()->routeIs('user.pengajuan.*') ? 'bg-white/15 text-white font-semibold' : '' }}"
                 @if (request()->routeIs('user.pengajuan.*')) aria-current="page" @endif>
-                <i class="bi bi-grid-1x2-fill text-base shrink-0"></i>
-                <span data-sidebar-label>Laporan</span>
+                <i class="bi bi-clipboard-data-fill text-base shrink-0"></i>
+                <span data-sidebar-label>Laporan Kerusakan</span>
             </a>
 
             <a href="{{ route('user.rencana-pembangunan.index') }}"

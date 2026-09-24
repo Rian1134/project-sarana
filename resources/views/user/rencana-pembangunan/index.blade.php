@@ -9,7 +9,7 @@
             <i class="bi bi-building-add"></i>
             Rencana Pembangunan Sarana &amp; Prasarana
         </h1>
-        <x-button href="{{ route('user.pengajuan.create') }}" variant="primary" class="w-full sm:w-auto justify-center">
+        <x-button href="{{ route('user.rencana-pembangunan.create') }}" variant="primary" class="w-full sm:w-auto justify-center">
             <i class="bi bi-plus-lg"></i> Buat Pengajuan
         </x-button>
     </div>
