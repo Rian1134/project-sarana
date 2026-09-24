@@ -1,55 +1,16 @@
 @extends('layouts.admin')
 
-@section('title', 'sarana')
+@section('title', 'Sarana & Prasarana')
 @section('content')
 
     {{-- ============================================================
          HEADER HALAMAN (Judul, Tombol Export & Tambah)
          ============================================================ --}}
     <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-5">
-        <div>
-            <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Data Sarana Sekolah</h1>
-        </div>
-
-        {{-- ============================================================
-             SEARCH BAR (Cari Nama Sekolah) — live filter pakai JS,
-             tanpa reload halaman
-             ============================================================ --}}
-        <div class="flex items-center gap-2 w-full lg:w-auto lg:flex-1 lg:max-w-sm">
-            <div class="relative w-full">
-                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                <input type="text" id="searchSarana" placeholder="Cari" autocomplete="off"
-                    class="w-full pl-9 pr-8 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-sky-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500">
-                <button type="button" id="searchSaranaClear"
-                    class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-                    title="Hapus pencarian">
-                    <i class="bi bi-x-lg text-xs"></i>
-                </button>
-            </div>
-            <span id="searchSaranaCount" class="hidden text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap"></span>
-        </div>
-
-        <div class="flex flex-wrap gap-2">
-            {{-- Tombol Pengaturan Periode RKB & Rehabilitasi (admin only) --}}
-            <a href="{{ route('admin.periode.edit') }}" class="inline-flex">
-                <x-button variant="secondary" size="sm">
-                    <i class="bi bi-calendar-range"></i> Pengaturan Periode
-                </x-button>
-            </a>
-            {{-- Tombol Export Excel dengan form POST --}}
-            <form action="{{ route('data.export') }}" method="POST" class="inline">
-                @csrf
-                <x-button variant="success" size="sm" type="submit">
-                    <i class="bi bi-file-earmark-excel"></i> Export Excel
-                </x-button>
-            </form>
-            {{-- Tombol Tambah Data --}}
-            <a href="{{ route('sarana.create') }}" class="inline-flex">
-                <x-button variant="primary" size="sm">
-                    <i class="bi bi-plus-lg"></i> Tambah Data
-                </x-button>
-            </a>
-        </div>
+        <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+            <i class="bi bi-clipboard2-data-fill"></i>
+            Data Sarana Sekolah
+        </h1>
     </div>
 
     {{-- ============================================================
@@ -58,28 +19,37 @@
     @php
         $chartSiswaRombel = [
             'vii' => [
-                $profileSekolahs->sum(fn ($item) => $item->jumlahSiswa?->vii ?? 0),
-                $profileSekolahs->sum(fn ($item) => $item->jumlahRombel?->vii ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahSiswa?->vii ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahRombel?->vii ?? 0),
             ],
             'viii' => [
-                $profileSekolahs->sum(fn ($item) => $item->jumlahSiswa?->viii ?? 0),
-                $profileSekolahs->sum(fn ($item) => $item->jumlahRombel?->viii ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahSiswa?->viii ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahRombel?->viii ?? 0),
             ],
             'ix' => [
-                $profileSekolahs->sum(fn ($item) => $item->jumlahSiswa?->ix ?? 0),
-                $profileSekolahs->sum(fn ($item) => $item->jumlahRombel?->ix ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahSiswa?->ix ?? 0),
+                $profileSekolahs->sum(fn($item) => $item->jumlahRombel?->ix ?? 0),
             ],
         ];
 
         $chartRuangKelas = [
-            $profileSekolahs->sum(fn ($item) => $item->ruangKelas?->baik ?? 0),
-            $profileSekolahs->sum(fn ($item) => $item->ruangKelas?->rusak ?? 0),
+            $profileSekolahs->sum(fn($item) => $item->ruangKelas?->baik ?? 0),
+            $profileSekolahs->sum(fn($item) => $item->ruangKelas?->rusak ?? 0),
         ];
 
         $fasilitasRelasi = [
-            'ruangPerpustakaan', 'ruangKepalaSekolah', 'ruangGuru', 'ruangKantorTu',
-            'labIpa', 'labKomputer', 'unitKesehatanSekolah', 'rumahDinas',
-            'rumahIbadah', 'lapanganSekolah', 'pagarSekolah', 'airBersih',
+            'ruangPerpustakaan',
+            'ruangKepalaSekolah',
+            'ruangGuru',
+            'ruangKantorTu',
+            'labIpa',
+            'labKomputer',
+            'unitKesehatanSekolah',
+            'rumahDinas',
+            'rumahIbadah',
+            'lapanganSekolah',
+            'pagarSekolah',
+            'airBersih',
         ];
         $countFasilitasBaik = 0;
         $countFasilitasRusakRingan = 0;
@@ -142,6 +112,48 @@
         </div>
     </div>
 
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-2">
+        {{-- ============================================================
+             SEARCH BAR (Cari Nama Sekolah) — live filter pakai JS,
+             tanpa reload halaman
+             ============================================================ --}}
+        <div class="flex items-center gap-2 w-full lg:w-auto lg:flex-1 lg:max-w-sm">
+            <div class="relative w-full">
+                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                <input type="text" id="searchSarana" placeholder="Cari" autocomplete="off"
+                    class="w-full pl-9 pr-8 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-sky-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                <button type="button" id="searchSaranaClear"
+                    class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                    title="Hapus pencarian">
+                    <i class="bi bi-x-lg text-xs"></i>
+                </button>
+            </div>
+            <span id="searchSaranaCount" class="hidden text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap"></span>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+            {{-- Tombol Pengaturan Periode RKB & Rehabilitasi (admin only) --}}
+            <a href="{{ route('admin.periode.edit') }}" class="inline-flex">
+                <x-button variant="secondary" size="sm">
+                    <i class="bi bi-calendar-range"></i> Pengaturan Periode
+                </x-button>
+            </a>
+            {{-- Tombol Export Excel dengan form POST --}}
+            <form action="{{ route('data.export') }}" method="POST" class="inline">
+                @csrf
+                <x-button variant="success" size="sm" type="submit">
+                    <i class="bi bi-file-earmark-excel"></i> Export Excel
+                </x-button>
+            </form>
+            {{-- Tombol Tambah Data --}}
+            <a href="{{ route('sarana.create') }}" class="inline-flex">
+                <x-button variant="primary" size="sm">
+                    <i class="bi bi-plus-lg"></i> Tambah Data
+                </x-button>
+            </a>
+        </div>
+    </div>
+
     {{-- ============================================================
          CARD & TABEL UTAMA
          ============================================================ --}}
@@ -175,7 +187,8 @@
                             HP</x-table.heading>
 
                         {{-- SARANA & PRASARANA (55 kolom) --}}
-                        <x-table.heading colspan="61" class="text-white! text-center align-middle px-1 py-1">Sarana &amp;
+                        <x-table.heading colspan="61" class="text-white! text-center align-middle px-1 py-1">Sarana
+                            &amp;
                             Prasarana</x-table.heading>
 
                         {{-- AKSI --}}
@@ -208,14 +221,16 @@
                         </x-table.heading>
 
                         {{-- URUTAN 5: RUANG KELAS (3 kolom) --}}
-                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Ruang Kelas</x-table.heading>
+                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Ruang
+                            Kelas</x-table.heading>
 
                         {{-- URUTAN 6: TOILET SISWA (3 kolom) --}}
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Toilet
                             Siswa</x-table.heading>
 
                         {{-- URUTAN 7: TOILET GURU (3 kolom) --}}
-                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Toilet / Jamban Guru</x-table.heading>
+                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Toilet / Jamban
+                            Guru</x-table.heading>
 
                         {{-- URUTAN 8: R. PERPUSTAKAAN (2 kolom) --}}
                         <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R.
@@ -233,7 +248,8 @@
                             Kantor/TU</x-table.heading>
 
                         {{-- URUTAN 12: LAB IPA (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Laboratorium IPA</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Laboratorium
+                            IPA</x-table.heading>
 
                         {{-- URUTAN 13: LAB KOMPUTER (2 kolom) --}}
                         <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Lab
@@ -276,7 +292,8 @@
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Meja Guru</x-table.heading>
 
                         {{-- URUTAN 24: LAPTOP (3 kolom) --}}
-                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Laptop / Chromebook</x-table.heading>
+                        <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Laptop /
+                            Chromebook</x-table.heading>
 
 
                         {{-- URUTAN 25: KOMPUTER (3 kolom) --}}
@@ -306,11 +323,13 @@
 
                         {{-- URUTAN 3: RKB (RUANG KELAS BARU) --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
+                        <x-table.heading
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 4: REHABILITASI RUANG KELAS --}}
 
-                        <x-table.heading class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
+                        <x-table.heading
+                            class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
                         {{-- URUTAN 5: RUANG KELAS --}}
 
@@ -970,7 +989,11 @@
                             $labIpaStatus == 'ada' ? 'success' : ($labIpaStatus == 'tidak_ada' ? 'danger' : 'light');
                         $labIpaKondisi = $item->labIpa?->kodisi ?? '-';
                         $labIpaKondisiBadge =
-                            $labIpaKondisi == 'baik' ? 'success' : (in_array($labIpaKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']) ? 'warning' : 'light');
+                            $labIpaKondisi == 'baik'
+                                ? 'success'
+                                : (in_array($labIpaKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
+                                    ? 'warning'
+                                    : 'light');
 
                         // 13. LAB KOMPUTER
                         $labKomputerStatus = $item->labKomputer?->{'ada/tidak_ada'} ?? '-';
@@ -1000,7 +1023,11 @@
                         $unitKesehatanSekolahKondisiBadge =
                             $unitKesehatanSekolahKondisi == 'baik'
                                 ? 'success'
-                                : (in_array($unitKesehatanSekolahKondisi, ['rusak_ringan', 'rusak_sedang', 'rusak_berat'])
+                                : (in_array($unitKesehatanSekolahKondisi, [
+                                    'rusak_ringan',
+                                    'rusak_sedang',
+                                    'rusak_berat',
+                                ])
                                     ? 'warning'
                                     : 'light');
 
@@ -1108,7 +1135,7 @@
                              ============================================================ --}}
                         <x-table.cell class="text-center font-bold">{{ $loop->iteration }}</x-table.cell>
                         <x-table.cell>
-                            <a class="link" href="{{ route('user.show', $item->user_id) }}" >
+                            <a class="link" href="{{ route('user.show', $item->user_id) }}">
                                 {{ $item->nama_sekolah }}
                             </a>
                         </x-table.cell>
@@ -1356,13 +1383,12 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             new Chart(document.getElementById('adminChartSiswaRombel'), {
                 type: 'bar',
                 data: {
                     labels: ['VII', 'VIII', 'IX'],
-                    datasets: [
-                        {
+                    datasets: [{
                             label: 'Siswa',
                             data: [
                                 {{ $chartSiswaRombel['vii'][0] }},
@@ -1387,8 +1413,19 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom' } },
-                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    },
                 },
             });
 
@@ -1406,7 +1443,11 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     cutout: '65%',
-                    plugins: { legend: { position: 'bottom' } },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
                 },
             });
 
@@ -1424,7 +1465,11 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     cutout: '65%',
-                    plugins: { legend: { position: 'bottom' } },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
                 },
             });
         });
