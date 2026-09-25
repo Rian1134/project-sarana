@@ -72,18 +72,9 @@
                 @foreach ($kategoriList as $key => $kat)
                     @php
                         $fields = $fieldsByTipe[$kat['tipe']];
-
-                        // Ambil old() dengan string concatenation biasa (bukan interpolasi
-                        // ber-quote di dalam atribut Blade) supaya tidak ada masalah
-                        // escaping tanda kutip yang bikin komponen x-form.* gagal render.
                         $oldPilih = old('pilih.' . $key);
                     @endphp
 
-                    {{-- Dibungkus <div data-kategori> (bukan atribut langsung di <x-card>)
-                     supaya JS Tambah/Hapus tidak bergantung pada apakah komponen
-                     x-card meneruskan atribut HTML tambahan. Card ini disembunyikan
-                     (hidden) sampai kategorinya ditambahkan lewat dropdown di atas,
-                     kecuali kalau sebelumnya sudah dipilih user tapi validasi gagal. --}}
                     <div data-kategori="{{ $key }}" class="{{ $oldPilih ? '' : 'hidden' }}">
                         <x-card>
                             <x-slot:header>
@@ -145,60 +136,79 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-card-heading"></i>
-                            Lampiran
+                            Lampiran<span class="text-red-600 underline">wajib</span><span class="text-red-600">*</span>
                         </div>
                     </x-slot:header>
-
-                    <div class='flex flex-col justify-center items-center gap-4'>
+                    <div class="flex flex-col gap-5">
                         <x-card>
                             <x-slot:header>
-                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                    <i class="bi bi-file-earmark-text"></i>
-                                    Proposal
-                                </div>
+                                silahkan lampirkan
                             </x-slot:header>
-                            <p>upload proposal</p>
-                            <x-slot:footer>
-                                <x-button href="#">
-                                    <i class="bi bi-cloud-arrow-up"></i> upload file
-                                </x-button>
-                            </x-slot:footer>
+
+                            <div class="ms-5 mb-3">
+                                <ol class="list-decimal">
+                                    <li>dukemntasi lahan kosong </li>
+                                    <li>foto copy akta tanah</li>
+                                    <li>proposal</li>
+                                </ol>
+                            </div>
+
+                            <span>jangan lupa dibuat dalam folder baru!</span>
+
                         </x-card>
 
-                        <x-card>
-                            <x-slot:header>
-                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                    <i class="bi bi-file-earmark-richtext"></i>
-                                    Dokumen tingkat kerusakan
-                                </div>
-                            </x-slot:header>
-                            <p>upload dokumen tingkat kerusakan</p>
-                            <x-slot:footer>
-                                <x-button href="#">
-                                    <i class="bi bi-cloud-arrow-up"></i> upload file
-                                </x-button>
-                            </x-slot:footer>
-                        </x-card>
-
-                        <x-card>
-                            <x-slot:header>
-                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                    <i class="bi bi-camera"></i>
-                                    Dokumen tingkat kerusakan
-                                </div>
-                            </x-slot:header>
-                            <p>upload dokumen tingkat kerusakan</p>
-                            <x-slot:footer>
-                                <x-button href="#">
-                                    <i class="bi bi-cloud-arrow-up"></i> upload file
-                                </x-button>
-                            </x-slot:footer>
-                        </x-card>
+                        <div>
+                            cari <span class="font-bold">nama sekolah yang sesuai</span> di dalam folder dan upload di
+                            folder <span class="font-bold">pembangunan</span>
+                        </div>
 
                     </div>
+                    <x-slot:footer>
+                        <x-button href="https://gofile.me/7Hsao/ZjQEsygfo">
+                            <i class="bi bi-cloud-arrow-up"></i> upload file
+                        </x-button>
+                    </x-slot:footer>
 
                 </x-card>
 
+                <x-card>
+                    <x-slot:header>
+                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                            <i class="bi bi-card-heading"></i>
+                            Lampiran <span class="text-red-600 underline">wajib</span><span class="text-red-600">*</span>
+                        </div>
+                    </x-slot:header>
+                    <div class="flex flex-col gap-5">
+                        <x-card>
+                            <x-slot:header>
+                                silahkan lampirkan
+                            </x-slot:header>
+
+                            <div class="ms-5 mb-3">
+                                <ol class="list-decimal">
+                                    <li>dukemntasi foto kerusakan </li>
+                                    <li>form tingkat kerusakan</li>
+                                    <li>proposal</li>
+                                </ol>
+                            </div>
+
+                            <span>jangan lupa dibuat dalam folder baru!</span>
+
+                        </x-card>
+
+                        <div>
+                            cari <span class="font-bold">nama sekolah yang sesuai</span> di dalam folder dan upload di
+                            folder <span class="font-bold">rehabilitasi</span>
+                        </div>
+
+                    </div>
+                    <x-slot:footer>
+                        <x-button href="https://gofile.me/7Hsao/ZjQEsygfo">
+                            <i class="bi bi-cloud-arrow-up"></i> upload file
+                        </x-button>
+                    </x-slot:footer>
+
+                </x-card>
 
                 {{-- Tombol Aksi --}}
                 <x-card>

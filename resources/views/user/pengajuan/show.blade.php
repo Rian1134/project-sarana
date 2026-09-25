@@ -64,17 +64,6 @@
                         </div>
                     </div>
                 </x-slot:header>
-
-
-                @if (!empty($pengajuan->lampiran))
-                    <div class="mt-3 flex items-center gap-2 text-sm">
-                        <span class="text-gray-500 dark:text-gray-400 font-medium">Lampiran:</span>
-                        <a href="{{ $pengajuan->lampiran }}" target="_blank" rel="noopener"
-                            class="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline break-all">
-                            <i class="bi bi-paperclip"></i> Lihat Lampiran
-                        </a>
-                    </div>
-                @endif
             </x-card>
 
             {{-- Rincian Perubahan: satu kategori satu card, disusun dalam grid

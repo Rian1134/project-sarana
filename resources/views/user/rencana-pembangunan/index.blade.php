@@ -7,7 +7,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-6">
         <h1 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
             <i class="bi bi-building-add"></i>
-            Rencana Pembangunan Sarana &amp; Prasarana
+            Rencana Pembangunan &amp; Rehabilitasi Sarana Prasarana
         </h1>
         <x-button href="{{ route('user.rencana-pembangunan.create') }}" variant="primary" class="w-full sm:w-auto justify-center">
             <i class="bi bi-plus-lg"></i> Buat Pengajuan
@@ -133,7 +133,7 @@
                             Kategori
                         </x-table.heading>
                         <x-table.heading class="text-white! align-middle px-3 py-2 min-w-80">
-                            Rincian Pembangunan
+                            Rincian
                         </x-table.heading>
                         <x-table.heading class="text-white! align-middle px-3 py-2 w-32">
                             Status

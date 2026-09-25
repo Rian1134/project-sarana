@@ -27,11 +27,6 @@
             </p>
 
             <div class="flex flex-col sm:flex-row gap-3 justify-center mt-2">
-                <a href="{{ route('auth.register') }}" class="inline-flex">
-                    <x-button variant="light" size="lg" fullWidth>
-                        <i class="bi bi-person-plus-fill me-2"></i> Mulai Sekarang
-                    </x-button>
-                </a>
                 <a href="{{ route('login') }}" class="inline-flex">
                     <x-button variant="outline-light" size="lg" fullWidth>
                         <i class="bi bi-box-arrow-in-right me-2"></i> Masuk ke Akun

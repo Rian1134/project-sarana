@@ -55,12 +55,6 @@
                 <a href="{{ route('login') }}" class="hidden sm:inline-flex">
                     <x-button variant="light" size="sm">Login</x-button>
                 </a>
-                <a href="{{ route('auth.register') }}" class="inline-flex">
-                    <x-button variant="primary" size="sm" class="bg-[#2E86C1]! hover:bg-[#256a9c]! border-[#2E86C1]!">
-                        <span class="hidden sm:inline">Daftar Sekarang</span>
-                        <span class="sm:hidden">Daftar</span>
-                    </x-button>
-                </a>
             @endif
         </x-slot:actions>
     </x-navbar>

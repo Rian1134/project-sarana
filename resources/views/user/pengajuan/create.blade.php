@@ -195,61 +195,40 @@
                         </x-card>
                     </div>
                 @endforeach
+
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-card-heading"></i>
-                            Lampiran
+                            Lampiran <span class="text-red-600 underline">wajib</span><span class="text-red-600">*</span>
                         </div>
                     </x-slot:header>
-
-                    <div class='flex flex-col justify-center items-center gap-4'>
+                    <div class="flex flex-col gap-5">
                         <x-card>
                             <x-slot:header>
-                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                    <i class="bi bi-file-earmark-text"></i>
-                                    Proposal
-                                </div>
+                                silahkan lampirkan
                             </x-slot:header>
-                            <p>upload proposal</p>
-                            <x-slot:footer>
-                                <x-button href="#">
-                                    <i class="bi bi-cloud-arrow-up"></i> upload file
-                                </x-button>
-                            </x-slot:footer>
+
+                            <div class="ms-5 mb-3">
+                                <ol class="list-decimal">
+                                    <li>foto dokumentasi</li>
+                                    <li>form tingkat kerusakan</li>
+                                </ol>
+                            </div>
+
+                            <span>jangan lupa dibuat dalam folder baru!</span>
                         </x-card>
 
-                        <x-card>
-                            <x-slot:header>
-                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                    <i class="bi bi-file-earmark-richtext"></i>
-                                    Dokumen tingkat kerusakan
-                                </div>
-                            </x-slot:header>
-                            <p>upload dokumen tingkat kerusakan</p>
-                            <x-slot:footer>
-                                <x-button href="#">
-                                    <i class="bi bi-cloud-arrow-up"></i> upload file
-                                </x-button>
-                            </x-slot:footer>
-                        </x-card>
-
-                        <x-card>
-                            <x-slot:header>
-                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                    <i class="bi bi-camera"></i>
-                                    Dokumen tingkat kerusakan
-                                </div>
-                            </x-slot:header>
-                            <p>upload dokumen tingkat kerusakan</p>
-                            <x-slot:footer>
-                                <x-button href="#">
-                                    <i class="bi bi-cloud-arrow-up"></i> upload file
-                                </x-button>
-                            </x-slot:footer>
-                        </x-card>
+                        <div>
+                            cari <span class="font-bold">nama sekolah yang sesuai</span> di dalam folder dan upload di folder <span class="font-bold">laporan kerusakan</span>
+                        </div>
 
                     </div>
+                    <x-slot:footer>
+                        <x-button href="https://gofile.me/7Hsao/ZjQEsygfo">
+                            <i class="bi bi-cloud-arrow-up"></i> upload file
+                        </x-button>
+                    </x-slot:footer>
 
                 </x-card>
 
@@ -346,6 +325,21 @@
                 if (!btn) return;
                 e.preventDefault();
                 sembunyikanKategori(btn.dataset.kategori);
+            });
+
+            // ---- Kategori "update_kondisi": Status "Tidak Ada" -> Kondisi otomatis "Nihil" ----
+            form.addEventListener('change', function(e) {
+                const sel = e.target;
+                if (sel.tagName !== 'SELECT' || !sel.name.endsWith('[ada/tidak_ada]')) return;
+
+                const wrapper = sel.closest('[data-kategori]');
+                if (!wrapper) return;
+
+                const key = wrapper.dataset.kategori;
+                const kodisiSelect = wrapper.querySelector(`select[name="perubahan[${key}][kodisi]"]`);
+                if (kodisiSelect && sel.value === 'tidak_ada') {
+                    kodisiSelect.value = 'nihil';
+                }
             });
 
             // Tombol Reset juga mengembalikan semua kategori ke kondisi tersembunyi.

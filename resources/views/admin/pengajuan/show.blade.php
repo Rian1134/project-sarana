@@ -77,14 +77,6 @@
                                 <span>
                                     <x-badge variant="secondary" class="text-xs">{{ $jenisPengajuan }}</x-badge>
                                 </span>
-
-                                <span>
-                                    <span class="text-gray-500 dark:text-gray-400 font-medium">Lampiran:</span>
-                                    <a href="{{ $pengajuan->lampiran }}" target="_blank" rel="noopener"
-                                        class="inline-flex items-center gap-1 link break-all">
-                                        <i class="bi bi-paperclip"></i> Lihat Lampiran
-                                    </a>
-                                </span>
                             </div>
                         </div>
                         <div>
