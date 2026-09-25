@@ -59,8 +59,8 @@ class AdminSeeder extends Seeder
         $user->assignRole('user');
 
         $data = [
-            'nama_sekolah' => 'SMP Negeri 1 Jakarta',
-            'NPSN' => '20100001',
+            'nama_sekolah' => 'SMP Negeri 1 Mars',
+            'NPSN' => '20100031',
             'alamat_sekolah' => 'Jl. Melati No. 10, Jakarta',
             'nama_kepala_sekolah' => 'Dr. Ahmad Fauzi, M.Pd.',
             'NIP' => '196512198803001',
@@ -101,51 +101,51 @@ class AdminSeeder extends Seeder
            ],
             'ruang_perpustakaan' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'ruang_kepala_sekolah' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'ruang_guru' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'ruang_kantor_tu' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'lab_ipa' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'lab_komputer' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'uks' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'rumah_dinas' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'rumah_ibadah' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'lapangan_sekolah' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'pagar_sekolah' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'air_bersih' => [
                 'ada/tidak_ada' => 'ada',
-                'kodisi' => 'baik',
+                'kondisi' => 'baik',
             ],
             'kursi_siswa' => [
                 'baik' => 300,
@@ -239,84 +239,84 @@ class AdminSeeder extends Seeder
         RuangPerpustakaan::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['ruang_perpustakaan']['ada/tidak_ada'],
-            'kodisi' => $data['ruang_perpustakaan']['kodisi'],
+            'kondisi' => $data['ruang_perpustakaan']['kondisi'],
         ]);
 
         // 10. Ruang Kepala Sekolah
         RuangKepalaSekolah::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['ruang_kepala_sekolah']['ada/tidak_ada'],
-            'kodisi' => $data['ruang_kepala_sekolah']['kodisi'],
+            'kondisi' => $data['ruang_kepala_sekolah']['kondisi'],
         ]);
 
         // 11. Ruang Guru
         RuangGuru::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['ruang_guru']['ada/tidak_ada'],
-            'kodisi' => $data['ruang_guru']['kodisi'],
+            'kondisi' => $data['ruang_guru']['kondisi'],
         ]);
 
         // 12. Ruang Kantor/TU
         RuangKantorTu::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['ruang_kantor_tu']['ada/tidak_ada'],
-            'kodisi' => $data['ruang_kantor_tu']['kodisi'],
+            'kondisi' => $data['ruang_kantor_tu']['kondisi'],
         ]);
 
         // 13. Lab IPA
         LabIpa::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['lab_ipa']['ada/tidak_ada'],
-            'kodisi' => $data['lab_ipa']['kodisi'],
+            'kondisi' => $data['lab_ipa']['kondisi'],
         ]);
 
         // 14. Lab Komputer
         LabKomputer::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['lab_komputer']['ada/tidak_ada'],
-            'kodisi' => $data['lab_komputer']['kodisi'],
+            'kondisi' => $data['lab_komputer']['kondisi'],
         ]);
 
         // 15. UKS
         UnitKesehatanSekolah::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['uks']['ada/tidak_ada'],
-            'kodisi' => $data['uks']['kodisi'],
+            'kondisi' => $data['uks']['kondisi'],
         ]);
 
         // 16. Rumah Dinas
         RumahDinas::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['rumah_dinas']['ada/tidak_ada'],
-            'kodisi' => $data['rumah_dinas']['kodisi'],
+            'kondisi' => $data['rumah_dinas']['kondisi'],
         ]);
 
         // 17. Rumah Ibadah
         RumahIbadah::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['rumah_ibadah']['ada/tidak_ada'],
-            'kodisi' => $data['rumah_ibadah']['kodisi'],
+            'kondisi' => $data['rumah_ibadah']['kondisi'],
         ]);
 
         // 18. Lapangan Sekolah
         LapanganSekolah::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['lapangan_sekolah']['ada/tidak_ada'],
-            'kodisi' => $data['lapangan_sekolah']['kodisi'],
+            'kondisi' => $data['lapangan_sekolah']['kondisi'],
         ]);
 
         // 19. Pagar Sekolah
         PagarSekolah::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['pagar_sekolah']['ada/tidak_ada'],
-            'kodisi' => $data['pagar_sekolah']['kodisi'],
+            'kondisi' => $data['pagar_sekolah']['kondisi'],
         ]);
 
         // 20. Air Bersih
         AirBersih::create([
             'profile_sekolah_id' => $profileSekolah->id,
             'ada/tidak_ada' => $data['air_bersih']['ada/tidak_ada'],
-            'kodisi' => $data['air_bersih']['kodisi'],
+            'kondisi' => $data['air_bersih']['kondisi'],
         ]);
 
         // 21. Kursi Siswa

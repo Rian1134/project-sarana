@@ -347,7 +347,7 @@
 
                     foreach ($fasilitas as $rel => $info) {
                         $status = $profileSekolah->$rel?->{'ada/tidak_ada'} ?? null;
-                        $kondisiFasilitas = $profileSekolah->$rel?->kodisi ?? null;
+                        $kondisiFasilitas = $profileSekolah->$rel?->kondisi ?? null;
 
                         if ($status === 'ada') {
                             $countAda++;
@@ -864,7 +864,7 @@
                         @foreach ($fasilitas as $rel => $info)
                             @php
                                 $ada = $profileSekolah->$rel?->{'ada/tidak_ada'} ?? null;
-                                $kondisi = $profileSekolah->$rel?->kodisi ?? null;
+                                $kondisi = $profileSekolah->$rel?->kondisi ?? null;
                             @endphp
 
                             <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex flex-col gap-1.5">

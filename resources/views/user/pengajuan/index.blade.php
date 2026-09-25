@@ -49,7 +49,7 @@
                     @endif
                 </ul>
 
-                <div class="text-sm mb-2 wrap-break-wordword">
+                <div class="text-sm mb-2 wrap-break-word">
                     @foreach ($kategoriKeys as $kunci)
                         <div class="mb-1.5">
                             @if (count($kategoriKeys) > 1 || count($tambahanKeys))
@@ -163,7 +163,7 @@
                             @endif
                         </ul>
                     </x-table.cell>
-                    <x-table.cell class="px-3 py-2.5 align-top wrap-break-wordword">
+                    <x-table.cell class="px-3 py-2.5 align-top wrap-break-word">
                         <ul class="space-y-1 text-sm">
                             @foreach ($kategoriKeys as $kunci)
                                 <li>
@@ -215,11 +215,6 @@
                     </x-table.cell>
                     <x-table.cell class="text-center px-3 py-2.5 align-top">
                         <div class="flex justify-center gap-1">
-                            @if (!empty($item->lampiran))
-                                <x-button href="{{ $item->lampiran }}" target="_blank" rel="noopener" variant="secondary" size="xs">
-                                    <i class="bi bi-paperclip"></i>
-                                </x-button>
-                            @endif
                             <x-button href="{{ route('user.pengajuan.show', $item) }}" variant="info" size="xs">
                                 <i class="bi bi-eye-fill"></i>
                             </x-button>

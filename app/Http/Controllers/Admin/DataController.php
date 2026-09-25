@@ -473,14 +473,14 @@ class DataController extends Controller
             PagarSekolah::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->pagar_ada_tidak,
-                'kodisi' => $request->pagar_kondisi ?? 'nihil',
+                'kondisi' => $request->pagar_kondisi ?? 'nihil',
             ]);
 
             // 3. Simpan Air Bersih
             AirBersih::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->air_ada_tidak,
-                'kodisi' => $request->air_kondisi ?? 'nihil',
+                'kondisi' => $request->air_kondisi ?? 'nihil',
             ]);
 
             // 4. Simpan Kursi Siswa
@@ -579,70 +579,70 @@ class DataController extends Controller
             RuangPerpustakaan::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->perpustakaan_ada_tidak,
-                'kodisi' => $request->perpustakaan_kondisi ?? 'nihil',
+                'kondisi' => $request->perpustakaan_kondisi ?? 'nihil',
             ]);
 
             // Simpan RuangKepalaSekolah
             RuangKepalaSekolah::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->kepala_sekolah_ada_tidak,
-                'kodisi' => $request->kepala_sekolah_kondisi ?? 'nihil',
+                'kondisi' => $request->kepala_sekolah_kondisi ?? 'nihil',
             ]);
 
             // Simpan RuangGuru
             RuangGuru::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->ruang_guru_ada_tidak,
-                'kodisi' => $request->ruang_guru_kondisi ?? 'nihil',
+                'kondisi' => $request->ruang_guru_kondisi ?? 'nihil',
             ]);
 
             // Simpan RuangKantorTu
             RuangKantorTu::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->kantor_tu_ada_tidak,
-                'kodisi' => $request->kantor_tu_kondisi ?? 'nihil',
+                'kondisi' => $request->kantor_tu_kondisi ?? 'nihil',
             ]);
 
             // Simpan LabIpa
             LabIpa::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->lab_ipa_ada_tidak,
-                'kodisi' => $request->lab_ipa_kondisi ?? 'nihil',
+                'kondisi' => $request->lab_ipa_kondisi ?? 'nihil',
             ]);
 
             // Simpan LabKomputer
             LabKomputer::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->lab_komputer_ada_tidak,
-                'kodisi' => $request->lab_komputer_kondisi ?? 'nihil',
+                'kondisi' => $request->lab_komputer_kondisi ?? 'nihil',
             ]);
 
             // Simpan UnitKesehatanSekolah
             UnitKesehatanSekolah::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->uks_ada_tidak,
-                'kodisi' => $request->uks_kondisi ?? 'nihil',
+                'kondisi' => $request->uks_kondisi ?? 'nihil',
             ]);
 
             // Simpan RumahDinas
             RumahDinas::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->rumah_dinas_ada_tidak,
-                'kodisi' => $request->rumah_dinas_kondisi ?? 'nihil',
+                'kondisi' => $request->rumah_dinas_kondisi ?? 'nihil',
             ]);
 
             // Simpan RumahIbadah
             RumahIbadah::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->rumah_ibadah_ada_tidak,
-                'kodisi' => $request->rumah_ibadah_kondisi ?? 'nihil',
+                'kondisi' => $request->rumah_ibadah_kondisi ?? 'nihil',
             ]);
 
             // Simpan LapanganSekolah
             LapanganSekolah::create([
                 'profile_sekolah_id' => $profileSekolah->id,
                 'ada/tidak_ada' => $request->lapangan_sekolah_ada_tidak,
-                'kodisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
+                'kondisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
             ]);
 
             return redirect()->route('sarana.index')
@@ -777,7 +777,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->pagar_ada_tidak,
-                    'kodisi' => $request->pagar_kondisi ?? 'nihil',
+                    'kondisi' => $request->pagar_kondisi ?? 'nihil',
                 ]
             );
 
@@ -785,7 +785,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->air_ada_tidak,
-                    'kodisi' => $request->air_kondisi ?? 'nihil',
+                    'kondisi' => $request->air_kondisi ?? 'nihil',
                 ]
             );
 
@@ -895,7 +895,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->perpustakaan_ada_tidak,
-                    'kodisi' => $request->perpustakaan_kondisi ?? 'nihil',
+                    'kondisi' => $request->perpustakaan_kondisi ?? 'nihil',
                 ]
             );
 
@@ -903,7 +903,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->kepala_sekolah_ada_tidak,
-                    'kodisi' => $request->kepala_sekolah_kondisi ?? 'nihil',
+                    'kondisi' => $request->kepala_sekolah_kondisi ?? 'nihil',
                 ]
             );
 
@@ -911,7 +911,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->ruang_guru_ada_tidak,
-                    'kodisi' => $request->ruang_guru_kondisi ?? 'nihil',
+                    'kondisi' => $request->ruang_guru_kondisi ?? 'nihil',
                 ]
             );
 
@@ -919,7 +919,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->kantor_tu_ada_tidak,
-                    'kodisi' => $request->kantor_tu_kondisi ?? 'nihil',
+                    'kondisi' => $request->kantor_tu_kondisi ?? 'nihil',
                 ]
             );
 
@@ -927,7 +927,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->lab_ipa_ada_tidak,
-                    'kodisi' => $request->lab_ipa_kondisi ?? 'nihil',
+                    'kondisi' => $request->lab_ipa_kondisi ?? 'nihil',
                 ]
             );
 
@@ -935,7 +935,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->lab_komputer_ada_tidak,
-                    'kodisi' => $request->lab_komputer_kondisi ?? 'nihil',
+                    'kondisi' => $request->lab_komputer_kondisi ?? 'nihil',
                 ]
             );
 
@@ -943,7 +943,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->uks_ada_tidak,
-                    'kodisi' => $request->uks_kondisi ?? 'nihil',
+                    'kondisi' => $request->uks_kondisi ?? 'nihil',
                 ]
             );
 
@@ -951,7 +951,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->rumah_dinas_ada_tidak,
-                    'kodisi' => $request->rumah_dinas_kondisi ?? 'nihil',
+                    'kondisi' => $request->rumah_dinas_kondisi ?? 'nihil',
                 ]
             );
 
@@ -959,7 +959,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->rumah_ibadah_ada_tidak,
-                    'kodisi' => $request->rumah_ibadah_kondisi ?? 'nihil',
+                    'kondisi' => $request->rumah_ibadah_kondisi ?? 'nihil',
                 ]
             );
 
@@ -967,7 +967,7 @@ class DataController extends Controller
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
                     'ada/tidak_ada' => $request->lapangan_sekolah_ada_tidak,
-                    'kodisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
+                    'kondisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
                 ]
             );
 

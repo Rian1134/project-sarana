@@ -13,6 +13,7 @@ use App\Http\Controllers\User\RencanaPembangunanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::view('/panduan', 'landing.panduan')->name('panduan');
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
@@ -54,13 +55,9 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
-    Route::post('/register', [AuthController::class, 'store'])->name('auth.store');
-
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
 
 });
 
-Route::view('/panduan', 'landing.panduan')->name('panduan');
 Route::view('/demo', 'demo');

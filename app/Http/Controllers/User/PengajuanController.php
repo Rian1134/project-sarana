@@ -187,7 +187,6 @@ class PengajuanController extends Controller
 
         $request->validate([
             'pilih' => ['nullable', 'array'],
-            'lampiran' => ['required', 'string'],
         ]);
 
         $dipilih = array_values(array_intersect(
@@ -219,7 +218,6 @@ class PengajuanController extends Controller
             'pengajuan' => $dipilih,
             'perubahan' => $perubahan,
             'status' => 'pending',
-            'lampiran' => $request->input('lampiran'),
         ]);
 
         return redirect()
@@ -272,7 +270,6 @@ class PengajuanController extends Controller
         $request->validate([
             'judul_perubahan' => ['required', 'string', 'max:255'],
             'pilih' => ['nullable', 'array'],
-            'lampiran' => ['required', 'string'],
         ]);
 
         $dipilih = array_values(array_intersect(
@@ -300,7 +297,6 @@ class PengajuanController extends Controller
             'judul' => $request->input('judul_perubahan'),
             'pengajuan' => $kategoriGabungan,
             'perubahan' => $perubahanGabungan,
-            'lampiran' => $request->input('lampiran'),
         ]);
 
         return redirect()

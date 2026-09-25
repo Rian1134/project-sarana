@@ -149,9 +149,56 @@
                         </div>
                     </x-slot:header>
 
-                    <x-form.input name="lampiran" label="lampiran" placeholder="masukan link dirve (wajib)" required
-                        :value="old('lampiran')" />
+                    <div class='flex flex-col justify-center items-center gap-4'>
+                        <x-card>
+                            <x-slot:header>
+                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                    Proposal
+                                </div>
+                            </x-slot:header>
+                            <p>upload proposal</p>
+                            <x-slot:footer>
+                                <x-button href="#">
+                                    <i class="bi bi-cloud-arrow-up"></i> upload file
+                                </x-button>
+                            </x-slot:footer>
+                        </x-card>
+
+                        <x-card>
+                            <x-slot:header>
+                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                    <i class="bi bi-file-earmark-richtext"></i>
+                                    Dokumen tingkat kerusakan
+                                </div>
+                            </x-slot:header>
+                            <p>upload dokumen tingkat kerusakan</p>
+                            <x-slot:footer>
+                                <x-button href="#">
+                                    <i class="bi bi-cloud-arrow-up"></i> upload file
+                                </x-button>
+                            </x-slot:footer>
+                        </x-card>
+
+                        <x-card>
+                            <x-slot:header>
+                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                    <i class="bi bi-camera"></i>
+                                    Dokumen tingkat kerusakan
+                                </div>
+                            </x-slot:header>
+                            <p>upload dokumen tingkat kerusakan</p>
+                            <x-slot:footer>
+                                <x-button href="#">
+                                    <i class="bi bi-cloud-arrow-up"></i> upload file
+                                </x-button>
+                            </x-slot:footer>
+                        </x-card>
+
+                    </div>
+
                 </x-card>
+
 
                 {{-- Tombol Aksi --}}
                 <x-card>

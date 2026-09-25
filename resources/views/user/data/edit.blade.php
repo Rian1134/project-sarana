@@ -452,7 +452,7 @@
                         <div>
                             <x-form.select name="perpustakaan_kondisi" label="Kondisi Ruang Perpustakaan"
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('perpustakaan_kondisi', $profileSekolah->ruangPerpustakaan?->kodisi)" />
+                                :value="old('perpustakaan_kondisi', $profileSekolah->ruangPerpustakaan?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -491,7 +491,7 @@
                         <div>
                             <x-form.select name="kepala_sekolah_kondisi" label="Kondisi Ruang Kepala Sekolah"
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('kepala_sekolah_kondisi', $profileSekolah->ruangKepalaSekolah?->kodisi)" />
+                                :value="old('kepala_sekolah_kondisi', $profileSekolah->ruangKepalaSekolah?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -530,7 +530,7 @@
                         <div>
                             <x-form.select name="ruang_guru_kondisi" label="Kondisi Ruang Guru"
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('ruang_guru_kondisi', $profileSekolah->ruangGuru?->kodisi)" />
+                                :value="old('ruang_guru_kondisi', $profileSekolah->ruangGuru?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -569,7 +569,7 @@
                         <div>
                             <x-form.select name="kantor_tu_kondisi" label="Kondisi Ruang Kantor/Tata Usaha"
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('kantor_tu_kondisi', $profileSekolah->ruangKantorTu?->kodisi)" />
+                                :value="old('kantor_tu_kondisi', $profileSekolah->ruangKantorTu?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -608,7 +608,7 @@
                         <div>
                             <x-form.select name="lab_ipa_kondisi" label="Kondisi Lab IPA"
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('lab_ipa_kondisi', $profileSekolah->labIpa?->kodisi)" />
+                                :value="old('lab_ipa_kondisi', $profileSekolah->labIpa?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -647,7 +647,7 @@
                         <div>
                             <x-form.select name="lab_komputer_kondisi" label="Kondisi Lab Komputer"
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('lab_komputer_kondisi', $profileSekolah->labKomputer?->kodisi)" />
+                                :value="old('lab_komputer_kondisi', $profileSekolah->labKomputer?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -686,7 +686,7 @@
                         <div>
                             <x-form.select name="uks_kondisi" label="Kondisi UKS" placeholder="-- Pilih Kondisi --"
                                 :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('uks_kondisi', $profileSekolah->unitKesehatanSekolah?->kodisi)" />
+                                :value="old('uks_kondisi', $profileSekolah->unitKesehatanSekolah?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -725,7 +725,7 @@
                         <div>
                             <x-form.select name="rumah_dinas_kondisi" label="Kondisi Rumah Dinas"
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('rumah_dinas_kondisi', $profileSekolah->rumahDinas?->kodisi)" />
+                                :value="old('rumah_dinas_kondisi', $profileSekolah->rumahDinas?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -764,7 +764,7 @@
                         <div>
                             <x-form.select name="rumah_ibadah_kondisi" label="Kondisi Rumah Ibadah"
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('rumah_ibadah_kondisi', $profileSekolah->rumahIbadah?->kodisi)" />
+                                :value="old('rumah_ibadah_kondisi', $profileSekolah->rumahIbadah?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -805,7 +805,7 @@
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
                                 :value="old(
                                     'lapangan_sekolah_kondisi',
-                                    $profileSekolah->lapanganSekolah?->kodisi,
+                                    $profileSekolah->lapanganSekolah?->kondisi,
                                 )" />
                         </div>
                     </div>
@@ -845,7 +845,7 @@
                         <div>
                             <x-form.select name="pagar_kondisi" label="Kondisi Pagar Sekolah"
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('pagar_kondisi', $profileSekolah->pagarSekolah?->kodisi)" />
+                                :value="old('pagar_kondisi', $profileSekolah->pagarSekolah?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -884,7 +884,7 @@
                         <div>
                             <x-form.select name="air_kondisi" label="Kondisi Air Bersih"
                                 placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']"
-                                :value="old('air_kondisi', $profileSekolah->airBersih?->kodisi)" />
+                                :value="old('air_kondisi', $profileSekolah->airBersih?->kondisi)" />
                         </div>
                     </div>
                 </x-card>

@@ -97,14 +97,6 @@
                     <x-button variant="primary" type="submit" block class="mt-2">
                         <i class="bi bi-box-arrow-in-right me-2"></i> Login
                     </x-button>
-
-                    <div class="text-center text-sm text-gray-500 dark:text-gray-400">
-                        Belum punya akun?
-                        <a href="{{ route('auth.register') }}"
-                            class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors">
-                            Daftar Sekarang
-                        </a>
-                    </div>
                 </form>
             </div>
         </div>

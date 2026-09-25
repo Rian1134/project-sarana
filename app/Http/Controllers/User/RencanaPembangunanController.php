@@ -250,10 +250,6 @@ class RencanaPembangunanController extends Controller
                 'nullable',
                 'array',
             ],
-            'lampiran' => [
-                'required',
-                'string',
-            ],
         ]);
 
         $dipilih = array_values(
@@ -301,7 +297,6 @@ class RencanaPembangunanController extends Controller
         Pengajuan::create([
             'user_id' => Auth::id(),
             'profile_sekolah_id' => $profileSekolah->id,
-            'lampiran' => $request->input('lampiran'),
             'pengajuan' => $dipilih,
             'perubahan' => $perubahan,
             'status' => 'pending',
@@ -362,18 +357,9 @@ class RencanaPembangunanController extends Controller
         $kategoriList = self::kategoriList();
 
         $request->validate([
-            'judul_perubahan' => [
-                'required',
-                'string',
-                'max:255',
-            ],
             'pilih' => [
                 'nullable',
                 'array',
-            ],
-            'lampiran' => [
-                'required',
-                'string',
             ],
         ]);
 
@@ -433,7 +419,6 @@ class RencanaPembangunanController extends Controller
         $pengajuan->update([
             'pengajuan' => $kategoriGabungan,
             'perubahan' => $perubahanGabungan,
-            'lampiran' => $request->input('lampiran'),
         ]);
 
         return redirect()

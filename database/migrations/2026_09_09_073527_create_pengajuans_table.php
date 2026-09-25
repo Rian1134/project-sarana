@@ -20,7 +20,6 @@ return new class extends Migration
             $table->json('pengajuan')->nullable(true);
             $table->json('perubahan')->nullable(true);
             $table->string('status')->default('panding');
-            $table->string('lampiran');
             $table->timestamps();
         });
     }
