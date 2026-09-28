@@ -40,8 +40,9 @@ class PengajuanController extends Controller
             'rumah_ibadah_kondisi' => ['label' => 'Rumah Ibadah — Update Kondisi', 'table' => 'rumah_ibadahs', 'tipe' => 'update_kondisi'],
 
             // ---- dari User\RencanaPembangunanController ----
-            'ruang_kelas_baru' => ['label' => 'Ruang Kelas Baru (RKB)', 'table' => 'ruang_kelas_barus', 'tipe' => 'jumlah'],
-            'rehabilitasi_ruang_kelas' => ['label' => 'Rehabilitasi Ruang Kelas', 'table' => 'rehabilitasi_ruang_kelas', 'tipe' => 'jumlah'],
+            // Setiap kategori di bawah ini bisa diajukan sebagai "bangun" atau
+            // "rehab" — dibedakan lewat field `jenis` di dalam `perubahan`.
+            'ruang_kelas_baru' => ['label' => 'Ruang Kelas', 'table' => 'ruang_kelas_barus', 'tipe' => 'jumlah'],
             'ruang_guru' => ['label' => 'Ruang Guru', 'table' => 'ruang_gurus', 'tipe' => 'ada_kondisi'],
             'ruang_kepala_sekolah' => ['label' => 'Ruang Kepala Sekolah', 'table' => 'ruang_kepala_sekolahs', 'tipe' => 'ada_kondisi'],
             'ruang_kantor_tu' => ['label' => 'Ruang Kantor TU', 'table' => 'ruang_kantor_tus', 'tipe' => 'ada_kondisi'],
@@ -107,6 +108,29 @@ class PengajuanController extends Controller
     public static function categoryLabel(string $kategori): string
     {
         return self::kategoriList()[$kategori]['label'] ?? $kategori;
+    }
+
+    /**
+     * $fieldsKategori = $pengajuan->perubahan[$kunci] (array satu kategori).
+     * Jenis pengajuan: 'bangun' (default, termasuk data lama) atau 'rehab'.
+     */
+    public static function isJenisRehab(array $fieldsKategori): bool
+    {
+        return ($fieldsKategori['jenis'] ?? 'bangun') === 'rehab';
+    }
+
+    public static function labelJenis(array $fieldsKategori): string
+    {
+        return self::isJenisRehab($fieldsKategori) ? 'Rehabilitasi' : 'Bangun Baru';
+    }
+
+    /**
+     * 'jenis' & 'selesai' adalah penanda internal, bukan isian form —
+     * jangan ditampilkan sebagai field biasa di index/show.
+     */
+    public static function isFieldTampil(string $field): bool
+    {
+        return ! in_array($field, ['jenis', 'selesai'], true);
     }
 
     /**
@@ -289,9 +313,18 @@ class PengajuanController extends Controller
 
             $data = $perubahan[$kategori] ?? [];
 
+            $rehab = self::isJenisRehab($data);
+
             $namaRelasi = Str::endsWith($kategori, '_kondisi')
                 ? Str::beforeLast($kategori, '_kondisi')
                 : $kategori;
+
+            // Rehab ruang kelas dicatat di tabel rehabilitasi sendiri,
+            // bukan di tabel ruang kelas baru.
+            if ($rehab && $kategori === 'ruang_kelas_baru') {
+                $namaRelasi = 'rehabilitasi_ruang_kelas';
+            }
+
             $relasi = Str::camel($namaRelasi);
 
             if (! method_exists($profileSekolah, $relasi)) {
@@ -303,10 +336,10 @@ class PengajuanController extends Controller
             $sarana = $profileSekolah->{$relasi}()->firstOrCreate([]);
 
             match ($kategoriList[$kategori]['tipe']) {
-                'baik_rusak' => $this->terapkanBaikRusak($sarana, $data),
+                'baik_rusak' => $this->terapkanBaikRusak($sarana, $data, $rehab),
                 'ada_kondisi' => $this->terapkanAdaKondisi($sarana),
                 'update_kondisi' => $this->terapkanUpdateKondisi($sarana, $data),
-                'jumlah' => $this->terapkanJumlah($profileSekolah, $kategori, $sarana, $data),
+                'jumlah' => $this->terapkanJumlah($profileSekolah, $sarana, $data, $rehab),
                 default => null,
             };
         }
@@ -319,10 +352,20 @@ class PengajuanController extends Controller
      * di-clamp minimal 0 supaya tidak pernah negatif kalau rusak yang
      * dilaporkan lebih besar dari stok baik yang tercatat.
      */
-    private function terapkanBaikRusak($sarana, array $data): void
+    private function terapkanBaikRusak($sarana, array $data, bool $rehab = false): void
     {
         $baikBaru = (int) ($data['baik'] ?? 0);
         $rusakBaru = (int) ($data['rusak'] ?? 0);
+
+        // Rehab: unit yang tadinya rusak jadi baik (rusak berkurang, baik
+        // bertambah sejumlah yang sama; rusak tidak pernah negatif).
+        if ($rehab) {
+            $sarana->rusak = max(0, $sarana->rusak - $baikBaru);
+            $sarana->baik = $sarana->baik + $baikBaru;
+            $sarana->save();
+
+            return;
+        }
 
         $sarana->baik = max(0, $sarana->baik + $baikBaru - $rusakBaru);
         $sarana->rusak = $sarana->rusak + $rusakBaru;
@@ -363,15 +406,15 @@ class PengajuanController extends Controller
     }
 
     /**
-     * jumlah: hanya dipakai oleh RKB & Rehabilitasi Ruang Kelas. Tabel jumlah
-     * miliknya sendiri diakumulasi (total yang pernah diajukan & disetujui),
-     * DAN keduanya juga berdampak ke stok Ruang Kelas (baik/rusak):
-     * - RKB: ruang kelas baru langsung masuk hitungan "baik".
+     * jumlah: hanya dipakai oleh Ruang Kelas. Jumlahnya diakumulasi di tabel
+     * miliknya (ruang kelas baru, atau tabel rehabilitasi kalau jenisnya
+     * rehab), DAN berdampak ke stok Ruang Kelas (baik/rusak):
+     * - Bangun baru: ruang kelas baru langsung masuk hitungan "baik".
      * - Rehab: ruang yang tadinya "rusak", setelah direhab jadi "baik"
      *   (rusak berkurang, baik bertambah sejumlah yang sama, rusak
      *   di-clamp minimal 0).
      */
-    private function terapkanJumlah(ProfileSekolah $profileSekolah, string $kategori, $sarana, array $data): void
+    private function terapkanJumlah(ProfileSekolah $profileSekolah, $sarana, array $data, bool $rehab): void
     {
         $jumlahBaru = (int) ($data['jumlah'] ?? 0);
 
@@ -380,13 +423,11 @@ class PengajuanController extends Controller
 
         $ruangKelas = $profileSekolah->ruangKelas()->firstOrCreate([]);
 
-        if ($kategori === 'ruang_kelas_baru') {
-            $ruangKelas->baik = $ruangKelas->baik + $jumlahBaru;
-        } elseif ($kategori === 'rehabilitasi_ruang_kelas') {
+        if ($rehab) {
             $ruangKelas->rusak = max(0, $ruangKelas->rusak - $jumlahBaru);
-            $ruangKelas->baik = $ruangKelas->baik + $jumlahBaru;
         }
 
+        $ruangKelas->baik = $ruangKelas->baik + $jumlahBaru;
         $ruangKelas->save();
     }
 }

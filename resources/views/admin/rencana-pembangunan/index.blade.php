@@ -9,7 +9,7 @@
     <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-5">
         <div>
             <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                <i class="bi bi-building-add text-sky-600"></i> Rencana Pembangunan
+                <i class="bi bi-building-add text-sky-600"></i> Rencana Pembangunan & Rehabilitasi Srana Prasarana
             </h1>
         </div>
 
@@ -59,7 +59,6 @@
                             $kategoriKeys = is_array($item->pengajuan) ? $item->pengajuan : array_filter([$item->pengajuan]);
                             $perubahan = is_array($item->perubahan) ? $item->perubahan : [];
                             $tambahanKeys = array_keys(array_diff_key($perubahan, array_flip($kategoriKeys)));
-                            $jumlahField = collect($kategoriKeys)->sum(fn($k) => count($perubahan[$k] ?? [])) + count($tambahanKeys);
                         @endphp
                         <x-table.row data-search-row
                             data-search-text="{{ strtolower($item->profileSekolah->nama_sekolah ?? '') }}">
@@ -77,24 +76,44 @@
                                 </div>
                             </x-table.cell>
 
-                            {{-- PERUBAHAN: ringkasan kategori + jumlah field, rincian
-                                 lengkap dilihat lewat tombol "Lihat" (halaman show). --}}
+                            {{-- PERUBAHAN: kategori + jenis (Bangun Baru / Rehabilitasi) + isian
+                                 (mis. jumlah). Rincian lengkap lewat tombol "Lihat". --}}
                             <x-table.cell class="align-top">
-                                <div class="flex flex-wrap gap-1">
+                                <ul class="space-y-1.5">
                                     @foreach ($kategoriKeys as $kunci)
-                                        <span
-                                            class="inline-block text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-                                            {{ \App\Http\Controllers\Admin\PengajuanController::categoryLabel($kunci) }}
-                                        </span>
+                                        @php
+                                            $fieldsKategori = $perubahan[$kunci] ?? [];
+                                            $isRehab = \App\Http\Controllers\Admin\PengajuanController::isJenisRehab($fieldsKategori);
+                                        @endphp
+                                        <li class="text-xs flex flex-wrap items-center gap-1">
+                                            <span
+                                                class="inline-block px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+                                                {{ \App\Http\Controllers\Admin\PengajuanController::categoryLabel($kunci) }}
+                                            </span>
+                                            <x-badge :variant="$isRehab ? 'info' : 'secondary'" class="text-[10px]">
+                                                {{ \App\Http\Controllers\Admin\PengajuanController::labelJenis($fieldsKategori) }}
+                                            </x-badge>
+                                            @if ($isRehab && ($fieldsKategori['selesai'] ?? false))
+                                                <x-badge variant="success" class="text-[10px]">Selesai</x-badge>
+                                            @endif
+                                            @foreach ($fieldsKategori as $field => $value)
+                                                @continue(!\App\Http\Controllers\Admin\PengajuanController::isFieldTampil($field))
+                                                <span class="text-gray-500 dark:text-gray-400">
+                                                    {{ \App\Http\Controllers\Admin\PengajuanController::fieldLabel($kunci, $field) }}:
+                                                    <span class="font-medium">{{ $value }}</span>
+                                                </span>
+                                            @endforeach
+                                        </li>
                                     @endforeach
                                     @if (count($tambahanKeys))
-                                        <span
-                                            class="inline-block text-xs px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-                                            Perubahan Lainnya
-                                        </span>
+                                        <li class="text-xs">
+                                            <span
+                                                class="inline-block px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+                                                Perubahan Lainnya
+                                            </span>
+                                        </li>
                                     @endif
-                                </div>
-                                <div class="text-xs text-gray-400 mt-1">{{ $jumlahField }} field diubah</div>
+                                </ul>
                             </x-table.cell>
 
                             {{-- STATUS --}}

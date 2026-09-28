@@ -75,27 +75,18 @@
                                 </div>
                             @endif
                             <ul class="space-y-0.5">
-                                @forelse ($fieldsKategori as $field => $value)
+                                <li>
+                                    <span class="text-gray-500 dark:text-gray-400">Jenis:</span>
+                                    <span class="font-medium">{{ \App\Http\Controllers\User\RencanaPembangunanController::labelJenis($fieldsKategori) }}</span>
+                                </li>
+                                @foreach ($fieldsKategori as $field => $value)
                                     @continue(!\App\Http\Controllers\User\RencanaPembangunanController::isFieldTampil($field))
                                     <li>
                                         <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel($kunci, $field) }}:</span>
                                         <span class="font-medium wrap-break-word">{{ $value }}</span>
                                     </li>
-                                @empty
-                                    <li class="text-gray-400 italic">Tidak ada isian tambahan</li>
-                                @endforelse
+                                @endforeach
                             </ul>
-
-                            @if ($isRehab && $item->status === 'approved' && ! $selesaiRehab)
-                                <form action="{{ route('user.rencana-pembangunan.selesai', [$item, $kunci]) }}"
-                                    method="POST" class="mt-1"
-                                    onsubmit="return confirm('Tandai rehabilitasi ini sebagai selesai?')">
-                                    @csrf
-                                    <x-button type="submit" variant="success" size="xs">
-                                        <i class="bi bi-check2-circle"></i> Tandai Selesai
-                                    </x-button>
-                                </form>
-                            @endif
                         </div>
                     @endforeach
                     @if (count($tambahanKeys))
@@ -221,27 +212,18 @@
                                         </div>
                                     @endif
                                     <ul class="space-y-0.5 pl-2">
-                                        @forelse ($fieldsKategori as $field => $value)
+                                        <li>
+                                            <span class="text-gray-500 dark:text-gray-400">Jenis:</span>
+                                            <span class="font-medium">{{ \App\Http\Controllers\User\RencanaPembangunanController::labelJenis($fieldsKategori) }}</span>
+                                        </li>
+                                        @foreach ($fieldsKategori as $field => $value)
                                             @continue(!\App\Http\Controllers\User\RencanaPembangunanController::isFieldTampil($field))
                                             <li>
                                                 <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel($kunci, $field) }}:</span>
                                                 <span class="font-medium wrap-break-word">{{ $value }}</span>
                                             </li>
-                                        @empty
-                                            <li class="text-gray-400 italic">Tidak ada isian tambahan</li>
-                                        @endforelse
+                                        @endforeach
                                     </ul>
-
-                                    @if ($isRehab && $item->status === 'approved' && ! $selesaiRehab)
-                                        <form action="{{ route('user.rencana-pembangunan.selesai', [$item, $kunci]) }}"
-                                            method="POST" class="pl-2 mt-1"
-                                            onsubmit="return confirm('Tandai rehabilitasi ini sebagai selesai?')">
-                                            @csrf
-                                            <x-button type="submit" variant="success" size="xs">
-                                                <i class="bi bi-check2-circle"></i> Tandai Selesai
-                                            </x-button>
-                                        </form>
-                                    @endif
                                 </li>
                             @endforeach
                             @if (count($tambahanKeys))
