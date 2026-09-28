@@ -93,6 +93,7 @@
                                     method="POST" class="mt-1"
                                     onsubmit="return confirm('Tandai rehabilitasi ini sebagai selesai?')">
                                     @csrf
+                                    @method('PUT')
                                     <x-button type="submit" variant="success" size="xs">
                                         <i class="bi bi-check2-circle"></i> Tandai Selesai
                                     </x-button>
@@ -241,6 +242,7 @@
                                             method="POST" class="pl-2 mt-1"
                                             onsubmit="return confirm('Tandai rehabilitasi ini sebagai selesai?')">
                                             @csrf
+                                            @method('PUT') 
                                             <x-button type="submit" variant="success" size="xs">
                                                 <i class="bi bi-check2-circle"></i> Tandai Selesai
                                             </x-button>

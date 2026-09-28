@@ -544,7 +544,7 @@ class RencanaPembangunanController extends Controller
      *     [RencanaPembangunanController::class, 'selesaikanRehab'])
      *     ->name('user.rencana-pembangunan.selesai');
      */
-    public function selesaikanRehab(Pengajuan $pengajuan, string $kategori)
+    public function selesai(Pengajuan $pengajuan, string $kategori)
     {
         $this->authorizeOwner($pengajuan);
 
