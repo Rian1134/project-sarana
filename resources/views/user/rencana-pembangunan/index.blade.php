@@ -42,7 +42,10 @@
 
                 <ul class="text-xs text-gray-500 dark:text-gray-400 mb-2">
                     @foreach ($kategoriKeys as $kunci)
-                        <li>{{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}</li>
+                        <li>
+                            {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
+                            — {{ \App\Http\Controllers\User\RencanaPembangunanController::labelJenis($item->perubahan[$kunci] ?? []) }}
+                        </li>
                     @endforeach
                     @if (count($tambahanKeys))
                         <li>Perubahan Lainnya</li>
@@ -51,20 +54,48 @@
 
                 <div class="text-sm mb-2 wrap-break-word">
                     @foreach ($kategoriKeys as $kunci)
+                        @php
+                            $fieldsKategori = $item->perubahan[$kunci] ?? [];
+                            $isRehab = \App\Http\Controllers\User\RencanaPembangunanController::isJenisRehab($fieldsKategori);
+                            $selesaiRehab = $fieldsKategori['selesai'] ?? false;
+                        @endphp
                         <div class="mb-1.5">
                             @if (count($kategoriKeys) > 1 || count($tambahanKeys))
-                                <div class="text-xs font-semibold text-gray-400 uppercase">{{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}</div>
+                                <div class="text-xs font-semibold text-gray-400 uppercase flex items-center gap-1.5">
+                                    {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
+                                    @if ($isRehab)
+                                        @if ($selesaiRehab)
+                                            <x-badge variant="success" class="text-[10px] normal-case">Rehab Selesai</x-badge>
+                                        @else
+                                            <x-badge variant="info" class="text-[10px] normal-case">Sedang Direhab</x-badge>
+                                        @endif
+                                    @else
+                                        <x-badge variant="secondary" class="text-[10px] normal-case">Bangun Baru</x-badge>
+                                    @endif
+                                </div>
                             @endif
                             <ul class="space-y-0.5">
-                                @forelse (($item->perubahan[$kunci] ?? []) as $field => $value)
+                                @forelse ($fieldsKategori as $field => $value)
+                                    @continue(!\App\Http\Controllers\User\RencanaPembangunanController::isFieldTampil($field))
                                     <li>
                                         <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel($kunci, $field) }}:</span>
                                         <span class="font-medium wrap-break-word">{{ $value }}</span>
                                     </li>
                                 @empty
-                                    <li class="text-gray-400 italic">Diajukan untuk dibangun</li>
+                                    <li class="text-gray-400 italic">Tidak ada isian tambahan</li>
                                 @endforelse
                             </ul>
+
+                            @if ($isRehab && $item->status === 'approved' && ! $selesaiRehab)
+                                <form action="{{ route('user.rencana-pembangunan.selesai', [$item, $kunci]) }}"
+                                    method="POST" class="mt-1"
+                                    onsubmit="return confirm('Tandai rehabilitasi ini sebagai selesai?')">
+                                    @csrf
+                                    <x-button type="submit" variant="success" size="xs">
+                                        <i class="bi bi-check2-circle"></i> Tandai Selesai
+                                    </x-button>
+                                </form>
+                            @endif
                         </div>
                     @endforeach
                     @if (count($tambahanKeys))
@@ -129,7 +160,7 @@
             <x-table bordered class="text-sm" style="min-width: 860px;">
                 <x-slot:head>
                     <tr class="bg-sky-700 text-white text-center">
-                        <x-table.heading class="text-white! align-middle px-3 py-2 w-36">
+                        <x-table.heading class="text-white! align-middle px-3 py-2 w-40">
                             Kategori
                         </x-table.heading>
                         <x-table.heading class="text-white! align-middle px-3 py-2 min-w-80">
@@ -156,7 +187,12 @@
                     <x-table.cell class="font-medium px-3 py-2.5 align-top wrap-break-word">
                         <ul class="space-y-0.5">
                             @foreach ($kategoriKeys as $kunci)
-                                <li>{{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}</li>
+                                <li>
+                                    {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
+                                    <span class="block text-xs text-gray-400 font-normal">
+                                        {{ \App\Http\Controllers\User\RencanaPembangunanController::labelJenis($item->perubahan[$kunci] ?? []) }}
+                                    </span>
+                                </li>
                             @endforeach
                             @if (count($tambahanKeys))
                                 <li>Perubahan Lainnya</li>
@@ -166,20 +202,46 @@
                     <x-table.cell class="px-3 py-2.5 align-top wrap-break-word">
                         <ul class="space-y-1 text-sm">
                             @foreach ($kategoriKeys as $kunci)
+                                @php
+                                    $fieldsKategori = $item->perubahan[$kunci] ?? [];
+                                    $isRehab = \App\Http\Controllers\User\RencanaPembangunanController::isJenisRehab($fieldsKategori);
+                                    $selesaiRehab = $fieldsKategori['selesai'] ?? false;
+                                @endphp
                                 <li>
                                     @if (count($kategoriKeys) > 1 || count($tambahanKeys))
-                                        <div class="text-xs font-semibold text-gray-400 uppercase">{{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}</div>
+                                        <div class="text-xs font-semibold text-gray-400 uppercase flex items-center gap-1.5">
+                                            {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
+                                            @if ($isRehab)
+                                                @if ($selesaiRehab)
+                                                    <x-badge variant="success" class="text-[10px] normal-case">Rehab Selesai</x-badge>
+                                                @else
+                                                    <x-badge variant="info" class="text-[10px] normal-case">Sedang Direhab</x-badge>
+                                                @endif
+                                            @endif
+                                        </div>
                                     @endif
                                     <ul class="space-y-0.5 pl-2">
-                                        @forelse (($item->perubahan[$kunci] ?? []) as $field => $value)
+                                        @forelse ($fieldsKategori as $field => $value)
+                                            @continue(!\App\Http\Controllers\User\RencanaPembangunanController::isFieldTampil($field))
                                             <li>
                                                 <span class="text-gray-500 dark:text-gray-400">{{ \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel($kunci, $field) }}:</span>
                                                 <span class="font-medium wrap-break-word">{{ $value }}</span>
                                             </li>
                                         @empty
-                                            <li class="text-gray-400 italic">Diajukan untuk dibangun</li>
+                                            <li class="text-gray-400 italic">Tidak ada isian tambahan</li>
                                         @endforelse
                                     </ul>
+
+                                    @if ($isRehab && $item->status === 'approved' && ! $selesaiRehab)
+                                        <form action="{{ route('user.rencana-pembangunan.selesai', [$item, $kunci]) }}"
+                                            method="POST" class="pl-2 mt-1"
+                                            onsubmit="return confirm('Tandai rehabilitasi ini sebagai selesai?')">
+                                            @csrf
+                                            <x-button type="submit" variant="success" size="xs">
+                                                <i class="bi bi-check2-circle"></i> Tandai Selesai
+                                            </x-button>
+                                        </form>
+                                    @endif
                                 </li>
                             @endforeach
                             @if (count($tambahanKeys))

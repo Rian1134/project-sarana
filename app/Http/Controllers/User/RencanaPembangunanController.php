@@ -15,14 +15,8 @@ class RencanaPembangunanController extends Controller
     {
         return [
             'ruang_kelas_baru' => [
-                'label' => 'Ruang Kelas Baru (RKB)',
+                'label' => 'Ruang Kelas',
                 'table' => 'ruang_kelas_barus',
-                'tipe' => 'jumlah',
-            ],
-
-            'rehabilitasi_ruang_kelas' => [
-                'label' => 'Rehabilitasi Ruang Kelas',
-                'table' => 'rehabilitasi_ruang_kelas',
                 'tipe' => 'jumlah',
             ],
 
@@ -116,7 +110,6 @@ class RencanaPembangunanController extends Controller
     {
         return [
             'ruang_kelas_baru' => 'bi-building',
-            'rehabilitasi_ruang_kelas' => 'bi-tools',
             'ruang_guru' => 'bi-people',
             'ruang_kepala_sekolah' => 'bi-person-workspace',
             'ruang_kantor_tu' => 'bi-briefcase',
@@ -152,8 +145,6 @@ class RencanaPembangunanController extends Controller
                     'type' => 'number',
                 ],
             ],
-
-            'ada_kondisi' => [],
         ];
     }
 
@@ -176,6 +167,28 @@ class RencanaPembangunanController extends Controller
         return self::kategoriList()[$kategori]['label'] ?? $kategori;
     }
 
+    /**
+     * Field internal yang BUKAN isian form biasa, jadi harus dikecualikan
+     * saat view menampilkan daftar rincian per kategori.
+     */
+    public static function isFieldTampil(string $field): bool
+    {
+        return ! in_array($field, ['jenis', 'selesai'], true);
+    }
+
+    /**
+     * $fieldsKategori = $pengajuan->perubahan[$kunci] — array satu kategori.
+     */
+    public static function isJenisRehab(array $fieldsKategori): bool
+    {
+        return ($fieldsKategori['jenis'] ?? 'bangun') === 'rehab';
+    }
+
+    public static function labelJenis(array $fieldsKategori): string
+    {
+        return self::isJenisRehab($fieldsKategori) ? 'Rehabilitasi' : 'Bangun Baru';
+    }
+
     private function rulesForKategori(string $kategori): array
     {
         $kategoriData = self::kategoriList()[$kategori] ?? null;
@@ -185,7 +198,15 @@ class RencanaPembangunanController extends Controller
         }
 
         $tipe = $kategoriData['tipe'];
-        $rules = [];
+
+        // 'jenis' berlaku untuk SEMUA kategori: menentukan apakah sarana
+        // ini diajukan untuk dibangun baru atau direhabilitasi.
+        $rules = [
+            'jenis' => [
+                'required',
+                Rule::in(['bangun', 'rehab']),
+            ],
+        ];
 
         foreach (self::fieldsByTipe()[$tipe] ?? [] as $field) {
             $rules[$field['name']] = $field['type'] === 'select'
@@ -201,6 +222,42 @@ class RencanaPembangunanController extends Controller
         }
 
         return $rules;
+    }
+
+    /**
+     * Kategori yang saat ini punya pengajuan REHAB yang masih berjalan
+     * milik user (status belum ditolak & belum ditandai selesai). Dipakai
+     * untuk mengunci opsi "Rehabilitasi" di form supaya tidak diajukan
+     * dobel selama rehab sebelumnya masih dalam proses — opsi "Bangun
+     * Baru" untuk kategori yang sama tetap boleh dipilih.
+     */
+    private function kategoriSedangRehab(int $userId, ?int $kecualiPengajuanId = null): array
+    {
+        $query = Pengajuan::where('user_id', $userId)
+            ->where('status', '!=', 'rejected');
+
+        if ($kecualiPengajuanId) {
+            $query->where('id', '!=', $kecualiPengajuanId);
+        }
+
+        $sedang = [];
+
+        foreach ($query->get(['pengajuan', 'perubahan']) as $item) {
+            $keys = is_array($item->pengajuan)
+                ? $item->pengajuan
+                : array_filter([$item->pengajuan]);
+
+            foreach ($keys as $key) {
+                $fields = $item->perubahan[$key] ?? [];
+                $selesai = $fields['selesai'] ?? false;
+
+                if (self::isJenisRehab($fields) && ! $selesai) {
+                    $sedang[] = $key;
+                }
+            }
+        }
+
+        return array_unique($sedang);
     }
 
     public function index(Request $request)
@@ -228,22 +285,23 @@ class RencanaPembangunanController extends Controller
         $kategoriList = self::kategoriList();
         $fieldsByTipe = self::fieldsByTipe();
         $ikonKategori = self::ikonKategori();
+        $kategoriSedangRehab = $this->kategoriSedangRehab(Auth::id());
 
         return view(
             'user.rencana-pembangunan.create',
             compact(
                 'kategoriList',
                 'fieldsByTipe',
-                'ikonKategori'
+                'ikonKategori',
+                'kategoriSedangRehab'
             )
         );
     }
 
     public function store(Request $request)
     {
-
-        // dd($request);
         $kategoriList = self::kategoriList();
+        $sedangRehab = $this->kategoriSedangRehab(Auth::id());
 
         $request->validate([
             'pilih' => [
@@ -280,12 +338,21 @@ class RencanaPembangunanController extends Controller
         $perubahan = $validated['perubahan'] ?? [];
 
         foreach ($dipilih as $key) {
-            if (
-                isset($kategoriList[$key]) &&
-                $kategoriList[$key]['tipe'] === 'ada_kondisi' &&
-                ! isset($perubahan[$key])
-            ) {
-                $perubahan[$key] = [];
+            $jenis = $perubahan[$key]['jenis'] ?? 'bangun';
+
+            // Jaga-jaga di sisi server: kategori yang rehabnya masih
+            // berjalan tidak boleh diajukan rehab lagi, walau di form
+            // opsinya sudah dikunci.
+            if ($jenis === 'rehab' && in_array($key, $sedangRehab, true)) {
+                return back()
+                    ->withInput()
+                    ->withErrors([
+                        "perubahan.$key.jenis" => 'Rehabilitasi '.self::categoryLabel($key).' masih berjalan, belum bisa diajukan lagi.',
+                    ]);
+            }
+
+            if ($jenis === 'rehab') {
+                $perubahan[$key]['selesai'] = false;
             }
         }
 
@@ -312,8 +379,6 @@ class RencanaPembangunanController extends Controller
 
     public function show(Pengajuan $pengajuan)
     {
-        // dd(Auth::id());
-
         $this->authorizeOwner($pengajuan);
 
         $kategoriList = self::kategoriList();
@@ -335,6 +400,7 @@ class RencanaPembangunanController extends Controller
         $kategoriList = self::kategoriList();
         $fieldsByTipe = self::fieldsByTipe();
         $ikonKategori = self::ikonKategori();
+        $kategoriSedangRehab = $this->kategoriSedangRehab(Auth::id(), $pengajuan->id);
 
         return view(
             'user.rencana-pembangunan.edit',
@@ -342,7 +408,8 @@ class RencanaPembangunanController extends Controller
                 'pengajuan',
                 'kategoriList',
                 'fieldsByTipe',
-                'ikonKategori'
+                'ikonKategori',
+                'kategoriSedangRehab'
             )
         );
     }
@@ -355,6 +422,7 @@ class RencanaPembangunanController extends Controller
         $this->guardEditable($pengajuan);
 
         $kategoriList = self::kategoriList();
+        $sedangRehab = $this->kategoriSedangRehab(Auth::id(), $pengajuan->id);
 
         $request->validate([
             'pilih' => [
@@ -382,24 +450,41 @@ class RencanaPembangunanController extends Controller
 
         $perubahanBaru = $validated['perubahan'] ?? [];
 
-        foreach ($dipilih as $key) {
-            if (
-                isset($kategoriList[$key]) &&
-                $kategoriList[$key]['tipe'] === 'ada_kondisi' &&
-                ! isset($perubahanBaru[$key])
-            ) {
-                $perubahanBaru[$key] = [];
-            }
-        }
-
         $perubahanLama = is_array($pengajuan->perubahan)
             ? $pengajuan->perubahan
             : [];
+
+        foreach ($dipilih as $key) {
+            $jenisBaru = $perubahanBaru[$key]['jenis'] ?? 'bangun';
+
+            if ($jenisBaru === 'rehab' && in_array($key, $sedangRehab, true)) {
+                return back()
+                    ->withInput()
+                    ->withErrors([
+                        "perubahan.$key.jenis" => 'Rehabilitasi '.self::categoryLabel($key).' masih berjalan, belum bisa diajukan lagi.',
+                    ]);
+            }
+        }
 
         $perubahanGabungan = array_merge(
             $perubahanLama,
             $perubahanBaru
         );
+
+        // Pertahankan status selesai rehab yang sudah ada kalau jenisnya
+        // tetap rehab. Kalau kategori ini baru pertama kali jadi rehab
+        // (sebelumnya bangun baru, atau baru ditambahkan), mulai dari
+        // "belum selesai" lagi.
+        foreach ($dipilih as $key) {
+            $jenisBaru = $perubahanBaru[$key]['jenis'] ?? 'bangun';
+
+            if ($jenisBaru === 'rehab') {
+                $jenisLama = $perubahanLama[$key]['jenis'] ?? null;
+                $perubahanGabungan[$key]['selesai'] = $jenisLama === 'rehab'
+                    ? ($perubahanLama[$key]['selesai'] ?? false)
+                    : false;
+            }
+        }
 
         $kategoriLama = is_array($pengajuan->pengajuan)
             ? $pengajuan->pengajuan
@@ -447,6 +532,48 @@ class RencanaPembangunanController extends Controller
             );
     }
 
+    /**
+     * Tandai satu kategori rehab (di dalam satu pengajuan) sebagai
+     * selesai dikerjakan. Hanya bisa dilakukan kalau pengajuan sudah
+     * disetujui (approved) dan kategori tersebut memang diajukan sebagai
+     * rehab. Setelah ditandai selesai, kategori ini otomatis boleh
+     * diajukan rehab lagi di masa depan.
+     *
+     * Perlu ditambahkan route, contoh:
+     * Route::post('rencana-pembangunan/{pengajuan}/rehab/{kategori}/selesai',
+     *     [RencanaPembangunanController::class, 'selesaikanRehab'])
+     *     ->name('user.rencana-pembangunan.selesai');
+     */
+    public function selesaikanRehab(Pengajuan $pengajuan, string $kategori)
+    {
+        $this->authorizeOwner($pengajuan);
+
+        $kategoriTersimpan = is_array($pengajuan->pengajuan)
+            ? $pengajuan->pengajuan
+            : array_filter([$pengajuan->pengajuan]);
+
+        abort_unless(in_array($kategori, $kategoriTersimpan, true), 404);
+
+        $perubahan = is_array($pengajuan->perubahan) ? $pengajuan->perubahan : [];
+
+        abort_unless(self::isJenisRehab($perubahan[$kategori] ?? []), 404);
+
+        abort_unless(
+            $pengajuan->status === 'approved',
+            403,
+            'Hanya rehab yang sudah disetujui admin yang bisa ditandai selesai.'
+        );
+
+        $perubahan[$kategori]['selesai'] = true;
+
+        $pengajuan->update(['perubahan' => $perubahan]);
+
+        return back()->with(
+            'success',
+            'Rehabilitasi '.self::categoryLabel($kategori).' berhasil ditandai selesai.'
+        );
+    }
+
     private function authorizeOwner(Pengajuan $pengajuan): void
     {
         // Bandingkan sebagai integer agar tidak salah karena
@@ -459,7 +586,6 @@ class RencanaPembangunanController extends Controller
             "Akses ditolak. Pengajuan ini milik user_id={$ownerId}, "
             ."tapi kamu login sebagai user_id={$loggedInId}."
         );
-        // --- AKHIR MODE DEBUG ---
     }
 
     private function guardEditable(Pengajuan $pengajuan, string $aksi = 'diedit'): void

@@ -57,17 +57,37 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach ($kategoriKeys as $kunci)
-                        @php $fields = $pengajuan->perubahan[$kunci] ?? []; @endphp
+                        @php
+                            $fields = $pengajuan->perubahan[$kunci] ?? [];
+                            $isRehab = \App\Http\Controllers\User\RencanaPembangunanController::isJenisRehab($fields);
+                            $selesaiRehab = $fields['selesai'] ?? false;
+                            $labelJenis = \App\Http\Controllers\User\RencanaPembangunanController::labelJenis($fields);
+                        @endphp
                         <x-card class="p-2 md:p-4">
                             <x-slot:header>
-                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-semibold">
-                                    <i class="bi {{ $ikonKategori[$kunci] ?? 'bi-tag' }}"></i>
-                                    {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex flex-col">
+                                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-semibold">
+                                            <i class="bi {{ $ikonKategori[$kunci] ?? 'bi-tag' }}"></i>
+                                            {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
+                                        </div>
+                                        <span class="text-xs text-gray-400 ms-6">{{ $labelJenis }}</span>
+                                    </div>
+                                    @if ($isRehab)
+                                        @if ($selesaiRehab)
+                                            <x-badge variant="success" class="text-xs">Selesai</x-badge>
+                                        @else
+                                            <x-badge variant="info" class="text-xs">Sedang Direhab</x-badge>
+                                        @endif
+                                    @endif
                                 </div>
                             </x-slot:header>
 
                             <dl class="divide-y divide-gray-100 dark:divide-gray-700">
-                                @forelse ($fields as $field => $value)
+                                @php $adaField = false; @endphp
+                                @foreach ($fields as $field => $value)
+                                    @continue(!\App\Http\Controllers\User\RencanaPembangunanController::isFieldTampil($field))
+                                    @php $adaField = true; @endphp
                                     <div class="flex justify-between gap-3 py-2 text-sm">
                                         <dt class="text-gray-500 dark:text-gray-400">
                                             {{ \App\Http\Controllers\User\RencanaPembangunanController::fieldLabel($kunci, $field) }}
@@ -76,11 +96,12 @@
                                             {{ ucfirst(str_replace('_', ' ', (string) $value)) }}
                                         </dd>
                                     </div>
-                                @empty
+                                @endforeach
+                                @if (! $adaField)
                                     <div class="py-2 text-sm text-gray-400 italic">
-                                        Diajukan untuk dibangun
+                                        Tidak ada isian tambahan
                                     </div>
-                                @endforelse
+                                @endif
                             </dl>
                         </x-card>
                     @endforeach
