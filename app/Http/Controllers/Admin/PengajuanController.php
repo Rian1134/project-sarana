@@ -63,7 +63,7 @@ class PengajuanController extends Controller
      *
      * - ada_kondisi: KOSONG SENGAJA — "usul bangun baru", nilai baik/ada
      *   ditetapkan otomatis saat approve (lihat terapkanAdaKondisi()).
-     * - update_kondisi: field 'kodisi' — lapor kondisi TERKINI fasilitas yang
+     * - update_kondisi: field 'kondisi' — lapor kondisi TERKINI fasilitas yang
      *   sudah ada (termasuk "Rusak"); nilainya DIBACA dari input user
      *   (lihat terapkanUpdateKondisi()), bukan ditetapkan otomatis.
      */
@@ -79,7 +79,7 @@ class PengajuanController extends Controller
             ],
             'ada_kondisi' => [],
             'update_kondisi' => [
-                ['name' => 'kodisi', 'label' => 'Kondisi Saat Ini', 'type' => 'select', 'options' => ['baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']],
+                ['name' => 'kondisi', 'label' => 'Kondisi Saat Ini', 'type' => 'select', 'options' => ['baik' => 'Baik', 'rusak' => 'Rusak', 'nihil' => 'Nihil']],
             ],
         ];
     }
@@ -221,25 +221,6 @@ class PengajuanController extends Controller
     }
 
     /**
-     * Route index mana yang cocok untuk pengajuan ini — 'pengajuan.index'
-     * (Laporan Kerusakan) atau 'rencana-pembangunan.index' (Rencana
-     * Pembangunan) — dipakai supaya approve/reject membawa admin kembali
-     * ke daftar yang sesuai, bukan selalu ke Laporan Kerusakan.
-     */
-    private function indexRouteFor(Pengajuan $pengajuan): string
-    {
-        $kategoriKeys = is_array($pengajuan->pengajuan)
-            ? $pengajuan->pengajuan
-            : array_filter([$pengajuan->pengajuan]);
-
-        $laporanKerusakanKeys = array_keys(\App\Http\Controllers\User\PengajuanController::kategoriList());
-
-        return count(array_intersect($kategoriKeys, $laporanKerusakanKeys))
-            ? 'pengajuan.index'
-            : 'rencana-pembangunan.index';
-    }
-
-    /**
      * Setujui pengajuan: terapkan seluruh perubahan ke data sarana sekolah
      * terkait, lalu tandai status jadi 'approved'. Dibungkus DB transaction
      * supaya kalau salah satu update gagal di tengah jalan, semuanya
@@ -249,8 +230,6 @@ class PengajuanController extends Controller
     {
         abort_if($pengajuan->status !== 'pending', 403, 'Hanya pengajuan berstatus pending yang bisa disetujui.');
 
-        $indexRoute = $this->indexRouteFor($pengajuan);
-
         DB::transaction(function () use ($pengajuan) {
             $this->terapkanPerubahan($pengajuan);
 
@@ -259,9 +238,9 @@ class PengajuanController extends Controller
             ]);
         });
 
-        return redirect()
-            ->route($indexRoute)
-            ->with('success', 'Pengajuan disetujui, data sarana sekolah sudah diperbarui.');
+        // back(): kembali ke daftar asal (Laporan Kerusakan / Rencana
+        // Pembangunan) tanpa perlu tahu nama route-nya.
+        return back()->with('success', 'Pengajuan disetujui, data sarana sekolah sudah diperbarui.');
     }
 
     /**
@@ -272,15 +251,11 @@ class PengajuanController extends Controller
     {
         abort_if($pengajuan->status !== 'pending', 403, 'Hanya pengajuan berstatus pending yang bisa ditolak.');
 
-        $indexRoute = $this->indexRouteFor($pengajuan);
-
         $pengajuan->update([
             'status' => 'rejected',
         ]);
 
-        return redirect()
-            ->route($indexRoute)
-            ->with('success', 'Pengajuan ditolak.');
+        return back()->with('success', 'Pengajuan ditolak.');
     }
 
     /**
@@ -382,14 +357,14 @@ class PengajuanController extends Controller
     private function terapkanAdaKondisi($sarana): void
     {
         $sarana->{'ada/tidak_ada'} = 'ada';
-        $sarana->kodisi = 'baik';
+        $sarana->kondisi = 'baik';
         $sarana->save();
     }
 
     /**
      * update_kondisi: kebalikan dari ada_kondisi — ini buat fasilitas yang
      * SUDAH ADA, user melaporkan kondisi terkininya (termasuk "Rusak").
-     * Nilai kodisi DIBACA LANGSUNG dari input user dan MENGGANTIKAN
+     * Nilai kondisi DIBACA LANGSUNG dari input user dan MENGGANTIKAN
      * (bukan menambah/mengurangi) nilai lama, karena fasilitas jenis ini
      * cuma satu unit per sekolah, bukan stok berjumlah banyak seperti
      * baik_rusak. Status ada/tidak_ada juga dipastikan "ada", karena
@@ -397,8 +372,8 @@ class PengajuanController extends Controller
      */
     private function terapkanUpdateKondisi($sarana, array $data): void
     {
-        if (array_key_exists('kodisi', $data)) {
-            $sarana->kodisi = $data['kodisi'];
+        if (array_key_exists('kondisi', $data)) {
+            $sarana->kondisi = $data['kondisi'];
         }
 
         $sarana->{'ada/tidak_ada'} = 'ada';
