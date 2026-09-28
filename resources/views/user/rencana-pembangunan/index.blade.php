@@ -87,6 +87,17 @@
                                     </li>
                                 @endforeach
                             </ul>
+
+                            @if ($isRehab && $item->status === 'approved' && ! $selesaiRehab)
+                                <form action="{{ route('user.rencana-pembangunan.selesai', [$item, $kunci]) }}"
+                                    method="POST" class="mt-1"
+                                    onsubmit="return confirm('Tandai rehabilitasi ini sebagai selesai?')">
+                                    @csrf
+                                    <x-button type="submit" variant="success" size="xs">
+                                        <i class="bi bi-check2-circle"></i> Tandai Selesai
+                                    </x-button>
+                                </form>
+                            @endif
                         </div>
                     @endforeach
                     @if (count($tambahanKeys))
@@ -224,6 +235,17 @@
                                             </li>
                                         @endforeach
                                     </ul>
+
+                                    @if ($isRehab && $item->status === 'approved' && ! $selesaiRehab)
+                                        <form action="{{ route('user.rencana-pembangunan.selesai', [$item, $kunci]) }}"
+                                            method="POST" class="pl-2 mt-1"
+                                            onsubmit="return confirm('Tandai rehabilitasi ini sebagai selesai?')">
+                                            @csrf
+                                            <x-button type="submit" variant="success" size="xs">
+                                                <i class="bi bi-check2-circle"></i> Tandai Selesai
+                                            </x-button>
+                                        </form>
+                                    @endif
                                 </li>
                             @endforeach
                             @if (count($tambahanKeys))
