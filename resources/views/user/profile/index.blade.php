@@ -49,7 +49,12 @@
                     <div class="flex flex-col gap-6">
                         <div
                             class="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 pb-4 border-b border-gray-200 dark:border-gray-700">
-                            <x-avatar :name="$user->name" size="xl" />
+                            @if ($user->foto)
+                                <img src="{{ $user->foto_url }}" alt="Foto {{ $user->name }}"
+                                    class="h-24 w-24 shrink-0 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700">
+                            @else
+                                <x-avatar :name="$user->name" size="xl" />
+                            @endif
 
                             <div class="text-center sm:text-left">
                                 <p class="text-xl font-semibold text-gray-800 dark:text-gray-100">

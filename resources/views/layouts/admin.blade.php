@@ -70,7 +70,12 @@
             class="bg-sky-800 dark:bg-sky-950 border-sky-700 dark:border-sky-900 text-sky-100">
             {{-- Info user --}}
             <div class="flex items-center gap-3 border-b border-sky-700/70 dark:border-sky-800 pb-4 mb-3">
-                <x-avatar :name="Auth::user()->name ?? 'U'" size="md" />
+                @if (Auth::user()->foto)
+                    <img src="{{ Auth::user()->foto_url }}" alt="Foto {{ Auth::user()->name }}"
+                        class="h-10 w-10 shrink-0 rounded-full object-cover">
+                @else
+                    <x-avatar :name="Auth::user()->name ?? 'U'" size="md" />
+                @endif
                 <div class="min-w-0 flex-1" data-sidebar-label>
                     <p class="truncate text-sm font-semibold text-white">{{ Auth::user()->name }}</p>
                     <p class="truncate text-xs text-sky-200">{{ ucfirst(Auth::user()->role ?? 'Admin') }}</p>
@@ -109,7 +114,7 @@
                 class="sidebar-link text-sky-100 hover:bg-sky-700/60 hover:text-white {{ request()->routeIs('rencana.*') ? 'bg-white/15 text-white font-semibold' : '' }}"
                 @if (request()->routeIs('rencana.*')) aria-current="page" @endif>
                 <i class="bi bi-building-fill text-base shrink-0"></i>
-                <span data-sidebar-label>Pembagunan</span>
+                <span data-sidebar-label>Kegiatan Sarpras</span>
             </a>
 
             {{-- Logout — dengan modal konfirmasi, selalu menempel di bawah --}}
@@ -160,7 +165,12 @@
                     <x-dropdown align="right" width="sm">
                         <x-slot:trigger>
                             <button class="inline-flex items-center gap-2 rounded-md px-1.5 sm:px-2 py-1.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <x-avatar :name="Auth::user()->name ?? 'U'" size="xs" />
+                                @if (Auth::user()->foto)
+                                    <img src="{{ Auth::user()->foto_url }}" alt="Foto {{ Auth::user()->name }}"
+                                        class="h-8 w-8 shrink-0 rounded-full object-cover">
+                                @else
+                                    <x-avatar :name="Auth::user()->name ?? 'U'" size="xs" />
+                                @endif
                                 <span class="hidden sm:block max-w-32 truncate">{{ Auth::user()->name }}</span>
                                 <i class="bi bi-chevron-down text-xs hidden sm:inline"></i>
                             </button>

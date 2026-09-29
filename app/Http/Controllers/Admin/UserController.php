@@ -7,11 +7,12 @@ use App\Models\Pengajuan;
 use App\Models\PeriodeLaporan;
 use App\Models\ProfileSekolah;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-// use Illuminate\Support\Facades\Hash;
-// use Illuminate\Validation\Rule;
-// use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -27,38 +28,57 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('admin.user.create');
+        $roles = Role::orderBy('name')->get();
+
+        return view('admin.user.create', compact('roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'email' => 'required|string|email|max:255|unique:users',
-    //         'password' => ['required', 'confirmed', Password::defaults()],
-    //         'role' => 'required|in:admin,user',
-    //     ]);
+    public function store(Request $request)
+    {
+        $roles = Role::pluck('name')->toArray();
 
-    //     try {
-    //         $user = User::create([
-    //             'name' => $request->name,
-    //             'email' => $request->email,
-    //             'password' => Hash::make($request->password),
-    //         ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => ['required', 'confirmed', Password::defaults()],
+            'role' => ['required', Rule::in($roles)],
+            'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ], [
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus JPG, PNG, atau WebP.',
+            'foto.max' => 'Ukuran foto maksimal 2 MB.',
+        ]);
 
-    //         $user->assignRole($request->role);
+        $fotoPath = null;
 
-    //         return redirect()->route('user.index')
-    //             ->with('success', 'User berhasil ditambahkan!');
-    //     } catch (\Exception $e) {
-    //         return redirect()->back()
-    //             ->withInput()
-    //             ->with('error', 'Gagal menambahkan user: ' . $e->getMessage());
-    //     }
-    // }
+        try {
+            if ($request->hasFile('foto')) {
+                $fotoPath = User::prosesFoto($request->file('foto'));
+            }
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'foto' => $fotoPath,
+            ]);
+
+            $user->assignRole($request->role);
+
+            return redirect()->route('user.index')
+                ->with('success', 'User berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            // Jika user gagal dibuat tapi foto sudah terlanjur tersimpan, bersihkan.
+            User::hapusFileFoto($fotoPath);
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Gagal menambahkan user: '.$e->getMessage());
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -159,49 +179,81 @@ class UserController extends Controller
                 ->with('error', 'User tidak ditemukan.');
         }
 
-        return view('admin.user.edit', compact('user'));
+        // Dipakai oleh dropdown Role di edit.blade.php
+        $roles = Role::orderBy('name')->get();
+        $userRole = $user->roles->first();
+
+        return view('admin.user.edit', compact('user', 'roles', 'userRole'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    // public function update(Request $request, string $id)
-    // {
-    //     $user = User::find($id);
+    public function update(Request $request, string $id)
+    {
+        $user = User::find($id);
 
-    //     if (!$user) {
-    //         return redirect()->route('user.index')
-    //             ->with('error', 'User tidak ditemukan.');
-    //     }
+        if (! $user) {
+            return redirect()->route('user.index')
+                ->with('error', 'User tidak ditemukan.');
+        }
 
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'email' => [
-    //             'required',
-    //             'string',
-    //             'email',
-    //             'max:255',
-    //             Rule::unique('users', 'email')->ignore($user->id),
-    //         ],
-    //         'role' => 'required|in:admin,user',
-    //     ]);
+        $roles = Role::pluck('name')->toArray();
 
-    //     try {
-    //         $user->update([
-    //             'name' => $request->name,
-    //             'email' => $request->email,
-    //         ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            // Password opsional saat edit: kosong = tidak diubah.
+            'password' => ['nullable', 'confirmed', Password::defaults()],
+            'role' => ['required', Rule::in($roles)],
+            'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'hapus_foto' => ['nullable', 'boolean'],
+        ], [
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus JPG, PNG, atau WebP.',
+            'foto.max' => 'Ukuran foto maksimal 2 MB.',
+        ]);
 
-    //         $user->syncRoles([$request->role]);
+        try {
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+            ];
 
-    //         return redirect()->route('user.index')
-    //             ->with('success', 'User berhasil diperbarui!');
-    //     } catch (\Exception $e) {
-    //         return redirect()->back()
-    //             ->withInput()
-    //             ->with('error', 'Gagal memperbarui user: ' . $e->getMessage());
-    //     }
-    // }
+            if ($request->filled('password')) {
+                $data['password'] = Hash::make($request->password);
+            }
+
+            $fotoLama = null;
+
+            if ($request->hasFile('foto')) {
+                $fotoLama = $user->foto;
+                $data['foto'] = User::prosesFoto($request->file('foto'));
+            } elseif ($request->boolean('hapus_foto')) {
+                $fotoLama = $user->foto;
+                $data['foto'] = null;
+            }
+
+            $user->update($data);
+
+            User::hapusFileFoto($fotoLama);
+
+            $user->syncRoles([$request->role]);
+
+            return redirect()->route('user.index')
+                ->with('success', 'User berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Gagal memperbarui user: '.$e->getMessage());
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -225,6 +277,9 @@ class UserController extends Controller
         if ($user->profileSekolah) {
             $user->profileSekolah->delete();
         }
+
+        // Hapus file foto profil dari storage
+        User::hapusFileFoto($user->foto);
 
         $user->delete();
 

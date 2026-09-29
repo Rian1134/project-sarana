@@ -9,7 +9,7 @@
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <h1 class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                     <i class="bi bi-plus-circle"></i>
-                    <span class="hidden sm:inline">Form Ajukan Rencana Pembangunan</span>
+                    <span class="hidden sm:inline">Form Ajukan Rencana Kegiatan</span>
                     <span class="sm:hidden">Ajukan Rencana</span>
                 </h1>
                 <a href="{{ route('user.rencana-pembangunan.index') }}" class="inline-flex">

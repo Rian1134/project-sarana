@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Pengajuan;
 use App\Models\PeriodeLaporan;
 use App\Models\ProfileSekolah;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +21,7 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         // Ambil data sekolah yang terhubung dengan user
         $profileSekolah = ProfileSekolah::with([
             'pagarSekolah',
@@ -99,7 +100,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update informasi dasar profil (nama & email).
+     * Update informasi dasar profil (nama, email & foto profil).
      */
     public function update(Request $request)
     {
@@ -114,13 +115,36 @@ class ProfileController extends Controller
                 'max:255',
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
+            'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'hapus_foto' => ['nullable', 'boolean'],
+        ], [
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus JPG, PNG, atau WebP.',
+            'foto.max' => 'Ukuran foto maksimal 2 MB.',
         ]);
 
         try {
-            $user->update([
+            $data = [
                 'name' => $request->name,
                 'email' => $request->email,
-            ]);
+            ];
+
+            $fotoLama = null;
+
+            if ($request->hasFile('foto')) {
+                // Foto baru: convert ke WebP + resize.
+                $fotoLama = $user->foto;
+                $data['foto'] = User::prosesFoto($request->file('foto'));
+            } elseif ($request->boolean('hapus_foto')) {
+                // Hapus foto: kolom di database dikosongkan.
+                $fotoLama = $user->foto;
+                $data['foto'] = null;
+            }
+
+            $user->update($data);
+
+            // File foto lama dihapus setelah database berhasil diperbarui.
+            User::hapusFileFoto($fotoLama);
 
             return redirect()->route('user.profile.index')
                 ->with('success', 'Profil berhasil diperbarui!');

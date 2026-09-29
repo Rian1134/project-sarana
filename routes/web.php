@@ -54,7 +54,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('pengajuan', UserPengajuanController::class);
 
             // Rencana Pembangunan — route "selesai" HARUS di atas resource
-            Route::put('rencana-pembangunan//{pengajuan}/{kategori}/selesai', [RencanaPembangunanController::class, 'selesai'])
+            Route::put('rencana-pembangunan/{pengajuan}/{kategori}/selesai', [RencanaPembangunanController::class, 'selesai'])
                 ->name('rencana-pembangunan.selesai');
             Route::resource('rencana-pembangunan', RencanaPembangunanController::class)
                 ->parameters(['rencana-pembangunan' => 'pengajuan']);

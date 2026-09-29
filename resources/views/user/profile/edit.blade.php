@@ -47,7 +47,12 @@
                 <!-- Kartu ringkasan akun -->
                 <x-card class="lg:col-span-1 h-fit">
                     <div class="flex flex-col items-center text-center gap-3 py-2">
-                        <x-avatar :name="$user->name" size="xl" />
+                        @if ($user->foto)
+                            <img src="{{ $user->foto_url }}" alt="Foto {{ $user->name }}"
+                                class="h-24 w-24 shrink-0 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700">
+                        @else
+                            <x-avatar :name="$user->name" size="xl" />
+                        @endif
                         <div>
                             <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $user->name }}</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400">{{ $user->email }}</p>
@@ -71,9 +76,11 @@
                             </div>
                         </x-slot:header>
 
-                        <form action="{{ route('user.profile.update') }}" method="POST" class="flex flex-col gap-4">
+                        <form action="{{ route('user.profile.update') }}" method="POST" class="flex flex-col gap-4" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
+
+                            <x-foto-upload :user="$user" />
 
                             <x-form.input name="name" label="Nama Lengkap" type="text" required :value="old('name', $user->name)" />
 

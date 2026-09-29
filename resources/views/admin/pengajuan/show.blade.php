@@ -111,6 +111,10 @@
                                 <i class="bi bi-x-lg"></i> Tolak
                             </x-button>
                         </form>
+
+                        <x-button href="https://gofile.me/7Hsao/ZjQEsygfo">
+                            <i class="bi bi-cloud-arrow-up"></i> Lihat File
+                        </x-button>
                     </div>
                 @endif
             </x-card>
