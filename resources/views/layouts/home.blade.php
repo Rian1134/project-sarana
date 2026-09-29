@@ -83,8 +83,6 @@
                 <ul class="flex flex-col gap-1.5 text-sm text-gray-500 dark:text-gray-400">
                     <li><a href="{{ route('login') }}"
                             class="hover:text-[#2E86C1] dark:hover:text-[#5DADE2] transition-colors">Login</a></li>
-                    <li><a href="{{ route('auth.register') }}"
-                            class="hover:text-[#2E86C1] dark:hover:text-[#5DADE2] transition-colors">Daftar</a></li>
                 </ul>
             </div>
 
