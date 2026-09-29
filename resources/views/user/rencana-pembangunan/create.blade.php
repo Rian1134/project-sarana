@@ -179,7 +179,7 @@
                             @endforeach
 
                             <p class="text-gray-500 dark:text-gray-400">
-                                Buat folder baru dengan <span class="font-bold">nama sekolah</span> sebelum upload.
+                                cari folder dengan <span class="font-bold">nama sekolah</span> dan upload sesuai yg diajukan.
                             </p>
                         </div>
 
