@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DataController as AdminDataController;
 use App\Http\Controllers\Admin\PengajuanController as AdminPengajuanController;
 use App\Http\Controllers\Admin\PeriodeLaporanController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\UserPermissionController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\User\DataController as UserDataController;
@@ -21,8 +22,12 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::prefix('/admin')->group(function () {
             Route::resource('sarana', AdminDataController::class)->parameters(['sarana' => 'profileSekolah']);
-            Route::resource('user', AdminUserController::class);
+
             Route::post('/sarana/export-excel', [AdminDataController::class, 'export_excel'])->name('data.export');
+            
+            Route::resource('user', AdminUserController::class);
+            Route::get('user/{user}/izin', [UserPermissionController::class, 'edit'])->name('user.izin.edit');
+            Route::put('user/{user}/izin', [UserPermissionController::class, 'update'])->name('user.izin.update');
 
             Route::get('/periode', [PeriodeLaporanController::class, 'edit'])->name('admin.periode.edit');
             Route::put('/periode', [PeriodeLaporanController::class, 'update'])->name('admin.periode.update');
@@ -53,9 +58,6 @@ Route::middleware('auth')->group(function () {
             // Pengajuan (Koreksi Data)
             Route::resource('pengajuan', UserPengajuanController::class);
 
-            // Rencana Pembangunan — route "selesai" HARUS di atas resource
-            Route::put('rencana-pembangunan/{pengajuan}/{kategori}/selesai', [RencanaPembangunanController::class, 'selesai'])
-                ->name('rencana-pembangunan.selesai');
             Route::resource('rencana-pembangunan', RencanaPembangunanController::class)
                 ->parameters(['rencana-pembangunan' => 'pengajuan']);
         });

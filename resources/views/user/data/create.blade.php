@@ -11,8 +11,7 @@
             <div
                 class="sticky top-0 z-20 -mx-3 sm:-mx-4 px-3 sm:px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 bg-white/95 dark:bg-gray-800/95 backdrop-blur border-b border-gray-200 dark:border-gray-700">
                 <div>
-                    <h1
-                        class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                    <h1 class="text-base sm:text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                         <i class="bi bi-plus-circle text-blue-600 dark:text-blue-400"></i>
                         <span class="hidden sm:inline">Form Tambah Data Sarana & Prasarana Sekolah</span>
                         <span class="sm:hidden">Tambah Data</span>
@@ -46,7 +45,8 @@
                 </div>
 
                 <!-- A. Data Sekolah -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <x-card
+                    class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-building"></i>
@@ -102,819 +102,990 @@
                     <p class="font-semibold mb-1">Petunjuk pengisian data sarana</p>
                     <ul class="list-disc ps-5 space-y-0.5">
                         <li>Jika jumlahnya belum diketahui, biarkan angka tetap <strong>0</strong>.</li>
-                        <li>Jika kondisinya belum diketahui, pilih <strong>Tidak Ada</strong> untuk sementara, lalu perbarui lewat menu Edit setelah datanya jelas.</li>
+                        <li>Jika kondisinya belum diketahui, pilih <strong>Tidak Ada</strong> untuk sementara, lalu perbarui
+                            lewat menu Edit setelah datanya jelas.</li>
                     </ul>
                 </x-alert>
 
-                <!-- ===== Kelompok: Sumber Daya Manusia ===== -->
-                <div class="flex items-center gap-2 pt-2">
-                    <i class="bi bi-people-fill text-violet-600 dark:text-violet-400"></i>
-                    <h2 class="text-sm sm:text-base font-bold text-violet-600 dark:text-violet-400 whitespace-nowrap">
-                        Sumber Daya Manusia
-                    </h2>
-                    <div class="flex-1 border-t-2 border-violet-200 dark:border-violet-900"></div>
-                </div>
-
-                <!-- B. Jumlah & Kondisi Guru -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex flex-wrap items-center justify-between gap-2">
-                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                <i class="bi bi-person-badge"></i>
-                                Jumlah &amp; Kondisi Guru
-                            </div>
-                            <span id="totalGuru"
-                                class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
-                                Total: 0 Guru
-                            </span>
-                        </div>
-                    </x-slot:header>
-
-                    <div class="flex flex-col gap-5">
-                        <!-- Status Kepegawaian -->
-                        <div>
-                            <p
-                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
-                                <i class="bi bi-people-fill"></i> Status Kepegawaian
-                            </p>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <x-form.input name="jumlah_guru_pns" label="Guru PNS" type="number" min="0" required
-                                    :value="old('jumlah_guru_pns', $profileSekolah->jumlahGuru->pns ?? 0)" />
-
-                                <x-form.input name="jumlah_guru_pppk" label="Guru PPPK" type="number" min="0" required
-                                    :value="old('jumlah_guru_pppk', $profileSekolah->jumlahGuru->pppk ?? 0)" />
-
-                                <x-form.input name="jumlah_guru_pppk_paruh_waktu" label="PPPK Paruh Waktu"
-                                    type="number" min="0" required
-                                    :value="old(
-                                        'jumlah_guru_pppk_paruh_waktu',
-                                        $profileSekolah->jumlahGuru->pppk_paruh_waktu ?? 0,
-                                    )" />
-
-                                <x-form.input name="jumlah_guru_honor" label="Guru Honor" type="number" min="0"
-                                    required
-                                    :value="old('jumlah_guru_honor', $profileSekolah->jumlahGuru->honor ?? 0)" />
-                            </div>
-                        </div>
-
-                        <!-- Golongan -->
-                        <div>
-                            <p
-                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
-                                <i class="bi bi-bar-chart-steps"></i> Golongan (Khusus PNS)
-                            </p>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                <x-form.input name="jumlah_guru_i" label="Golongan I" type="number" min="0" required
-                                    :value="old('jumlah_guru_i', $profileSekolah->jumlahGuru->i ?? 0)" />
-
-                                <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number" min="0" required
-                                    :value="old('jumlah_guru_ii', $profileSekolah->jumlahGuru->ii ?? 0)" />
-
-                                <x-form.input name="jumlah_guru_iii" label="Golongan III" type="number" min="0"
-                                    required
-                                    :value="old('jumlah_guru_iii', $profileSekolah->jumlahGuru->iii ?? 0)" />
-
-                                <x-form.input name="jumlah_guru_iv" label="Golongan IV" type="number" min="0" required
-                                    :value="old('jumlah_guru_iv', $profileSekolah->jumlahGuru->iv ?? 0)" />
-                            </div>
-                        </div>
+                <fieldset class="flex flex-col gap-4 min-w-0 @if (!auth()->user()->checkPermissionTo('update-sdm')) opacity-60 @endif"
+                    @if (!auth()->user()->checkPermissionTo('update-sdm')) disabled @endif>
+                    <!-- ===== Kelompok: Sumber Daya Manusia ===== -->
+                    <div class="flex items-center gap-2 pt-2">
+                        <i class="bi bi-people-fill text-violet-600 dark:text-violet-400"></i>
+                        <h2 class="text-sm sm:text-base font-bold text-violet-600 dark:text-violet-400 whitespace-nowrap">
+                            Sumber Daya Manusia
+                        </h2>
+                        <div class="flex-1 border-t-2 border-violet-200 dark:border-violet-900"></div>
                     </div>
-                </x-card>
 
-                <!-- B2. Jumlah & Kondisi Staff Tata Usaha -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex flex-wrap items-center justify-between gap-2">
+                    @if (!auth()->user()->checkPermissionTo('update-sdm'))
+                        <div
+                            class="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs sm:text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300">
+                            <i class="bi bi-lock-fill mt-0.5"></i>
+                            <span>Anda belum belum bisa mengisi bagian ini. silahkan tunggu admin untuk membuka
+                                akses.</span>
+                        </div>
+                    @endif
+
+                    <!-- B. Jumlah & Kondisi Guru -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                    <i class="bi bi-person-badge"></i>
+                                    Jumlah &amp; Kondisi Guru
+                                </div>
+                                <span id="totalGuru"
+                                    class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
+                                    Total: 0 Guru
+                                </span>
+                            </div>
+                        </x-slot:header>
+
+                        <div class="flex flex-col gap-5">
+                            <!-- Status Kepegawaian -->
+                            <div>
+                                <p
+                                    class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                    <i class="bi bi-people-fill"></i> Status Kepegawaian
+                                </p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <x-form.input name="jumlah_guru_pns" label="Guru PNS" type="number" min="0"
+                                        required :value="old('jumlah_guru_pns', $profileSekolah->jumlahGuru->pns ?? 0)" />
+
+                                    <x-form.input name="jumlah_guru_pppk" label="Guru PPPK" type="number" min="0"
+                                        required :value="old('jumlah_guru_pppk', $profileSekolah->jumlahGuru->pppk ?? 0)" />
+
+                                    <x-form.input name="jumlah_guru_pppk_paruh_waktu" label="PPPK Paruh Waktu"
+                                        type="number" min="0" required :value="old(
+                                            'jumlah_guru_pppk_paruh_waktu',
+                                            $profileSekolah->jumlahGuru->pppk_paruh_waktu ?? 0,
+                                        )" />
+
+                                    <x-form.input name="jumlah_guru_honor" label="Guru Honor" type="number" min="0"
+                                        required :value="old('jumlah_guru_honor', $profileSekolah->jumlahGuru->honor ?? 0)" />
+                                </div>
+                            </div>
+
+                            <!-- Golongan -->
+                            <div>
+                                <p
+                                    class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                    <i class="bi bi-bar-chart-steps"></i> Golongan (Khusus PNS)
+                                </p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                    <x-form.input name="jumlah_guru_i" label="Golongan I" type="number" min="0"
+                                        required :value="old('jumlah_guru_i', $profileSekolah->jumlahGuru->i ?? 0)" />
+
+                                    <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number" min="0"
+                                        required :value="old('jumlah_guru_ii', $profileSekolah->jumlahGuru->ii ?? 0)" />
+
+                                    <x-form.input name="jumlah_guru_iii" label="Golongan III" type="number"
+                                        min="0" required :value="old('jumlah_guru_iii', $profileSekolah->jumlahGuru->iii ?? 0)" />
+
+                                    <x-form.input name="jumlah_guru_iv" label="Golongan IV" type="number"
+                                        min="0" required :value="old('jumlah_guru_iv', $profileSekolah->jumlahGuru->iv ?? 0)" />
+                                </div>
+                            </div>
+                        </div>
+                    </x-card>
+
+                    <!-- B2. Jumlah & Kondisi Staff Tata Usaha -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                    <i class="bi bi-person-workspace"></i>
+                                    Jumlah &amp; Kondisi Staff Tata Usaha
+                                </div>
+                                <span id="totalStaffTu"
+                                    class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
+                                    Total: 0 Staff
+                                </span>
+                            </div>
+                        </x-slot:header>
+
+                        <div class="flex flex-col gap-5">
+                            <!-- Status Kepegawaian -->
+                            <div>
+                                <p
+                                    class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                    <i class="bi bi-people-fill"></i> Status Kepegawaian
+                                </p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <x-form.input name="jumlah_staff_tu_pns" label="Staff PNS" type="number"
+                                        min="0" required :value="old('jumlah_staff_tu_pns', $profileSekolah->kondisiStaff->pns ?? 0)" />
+
+                                    <x-form.input name="jumlah_staff_tu_pppk" label="Staff PPPK" type="number"
+                                        min="0" required :value="old(
+                                            'jumlah_staff_tu_pppk',
+                                            $profileSekolah->kondisiStaff->pppk ?? 0,
+                                        )" />
+
+                                    <x-form.input name="jumlah_staff_tu_pppk_paruh_waktu" label="PPPK Paruh Waktu"
+                                        type="number" min="0" required :value="old(
+                                            'jumlah_staff_tu_pppk_paruh_waktu',
+                                            $profileSekolah->kondisiStaff->pppk_paruh_waktu ?? 0,
+                                        )" />
+
+                                    <x-form.input name="jumlah_staff_tu_honor" label="Staff Honor" type="number"
+                                        min="0" required :value="old(
+                                            'jumlah_staff_tu_honor',
+                                            $profileSekolah->kondisiStaff->honor ?? 0,
+                                        )" />
+                                </div>
+                            </div>
+
+                            <!-- Golongan -->
+                            <div>
+                                <p
+                                    class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+                                    <i class="bi bi-bar-chart-steps"></i> Golongan (Khusus PNS)
+                                </p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                    <x-form.input name="jumlah_staff_tu_i" label="Golongan I" type="number"
+                                        min="0" required :value="old('jumlah_staff_tu_i', $profileSekolah->kondisiStaff->i ?? 0)" />
+
+                                    <x-form.input name="jumlah_staff_tu_ii" label="Golongan II" type="number"
+                                        min="0" required :value="old('jumlah_staff_tu_ii', $profileSekolah->kondisiStaff->ii ?? 0)" />
+
+                                    <x-form.input name="jumlah_staff_tu_iii" label="Golongan III" type="number"
+                                        min="0" required :value="old('jumlah_staff_tu_iii', $profileSekolah->kondisiStaff->iii ?? 0)" />
+
+                                    <x-form.input name="jumlah_staff_tu_iv" label="Golongan IV" type="number"
+                                        min="0" required :value="old('jumlah_staff_tu_iv', $profileSekolah->kondisiStaff->iv ?? 0)" />
+                                </div>
+                            </div>
+                        </div>
+                    </x-card>
+                </fieldset>
+
+                <fieldset class="flex flex-col gap-4 min-w-0 @if (!auth()->user()->checkPermissionTo('update-siswa-rombel')) opacity-60 @endif"
+                    @if (!auth()->user()->checkPermissionTo('update-siswa-rombel')) disabled @endif>
+                    <!-- ===== Kelompok: Data Siswa & Rombel ===== -->
+                    <div class="flex items-center gap-2 pt-2">
+                        <i class="bi bi-mortarboard text-indigo-600 dark:text-indigo-400"></i>
+                        <h2 class="text-sm sm:text-base font-bold text-indigo-600 dark:text-indigo-400 whitespace-nowrap">
+                            Data Siswa & Rombel
+                        </h2>
+                        <div class="flex-1 border-t-2 border-indigo-200 dark:border-indigo-900"></div>
+                    </div>
+
+                    @if (!auth()->user()->checkPermissionTo('update-siswa-rombel'))
+                        <div
+                            class="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs sm:text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300">
+                            <i class="bi bi-lock-fill mt-0.5"></i>
+                            <span>Anda belum belum bisa mengisi bagian ini. silahkan tunggu admin untuk membuka
+                                akses.</span>
+                        </div>
+                    @endif
+
+                    <!-- B. Jumlah Siswa -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-mortarboard"></i>
+                                Jumlah Siswa
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <x-form.input name="jumlah_siswa_vii" label="Kelas VII" type="number" min="0"
+                                required :value="old('jumlah_siswa_vii', 0)" />
+                            <x-form.input name="jumlah_siswa_viii" label="Kelas VIII" type="number" min="0"
+                                required :value="old('jumlah_siswa_viii', 0)" />
+                            <x-form.input name="jumlah_siswa_ix" label="Kelas IX" type="number" min="0" required
+                                :value="old('jumlah_siswa_ix', 0)" />
+                        </div>
+                    </x-card>
+
+                    <!-- C. Jumlah Rombongan Belajar -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-diagram-3"></i>
+                                Jumlah Rombongan Belajar
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <x-form.input name="jumlah_rombel_vii" label="Kelas VII" type="number" min="0"
+                                required :value="old('jumlah_rombel_vii', 0)" />
+                            <x-form.input name="jumlah_rombel_viii" label="Kelas VIII" type="number" min="0"
+                                required :value="old('jumlah_rombel_viii', 0)" />
+                            <x-form.input name="jumlah_rombel_ix" label="Kelas IX" type="number" min="0"
+                                required :value="old('jumlah_rombel_ix', 0)" />
+                        </div>
+                    </x-card>
+                </fieldset>
+
+                <fieldset class="flex flex-col gap-4 min-w-0 @if (!auth()->user()->checkPermissionTo('update-ruang-kelas')) opacity-60 @endif"
+                    @if (!auth()->user()->checkPermissionTo('update-ruang-kelas')) disabled @endif>
+                    <!-- ===== Kelompok: Ruang Kelas ===== -->
+                    <div class="flex items-center gap-2 pt-2">
+                        <i class="bi bi-door-open text-cyan-600 dark:text-cyan-400"></i>
+                        <h2 class="text-sm sm:text-base font-bold text-cyan-600 dark:text-cyan-400 whitespace-nowrap">
+                            Ruang Kelas
+                        </h2>
+                        <div class="flex-1 border-t-2 border-cyan-200 dark:border-cyan-900"></div>
+                    </div>
+
+                    @if (!auth()->user()->checkPermissionTo('update-ruang-kelas'))
+                        <div
+                            class="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs sm:text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300">
+                            <i class="bi bi-lock-fill mt-0.5"></i>
+                            <span>Anda belum belum bisa mengisi bagian ini. silahkan tunggu admin untuk membuka
+                                akses.</span>
+                        </div>
+                    @endif
+
+                    <!-- D. RKB (Ruang Kelas Baru) -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-building-add"></i>
+                                Pembangunan Ruang Kelas Baru (RKB)
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <x-form.input name="rkb_jumlah" label="Jumlah" type="number" min="0" required
+                                :value="old('rkb_jumlah', 0)" />
+                            <div
+                                class="md:col-span-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 pb-2">
+                                <i class="bi bi-calendar-range"></i>
+                                Periode pelaporan:
+                                <x-badge variant="secondary">{{ $rkbPeriode->label() }}</x-badge>
+                                <span class="text-xs text-gray-400">(diatur admin, berlaku untuk semua sekolah)</span>
+                            </div>
+                        </div>
+                    </x-card>
+
+                    <!-- E. Rehabilitasi Ruang Kelas -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-tools"></i>
+                                Rehabilitasi Ruang Kelas
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                            <x-form.input name="rehabilitasi_jumlah" label="Jumlah" type="number" min="0"
+                                required :value="old('rehabilitasi_jumlah', 0)" />
+                            <div
+                                class="md:col-span-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 pb-2">
+                                <i class="bi bi-calendar-range"></i>
+                                Periode pelaporan:
+                                <x-badge variant="secondary">{{ $rehabilitasiPeriode->label() }}</x-badge>
+                                <span class="text-xs text-gray-400">(diatur admin, berlaku untuk semua sekolah)</span>
+                            </div>
+                        </div>
+                    </x-card>
+
+                    <!-- F. Ruang Kelas -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-door-closed"></i>
+                                Ruang Kelas
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <x-form.input name="ruang_kelas_baik" label="Jumlah Baik" type="number" min="0"
+                                required :value="old('ruang_kelas_baik', 0)" />
+                            <x-form.input name="ruang_kelas_rusak" label="Jumlah Rusak" type="number" min="0"
+                                required :value="old('ruang_kelas_rusak', 0)" />
+                        </div>
+                    </x-card>
+                </fieldset>
+
+                <fieldset class="flex flex-col gap-4 min-w-0 @if (!auth()->user()->checkPermissionTo('update-toilet')) opacity-60 @endif"
+                    @if (!auth()->user()->checkPermissionTo('update-toilet')) disabled @endif>
+                    <!-- ===== Kelompok: Toilet ===== -->
+                    <div class="flex items-center gap-2 pt-2">
+                        <i class="bi bi-droplet text-teal-600 dark:text-teal-400"></i>
+                        <h2 class="text-sm sm:text-base font-bold text-teal-600 dark:text-teal-400 whitespace-nowrap">
+                            Toilet
+                        </h2>
+                        <div class="flex-1 border-t-2 border-teal-200 dark:border-teal-900"></div>
+                    </div>
+
+                    @if (!auth()->user()->checkPermissionTo('update-toilet'))
+                        <div
+                            class="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs sm:text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300">
+                            <i class="bi bi-lock-fill mt-0.5"></i>
+                            <span>Anda belum belum bisa mengisi bagian ini. silahkan tunggu admin untuk membuka
+                                akses.</span>
+                        </div>
+                    @endif
+
+                    <!-- G. Toilet Siswa -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-droplet-half"></i>
+                                Toilet Siswa
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <x-form.input name="toilet_siswa_baik" label="Jumlah Baik" type="number" min="0"
+                                required :value="old('toilet_siswa_baik', 0)" />
+                            <x-form.input name="toilet_siswa_rusak" label="Jumlah Rusak" type="number" min="0"
+                                required :value="old('toilet_siswa_rusak', 0)" />
+                        </div>
+                    </x-card>
+
+                    <!-- H. Toilet Guru -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-droplet"></i>
+                                Toilet Guru
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <x-form.input name="toilet_guru_baik" label="Jumlah Baik" type="number" min="0"
+                                required :value="old('toilet_guru_baik', 0)" />
+                            <x-form.input name="toilet_guru_rusak" label="Jumlah Rusak" type="number" min="0"
+                                required :value="old('toilet_guru_rusak', 0)" />
+                        </div>
+                    </x-card>
+                </fieldset>
+
+                <fieldset class="flex flex-col gap-4 min-w-0 @if (!auth()->user()->checkPermissionTo('update-ruang-fasilitas')) opacity-60 @endif"
+                    @if (!auth()->user()->checkPermissionTo('update-ruang-fasilitas')) disabled @endif>
+                    <!-- ===== Kelompok: Ruang & Fasilitas Sekolah ===== -->
+                    <div class="flex items-center gap-2 pt-2">
+                        <i class="bi bi-house-gear text-orange-600 dark:text-orange-400"></i>
+                        <h2 class="text-sm sm:text-base font-bold text-orange-600 dark:text-orange-400 whitespace-nowrap">
+                            Ruang & Fasilitas Sekolah
+                        </h2>
+                        <div class="flex-1 border-t-2 border-orange-200 dark:border-orange-900"></div>
+                    </div>
+
+                    @if (!auth()->user()->checkPermissionTo('update-ruang-fasilitas'))
+                        <div
+                            class="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs sm:text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300">
+                            <i class="bi bi-lock-fill mt-0.5"></i>
+                            <span>Anda belum belum bisa mengisi bagian ini. silahkan tunggu admin untuk membuka
+                                akses.</span>
+                        </div>
+                    @endif
+
+                    <!-- I. Ruang Perpustakaan -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-book"></i>
+                                Ruang Perpustakaan
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Ruang Perpustakaan <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="perpustakaan_ada_tidak" value="ada" label="Ada"
+                                        :checked="old('perpustakaan_ada_tidak') == 'ada'" required />
+                                    <x-form.radio name="perpustakaan_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('perpustakaan_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('perpustakaan_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <x-form.select name="perpustakaan_kondisi" label="Kondisi Ruang Perpustakaan"
+                                    placeholder="-- Pilih Kondisi --" :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('perpustakaan_kondisi')" />
+                            </div>
+                        </div>
+                    </x-card>
+
+                    <!-- J. Ruang Kepala Sekolah -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
                             <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                                 <i class="bi bi-person-workspace"></i>
-                                Jumlah &amp; Kondisi Staff Tata Usaha
+                                Ruang Kepala Sekolah
                             </div>
-                            <span id="totalStaffTu"
-                                class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300">
-                                Total: 0 Staff
-                            </span>
-                        </div>
-                    </x-slot:header>
+                        </x-slot:header>
 
-                    <div class="flex flex-col gap-5">
-                        <!-- Status Kepegawaian -->
-                        <div>
-                            <p
-                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
-                                <i class="bi bi-people-fill"></i> Status Kepegawaian
-                            </p>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <x-form.input name="jumlah_staff_tu_pns" label="Staff PNS" type="number" min="0"
-                                    required
-                                    :value="old('jumlah_staff_tu_pns', $profileSekolah->kondisiStaff->pns ?? 0)" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Ruang Kepala Sekolah <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="kepala_sekolah_ada_tidak" value="ada" label="Ada"
+                                        :checked="old('kepala_sekolah_ada_tidak') == 'ada'" required />
+                                    <x-form.radio name="kepala_sekolah_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('kepala_sekolah_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('kepala_sekolah_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                                <x-form.input name="jumlah_staff_tu_pppk" label="Staff PPPK" type="number" min="0"
-                                    required
-                                    :value="old('jumlah_staff_tu_pppk', $profileSekolah->kondisiStaff->pppk ?? 0)" />
-
-                                <x-form.input name="jumlah_staff_tu_pppk_paruh_waktu" label="PPPK Paruh Waktu"
-                                    type="number" min="0" required
-                                    :value="old(
-                                        'jumlah_staff_tu_pppk_paruh_waktu',
-                                        $profileSekolah->kondisiStaff->pppk_paruh_waktu ?? 0,
-                                    )" />
-
-                                <x-form.input name="jumlah_staff_tu_honor" label="Staff Honor" type="number" min="0"
-                                    required
-                                    :value="old('jumlah_staff_tu_honor', $profileSekolah->kondisiStaff->honor ?? 0)" />
+                            <div>
+                                <x-form.select name="kepala_sekolah_kondisi" label="Kondisi Ruang Kepala Sekolah"
+                                    placeholder="-- Pilih Kondisi --" :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('kepala_sekolah_kondisi')" />
                             </div>
                         </div>
+                    </x-card>
 
-                        <!-- Golongan -->
-                        <div>
-                            <p
-                                class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
-                                <i class="bi bi-bar-chart-steps"></i> Golongan (Khusus PNS)
-                            </p>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                <x-form.input name="jumlah_staff_tu_i" label="Golongan I" type="number" min="0"
-                                    required :value="old('jumlah_staff_tu_i', $profileSekolah->kondisiStaff->i ?? 0)" />
+                    <!-- K. Ruang Guru -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-easel2"></i>
+                                Ruang Guru
+                            </div>
+                        </x-slot:header>
 
-                                <x-form.input name="jumlah_staff_tu_ii" label="Golongan II" type="number" min="0"
-                                    required
-                                    :value="old('jumlah_staff_tu_ii', $profileSekolah->kondisiStaff->ii ?? 0)" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Ruang Guru <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="ruang_guru_ada_tidak" value="ada" label="Ada"
+                                        :checked="old('ruang_guru_ada_tidak') == 'ada'" required />
+                                    <x-form.radio name="ruang_guru_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('ruang_guru_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('ruang_guru_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                                <x-form.input name="jumlah_staff_tu_iii" label="Golongan III" type="number" min="0"
-                                    required
-                                    :value="old('jumlah_staff_tu_iii', $profileSekolah->kondisiStaff->iii ?? 0)" />
-
-                                <x-form.input name="jumlah_staff_tu_iv" label="Golongan IV" type="number" min="0"
-                                    required
-                                    :value="old('jumlah_staff_tu_iv', $profileSekolah->kondisiStaff->iv ?? 0)" />
+                            <div>
+                                <x-form.select name="ruang_guru_kondisi" label="Kondisi Ruang Guru"
+                                    placeholder="-- Pilih Kondisi --" :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('ruang_guru_kondisi')" />
                             </div>
                         </div>
-                    </div>
-                </x-card>
+                    </x-card>
 
-                <!-- ===== Kelompok: Data Siswa & Rombel ===== -->
-                <div class="flex items-center gap-2 pt-2">
-                    <i class="bi bi-mortarboard text-indigo-600 dark:text-indigo-400"></i>
-                    <h2 class="text-sm sm:text-base font-bold text-indigo-600 dark:text-indigo-400 whitespace-nowrap">
-                        Data Siswa & Rombel
-                    </h2>
-                    <div class="flex-1 border-t-2 border-indigo-200 dark:border-indigo-900"></div>
-                </div>
-
-                <!-- B. Jumlah Siswa -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-mortarboard"></i>
-                            Jumlah Siswa
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <x-form.input name="jumlah_siswa_vii" label="Kelas VII" type="number" min="0" required
-                            :value="old('jumlah_siswa_vii', 0)" />
-                        <x-form.input name="jumlah_siswa_viii" label="Kelas VIII" type="number" min="0" required
-                            :value="old('jumlah_siswa_viii', 0)" />
-                        <x-form.input name="jumlah_siswa_ix" label="Kelas IX" type="number" min="0" required
-                            :value="old('jumlah_siswa_ix', 0)" />
-                    </div>
-                </x-card>
-
-                <!-- C. Jumlah Rombongan Belajar -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-diagram-3"></i>
-                            Jumlah Rombongan Belajar
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <x-form.input name="jumlah_rombel_vii" label="Kelas VII" type="number" min="0" required
-                            :value="old('jumlah_rombel_vii', 0)" />
-                        <x-form.input name="jumlah_rombel_viii" label="Kelas VIII" type="number" min="0"
-                            required :value="old('jumlah_rombel_viii', 0)" />
-                        <x-form.input name="jumlah_rombel_ix" label="Kelas IX" type="number" min="0" required
-                            :value="old('jumlah_rombel_ix', 0)" />
-                    </div>
-                </x-card>
-
-                <!-- ===== Kelompok: Ruang Kelas ===== -->
-                <div class="flex items-center gap-2 pt-2">
-                    <i class="bi bi-door-open text-cyan-600 dark:text-cyan-400"></i>
-                    <h2 class="text-sm sm:text-base font-bold text-cyan-600 dark:text-cyan-400 whitespace-nowrap">
-                        Ruang Kelas
-                    </h2>
-                    <div class="flex-1 border-t-2 border-cyan-200 dark:border-cyan-900"></div>
-                </div>
-
-                <!-- D. RKB (Ruang Kelas Baru) -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-building-add"></i>
-                            Pembangunan Ruang Kelas Baru (RKB)
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                        <x-form.input name="rkb_jumlah" label="Jumlah" type="number" min="0" required
-                            :value="old('rkb_jumlah', 0)" />
-                        <div class="md:col-span-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 pb-2">
-                            <i class="bi bi-calendar-range"></i>
-                            Periode pelaporan:
-                            <x-badge variant="secondary">{{ $rkbPeriode->label() }}</x-badge>
-                            <span class="text-xs text-gray-400">(diatur admin, berlaku untuk semua sekolah)</span>
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- E. Rehabilitasi Ruang Kelas -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-tools"></i>
-                            Rehabilitasi Ruang Kelas
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                        <x-form.input name="rehabilitasi_jumlah" label="Jumlah" type="number" min="0" required
-                            :value="old('rehabilitasi_jumlah', 0)" />
-                        <div class="md:col-span-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 pb-2">
-                            <i class="bi bi-calendar-range"></i>
-                            Periode pelaporan:
-                            <x-badge variant="secondary">{{ $rehabilitasiPeriode->label() }}</x-badge>
-                            <span class="text-xs text-gray-400">(diatur admin, berlaku untuk semua sekolah)</span>
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- F. Ruang Kelas -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-door-closed"></i>
-                            Ruang Kelas
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="ruang_kelas_baik" label="Jumlah Baik" type="number" min="0" required
-                            :value="old('ruang_kelas_baik', 0)" />
-                        <x-form.input name="ruang_kelas_rusak" label="Jumlah Rusak" type="number" min="0"
-                            required :value="old('ruang_kelas_rusak', 0)" />
-                    </div>
-                </x-card>
-
-                <!-- ===== Kelompok: Toilet ===== -->
-                <div class="flex items-center gap-2 pt-2">
-                    <i class="bi bi-droplet text-teal-600 dark:text-teal-400"></i>
-                    <h2 class="text-sm sm:text-base font-bold text-teal-600 dark:text-teal-400 whitespace-nowrap">
-                        Toilet
-                    </h2>
-                    <div class="flex-1 border-t-2 border-teal-200 dark:border-teal-900"></div>
-                </div>
-
-                <!-- G. Toilet Siswa -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-droplet-half"></i>
-                            Toilet Siswa
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="toilet_siswa_baik" label="Jumlah Baik" type="number" min="0"
-                            required :value="old('toilet_siswa_baik', 0)" />
-                        <x-form.input name="toilet_siswa_rusak" label="Jumlah Rusak" type="number" min="0"
-                            required :value="old('toilet_siswa_rusak', 0)" />
-                    </div>
-                </x-card>
-
-                <!-- H. Toilet Guru -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-droplet"></i>
-                            Toilet Guru
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="toilet_guru_baik" label="Jumlah Baik" type="number" min="0" required
-                            :value="old('toilet_guru_baik', 0)" />
-                        <x-form.input name="toilet_guru_rusak" label="Jumlah Rusak" type="number" min="0"
-                            required :value="old('toilet_guru_rusak', 0)" />
-                    </div>
-                </x-card>
-
-                <!-- ===== Kelompok: Ruang & Fasilitas Sekolah ===== -->
-                <div class="flex items-center gap-2 pt-2">
-                    <i class="bi bi-house-gear text-orange-600 dark:text-orange-400"></i>
-                    <h2 class="text-sm sm:text-base font-bold text-orange-600 dark:text-orange-400 whitespace-nowrap">
-                        Ruang & Fasilitas Sekolah
-                    </h2>
-                    <div class="flex-1 border-t-2 border-orange-200 dark:border-orange-900"></div>
-                </div>
-
-                <!-- I. Ruang Perpustakaan -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-book"></i>
-                            Ruang Perpustakaan
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Ruang Perpustakaan <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="perpustakaan_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('perpustakaan_ada_tidak') == 'ada'" required />
-                                <x-form.radio name="perpustakaan_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('perpustakaan_ada_tidak') == 'tidak_ada'" />
+                    <!-- L. Ruang Kantor/Tata Usaha -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-briefcase"></i>
+                                Ruang Kantor/Tata Usaha
                             </div>
-                            @error('perpustakaan_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        </x-slot:header>
 
-                        <div>
-                            <x-form.select name="perpustakaan_kondisi" label="Kondisi Ruang Perpustakaan"
-                                placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('perpustakaan_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- J. Ruang Kepala Sekolah -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-person-workspace"></i>
-                            Ruang Kepala Sekolah
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Ruang Kepala Sekolah <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="kepala_sekolah_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('kepala_sekolah_ada_tidak') == 'ada'" required />
-                                <x-form.radio name="kepala_sekolah_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('kepala_sekolah_ada_tidak') == 'tidak_ada'" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Ruang Kantor/Tata Usaha <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="kantor_tu_ada_tidak" value="ada" label="Ada"
+                                        :checked="old('kantor_tu_ada_tidak') == 'ada'" required />
+                                    <x-form.radio name="kantor_tu_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('kantor_tu_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('kantor_tu_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('kepala_sekolah_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
-                        </div>
 
-                        <div>
-                            <x-form.select name="kepala_sekolah_kondisi" label="Kondisi Ruang Kepala Sekolah"
-                                placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('kepala_sekolah_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- K. Ruang Guru -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-easel2"></i>
-                            Ruang Guru
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Ruang Guru <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="ruang_guru_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('ruang_guru_ada_tidak') == 'ada'" required />
-                                <x-form.radio name="ruang_guru_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('ruang_guru_ada_tidak') == 'tidak_ada'" />
+                            <div>
+                                <x-form.select name="kantor_tu_kondisi" label="Kondisi Ruang Kantor/Tata Usaha"
+                                    placeholder="-- Pilih Kondisi --" :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('kantor_tu_kondisi')" />
                             </div>
-                            @error('ruang_guru_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
                         </div>
+                    </x-card>
 
-                        <div>
-                            <x-form.select name="ruang_guru_kondisi" label="Kondisi Ruang Guru"
-                                placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('ruang_guru_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- L. Ruang Kantor/Tata Usaha -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-briefcase"></i>
-                            Ruang Kantor/Tata Usaha
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Ruang Kantor/Tata Usaha <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="kantor_tu_ada_tidak" value="ada" label="Ada" :checked="old('kantor_tu_ada_tidak') == 'ada'"
-                                    required />
-                                <x-form.radio name="kantor_tu_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('kantor_tu_ada_tidak') == 'tidak_ada'" />
+                    <!-- M. Lab IPA -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-flask"></i>
+                                Laboratorium IPA
                             </div>
-                            @error('kantor_tu_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        </x-slot:header>
 
-                        <div>
-                            <x-form.select name="kantor_tu_kondisi" label="Kondisi Ruang Kantor/Tata Usaha"
-                                placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('kantor_tu_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- M. Lab IPA -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-flask"></i>
-                            Lab IPA
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Lab IPA <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="lab_ipa_ada_tidak" value="ada" label="Ada" :checked="old('lab_ipa_ada_tidak') == 'ada'"
-                                    required />
-                                <x-form.radio name="lab_ipa_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('lab_ipa_ada_tidak') == 'tidak_ada'" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Laboratorium IPA <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="lab_ipa_ada_tidak" value="ada" label="Ada"
+                                        :checked="old('lab_ipa_ada_tidak') == 'ada'" required />
+                                    <x-form.radio name="lab_ipa_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('lab_ipa_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('lab_ipa_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('lab_ipa_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
-                        </div>
 
-                        <div>
-                            <x-form.select name="lab_ipa_kondisi" label="Kondisi Lab IPA"
-                                placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('lab_ipa_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- N. Lab Komputer -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-pc-display-horizontal"></i>
-                            Lab Komputer
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Lab Komputer <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="lab_komputer_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('lab_komputer_ada_tidak') == 'ada'" required />
-                                <x-form.radio name="lab_komputer_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('lab_komputer_ada_tidak') == 'tidak_ada'" />
+                            <div>
+                                <x-form.select name="lab_ipa_kondisi" label="Kondisi Lab IPA"
+                                    placeholder="-- Pilih Kondisi --" :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('lab_ipa_kondisi')" />
                             </div>
-                            @error('lab_komputer_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
                         </div>
+                    </x-card>
 
-                        <div>
-                            <x-form.select name="lab_komputer_kondisi" label="Kondisi Lab Komputer"
-                                placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('lab_komputer_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- O. UKS -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-heart-pulse"></i>
-                            UKS
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan UKS <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="uks_ada_tidak" value="ada" label="Ada" :checked="old('uks_ada_tidak') == 'ada'"
-                                    required />
-                                <x-form.radio name="uks_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('uks_ada_tidak') == 'tidak_ada'" />
+                    <!-- N. Lab Komputer -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-pc-display-horizontal"></i>
+                                Laboratorium Komputer
                             </div>
-                            @error('uks_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        </x-slot:header>
 
-                        <div>
-                            <x-form.select name="uks_kondisi" label="Kondisi UKS" placeholder="-- Pilih Kondisi --"
-                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('uks_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- P. Rumah Dinas -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-house-door"></i>
-                            Rumah Dinas
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Rumah Dinas <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="rumah_dinas_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('rumah_dinas_ada_tidak') == 'ada'" required />
-                                <x-form.radio name="rumah_dinas_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('rumah_dinas_ada_tidak') == 'tidak_ada'" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Laboratorium Komputer <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="lab_komputer_ada_tidak" value="ada" label="Ada"
+                                        :checked="old('lab_komputer_ada_tidak') == 'ada'" required />
+                                    <x-form.radio name="lab_komputer_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('lab_komputer_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('lab_komputer_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('rumah_dinas_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
-                        </div>
 
-                        <div>
-                            <x-form.select name="rumah_dinas_kondisi" label="Kondisi Rumah Dinas"
-                                placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('rumah_dinas_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- Q. Rumah Ibadah -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-building"></i>
-                            Rumah Ibadah
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Rumah Ibadah <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="rumah_ibadah_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('rumah_ibadah_ada_tidak') == 'ada'" required />
-                                <x-form.radio name="rumah_ibadah_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('rumah_ibadah_ada_tidak') == 'tidak_ada'" />
+                            <div>
+                                <x-form.select name="lab_komputer_kondisi" label="Kondisi Lab Komputer"
+                                    placeholder="-- Pilih Kondisi --" :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('lab_komputer_kondisi')" />
                             </div>
-                            @error('rumah_ibadah_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
                         </div>
+                    </x-card>
 
-                        <div>
-                            <x-form.select name="rumah_ibadah_kondisi" label="Kondisi Rumah Ibadah"
-                                placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('rumah_ibadah_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- R. Lapangan Sekolah -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-flag"></i>
-                            Lapangan Sekolah
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Lapangan Sekolah <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="lapangan_sekolah_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('lapangan_sekolah_ada_tidak') == 'ada'" required />
-                                <x-form.radio name="lapangan_sekolah_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('lapangan_sekolah_ada_tidak') == 'tidak_ada'" />
+                    <!-- O. UKS -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-heart-pulse"></i>
+                                Unit Kesehatan Sekolah(UKS)
                             </div>
-                            @error('lapangan_sekolah_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        </x-slot:header>
 
-                        <div>
-                            <x-form.select name="lapangan_sekolah_kondisi" label="Kondisi Lapangan Sekolah"
-                                placeholder="-- Pilih Kondisi --" :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('lapangan_sekolah_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- S. Pagar -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-border-all"></i>
-                            Pagar
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Pagar <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="pagar_ada_tidak" value="ada" label="Ada" :checked="old('pagar_ada_tidak') == 'ada'"
-                                    required />
-                                <x-form.radio name="pagar_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('pagar_ada_tidak') == 'tidak_ada'" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan UKS <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="uks_ada_tidak" value="ada" label="Ada" :checked="old('uks_ada_tidak') == 'ada'"
+                                        required />
+                                    <x-form.radio name="uks_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('uks_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('uks_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('pagar_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
-                        </div>
 
-                        <div>
-                            <x-form.select name="pagar_kondisi" label="Kondisi Pagar" placeholder="-- Pilih Kondisi --"
-                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('pagar_kondisi')" />
-                        </div>
-                    </div>
-                </x-card>
-
-                <!-- T. Air -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-droplet"></i>
-                            Air
-                        </div>
-                    </x-slot:header>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="form-label">
-                                Keberadaan Air <span class="text-danger">*</span>
-                            </label>
-                            <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="air_ada_tidak" value="ada" label="Ada" :checked="old('air_ada_tidak') == 'ada'"
-                                    required />
-                                <x-form.radio name="air_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('air_ada_tidak') == 'tidak_ada'" />
+                            <div>
+                                <x-form.select name="uks_kondisi" label="Kondisi UKS" placeholder="-- Pilih Kondisi --"
+                                    :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('uks_kondisi')" />
                             </div>
-                            @error('air_ada_tidak')
-                                <p class="invalid-feedback">{{ $message }}</p>
-                            @enderror
                         </div>
+                    </x-card>
 
-                        <div>
-                            <x-form.select name="air_kondisi" label="Kondisi Air" placeholder="-- Pilih Kondisi --"
-                                :options="['baik' => 'Baik', 'rusak_ringan' => 'Rusak Ringan', 'rusak_sedang' => 'Rusak Sedang', 'rusak_berat' => 'Rusak Berat', 'nihil' => 'Nihil']" :value="old('air_kondisi')" />
+                    <!-- P. Rumah Dinas -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-house-door"></i>
+                                Rumah Dinas
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Rumah Dinas <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="rumah_dinas_ada_tidak" value="ada" label="Ada"
+                                        :checked="old('rumah_dinas_ada_tidak') == 'ada'" required />
+                                    <x-form.radio name="rumah_dinas_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('rumah_dinas_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('rumah_dinas_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <x-form.select name="rumah_dinas_kondisi" label="Kondisi Rumah Dinas"
+                                    placeholder="-- Pilih Kondisi --" :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('rumah_dinas_kondisi')" />
+                            </div>
                         </div>
+                    </x-card>
+
+                    <!-- Q. Rumah Ibadah -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-building"></i>
+                                Rumah Ibadah
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Rumah Ibadah <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="rumah_ibadah_ada_tidak" value="ada" label="Ada"
+                                        :checked="old('rumah_ibadah_ada_tidak') == 'ada'" required />
+                                    <x-form.radio name="rumah_ibadah_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('rumah_ibadah_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('rumah_ibadah_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <x-form.select name="rumah_ibadah_kondisi" label="Kondisi Rumah Ibadah"
+                                    placeholder="-- Pilih Kondisi --" :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('rumah_ibadah_kondisi')" />
+                            </div>
+                        </div>
+                    </x-card>
+
+                    <!-- R. Lapangan Sekolah -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-flag"></i>
+                                Lapangan Sekolah
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Lapangan Sekolah <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="lapangan_sekolah_ada_tidak" value="ada" label="Ada"
+                                        :checked="old('lapangan_sekolah_ada_tidak') == 'ada'" required />
+                                    <x-form.radio name="lapangan_sekolah_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('lapangan_sekolah_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('lapangan_sekolah_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <x-form.select name="lapangan_sekolah_kondisi" label="Kondisi Lapangan Sekolah"
+                                    placeholder="-- Pilih Kondisi --" :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('lapangan_sekolah_kondisi')" />
+                            </div>
+                        </div>
+                    </x-card>
+
+                    <!-- S. Pagar -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-border-all"></i>
+                                Pagar Sekolah
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Pagar <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="pagar_ada_tidak" value="ada" label="Ada" :checked="old('pagar_ada_tidak') == 'ada'"
+                                        required />
+                                    <x-form.radio name="pagar_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('pagar_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('pagar_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <x-form.select name="pagar_kondisi" label="Kondisi Pagar"
+                                    placeholder="-- Pilih Kondisi --" :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('pagar_kondisi')" />
+                            </div>
+                        </div>
+                    </x-card>
+
+                    <!-- T. Air -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-droplet"></i>
+                                Ketersedian Air Bersih
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">
+                                    Keberadaan Air <span class="text-danger">*</span>
+                                </label>
+                                <div class="flex flex-wrap gap-4 mt-1">
+                                    <x-form.radio name="air_ada_tidak" value="ada" label="Ada" :checked="old('air_ada_tidak') == 'ada'"
+                                        required />
+                                    <x-form.radio name="air_ada_tidak" value="tidak_ada" label="Tidak Ada"
+                                        :checked="old('air_ada_tidak') == 'tidak_ada'" />
+                                </div>
+                                @error('air_ada_tidak')
+                                    <p class="invalid-feedback">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <x-form.select name="air_kondisi" label="Kondisi Air" placeholder="-- Pilih Kondisi --"
+                                    :options="[
+                                        'baik' => 'Baik',
+                                        'rusak_ringan' => 'Rusak Ringan',
+                                        'rusak_sedang' => 'Rusak Sedang',
+                                        'rusak_berat' => 'Rusak Berat',
+                                        'nihil' => 'Nihil',
+                                    ]" :value="old('air_kondisi')" />
+                            </div>
+                        </div>
+                    </x-card>
+                </fieldset>
+
+                <fieldset class="flex flex-col gap-4 min-w-0 @if (!auth()->user()->checkPermissionTo('update-prangkat-furnitur')) opacity-60 @endif"
+                    @if (!auth()->user()->checkPermissionTo('update-prangkat-furnitur')) disabled @endif>
+                    <!-- ===== Kelompok: Furnitur & Perangkat ===== -->
+                    <div class="flex items-center gap-2 pt-2">
+                        <i class="bi bi-pc-display text-rose-600 dark:text-rose-400"></i>
+                        <h2 class="text-sm sm:text-base font-bold text-rose-600 dark:text-rose-400 whitespace-nowrap">
+                            Furnitur & Perangkat
+                        </h2>
+                        <div class="flex-1 border-t-2 border-rose-200 dark:border-rose-900"></div>
                     </div>
-                </x-card>
 
-                <!-- ===== Kelompok: Furnitur & Perangkat ===== -->
-                <div class="flex items-center gap-2 pt-2">
-                    <i class="bi bi-pc-display text-rose-600 dark:text-rose-400"></i>
-                    <h2 class="text-sm sm:text-base font-bold text-rose-600 dark:text-rose-400 whitespace-nowrap">
-                        Furnitur & Perangkat
-                    </h2>
-                    <div class="flex-1 border-t-2 border-rose-200 dark:border-rose-900"></div>
-                </div>
-
-                <!-- U. Kursi Siswa -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-person"></i>
-                            Kursi Siswa
+                    @if (!auth()->user()->checkPermissionTo('update-prangkat-furnitur'))
+                        <div
+                            class="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs sm:text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-900/20 dark:text-amber-300">
+                            <i class="bi bi-lock-fill mt-0.5"></i>
+                            <span>Anda belum belum bisa mengisi bagian ini. silahkan tunggu admin untuk membuka
+                                akses.</span>
                         </div>
-                    </x-slot:header>
+                    @endif
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="kursi_siswa_baik" label="Jumlah Baik" type="number" min="0" required
-                            :value="old('kursi_siswa_baik', 0)" />
-                        <x-form.input name="kursi_siswa_rusak" label="Jumlah Rusak" type="number" min="0"
-                            required :value="old('kursi_siswa_rusak', 0)" />
-                    </div>
-                </x-card>
+                    <!-- U. Kursi Siswa -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-person"></i>
+                                Kursi Siswa
+                            </div>
+                        </x-slot:header>
 
-                <!-- V. Meja Siswa -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-table"></i>
-                            Meja Siswa
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <x-form.input name="kursi_siswa_baik" label="Jumlah Baik" type="number" min="0"
+                                required :value="old('kursi_siswa_baik', 0)" />
+                            <x-form.input name="kursi_siswa_rusak" label="Jumlah Rusak" type="number" min="0"
+                                required :value="old('kursi_siswa_rusak', 0)" />
                         </div>
-                    </x-slot:header>
+                    </x-card>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="meja_siswa_baik" label="Jumlah Baik" type="number" min="0" required
-                            :value="old('meja_siswa_baik', 0)" />
-                        <x-form.input name="meja_siswa_rusak" label="Jumlah Rusak" type="number" min="0"
-                            required :value="old('meja_siswa_rusak', 0)" />
-                    </div>
-                </x-card>
+                    <!-- V. Meja Siswa -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-table"></i>
+                                Meja Siswa
+                            </div>
+                        </x-slot:header>
 
-                <!-- W. Kursi Guru -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-person-badge"></i>
-                            Kursi Guru
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <x-form.input name="meja_siswa_baik" label="Jumlah Baik" type="number" min="0"
+                                required :value="old('meja_siswa_baik', 0)" />
+                            <x-form.input name="meja_siswa_rusak" label="Jumlah Rusak" type="number" min="0"
+                                required :value="old('meja_siswa_rusak', 0)" />
                         </div>
-                    </x-slot:header>
+                    </x-card>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="kursi_guru_baik" label="Jumlah Baik" type="number" min="0" required
-                            :value="old('kursi_guru_baik', 0)" />
-                        <x-form.input name="kursi_guru_rusak" label="Jumlah Rusak" type="number" min="0"
-                            required :value="old('kursi_guru_rusak', 0)" />
-                    </div>
-                </x-card>
+                    <!-- W. Kursi Guru -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-person-badge"></i>
+                                Kursi Guru
+                            </div>
+                        </x-slot:header>
 
-                <!-- X. Meja Guru -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-table"></i>
-                            Meja Guru
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <x-form.input name="kursi_guru_baik" label="Jumlah Baik" type="number" min="0"
+                                required :value="old('kursi_guru_baik', 0)" />
+                            <x-form.input name="kursi_guru_rusak" label="Jumlah Rusak" type="number" min="0"
+                                required :value="old('kursi_guru_rusak', 0)" />
                         </div>
-                    </x-slot:header>
+                    </x-card>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="meja_guru_baik" label="Jumlah Baik" type="number" min="0" required
-                            :value="old('meja_guru_baik', 0)" />
-                        <x-form.input name="meja_guru_rusak" label="Jumlah Rusak" type="number" min="0" required
-                            :value="old('meja_guru_rusak', 0)" />
-                    </div>
-                </x-card>
+                    <!-- X. Meja Guru -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-table"></i>
+                                Meja Guru
+                            </div>
+                        </x-slot:header>
 
-                <!-- Y. Laptop -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-laptop"></i>
-                            Laptop
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <x-form.input name="meja_guru_baik" label="Jumlah Baik" type="number" min="0"
+                                required :value="old('meja_guru_baik', 0)" />
+                            <x-form.input name="meja_guru_rusak" label="Jumlah Rusak" type="number" min="0"
+                                required :value="old('meja_guru_rusak', 0)" />
                         </div>
-                    </x-slot:header>
+                    </x-card>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="laptop_baik" label="Jumlah Baik" type="number" min="0" required
-                            :value="old('laptop_baik', 0)" />
-                        <x-form.input name="laptop_rusak" label="Jumlah Rusak" type="number" min="0" required
-                            :value="old('laptop_rusak', 0)" />
-                    </div>
-                </x-card>
+                    <!-- Y. Laptop -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-laptop"></i>
+                                Laptop
+                            </div>
+                        </x-slot:header>
 
-                <!-- Z. Komputer -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <x-slot:header>
-                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-pc-display"></i>
-                            Komputer
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <x-form.input name="laptop_baik" label="Jumlah Baik" type="number" min="0" required
+                                :value="old('laptop_baik', 0)" />
+                            <x-form.input name="laptop_rusak" label="Jumlah Rusak" type="number" min="0"
+                                required :value="old('laptop_rusak', 0)" />
                         </div>
-                    </x-slot:header>
+                    </x-card>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="komputer_baik" label="Jumlah Baik" type="number" min="0" required
-                            :value="old('komputer_baik', 0)" />
-                        <x-form.input name="komputer_rusak" label="Jumlah Rusak" type="number" min="0" required
-                            :value="old('komputer_rusak', 0)" />
-                    </div>
-                </x-card>
+                    <!-- Z. Komputer -->
+                    <x-card
+                        class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <x-slot:header>
+                            <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                                <i class="bi bi-pc-display"></i>
+                                Komputer
+                            </div>
+                        </x-slot:header>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <x-form.input name="komputer_baik" label="Jumlah Baik" type="number" min="0"
+                                required :value="old('komputer_baik', 0)" />
+                            <x-form.input name="komputer_rusak" label="Jumlah Rusak" type="number" min="0"
+                                required :value="old('komputer_rusak', 0)" />
+                        </div>
+                    </x-card>
+                </fieldset>
 
                 <!-- Tombol Aksi (Sticky) -->
-                <x-card class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200 sticky bottom-2 z-20 backdrop-blur">
+                <x-card
+                    class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200 sticky bottom-2 z-20 backdrop-blur">
                     <x-slot:footer>
                         <div class="flex flex-wrap items-center justify-between gap-2">
                             <div class="flex flex-wrap gap-2">
@@ -1001,7 +1172,9 @@
                 updateTotal();
             }
 
-            setupTotalCounter(['jumlah_guru_pns', 'jumlah_guru_pppk', 'jumlah_guru_pppk_paruh_waktu', 'jumlah_guru_honor'], 'totalGuru', 'Guru');
+            setupTotalCounter(['jumlah_guru_pns', 'jumlah_guru_pppk', 'jumlah_guru_pppk_paruh_waktu',
+                'jumlah_guru_honor'
+            ], 'totalGuru', 'Guru');
             setupTotalCounter([
                 'jumlah_staff_tu_pns', 'jumlah_staff_tu_pppk', 'jumlah_staff_tu_pppk_paruh_waktu',
                 'jumlah_staff_tu_honor'

@@ -27,6 +27,13 @@
                             <i class="bi bi-pencil-square me-1"></i> Edit User
                         </x-button>
                     </a>
+                    @can('change-permission')
+                        <a href="{{ route('user.izin.edit', $user->id) }}" class="inline-flex">
+                            <x-button variant="primary" size="sm">
+                                <i class="bi bi-shield-lock-fill me-1"></i> Kelola Izin
+                            </x-button>
+                        </a>
+                    @endcan
                     <x-button type="button" variant="danger" size="sm" data-modal-open="hapusUserModal">
                         <i class="bi bi-trash me-1"></i> Hapus User
                     </x-button>
@@ -34,8 +41,8 @@
             </div>
 
             <!-- ============================================================
-                                                     Profil User (kiri) & Data Sekolah (kanan)
-                                                     ============================================================ -->
+                                                         Profil User (kiri) & Data Sekolah (kanan)
+                                                         ============================================================ -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <!-- Kiri: Profil User -->
                 <x-card>
@@ -568,8 +575,8 @@
                 @endphp
 
                 <!-- ============================================================
-                                                         RKB & Rehabilitasi Ruang Kelas
-                                                         ============================================================ -->
+                                                             RKB & Rehabilitasi Ruang Kelas
+                                                             ============================================================ -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
@@ -616,8 +623,8 @@
                 </x-card>
 
                 <!-- ============================================================
-                                                         Jumlah Siswa, Rombongan Belajar & Ruang Kelas
-                                                         ============================================================ -->
+                                                             Jumlah Siswa, Rombongan Belajar & Ruang Kelas
+                                                             ============================================================ -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
@@ -738,8 +745,8 @@
                 </x-card>
 
                 <!-- ============================================================
-                                                         Fasilitas Ruang & Bangunan Sekolah
-                                                         ============================================================ -->
+                                                             Fasilitas Ruang & Bangunan Sekolah
+                                                             ============================================================ -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
@@ -805,8 +812,8 @@
                 </x-card>
 
                 <!-- ============================================================
-                                                         Furnitur, Toilet & Elektronik
-                                                         ============================================================ -->
+                                                             Furnitur, Toilet & Elektronik
+                                                             ============================================================ -->
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">

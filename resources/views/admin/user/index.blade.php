@@ -73,6 +73,18 @@
                                 >
                                     <i class="bi bi-pencil-fill"></i>
                                 </x-button>
+
+                                @can('change-permission')
+                                    <x-button
+                                        href="{{ route('user.izin.edit', $item->id) }}"
+                                        variant="primary"
+                                        size="xs"
+                                        class="p-1.5"
+                                        title="Kelola Izin"
+                                    >
+                                        <i class="bi bi-shield-lock-fill"></i>
+                                    </x-button>
+                                @endcan
                                 
                                 <x-button 
                                     variant="danger" 

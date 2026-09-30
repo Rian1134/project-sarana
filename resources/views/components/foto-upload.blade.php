@@ -42,7 +42,7 @@
         {{-- Lapisan saat kursor di atas avatar --}}
         <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-1 rounded-full bg-black/55 text-white opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100 group-data-[drag=true]:opacity-100">
             <i class="bi bi-camera text-2xl"></i>
-            <span class="text-xs font-medium">Ganti foto</span>
+            <span class="text-xs font-medium">Ganti logo</span>
         </div>
 
         {{-- Tanda kamera di pojok --}}
@@ -66,7 +66,7 @@
     <div class="flex flex-wrap items-center justify-center gap-2">
         <button type="button" data-pick
                 class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700">
-            <i class="bi bi-upload"></i> <span data-pick-label>Pilih foto</span>
+            <i class="bi bi-upload"></i> <span data-pick-label>Pilih logo</span>
         </button>
 
         <button type="button" data-cancel hidden
@@ -77,7 +77,7 @@
         @if ($punyaFoto)
             <button type="button" data-remove hidden
                     class="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 dark:text-red-400 dark:hover:bg-red-950/40">
-                <i class="bi bi-trash3"></i> Hapus foto
+                <i class="bi bi-trash3"></i> Hapus logo
             </button>
 
             <button type="button" data-undo-remove hidden
@@ -150,7 +150,7 @@
             if (btnUndo) btnUndo.hidden = !hapusFoto;
             if (hapus) hapus.value = hapusFoto ? '1' : '0';
 
-            pickLabel.textContent = baru ? 'Pilih foto lain' : (punyaFoto && !hapusFoto ? 'Ganti foto' : 'Pilih foto');
+            pickLabel.textContent = baru ? 'Pilih logo lain' : (punyaFoto && !hapusFoto ? 'Ganti logo' : 'Pilih logo');
 
             if (baru) {
                 lepasObjectUrl();
@@ -160,7 +160,7 @@
             } else if (hapusFoto) {
                 lepasObjectUrl();
                 img.src = img.dataset.placeholder;
-                status.textContent = 'Foto akan dihapus saat Anda menyimpan.';
+                status.textContent = 'logo akan dihapus saat Anda menyimpan.';
             } else {
                 lepasObjectUrl();
                 img.src = img.dataset.awal;
@@ -175,12 +175,12 @@
 
             if (!tipeBoleh.includes(file.type)) {
                 input.value = '';
-                tampilkanError('Format foto harus JPG, PNG, atau WebP.');
+                tampilkanError('Format logo harus JPG, PNG, atau WebP.');
                 return;
             }
             if (file.size > maxBytes) {
                 input.value = '';
-                tampilkanError('Ukuran foto ' + ukuranTeks(file.size) + ' melebihi batas 2 MB.');
+                tampilkanError('Ukuran logo ' + ukuranTeks(file.size) + ' melebihi batas 2 MB.');
                 return;
             }
             atur('baru', file);

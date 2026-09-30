@@ -1246,75 +1246,75 @@
 
                         {{-- URUTAN 8: R. PERPUSTAKAAN (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangPerpustakaanBadge }}"
-                                class="text-[9px]">{{ $ruangPerpustakaanStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $ruangPerpustakaanStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangPerpustakaanKondisiBadge }}"
-                                class="text-[9px]">{{ $ruangPerpustakaanKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $ruangPerpustakaanKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 9: R. KEPALA SEKOLAH (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangKepalaSekolahBadge }}"
-                                class="text-[9px]">{{ $ruangKepalaSekolahStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $ruangKepalaSekolahStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangKepalaSekolahKondisiBadge }}"
-                                class="text-[9px]">{{ $ruangKepalaSekolahKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $ruangKepalaSekolahKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 10: R. GURU (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangGuruBadge }}"
-                                class="text-[9px]">{{ $ruangGuruStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $ruangGuruStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangGuruKondisiBadge }}"
-                                class="text-[9px]">{{ $ruangGuruKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $ruangGuruKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 11: R. KANTOR/TU (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangKantorTuBadge }}"
-                                class="text-[9px]">{{ $ruangKantorTuStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $ruangKantorTuStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangKantorTuKondisiBadge }}"
-                                class="text-[9px]">{{ $ruangKantorTuKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $ruangKantorTuKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 12: LAB IPA (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $labIpaBadge }}"
-                                class="text-[9px]">{{ $labIpaStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $labIpaStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $labIpaKondisiBadge }}"
-                                class="text-[9px]">{{ $labIpaKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $labIpaKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 13: LAB KOMPUTER (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $labKomputerBadge }}"
-                                class="text-[9px]">{{ $labKomputerStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $labKomputerStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $labKomputerKondisiBadge }}"
-                                class="text-[9px]">{{ $labKomputerKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $labKomputerKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 14: UKS (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $unitKesehatanSekolahBadge }}"
-                                class="text-[9px]">{{ $unitKesehatanSekolahStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $unitKesehatanSekolahStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $unitKesehatanSekolahKondisiBadge }}"
-                                class="text-[9px]">{{ $unitKesehatanSekolahKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $unitKesehatanSekolahKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 15: RUMAH DINAS (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $rumahDinasBadge }}"
-                                class="text-[9px]">{{ $rumahDinasStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $rumahDinasStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $rumahDinasKondisiBadge }}"
-                                class="text-[9px]">{{ $rumahDinasKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $rumahDinasKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 16: RUMAH IBADAH (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $rumahIbadahBadge }}"
-                                class="text-[9px]">{{ $rumahIbadahStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $rumahIbadahStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $rumahIbadahKondisiBadge }}"
-                                class="text-[9px]">{{ $rumahIbadahKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $rumahIbadahKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 17: LAPANGAN SEKOLAH (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $lapanganSekolahBadge }}"
-                                class="text-[9px]">{{ $lapanganSekolahStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $lapanganSekolahStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $lapanganSekolahKondisiBadge }}"
-                                class="text-[9px]">{{ $lapanganSekolahKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $lapanganSekolahKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 18: PAGAR (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $pagarSekolahBadge }}"
-                                class="text-[9px]">{{ $pagarSekolahStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $pagarSekolahStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $pagarSekolahKondisiBadge }}"
-                                class="text-[9px]">{{ $pagarSekolahKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $pagarSekolahKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 19: AIR (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $airBersihBadge }}"
-                                class="text-[9px]">{{ $airBersihStatus }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $airBersihStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $airBersihKondisiBadge }}"
-                                class="text-[9px]">{{ $airBersihKondisi }}</x-badge></x-table.cell>
+                                class="text-lg">{{ $airBersihKondisi }}</x-badge></x-table.cell>
 
                         {{-- URUTAN 20: KURSI SISWA (3 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->kursiSiswa?->baik ?? 0 }}</x-table.cell>

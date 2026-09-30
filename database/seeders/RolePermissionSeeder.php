@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -14,6 +14,8 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        // Bersihkan cache permission Spatie agar perubahan langsung terbaca
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         $permissions = [
             'view-sarana',
@@ -21,43 +23,44 @@ class RolePermissionSeeder extends Seeder
             'show-sarana',
             'edit-sarana',
             'delete-sarana',
+
             'view-user',
             'create-user',
             'show-user',
             'edit-user',
             'delete-user',
+
+            'change-permission',
+            
+            'update-sdm',
+            'update-siswa-rombel',
+            'update-ruang-kelas',
+            'update-toilet',
+            'update-ruang-fasilitas',
+            'update-prangkat-furnitur',
         ];
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
         }
 
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'user']);
+        // firstOrCreate: aman dijalankan berulang kali (tidak error duplicate)
+        $roleAdmin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $roleUser  = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
 
-        $roleAdmin = Role::findByName('admin');
+        // Admin: semua permission
+        $roleAdmin->syncPermissions($permissions);
 
-        $roleAdmin->givePermissionTo('view-sarana');
-        $roleAdmin->givePermissionTo('show-sarana');
-        $roleAdmin->givePermissionTo('edit-sarana');
-        $roleAdmin->givePermissionTo('create-sarana');
-        $roleAdmin->givePermissionTo('delete-sarana');
+        // User: kelola sarana + lihat/ubah data user.
+        // Izin update-* TIDAK diberikan lewat role; diatur admin per user (halaman Kelola Izin).
+        $roleUser->syncPermissions([
+            'show-sarana',
+            'edit-sarana',
+            'create-sarana',
+            'delete-sarana',
 
-        $roleAdmin->givePermissionTo('view-user');
-        $roleAdmin->givePermissionTo('edit-user');
-        $roleAdmin->givePermissionTo('create-user');
-        $roleAdmin->givePermissionTo('delete-user');
-
-        $roleUser = Role::findByName('user');
-
-        $roleUser->givePermissionTo('show-sarana');
-        $roleUser->givePermissionTo('edit-sarana');
-        $roleUser->givePermissionTo('create-sarana');
-        $roleUser->givePermissionTo('delete-sarana');
-
-        $roleUser->givePermissionTo('show-user');
-        $roleUser->givePermissionTo('edit-user');
-        $roleUser->givePermissionTo('create-user');
-        $roleUser->givePermissionTo('delete-user');
+            'show-user',
+            'edit-user',
+        ]);
     }
 }
