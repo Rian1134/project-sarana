@@ -103,6 +103,15 @@
                     </div>
                 </x-card>
 
+                <!-- Petunjuk pengisian -->
+                <x-alert type="info">
+                    <p class="font-semibold mb-1">Petunjuk pengisian data sarana</p>
+                    <ul class="list-disc ps-5 space-y-0.5">
+                        <li>Jika jumlahnya belum diketahui, biarkan angka tetap <strong>0</strong>.</li>
+                        <li>Jika kondisinya belum diketahui, pilih <strong>Tidak Ada</strong> untuk sementara, lalu perbarui lewat menu Edit setelah datanya jelas.</li>
+                    </ul>
+                </x-alert>
+
                 <!-- ===== Kelompok: Sumber Daya Manusia ===== -->
                 <div class="flex items-center gap-2 pt-2">
                     <i class="bi bi-people-fill text-violet-600 dark:text-violet-400"></i>
@@ -136,21 +145,21 @@
                             </p>
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                 <x-form.input name="jumlah_guru_pns" label="Guru PNS" type="number" min="0" required
-                                    :value="old('jumlah_guru_pns', $profileSekolah->jumlahGuru->pns ?? 0)" />
+                                    :value="old('jumlah_guru_pns', $profileSekolah->kondisiGuru->pns ?? 0)" />
 
                                 <x-form.input name="jumlah_guru_pppk" label="Guru PPPK" type="number" min="0" required
-                                    :value="old('jumlah_guru_pppk', $profileSekolah->jumlahGuru->pppk ?? 0)" />
+                                    :value="old('jumlah_guru_pppk', $profileSekolah->kondisiGuru->pppk ?? 0)" />
 
                                 <x-form.input name="jumlah_guru_pppk_paruh_waktu" label="PPPK Paruh Waktu"
                                     type="number" min="0" required
                                     :value="old(
                                         'jumlah_guru_pppk_paruh_waktu',
-                                        $profileSekolah->jumlahGuru->pppk_paruh_waktu ?? 0,
+                                        $profileSekolah->kondisiGuru->pppk_paruh_waktu ?? 0,
                                     )" />
 
                                 <x-form.input name="jumlah_guru_honor" label="Guru Honor" type="number" min="0"
                                     required
-                                    :value="old('jumlah_guru_honor', $profileSekolah->jumlahGuru->honor ?? 0)" />
+                                    :value="old('jumlah_guru_honor', $profileSekolah->kondisiGuru->honor ?? 0)" />
                             </div>
                         </div>
 
@@ -162,17 +171,17 @@
                             </p>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                 <x-form.input name="jumlah_guru_i" label="Golongan I" type="number" min="0" required
-                                    :value="old('jumlah_guru_i', $profileSekolah->jumlahGuru->i ?? 0)" />
+                                    :value="old('jumlah_guru_i', $profileSekolah->kondisiGuru->i ?? 0)" />
 
                                 <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number" min="0" required
-                                    :value="old('jumlah_guru_ii', $profileSekolah->jumlahGuru->ii ?? 0)" />
+                                    :value="old('jumlah_guru_ii', $profileSekolah->kondisiGuru->ii ?? 0)" />
 
                                 <x-form.input name="jumlah_guru_iii" label="Golongan III" type="number" min="0"
                                     required
-                                    :value="old('jumlah_guru_iii', $profileSekolah->jumlahGuru->iii ?? 0)" />
+                                    :value="old('jumlah_guru_iii', $profileSekolah->kondisiGuru->iii ?? 0)" />
 
                                 <x-form.input name="jumlah_guru_iv" label="Golongan IV" type="number" min="0" required
-                                    :value="old('jumlah_guru_iv', $profileSekolah->jumlahGuru->iv ?? 0)" />
+                                    :value="old('jumlah_guru_iv', $profileSekolah->kondisiGuru->iv ?? 0)" />
                             </div>
                         </div>
                     </div>

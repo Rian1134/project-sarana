@@ -97,6 +97,15 @@
                     </div>
                 </x-card>
 
+                <!-- Petunjuk pengisian -->
+                <x-alert type="info">
+                    <p class="font-semibold mb-1">Petunjuk pengisian data sarana</p>
+                    <ul class="list-disc ps-5 space-y-0.5">
+                        <li>Jika jumlahnya belum diketahui, biarkan angka tetap <strong>0</strong>.</li>
+                        <li>Jika kondisinya belum diketahui, pilih <strong>Tidak Ada</strong> untuk sementara, lalu perbarui lewat menu Edit setelah datanya jelas.</li>
+                    </ul>
+                </x-alert>
+
                 <!-- ===== Kelompok: Sumber Daya Manusia ===== -->
                 <div class="flex items-center gap-2 pt-2">
                     <i class="bi bi-people-fill text-violet-600 dark:text-violet-400"></i>
