@@ -29,7 +29,7 @@
             <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo Kementerian Pendidikan Dasar dan Menengah"
                 class="w-48 h-48 lg:w-100 lg:h-100 xl:w-full xl:h-full object-cover mb-4 drop-shadow-lg">
             <h1 class="text-3xl font-bold">Sistem Manajemen</h1>
-            <p class="opacity-90 mt-1">Kelola data sarana & prasarana sekolah menegah pertama kabupaten Lahat</p>
+            <p class="opacity-90 mt-1">Kelola Data Sarana & Prasarana Sekolah Menengah Pertama Kabupaten Lahat</p>
             <div class="mt-8 flex gap-2 text-sm opacity-80">
                 <span class="px-3 py-1 bg-white/20 rounded-full">✓ Aman & Terpercaya</span>
                 <span class="px-3 py-1 bg-white/20 rounded-full">✓ 24/7 Support</span>
