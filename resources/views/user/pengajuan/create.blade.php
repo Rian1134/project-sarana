@@ -90,6 +90,11 @@
                         </div>
                     </x-slot:header>
 
+                    <p class="flex items-start gap-2 text-sm text-blue-700 dark:text-blue-300 mb-3">
+                        <i class="bi bi-info-circle mt-0.5"></i>
+                        <span>Laporan bisa lebih dari satu kategori. Pilih kategori lalu klik <strong>Tambah</strong>, ulangi untuk kategori lain yang rusak.</span>
+                    </p>
+
                     <div class="flex flex-col sm:flex-row gap-2">
                         <select id="pilihKategoriSelect"
                             class="w-full sm:flex-1 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 text-sm focus:ring-blue-500 focus:border-blue-500">
@@ -196,40 +201,33 @@
                     </div>
                 @endforeach
 
+                {{-- Lampiran: tiap dokumen punya tombol yang membuka link upload-nya --}}
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                            <i class="bi bi-card-heading"></i>
+                            <i class="bi bi-paperclip"></i>
                             Lampiran <span class="text-red-600 underline">wajib</span><span class="text-red-600">*</span>
                         </div>
                     </x-slot:header>
-                    <div class="flex flex-col gap-5">
-                        <x-card>
-                            <x-slot:header>
-                                silahkan lampirkan
-                            </x-slot:header>
 
-                            <div class="ms-5 mb-3">
-                                <ol class="list-decimal">
-                                    <li>foto dokumentasi</li>
-                                    <li>form tingkat kerusakan</li>
-                                </ol>
-                            </div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                        Cari folder dengan <strong>nama sekolah</strong>, lalu upload lewat tombol di samping dokumen.
+                    </p>
 
-                            <span>jangan lupa dibuat dalam folder baru!</span>
-                        </x-card>
-
-                        <div>
-                            cari <span class="font-bold">nama sekolah yang sesuai</span> di dalam folder dan upload di folder <span class="font-bold">laporan kerusakan</span>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
+                            <span>Photo Dokumentasi Kerusakan</span>
+                            <a href="https://bidangsmp.quickconnect.to/sharing/tTENaUcqE" target="_blank" rel="noopener noreferrer">
+                                <x-button type="button" size="sm"><i class="bi bi-cloud-arrow-up"></i> Upload</x-button>
+                            </a>
                         </div>
-
+                        <div class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
+                            <span>Dokumen Perhitungan Tingkat Kerusakan</span>
+                            <a href="https://bidangsmp.quickconnect.to/sharing/fTbO8oVbn" target="_blank" rel="noopener noreferrer">
+                                <x-button type="button" size="sm"><i class="bi bi-cloud-arrow-up"></i> Upload</x-button>
+                            </a>
+                        </div>
                     </div>
-                    <x-slot:footer>
-                        <x-button href="https://gofile.me/7Hsao/ZjQEsygfo">
-                            <i class="bi bi-cloud-arrow-up"></i> upload file
-                        </x-button>
-                    </x-slot:footer>
-
                 </x-card>
 
                 {{-- Tombol Aksi --}}

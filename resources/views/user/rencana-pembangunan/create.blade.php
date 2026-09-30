@@ -49,6 +49,11 @@
                         </div>
                     </x-slot:header>
 
+                    <p class="flex items-start gap-2 text-sm text-blue-700 dark:text-blue-300 mb-3">
+                        <i class="bi bi-info-circle mt-0.5"></i>
+                        <span>Pengajuan bisa lebih dari satu. Pilih kategori lalu klik <strong>Tambah</strong>, ulangi untuk kategori lain yang ingin diajukan sekaligus.</span>
+                    </p>
+
                     <div class="flex flex-col sm:flex-row gap-2">
                         <select id="pilihKategoriSelect"
                             class="w-full sm:flex-1 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 text-sm focus:ring-blue-500 focus:border-blue-500">
@@ -78,7 +83,6 @@
                         $fieldsTersimpan = [];
                         $fields = $fieldsByTipe[$kat['tipe']] ?? [];
                         $jenisTersimpan = old('perubahan.' . $key . '.jenis', $fieldsTersimpan['jenis'] ?? 'bangun');
-                        $rehabDiblokir = in_array($key, $kategoriSedangRehab ?? [], true);
                     @endphp
                     <div data-kategori="{{ $key }}" data-baru="{{ $sudahAda ? '0' : '1' }}"
                         class="{{ $oldPilih ? '' : 'hidden' }}">
@@ -110,14 +114,10 @@
                                             {{ $jenisTersimpan === 'bangun' ? 'checked' : '' }}>
                                         Bangun Baru
                                     </label>
-                                    <label class="inline-flex items-center gap-1.5 {{ $rehabDiblokir ? 'opacity-50' : '' }}">
+                                    <label class="inline-flex items-center gap-1.5">
                                         <input type="radio" name="perubahan[{{ $key }}][jenis]" value="rehab"
-                                            {{ $rehabDiblokir ? 'disabled' : '' }}
-                                            {{ $jenisTersimpan === 'rehab' && ! $rehabDiblokir ? 'checked' : '' }}>
+                                            {{ $jenisTersimpan === 'rehab' ? 'checked' : '' }}>
                                         Rehabilitasi
-                                        @if ($rehabDiblokir)
-                                            <span class="text-[10px] text-amber-600 dark:text-amber-400">(sedang berjalan)</span>
-                                        @endif
                                     </label>
                                 </div>
                                 @error('perubahan.' . $key . '.jenis')
@@ -143,51 +143,63 @@
                     </div>
                 @endforeach
 
-                @php
-                    $lampiran = [
-                        ['id' => 'lampiranBangun', 'judul' => 'Pembangunan', 'folder' => 'pembangunan',
-                         'daftar' => ['Dokumentasi lahan kosong', 'Fotokopi akta tanah', 'Proposal']],
-                        ['id' => 'lampiranRehab', 'judul' => 'Rehabilitasi', 'folder' => 'rehabilitasi',
-                         'daftar' => ['Dokumentasi foto kerusakan', 'Form tingkat kerusakan', 'Proposal']],
-                    ];
-                @endphp
-
-                {{-- Satu card lampiran; bagian Pembangunan / Rehabilitasi di dalamnya
-                 tampil sesuai jenis pengajuan yang dipilih (diatur JS updateLampiran) --}}
+                {{-- Lampiran: bagian tampil sesuai jenis pengajuan (diatur JS updateLampiran) --}}
                 <div id="lampiranCard" class="hidden">
                     <x-card>
                         <x-slot:header>
                             <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
-                                <i class="bi bi-card-heading"></i>
+                                <i class="bi bi-paperclip"></i>
                                 Lampiran <span class="text-red-600 underline">wajib</span><span class="text-red-600">*</span>
                             </div>
                         </x-slot:header>
 
-                        <div class="flex flex-col gap-4 text-sm">
-                            @foreach ($lampiran as $l)
-                                <div id="{{ $l['id'] }}" class="hidden">
-                                    <p class="font-semibold mb-1">Untuk {{ $l['judul'] }}:</p>
-                                    <ol class="list-decimal ms-5 mb-1">
-                                        @foreach ($l['daftar'] as $dokumen)
-                                            <li>{{ $dokumen }}</li>
-                                        @endforeach
-                                    </ol>
-                                    <p>
-                                        Upload ke folder <span class="font-bold">{{ $l['folder'] }}</span>.
-                                    </p>
-                                </div>
-                            @endforeach
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                            Cari folder dengan <strong>nama sekolah</strong>, lalu upload lewat tombol di samping dokumen.
+                        </p>
 
-                            <p class="text-gray-500 dark:text-gray-400">
-                                cari folder dengan <span class="font-bold">nama sekolah</span> dan upload sesuai yg diajukan.
-                            </p>
+                        <div id="lampiranBangun" class="hidden space-y-2 text-sm">
+                            <p class="font-semibold">Untuk Pembangunan</p>
+                            <div class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
+                                <span>Dokumen Photo Lahan Kosong</span>
+                                <a href="https://bidangsmp.quickconnect.to/sharing/tRn9cXnRG" target="_blank" rel="noopener noreferrer">
+                                    <x-button type="button" size="sm"><i class="bi bi-cloud-arrow-up"></i> Upload</x-button>
+                                </a>
+                            </div>
+                            <div class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
+                                <span>Dokumen Photo Copy Akte / Surat Tanah</span>
+                                <a href="https://bidangsmp.quickconnect.to/sharing/Mj27zN3jN" target="_blank" rel="noopener noreferrer">
+                                    <x-button type="button" size="sm"><i class="bi bi-cloud-arrow-up"></i> Upload</x-button>
+                                </a>
+                            </div>
+                            <div class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
+                                <span>Dokumen Proposal</span>
+                                <a href="https://bidangsmp.quickconnect.to/sharing/ajB6Jr5QL" target="_blank" rel="noopener noreferrer">
+                                    <x-button type="button" size="sm"><i class="bi bi-cloud-arrow-up"></i> Upload</x-button>
+                                </a>
+                            </div>
                         </div>
 
-                        <x-slot:footer>
-                            <x-button href="https://gofile.me/7Hsao/ZjQEsygfo">
-                                <i class="bi bi-cloud-arrow-up"></i> Upload File
-                            </x-button>
-                        </x-slot:footer>
+                        <div id="lampiranRehab" class="hidden space-y-2 text-sm">
+                            <p class="font-semibold">Untuk Rehabilitasi</p>
+                            <div class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
+                                <span>Dokumen Photo Kerusakan</span>
+                                <a href="https://bidangsmp.quickconnect.to/sharing/YurNiw2bm" target="_blank" rel="noopener noreferrer">
+                                    <x-button type="button" size="sm"><i class="bi bi-cloud-arrow-up"></i> Upload</x-button>
+                                </a>
+                            </div>
+                            <div class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
+                                <span>Form Perhitungan Tingkat Kerusakan</span>
+                                <a href="https://bidangsmp.quickconnect.to/sharing/ok8fhBxWe" target="_blank" rel="noopener noreferrer">
+                                    <x-button type="button" size="sm"><i class="bi bi-cloud-arrow-up"></i> Upload</x-button>
+                                </a>
+                            </div>
+                            <div class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
+                                <span>Dokumen Proposal</span>
+                                <a href="https://bidangsmp.quickconnect.to/sharing/llroKMhTo" target="_blank" rel="noopener noreferrer">
+                                    <x-button type="button" size="sm"><i class="bi bi-cloud-arrow-up"></i> Upload</x-button>
+                                </a>
+                            </div>
+                        </div>
                     </x-card>
                 </div>
 

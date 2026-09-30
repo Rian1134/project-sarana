@@ -57,18 +57,13 @@
                         @php
                             $fieldsKategori = $item->perubahan[$kunci] ?? [];
                             $isRehab = \App\Http\Controllers\User\RencanaPembangunanController::isJenisRehab($fieldsKategori);
-                            $selesaiRehab = $fieldsKategori['selesai'] ?? false;
                         @endphp
                         <div class="mb-1.5">
                             @if (count($kategoriKeys) > 1 || count($tambahanKeys))
                                 <div class="text-xs font-semibold text-gray-400 uppercase flex items-center gap-1.5">
                                     {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
                                     @if ($isRehab)
-                                        @if ($selesaiRehab)
-                                            <x-badge variant="success" class="text-[10px] normal-case">Rehab Selesai</x-badge>
-                                        @else
-                                            <x-badge variant="info" class="text-[10px] normal-case">Sedang Direhab</x-badge>
-                                        @endif
+                                        <x-badge variant="info" class="text-[10px] normal-case">Rehabilitasi</x-badge>
                                     @else
                                         <x-badge variant="secondary" class="text-[10px] normal-case">Bangun Baru</x-badge>
                                     @endif
@@ -87,18 +82,6 @@
                                     </li>
                                 @endforeach
                             </ul>
-
-                            @if ($isRehab && $item->status === 'approved' && ! $selesaiRehab)
-                                <form action="{{ route('user.rencana-pembangunan.selesai', [$item, $kunci]) }}"
-                                    method="POST" class="mt-1"
-                                    onsubmit="return confirm('Tandai rehabilitasi ini sebagai selesai?')">
-                                    @csrf
-                                    @method('PUT')
-                                    <x-button type="submit" variant="success" size="xs">
-                                        <i class="bi bi-check2-circle"></i> Tandai Selesai
-                                    </x-button>
-                                </form>
-                            @endif
                         </div>
                     @endforeach
                     @if (count($tambahanKeys))
@@ -208,18 +191,13 @@
                                 @php
                                     $fieldsKategori = $item->perubahan[$kunci] ?? [];
                                     $isRehab = \App\Http\Controllers\User\RencanaPembangunanController::isJenisRehab($fieldsKategori);
-                                    $selesaiRehab = $fieldsKategori['selesai'] ?? false;
                                 @endphp
                                 <li>
                                     @if (count($kategoriKeys) > 1 || count($tambahanKeys))
                                         <div class="text-xs font-semibold text-gray-400 uppercase flex items-center gap-1.5">
                                             {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
                                             @if ($isRehab)
-                                                @if ($selesaiRehab)
-                                                    <x-badge variant="success" class="text-[10px] normal-case">Rehab Selesai</x-badge>
-                                                @else
-                                                    <x-badge variant="info" class="text-[10px] normal-case">Sedang Direhab</x-badge>
-                                                @endif
+                                                <x-badge variant="info" class="text-[10px] normal-case">Rehabilitasi</x-badge>
                                             @endif
                                         </div>
                                     @endif
@@ -236,18 +214,6 @@
                                             </li>
                                         @endforeach
                                     </ul>
-
-                                    @if ($isRehab && $item->status === 'approved' && ! $selesaiRehab)
-                                        <form action="{{ route('user.rencana-pembangunan.selesai', [$item, $kunci]) }}"
-                                            method="POST" class="pl-2 mt-1"
-                                            onsubmit="return confirm('Tandai rehabilitasi ini sebagai selesai?')">
-                                            @csrf
-                                            @method('PUT') 
-                                            <x-button type="submit" variant="success" size="xs">
-                                                <i class="bi bi-check2-circle"></i> Tandai Selesai
-                                            </x-button>
-                                        </form>
-                                    @endif
                                 </li>
                             @endforeach
                             @if (count($tambahanKeys))

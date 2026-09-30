@@ -97,7 +97,7 @@
                 @if ($pengajuan->status === 'pending')
                     <div class="flex flex-wrap gap-2 mt-2">
                         <form action="{{ route('pengajuan.approve', $pengajuan) }}" method="POST"
-                            onsubmit="return confirm('Setujui pengajuan ini? Data sarana sekolah akan diperbarui sesuai isi pengajuan.');">
+                            onsubmit="return confirm('Setujui pengajuan ini?');">
                             @csrf
                             <x-button type="submit" variant="success" class="gap-1">
                                 <i class="bi bi-check-lg"></i> Setujui

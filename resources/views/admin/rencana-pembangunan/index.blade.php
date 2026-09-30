@@ -156,7 +156,7 @@
                                     @if ($item->status === 'pending')
                                         <form action="{{ route('pengajuan.approve', $item) }}" method="POST"
                                             class="inline"
-                                            onsubmit="return confirm('Setujui pengajuan ini? Data sarana sekolah akan diperbarui sesuai isi pengajuan.');">
+                                            onsubmit="return confirm('Setujui pengajuan ini?');">
                                             @csrf
                                             <x-button type="submit" variant="success" size="xs" class="p-1.5!"
                                                 title="Setujui">

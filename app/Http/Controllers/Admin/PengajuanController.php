@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pengajuan;
-use App\Models\ProfileSekolah;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class PengajuanController extends Controller
 {
@@ -16,7 +13,7 @@ class PengajuanController extends Controller
      * User\PengajuanController::kategoriList() dan
      * User\RencanaPembangunanController::kategoriList() — kalau salah satu
      * berubah (kategori baru/dihapus/tipe berubah), method ini WAJIB
-     * disesuaikan juga, atau approve/reject bisa salah menerapkan perubahan.
+     * disesuaikan juga, atau pemisahan Laporan Kerusakan / Rencana Pembangunan bisa salah.
      */
     public static function kategoriList(): array
     {
@@ -61,11 +58,9 @@ class PengajuanController extends Controller
     /**
      * HARUS SAMA PERSIS (gabungan) dengan fieldsByTipe() di kedua controller user.
      *
-     * - ada_kondisi: KOSONG SENGAJA — "usul bangun baru", nilai baik/ada
-     *   ditetapkan otomatis saat approve (lihat terapkanAdaKondisi()).
+     * - ada_kondisi: KOSONG SENGAJA — "usul bangun baru", tidak ada isian.
      * - update_kondisi: field 'kondisi' — lapor kondisi TERKINI fasilitas yang
-     *   sudah ada (termasuk "Rusak"); nilainya DIBACA dari input user
-     *   (lihat terapkanUpdateKondisi()), bukan ditetapkan otomatis.
+     *   sudah ada (termasuk "Rusak").
      */
     public static function fieldsByTipe(): array
     {
@@ -136,8 +131,7 @@ class PengajuanController extends Controller
     /**
      * Field tambahan (di luar kategori resmi) yang ada di `perubahan`. Dipakai
      * di index/show supaya field bebas ini tidak dianggap/dilabeli sebagai
-     * kategori — dan (lihat terapkanPerubahan) sengaja DILEWATI saat approve,
-     * karena tidak ada tabel sarana yang jadi tujuannya.
+     * kategori.
      */
     public static function pisahkanFieldTambahan(array $pengajuanKeys, array $perubahan): array
     {
@@ -221,31 +215,24 @@ class PengajuanController extends Controller
     }
 
     /**
-     * Setujui pengajuan: terapkan seluruh perubahan ke data sarana sekolah
-     * terkait, lalu tandai status jadi 'approved'. Dibungkus DB transaction
-     * supaya kalau salah satu update gagal di tengah jalan, semuanya
-     * dibatalkan (tidak ada perubahan stok yang nyangkut separuh).
+     * Setujui pengajuan. Fitur ini hanya laporan & pengajuan, jadi yang
+     * berubah cuma status — data sarana sekolah TIDAK diubah sama sekali.
      */
     public function approve(Pengajuan $pengajuan)
     {
         abort_if($pengajuan->status !== 'pending', 403, 'Hanya pengajuan berstatus pending yang bisa disetujui.');
 
-        DB::transaction(function () use ($pengajuan) {
-            $this->terapkanPerubahan($pengajuan);
-
-            $pengajuan->update([
-                'status' => 'approved',
-            ]);
-        });
+        $pengajuan->update([
+            'status' => 'approved',
+        ]);
 
         // back(): kembali ke daftar asal (Laporan Kerusakan / Rencana
         // Pembangunan) tanpa perlu tahu nama route-nya.
-        return back()->with('success', 'Pengajuan disetujui, data sarana sekolah sudah diperbarui.');
+        return back()->with('success', 'Pengajuan disetujui.');
     }
 
     /**
-     * Tolak pengajuan. Tidak ada perubahan data sarana sama sekali — hanya
-     * status yang diubah.
+     * Tolak pengajuan — hanya status yang diubah.
      */
     public function reject(Pengajuan $pengajuan)
     {
@@ -256,153 +243,5 @@ class PengajuanController extends Controller
         ]);
 
         return back()->with('success', 'Pengajuan ditolak.');
-    }
-
-    /**
-     * Terapkan seluruh kategori yang diajukan ke tabel sarana terkait.
-     *
-     * Relasi sarana di ProfileSekolah diambil SECARA GENERIK dari key kategori
-     * lewat Str::camel() — untuk kategori *_kondisi, akhiran "_kondisi" DIBUANG
-     * dulu sebelum di-camel-kan, karena relasinya menunjuk ke tabel sarana yang
-     * SAMA dengan kategori ada_kondisi/baik_rusak pasangannya (contoh:
-     * 'ruang_guru_kondisi' & 'ruang_guru' sama-sama relasi ruangGuru()).
-     */
-    private function terapkanPerubahan(Pengajuan $pengajuan): void
-    {
-        /** @var ProfileSekolah $profileSekolah */
-        $profileSekolah = $pengajuan->profileSekolah;
-
-        $kategoriTerpilih = is_array($pengajuan->pengajuan)
-            ? $pengajuan->pengajuan
-            : array_filter([$pengajuan->pengajuan]);
-
-        $perubahan = $pengajuan->perubahan ?? [];
-        $kategoriList = self::kategoriList();
-
-        foreach ($kategoriTerpilih as $kategori) {
-            // Field tambahan bebas (di luar kategoriList) tidak punya tabel
-            // sarana tujuan — sengaja dilewati, bukan error.
-            if (! isset($kategoriList[$kategori])) {
-                continue;
-            }
-
-            $data = $perubahan[$kategori] ?? [];
-
-            $rehab = self::isJenisRehab($data);
-
-            $namaRelasi = Str::endsWith($kategori, '_kondisi')
-                ? Str::beforeLast($kategori, '_kondisi')
-                : $kategori;
-
-            // Rehab ruang kelas dicatat di tabel rehabilitasi sendiri,
-            // bukan di tabel ruang kelas baru.
-            if ($rehab && $kategori === 'ruang_kelas_baru') {
-                $namaRelasi = 'rehabilitasi_ruang_kelas';
-            }
-
-            $relasi = Str::camel($namaRelasi);
-
-            if (! method_exists($profileSekolah, $relasi)) {
-                continue;
-            }
-
-            // Ambil baris sarana yang sudah ada, atau buat baru kalau sekolah
-            // ini belum pernah punya data kategori tersebut sama sekali.
-            $sarana = $profileSekolah->{$relasi}()->firstOrCreate([]);
-
-            match ($kategoriList[$kategori]['tipe']) {
-                'baik_rusak' => $this->terapkanBaikRusak($sarana, $data, $rehab),
-                'ada_kondisi' => $this->terapkanAdaKondisi($sarana),
-                'update_kondisi' => $this->terapkanUpdateKondisi($sarana, $data),
-                'jumlah' => $this->terapkanJumlah($profileSekolah, $sarana, $data, $rehab),
-                default => null,
-            };
-        }
-    }
-
-    /**
-     * baik_rusak: barang kondisi "baik" yang diajukan MENAMBAH stok baik;
-     * barang yang dilaporkan "rusak" dianggap PINDAH dari stok baik ke stok
-     * rusak (baik berkurang, rusak bertambah sejumlah yang sama). Stok baik
-     * di-clamp minimal 0 supaya tidak pernah negatif kalau rusak yang
-     * dilaporkan lebih besar dari stok baik yang tercatat.
-     */
-    private function terapkanBaikRusak($sarana, array $data, bool $rehab = false): void
-    {
-        $baikBaru = (int) ($data['baik'] ?? 0);
-        $rusakBaru = (int) ($data['rusak'] ?? 0);
-
-        // Rehab: unit yang tadinya rusak jadi baik (rusak berkurang, baik
-        // bertambah sejumlah yang sama; rusak tidak pernah negatif).
-        if ($rehab) {
-            $sarana->rusak = max(0, $sarana->rusak - $baikBaru);
-            $sarana->baik = $sarana->baik + $baikBaru;
-            $sarana->save();
-
-            return;
-        }
-
-        $sarana->baik = max(0, $sarana->baik + $baikBaru - $rusakBaru);
-        $sarana->rusak = $sarana->rusak + $rusakBaru;
-        $sarana->save();
-    }
-
-    /**
-     * ada_kondisi: form user (Rencana Pembangunan) TIDAK mengumpulkan field
-     * apapun — mencentang kategori ini SUDAH berarti "usul dibangun". Jadi
-     * begitu admin approve, statusnya otomatis diset "ada" dengan kondisi
-     * "baik" (fasilitas baru yang baru saja terwujud), BUKAN dibaca dari
-     * input user (karena memang tidak ada inputnya).
-     */
-    private function terapkanAdaKondisi($sarana): void
-    {
-        $sarana->{'ada/tidak_ada'} = 'ada';
-        $sarana->kondisi = 'baik';
-        $sarana->save();
-    }
-
-    /**
-     * update_kondisi: kebalikan dari ada_kondisi — ini buat fasilitas yang
-     * SUDAH ADA, user melaporkan kondisi terkininya (termasuk "Rusak").
-     * Nilai kondisi DIBACA LANGSUNG dari input user dan MENGGANTIKAN
-     * (bukan menambah/mengurangi) nilai lama, karena fasilitas jenis ini
-     * cuma satu unit per sekolah, bukan stok berjumlah banyak seperti
-     * baik_rusak. Status ada/tidak_ada juga dipastikan "ada", karena
-     * melaporkan kondisi cuma masuk akal kalau fasilitasnya memang sudah ada.
-     */
-    private function terapkanUpdateKondisi($sarana, array $data): void
-    {
-        if (array_key_exists('kondisi', $data)) {
-            $sarana->kondisi = $data['kondisi'];
-        }
-
-        $sarana->{'ada/tidak_ada'} = 'ada';
-        $sarana->save();
-    }
-
-    /**
-     * jumlah: hanya dipakai oleh Ruang Kelas. Jumlahnya diakumulasi di tabel
-     * miliknya (ruang kelas baru, atau tabel rehabilitasi kalau jenisnya
-     * rehab), DAN berdampak ke stok Ruang Kelas (baik/rusak):
-     * - Bangun baru: ruang kelas baru langsung masuk hitungan "baik".
-     * - Rehab: ruang yang tadinya "rusak", setelah direhab jadi "baik"
-     *   (rusak berkurang, baik bertambah sejumlah yang sama, rusak
-     *   di-clamp minimal 0).
-     */
-    private function terapkanJumlah(ProfileSekolah $profileSekolah, $sarana, array $data, bool $rehab): void
-    {
-        $jumlahBaru = (int) ($data['jumlah'] ?? 0);
-
-        $sarana->jumlah = $sarana->jumlah + $jumlahBaru;
-        $sarana->save();
-
-        $ruangKelas = $profileSekolah->ruangKelas()->firstOrCreate([]);
-
-        if ($rehab) {
-            $ruangKelas->rusak = max(0, $ruangKelas->rusak - $jumlahBaru);
-        }
-
-        $ruangKelas->baik = $ruangKelas->baik + $jumlahBaru;
-        $ruangKelas->save();
     }
 }

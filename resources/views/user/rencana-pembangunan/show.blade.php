@@ -59,27 +59,16 @@
                     @foreach ($kategoriKeys as $kunci)
                         @php
                             $fields = $pengajuan->perubahan[$kunci] ?? [];
-                            $isRehab = \App\Http\Controllers\User\RencanaPembangunanController::isJenisRehab($fields);
-                            $selesaiRehab = $fields['selesai'] ?? false;
                             $labelJenis = \App\Http\Controllers\User\RencanaPembangunanController::labelJenis($fields);
                         @endphp
                         <x-card class="p-2 md:p-4">
                             <x-slot:header>
-                                <div class="flex items-center justify-between gap-2">
-                                    <div class="flex flex-col">
-                                        <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-semibold">
-                                            <i class="bi {{ $ikonKategori[$kunci] ?? 'bi-tag' }}"></i>
-                                            {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
-                                        </div>
-                                        <span class="text-xs text-gray-400 ms-6">{{ $labelJenis }}</span>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-semibold">
+                                        <i class="bi {{ $ikonKategori[$kunci] ?? 'bi-tag' }}"></i>
+                                        {{ \App\Http\Controllers\User\RencanaPembangunanController::categoryLabel($kunci) }}
                                     </div>
-                                    @if ($isRehab)
-                                        @if ($selesaiRehab)
-                                            <x-badge variant="success" class="text-xs">Selesai</x-badge>
-                                        @else
-                                            <x-badge variant="info" class="text-xs">Sedang Direhab</x-badge>
-                                        @endif
-                                    @endif
+                                    <span class="text-xs text-gray-400 ms-6">{{ $labelJenis }}</span>
                                 </div>
                             </x-slot:header>
 
