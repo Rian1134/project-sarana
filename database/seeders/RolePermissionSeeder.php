@@ -31,7 +31,7 @@ class RolePermissionSeeder extends Seeder
             'delete-user',
 
             'change-permission',
-            
+
             'update-sdm',
             'update-siswa-rombel',
             'update-ruang-kelas',
@@ -46,7 +46,7 @@ class RolePermissionSeeder extends Seeder
 
         // firstOrCreate: aman dijalankan berulang kali (tidak error duplicate)
         $roleAdmin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
-        $roleUser  = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
+        $roleUser = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
 
         // Admin: semua permission
         $roleAdmin->syncPermissions($permissions);
@@ -61,6 +61,13 @@ class RolePermissionSeeder extends Seeder
 
             'show-user',
             'edit-user',
+
+            'update-sdm',
+            'update-siswa-rombel',
+            'update-ruang-kelas',
+            'update-toilet',
+            'update-ruang-fasilitas',
+            'update-prangkat-furnitur',
         ]);
     }
 }

@@ -66,7 +66,7 @@ class AdminSeeder extends Seeder
             'NIP' => '196512198803001',
             'nomor_hp' => '081234567890',
             'akreditasi' => 'A',
-            'status_sekolah' => 'Negeri',
+            'status_sekolah' => 'negeri',
             'user_id' => $user->id,
 
             'jumlah_guru' => [
