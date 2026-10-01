@@ -23,8 +23,30 @@
 
 <body class="bg-gray-50 dark:bg-gray-900">
 
-    {{-- Toast container — wajib ada agar showToast() dari JS berfungsi --}}
-    <div id="toast-container" class="fixed z-60 top-4 inset-x-4 sm:inset-x-auto sm:right-4 flex flex-col gap-2 sm:w-auto max-w-md sm:mx-0 mx-auto"></div>
+    {{-- Toast container — wajib ada agar showToast() dari JS berfungsi.
+         Flash message (success/error) & error validasi global ditampilkan di sini. --}}
+    <div id="toast-container"
+        class="fixed z-60 top-4 inset-x-4 sm:inset-x-auto sm:right-4 flex flex-col gap-2 sm:w-auto max-w-md sm:mx-0 mx-auto">
+        {{-- Flash message & error validasi tampil sebagai toast (menggantikan alert) --}}
+        @if (session('success'))
+            <x-toast type="success" :duration="6000">{{ session('success') }}</x-toast>
+        @endif
+
+        @if (session('error'))
+            <x-toast type="danger">{{ session('error') }}</x-toast>
+        @endif
+
+        @if ($errors->any())
+            <x-toast type="danger" :duration="8000">
+                <strong><i class="bi bi-exclamation-triangle-fill"></i> Terjadi Kesalahan!</strong>
+                <ul class="list-disc list-inside text-sm">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </x-toast>
+        @endif
+    </div>
 
     {{-- ===== MODAL KONFIRMASI LOGOUT ===== --}}
     <x-modal id="logoutModal" size="sm" centered>
@@ -192,37 +214,6 @@
             {{-- ===== KONTEN UTAMA ===== --}}
             <main class="flex-1 w-full min-w-0">
                 <div class="p-3 sm:p-4 lg:p-6 max-w-[1600px] mx-auto flex flex-col gap-4 min-w-0">
-                    {{-- ============================================================
-                         ALERT / FLASH MESSAGE — global, satu tempat untuk semua
-                         halaman. Jangan taruh alert serupa lagi di masing-masing
-                         view, cukup pakai session('success') / session('error') /
-                         $errors seperti biasa dari controller.
-                         ============================================================ --}}
-                    @if (session('success'))
-                        <x-alert type="success" dismissible icon :auto-dismiss="6000">
-                            {{ session('success') }}
-                        </x-alert>
-                    @endif
-
-                    @if (session('error'))
-                        <x-alert type="danger" dismissible icon>
-                            {{ session('error') }}
-                        </x-alert>
-                    @endif
-
-                    @if ($errors->any())
-                        <x-alert type="danger" dismissible icon>
-                            <div class="flex flex-col gap-1">
-                                <strong><i class="bi bi-exclamation-triangle-fill"></i> Terjadi Kesalahan!</strong>
-                                <ul class="list-disc list-inside text-sm">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </x-alert>
-                    @endif
-
                     {{ $slot ?? '' }}
                     @yield('content')
                 </div>

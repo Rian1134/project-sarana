@@ -13,7 +13,7 @@
         ></div>
 
         {{-- Blue Gradient Overlay --}}
-        <div class="absolute inset-0 bg-linear-to-br from-[#2E86C1]/85 to-[#164C74]/85 dark:from-[#1a1a2e]/85 dark:to-[#16213e]/85"></div>
+        <div class="absolute inset-0 bg-linear-to-br from-[#2E86C1]/65 to-[#164C74]/65 dark:from-[#1a1a2e]/65 dark:to-[#16213e]/65"></div>
 
         <div class="relative max-w-4xl mx-auto px-4 sm:px-6 py-24 sm:py-32 flex flex-col items-center gap-5 text-center">
 

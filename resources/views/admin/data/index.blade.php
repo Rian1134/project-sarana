@@ -54,10 +54,10 @@
         // jadi 1 total — ditampilkan sebagai grouped bar chart)
         // ====================================================
         $fasilitasLabels = [
-            'ruangPerpustakaan' => 'R. Perpustakaan',
-            'ruangKepalaSekolah' => 'R. Kepsek',
-            'ruangGuru' => 'R. Guru',
-            'ruangKantorTu' => 'R. Kantor/TU',
+            'ruangPerpustakaan' => 'Ruang Perpustakaan',
+            'ruangKepalaSekolah' => 'Ruang Kepsek',
+            'ruangGuru' => 'Ruang Guru',
+            'ruangKantorTu' => 'Ruang Kantor/TU',
             'labIpa' => 'Lab IPA',
             'labKomputer' => 'Lab Komputer',
             'unitKesehatanSekolah' => 'UKS',
@@ -99,6 +99,28 @@
             $chartSaranaUtama['rusak_berat'][] = $countRusakBerat;
             $chartSaranaUtama['nihil'][] = $countNihil;
         }
+        // ====================================================
+        // MEJA, KURSI & PERANGKAT ELEKTRONIK (baik vs rusak)
+        // ====================================================
+        $sumKondisi = fn($rel, $kondisi) => $profileSekolahs->sum(fn($item) => $item->$rel?->$kondisi ?? 0);
+
+        $chartMeja = [
+            'labels' => ['Meja Siswa', 'Meja Guru'],
+            'baik' => [$sumKondisi('mejaSiswa', 'baik'), $sumKondisi('mejaGuru', 'baik')],
+            'rusak' => [$sumKondisi('mejaSiswa', 'rusak'), $sumKondisi('mejaGuru', 'rusak')],
+        ];
+
+        $chartKursi = [
+            'labels' => ['Kursi Siswa', 'Kursi Guru'],
+            'baik' => [$sumKondisi('kursiSiswa', 'baik'), $sumKondisi('kursiGuru', 'baik')],
+            'rusak' => [$sumKondisi('kursiSiswa', 'rusak'), $sumKondisi('kursiGuru', 'rusak')],
+        ];
+
+        $chartElektronik = [
+            'labels' => ['Laptop / Chromebook', 'Komputer'],
+            'baik' => [$sumKondisi('laptop', 'baik'), $sumKondisi('komputer', 'baik')],
+            'rusak' => [$sumKondisi('laptop', 'rusak'), $sumKondisi('komputer', 'rusak')],
+        ];
     @endphp
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
@@ -162,11 +184,50 @@
                 <i class="bi bi-building-fill-gear"></i> Kondisi Data Sarana Utama
             </h2>
             <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">
-                {{ $profileSekolahs->count() }} Sekolah — R. Perpustakaan, R. Kepsek, R. Guru, R. Kantor/TU, Lab
+                {{ $profileSekolahs->count() }} Sekolah — Ruang Perpustakaan, Ruang Kepsek, Ruang Guru, Ruang Kantor/TU, Lab
                 IPA, Lab Komputer, UKS, Rumah Dinas, Rumah Ibadah, Lapangan, Pagar, Air Bersih
             </p>
             <div class="h-72 sm:h-80">
                 <canvas id="adminChartSaranaUtama"></canvas>
+            </div>
+        </div>
+    </div>
+
+    {{-- CHART MEJA, KURSI & PERANGKAT ELEKTRONIK --}}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2 mb-1">
+                    <i class="bi bi-table"></i> Kondisi Meja
+                </h2>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">{{ $profileSekolahs->count() }} Sekolah</p>
+                <div class="h-56 sm:h-64">
+                    <canvas id="adminChartMeja"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2 mb-1">
+                    <i class="bi bi-person-workspace"></i> Kondisi Kursi
+                </h2>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">{{ $profileSekolahs->count() }} Sekolah</p>
+                <div class="h-56 sm:h-64">
+                    <canvas id="adminChartKursi"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2 mb-1">
+                    <i class="bi bi-laptop-fill"></i> Kondisi Perangkat Elektronik
+                </h2>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">{{ $profileSekolahs->count() }} Sekolah</p>
+                <div class="h-56 sm:h-64">
+                    <canvas id="adminChartElektronik"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -291,31 +352,32 @@
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Toilet / Jamban
                             Guru</x-table.heading>
 
-                        {{-- URUTAN 8: R. PERPUSTAKAAN (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R.
+                        {{-- URUTAN 8: Ruang PERPUSTAKAAN (2 kolom) --}}
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Ruang
                             Perpustakaan</x-table.heading>
 
-                        {{-- URUTAN 9: R. KEPALA SEKOLAH (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Kepala
+                        {{-- URUTAN 9: Ruang KEPALA SEKOLAH (2 kolom) --}}
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Ruang Kepala
                             Sekolah</x-table.heading>
 
-                        {{-- URUTAN 10: R. GURU (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Guru</x-table.heading>
+                        {{-- URUTAN 10: Ruang GURU (2 kolom) --}}
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Ruang Guru</x-table.heading>
 
-                        {{-- URUTAN 11: R. KANTOR/TU (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R.
+                        {{-- URUTAN 11: Ruang KANTOR/TU (2 kolom) --}}
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Ruang
                             Kantor/TU</x-table.heading>
 
                         {{-- URUTAN 12: LAB IPA (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">R. Laboratorium
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Laboratorium
                             IPA</x-table.heading>
 
                         {{-- URUTAN 13: LAB KOMPUTER (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Lab
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Laboratorium
                             Komputer</x-table.heading>
 
                         {{-- URUTAN 14: UKS (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">UKS</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Unit Kesehatan
+                            Sekolah(UKS)</x-table.heading>
 
                         {{-- URUTAN 15: RUMAH DINAS (2 kolom) --}}
                         <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Rumah
@@ -330,10 +392,12 @@
                             Sekolah</x-table.heading>
 
                         {{-- URUTAN 18: PAGAR (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-12.5 px-1 py-1">Pagar</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-12.5 px-1 py-1">Pagar
+                            Sekolah</x-table.heading>
 
                         {{-- URUTAN 19: AIR (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-12.5 px-1 py-1">Air</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-12.5 px-1 py-1">Air
+                            Bersih</x-table.heading>
 
                         {{-- URUTAN 20: KURSI SISWA (3 kolom) --}}
                         <x-table.heading colspan="3" class="text-white! min-w-16 px-1 py-1">Kursi
@@ -411,22 +475,22 @@
                         <x-table.heading
                             class="text-[10px] px-1 py-0.5 bg-orange-200 dark:bg-orange-800/60 font-bold">Jumlah</x-table.heading>
 
-                        {{-- URUTAN 8: R. PERPUSTAKAAN --}}
+                        {{-- URUTAN 8: Ruang PERPUSTAKAAN --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
-                        {{-- URUTAN 9: R. KEPALA SEKOLAH --}}
+                        {{-- URUTAN 9: Ruang KEPALA SEKOLAH --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
-                        {{-- URUTAN 10: R. GURU --}}
+                        {{-- URUTAN 10: Ruang GURU --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
 
-                        {{-- URUTAN 11: R. KANTOR/TU --}}
+                        {{-- URUTAN 11: Ruang KANTOR/TU --}}
 
                         <x-table.heading class="text-[10px] px-1 py-0.5">Ada/Tidak</x-table.heading>
                         <x-table.heading class="text-[10px] px-1 py-0.5">Kondisi</x-table.heading>
@@ -631,7 +695,7 @@
                             {{ $profileSekolahs->sum(fn($item) => ($item->toiletGuru?->baik ?? 0) + ($item->toiletGuru?->rusak ?? 0)) }}
                         </x-table.cell>
 
-                        {{-- URUTAN 8: R. PERPUSTAKAAN --}}
+                        {{-- URUTAN 8: Ruang PERPUSTAKAAN --}}
 
                         {{-- KEBERADAAN --}}
                         <x-table.cell class="text-center font-bold">
@@ -649,7 +713,7 @@
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->ruangPerpustakaan?->kondisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
-                        {{-- URUTAN 9: R. KEPALA SEKOLAH --}}
+                        {{-- URUTAN 9: Ruang KEPALA SEKOLAH --}}
 
                         {{-- KEBERADAAN --}}
                         <x-table.cell class="text-center font-bold">
@@ -667,7 +731,7 @@
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->ruangKepalaSekolah?->kondisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
-                        {{-- URUTAN 10: R. GURU --}}
+                        {{-- URUTAN 10: Ruang GURU --}}
 
                         {{-- KEBERADAAN --}}
                         <x-table.cell class="text-center font-bold">
@@ -685,7 +749,7 @@
                                 class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->ruangGuru?->kondisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
-                        {{-- URUTAN 11: R. KANTOR/TU --}}
+                        {{-- URUTAN 11: Ruang KANTOR/TU --}}
 
                         {{-- KEBERADAAN --}}
                         <x-table.cell class="text-center font-bold">
@@ -849,12 +913,12 @@
 
                         {{-- baik --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->kusriSiswa?->baik ?? 0) }}
+                            {{ $profileSekolahs->sum(fn($item) => $item->kursiSiswa?->baik ?? 0) }}
                         </x-table.cell>
 
                         {{-- RUSAK --}}
                         <x-table.cell class="text-center font-bold">
-                            {{ $profileSekolahs->sum(fn($item) => $item->kusriSiswa?->rusak ?? 0) }}
+                            {{ $profileSekolahs->sum(fn($item) => $item->kursiSiswa?->rusak ?? 0) }}
                         </x-table.cell>
 
                         <x-table.cell class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">
@@ -978,7 +1042,7 @@
                         // 7. TOILET GURU
                         $jmlToiletGuru = ($item->toiletGuru?->baik ?? 0) + ($item->toiletGuru?->rusak ?? 0);
 
-                        // 8. R. PERPUSTAKAAN
+                        // 8. Ruang PERPUSTAKAAN
                         $ruangPerpustakaanStatus = $item->ruangPerpustakaan?->{'ada/tidak_ada'} ?? '-';
                         $ruangPerpustakaanBadge =
                             $ruangPerpustakaanStatus == 'ada'
@@ -994,7 +1058,7 @@
                                     ? 'warning'
                                     : 'light');
 
-                        // 9. R. KEPALA SEKOLAH
+                        // 9. Ruang KEPALA SEKOLAH
                         $ruangKepalaSekolahStatus = $item->ruangKepalaSekolah?->{'ada/tidak_ada'} ?? '-';
                         $ruangKepalaSekolahBadge =
                             $ruangKepalaSekolahStatus == 'ada'
@@ -1010,7 +1074,7 @@
                                     ? 'warning'
                                     : 'light');
 
-                        // 10. R. GURU
+                        // 10. Ruang GURU
                         $ruangGuruStatus = $item->ruangGuru?->{'ada/tidak_ada'} ?? '-';
                         $ruangGuruBadge =
                             $ruangGuruStatus == 'ada'
@@ -1026,7 +1090,7 @@
                                     ? 'warning'
                                     : 'light');
 
-                        // 11. R. KANTOR/TU
+                        // 11. Ruang KANTOR/TU
                         $ruangKantorTuStatus = $item->ruangKantorTu?->{'ada/tidak_ada'} ?? '-';
                         $ruangKantorTuBadge =
                             $ruangKantorTuStatus == 'ada'
@@ -1244,25 +1308,25 @@
                         <x-table.cell
                             class="text-center font-bold bg-orange-200 dark:bg-orange-800/60">{{ $jmlToiletGuru }}</x-table.cell>
 
-                        {{-- URUTAN 8: R. PERPUSTAKAAN (2 kolom) --}}
+                        {{-- URUTAN 8: Ruang PERPUSTAKAAN (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangPerpustakaanBadge }}"
                                 class="text-lg">{{ $ruangPerpustakaanStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangPerpustakaanKondisiBadge }}"
                                 class="text-lg">{{ $ruangPerpustakaanKondisi }}</x-badge></x-table.cell>
 
-                        {{-- URUTAN 9: R. KEPALA SEKOLAH (2 kolom) --}}
+                        {{-- URUTAN 9: Ruang KEPALA SEKOLAH (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangKepalaSekolahBadge }}"
                                 class="text-lg">{{ $ruangKepalaSekolahStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangKepalaSekolahKondisiBadge }}"
                                 class="text-lg">{{ $ruangKepalaSekolahKondisi }}</x-badge></x-table.cell>
 
-                        {{-- URUTAN 10: R. GURU (2 kolom) --}}
+                        {{-- URUTAN 10: Ruang GURU (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangGuruBadge }}"
                                 class="text-lg">{{ $ruangGuruStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangGuruKondisiBadge }}"
                                 class="text-lg">{{ $ruangGuruKondisi }}</x-badge></x-table.cell>
 
-                        {{-- URUTAN 11: R. KANTOR/TU (2 kolom) --}}
+                        {{-- URUTAN 11: Ruang KANTOR/TU (2 kolom) --}}
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangKantorTuBadge }}"
                                 class="text-lg">{{ $ruangKantorTuStatus }}</x-badge></x-table.cell>
                         <x-table.cell class="text-center"><x-badge variant="{{ $ruangKantorTuKondisiBadge }}"
@@ -1672,6 +1736,60 @@
                     },
                 },
             });
+
+            // Chart baik vs rusak (Meja, Kursi, Perangkat Elektronik)
+            function chartBaikRusak(id, data) {
+                new Chart(document.getElementById(id), {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                                label: 'Baik',
+                                data: data.baik,
+                                backgroundColor: '#22c55e',
+                                borderRadius: 4,
+                            },
+                            {
+                                label: 'Rusak',
+                                data: data.rusak,
+                                backgroundColor: '#ef4444',
+                                borderRadius: 4,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'top',
+                                color: '#374151',
+                                font: {
+                                    size: 10,
+                                    weight: 'bold'
+                                },
+                                formatter: (value) => value > 0 ? value : '',
+                            },
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            }
+                        },
+                    },
+                });
+            }
+
+            chartBaikRusak('adminChartMeja', @json($chartMeja));
+            chartBaikRusak('adminChartKursi', @json($chartKursi));
+            chartBaikRusak('adminChartElektronik', @json($chartElektronik));
         });
     </script>
 @endpush

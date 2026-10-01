@@ -217,6 +217,7 @@
                 @endif
             </div>
 
+            @if ($profileSekolah)
             <x-card>
                 <x-slot:header>
                     <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
@@ -483,7 +484,6 @@
                 </div>
             </x-card>
 
-            @if ($profileSekolah)
                 @php
                     $chartSiswa = [
                         (int) ($profileSekolah->jumlahSiswa?->vii ?? 0),
@@ -1562,14 +1562,14 @@
                         data: {
                             labels: ['PNS', 'PPPK', 'PPPK Paruh Waktu', 'Honor'],
                             datasets: [{
-                                label: 'Jumlah Guru',
+                                label: 'Jumlah Staff',
                                 data: [
                                     {{ (int) ($profileSekolah->kondisiStaff?->pns ?? 0) }},
                                     {{ (int) ($profileSekolah->kondisiStaff?->pppk ?? 0) }},
                                     {{ (int) ($profileSekolah->kondisiStaff?->pppk_paruh_waktu ?? 0) }},
                                     {{ (int) ($profileSekolah->kondisiStaff?->honor ?? 0) }}
                                 ],
-                                backgroundColor: ['#2563eb', '#6366f1', '#8b5cf6'],
+                                backgroundColor: ['#2563eb', '#6366f1', '#8b5cf6', '#a78bfa'],
                                 borderRadius: 6,
                                 maxBarThickness: 48
                             }]
@@ -1589,7 +1589,7 @@
                                     {{ (int) ($profileSekolah->kondisiGuru?->pppk_paruh_waktu ?? 0) }},
                                     {{ (int) ($profileSekolah->kondisiGuru?->honor ?? 0) }}
                                 ],
-                                backgroundColor: ['#2563eb', '#6366f1', '#8b5cf6'],
+                                backgroundColor: ['#2563eb', '#6366f1', '#8b5cf6', '#a78bfa'],
                                 borderRadius: 6,
                                 maxBarThickness: 48
                             }]
@@ -1622,7 +1622,7 @@
                         data: {
                             labels: ['Gol I', 'Gol II', 'Gol III', 'Gol IV'],
                             datasets: [{
-                                label: 'Jumlah Guru',
+                                label: 'Jumlah Staff',
                                 data: [
                                     {{ (int) ($profileSekolah->kondisiStaff?->i ?? 0) }},
                                     {{ (int) ($profileSekolah->kondisiStaff?->ii ?? 0) }},

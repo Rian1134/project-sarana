@@ -22,6 +22,29 @@
 </head>
 
 <body>
+    <div id="toast-container"
+        class="fixed z-60 top-4 inset-x-4 sm:inset-x-auto sm:right-4 flex flex-col gap-2 sm:w-auto max-w-md sm:mx-0 mx-auto">
+        {{-- Flash message & error validasi tampil sebagai toast (menggantikan alert) --}}
+        @if (session('success'))
+            <x-toast type="success" :duration="6000">{{ session('success') }}</x-toast>
+        @endif
+
+        @if (session('error'))
+            <x-toast type="danger">{{ session('error') }}</x-toast>
+        @endif
+
+        @if ($errors->any())
+            <x-toast type="danger" :duration="8000">
+                <strong><i class="bi bi-exclamation-triangle-fill"></i> Terjadi Kesalahan!</strong>
+                <ul class="list-disc list-inside text-sm">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </x-toast>
+        @endif
+    </div>
+
     <div class="min-h-screen grid grid-cols-1 md:grid-cols-2">
         {{-- Left Side: Hero/Illustration --}}
         <div
@@ -43,32 +66,6 @@
                     <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Selamat Datang Kembali</h2>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Masuk untuk melanjutkan ke akun Anda</p>
                 </div>
-
-                {{-- ALERT SUKSES --}}
-                @if (session('success'))
-                    <x-alert type="success" dismissible icon class="mb-4">
-                        <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-                    </x-alert>
-                @endif
-
-                {{-- ALERT ERROR --}}
-                @if (session('error'))
-                    <x-alert type="danger" dismissible icon class="mb-4">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
-                    </x-alert>
-                @endif
-
-                {{-- ALERT VALIDASI ERROR --}}
-                @if ($errors->any())
-                    <x-alert type="danger" dismissible icon class="mb-4">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        <ul class="list-disc list-inside text-sm">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </x-alert>
-                @endif
 
                 <form action="{{ route('auth.authenticate') }}" method="post" class="flex flex-col gap-4">
                     @csrf

@@ -400,6 +400,27 @@
                     }
 
                     $chartFurniturTotal = [array_sum($chartFurniturBaik), array_sum($chartFurniturRusak)];
+
+                    // Chart terpisah: Meja, Kursi, Perangkat Elektronik (baik vs rusak)
+                    $kondisi = fn($rel, $k) => (int) ($profileSekolah->$rel?->$k ?? 0);
+
+                    $chartMeja = [
+                        'labels' => ['Meja Siswa', 'Meja Guru'],
+                        'baik' => [$kondisi('mejaSiswa', 'baik'), $kondisi('mejaGuru', 'baik')],
+                        'rusak' => [$kondisi('mejaSiswa', 'rusak'), $kondisi('mejaGuru', 'rusak')],
+                    ];
+
+                    $chartKursi = [
+                        'labels' => ['Kursi Siswa', 'Kursi Guru'],
+                        'baik' => [$kondisi('kursiSiswa', 'baik'), $kondisi('kursiGuru', 'baik')],
+                        'rusak' => [$kondisi('kursiSiswa', 'rusak'), $kondisi('kursiGuru', 'rusak')],
+                    ];
+
+                    $chartElektronik = [
+                        'labels' => ['Laptop', 'Komputer/PC'],
+                        'baik' => [$kondisi('laptop', 'baik'), $kondisi('komputer', 'baik')],
+                        'rusak' => [$kondisi('laptop', 'rusak'), $kondisi('komputer', 'rusak')],
+                    ];
                 @endphp
 
                 <x-card>
@@ -419,28 +440,32 @@
                                 </label>
 
                                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">PNS</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiGuru?->pns ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">PPPK</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiGuru?->pppk ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-[0.6rem] text-gray-500 dark:text-gray-400">PPPK Paruh Waktu</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiGuru?->pppk_paruh_waktu ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Honor</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiGuru?->honor ?? 0) }}
@@ -475,28 +500,32 @@
                                 </label>
 
                                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol I</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiGuru?->i ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol II</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiGuru?->ii ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol III</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiGuru?->iii ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol IV</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiGuru?->iv ?? 0) }}
@@ -526,7 +555,7 @@
                         </div>
                     </div>
                 </x-card>
-                
+
                 <x-card>
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
@@ -544,28 +573,32 @@
                                 </label>
 
                                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">PNS</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiStaff?->pns ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">PPPK</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiStaff?->pppk ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-[0.6rem] text-gray-500 dark:text-gray-400">PPPK Paruh Waktu</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiStaff?->pppk_paruh_waktu ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Honor</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiStaff?->honor ?? 0) }}
@@ -600,28 +633,32 @@
                                 </label>
 
                                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol I</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiStaff?->i ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol II</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiStaff?->ii ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol III</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiStaff?->iii ?? 0) }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Gol IV</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ (int) ($profileSekolah->kondisiStaff?->iv ?? 0) }}
@@ -666,7 +703,8 @@
                                 Pembangunan Ruang Kelas Baru (RKB)
                             </label>
 
-                            <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-3 sm:p-4 rounded-lg text-center mt-1.5">
+                            <div
+                                class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-3 sm:p-4 rounded-lg text-center mt-1.5">
                                 <p class="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">
                                     {{ $chartRkbRehab[0] }}
                                 </p>
@@ -686,7 +724,8 @@
                                 Rehabilitasi Ruang Kelas
                             </label>
 
-                            <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-3 sm:p-4 rounded-lg text-center mt-1.5">
+                            <div
+                                class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-3 sm:p-4 rounded-lg text-center mt-1.5">
                                 <p class="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">
                                     {{ $chartRkbRehab[1] }}
                                 </p>
@@ -723,21 +762,24 @@
                                 </label>
 
                                 <div class="grid grid-cols-3 gap-2 mt-1">
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas VII</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartSiswa[0] }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas VIII</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartSiswa[1] }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas IX</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartSiswa[2] }}
@@ -768,21 +810,24 @@
                                 </label>
 
                                 <div class="grid grid-cols-3 gap-2 mt-1">
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas VII</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartRombel[0] }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas VIII</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartRombel[1] }}
                                         </p>
                                     </div>
 
-                                    <div class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
+                                    <div
+                                        class="bg-gray-50 dark:bg-gray-800/40 border border-gray-100 dark:border-gray-700 p-2 rounded-lg text-center">
                                         <p class="text-xs text-gray-500 dark:text-gray-400">Kelas IX</p>
                                         <p class="text-lg font-bold text-gray-900 dark:text-white">
                                             {{ $chartRombel[2] }}
@@ -998,6 +1043,35 @@
 
                             <div class="h-40 sm:h-48">
                                 <canvas id="furniturTotalChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
+                                Kondisi Meja
+                            </p>
+                            <div class="h-40 sm:h-48">
+                                <canvas id="mejaChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
+                                Kondisi Kursi
+                            </p>
+                            <div class="h-40 sm:h-48">
+                                <canvas id="kursiChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
+                                Kondisi Perangkat Elektronik
+                            </p>
+                            <div class="h-40 sm:h-48">
+                                <canvas id="elektronikChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -1857,6 +1931,50 @@
                         }
                     }
                 });
+
+                // Chart baik vs rusak (Meja, Kursi, Perangkat Elektronik)
+                function chartBaikRusak(id, data) {
+                    new Chart(document.getElementById(id), {
+                        type: 'bar',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                    label: 'Baik',
+                                    data: data.baik,
+                                    backgroundColor: '#22c55e',
+                                    borderRadius: 4
+                                },
+                                {
+                                    label: 'Rusak',
+                                    data: data.rusak,
+                                    backgroundColor: '#f59e0b',
+                                    borderRadius: 4
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        precision: 0
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                chartBaikRusak('mejaChart', @json($chartMeja));
+                chartBaikRusak('kursiChart', @json($chartKursi));
+                chartBaikRusak('elektronikChart', @json($chartElektronik));
             });
         </script>
     @endif
