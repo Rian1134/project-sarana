@@ -65,11 +65,11 @@
             class="flex flex-col md:items-center md:justify-center bg-linear-to-br from-[#2E86C1] to-[#164C74] dark:from-[#1a1a2e] dark:to-[#16213e] md:bg-none md:bg-white md:dark:bg-gray-800">
 
             {{-- Header branding (hanya mobile; di desktop diganti panel kiri) --}}
-            <div class="md:hidden flex flex-col items-center text-center text-white px-6 pt-10 pb-14">
+            <div class="md:hidden flex flex-col items-center text-center text-white px-5 pt-5 pb-14">
                 <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo Kementerian Pendidikan Dasar dan Menengah"
-                    class="w-24 h-24 object-contain mb-3 drop-shadow-lg">
+                    class="w-48 h-48 object-contain drop-shadow-lg">
                 <h1 class="text-xl font-bold">Sistem Manajemen</h1>
-                <p class="text-sm opacity-90 mt-1 max-w-xs">Data Sarana & Prasarana SMP Kabupaten Lahat</p>
+                <p class="text-sm opacity-90 max-w-xs">Data Sarana & Prasarana SMP Kabupaten Lahat</p>
             </div>
 
             {{-- Form: berbentuk sheet putih di mobile, polos di desktop --}}
