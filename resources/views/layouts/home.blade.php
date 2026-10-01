@@ -90,7 +90,7 @@
                 <p class="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Kontak</p>
                 <ul class="flex flex-col gap-1.5 text-sm text-gray-500 dark:text-gray-400">
                     <li class="flex items-center gap-2"><i class="bi bi-envelope"></i> diknas.bidangsmp@gmail.com </li>
-                    <li class="flex items-center gap-2"><a href="#"><i class="bi bi-whatsapp"></i>+62 811-738-xxx</a></li>
+                    <li class="flex items-center gap-2"><a href="#"><i class="bi bi-whatsapp"></i> +62 811-738-xxx</a></li>
                 </ul>
             </div>
         </div>
