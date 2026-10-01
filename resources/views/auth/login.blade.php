@@ -46,7 +46,7 @@
         @endif
     </div>
 
-    <div class="min-h-screen grid grid-cols-1 md:grid-cols-2">
+    <div class="min-h-dvh grid grid-cols-1 md:grid-cols-2">
         {{-- Left Side: Hero/Illustration --}}
         <div
             class="hidden md:flex flex-col items-center justify-center gap-1 p-8 text-white text-center bg-linear-to-br from-[#2E86C1] to-[#164C74] dark:from-[#1a1a2e] dark:to-[#16213e]">
@@ -61,14 +61,27 @@
         </div>
 
         {{-- Right Side: Form --}}
-        <div class="flex items-start md:items-center justify-center bg-white dark:bg-gray-800 p-8 pt-12 md:pt-8">
-            <div class="w-full max-w-100">
+        <div
+            class="flex flex-col md:items-center md:justify-center bg-linear-to-br from-[#2E86C1] to-[#164C74] dark:from-[#1a1a2e] dark:to-[#16213e] md:bg-none md:bg-white md:dark:bg-gray-800">
+
+            {{-- Header branding (hanya mobile; di desktop diganti panel kiri) --}}
+            <div class="md:hidden flex flex-col items-center text-center text-white px-6 pt-10 pb-14">
+                <img src="{{ asset('assets/img/logo.webp') }}" alt="Logo Kementerian Pendidikan Dasar dan Menengah"
+                    class="w-24 h-24 object-contain mb-3 drop-shadow-lg">
+                <h1 class="text-xl font-bold">Sistem Manajemen</h1>
+                <p class="text-sm opacity-90 mt-1 max-w-xs">Data Sarana & Prasarana SMP Kabupaten Lahat</p>
+            </div>
+
+            {{-- Form: berbentuk sheet putih di mobile, polos di desktop --}}
+            <div
+                class="flex-1 md:flex-none w-full bg-white dark:bg-gray-800 rounded-t-3xl md:rounded-none -mt-6 md:mt-0 shadow-[0_-8px_30px_rgba(0,0,0,0.15)] md:shadow-none px-6 pt-8 pb-[calc(2rem+env(safe-area-inset-bottom))] md:p-8">
+            <div class="w-full max-w-100 mx-auto">
                 <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Selamat Datang Kembali</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100">Selamat Datang Kembali</h2>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Masuk untuk melanjutkan ke akun Anda</p>
                 </div>
 
-                <form action="{{ route('auth.authenticate') }}" method="post" class="flex flex-col gap-4">
+                <form action="{{ route('auth.authenticate') }}" method="post" class="flex flex-col gap-4" autocomplete="on">
                     @csrf
 
                     <x-form.input name="email" label="Alamat Email" type="email" placeholder="nama@email.com"
@@ -96,6 +109,7 @@
                         <i class="bi bi-box-arrow-in-right me-2"></i> Login
                     </x-button>
                 </form>
+            </div>
             </div>
         </div>
     </div>
