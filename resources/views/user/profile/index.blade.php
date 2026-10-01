@@ -1046,35 +1046,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                        <div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
-                                Kondisi Meja
-                            </p>
-                            <div class="h-40 sm:h-48">
-                                <canvas id="mejaChart"></canvas>
-                            </div>
-                        </div>
-
-                        <div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
-                                Kondisi Kursi
-                            </p>
-                            <div class="h-40 sm:h-48">
-                                <canvas id="kursiChart"></canvas>
-                            </div>
-                        </div>
-
-                        <div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium text-center mb-1">
-                                Kondisi Perangkat Elektronik
-                            </p>
-                            <div class="h-40 sm:h-48">
-                                <canvas id="elektronikChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
                 </x-card>
                 @if ($profileSekolah)
                     <x-card class="p-2 md:p-4">
@@ -1931,50 +1902,6 @@
                         }
                     }
                 });
-
-                // Chart baik vs rusak (Meja, Kursi, Perangkat Elektronik)
-                function chartBaikRusak(id, data) {
-                    new Chart(document.getElementById(id), {
-                        type: 'bar',
-                        data: {
-                            labels: data.labels,
-                            datasets: [{
-                                    label: 'Baik',
-                                    data: data.baik,
-                                    backgroundColor: '#22c55e',
-                                    borderRadius: 4
-                                },
-                                {
-                                    label: 'Rusak',
-                                    data: data.rusak,
-                                    backgroundColor: '#f59e0b',
-                                    borderRadius: 4
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom'
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        precision: 0
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-
-                chartBaikRusak('mejaChart', @json($chartMeja));
-                chartBaikRusak('kursiChart', @json($chartKursi));
-                chartBaikRusak('elektronikChart', @json($chartElektronik));
             });
         </script>
     @endif
