@@ -265,12 +265,6 @@
                     <i class="bi bi-file-earmark-excel"></i> Export Excel
                 </x-button>
             </form>
-            {{-- Tombol Tambah Data --}}
-            <a href="{{ route('sarana.create') }}" class="inline-flex">
-                <x-button variant="primary" size="sm">
-                    <i class="bi bi-plus-lg"></i> Tambah Data
-                </x-button>
-            </a>
         </div>
     </div>
 

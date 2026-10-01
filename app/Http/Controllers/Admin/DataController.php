@@ -35,7 +35,6 @@ use App\Models\ToiletSiswa;
 use App\Models\UnitKesehatanSekolah;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DataController extends Controller
@@ -332,24 +331,53 @@ class DataController extends Controller
         return view('admin.data.index', compact('profileSekolahs', 'totals', 'rkbPeriode', 'rehabilitasiPeriode'));
     }
 
-    public function create()
+    public function edit(ProfileSekolah $profileSekolah)
     {
+        $profileSekolah->load([
+            'pagarSekolah',
+            'airBersih',
+            'kursiSiswa',
+            'mejaSiswa',
+            'kursiGuru',
+            'mejaGuru',
+            'laptop',
+            'komputer',
+            'kondisiGuru',
+            'kondisiStaff',
+            'jumlahSiswa',
+            'jumlahRombel',
+            'ruangKelasBaru',
+            'rehabilitasiRuangKelas',
+            'ruangKelas',
+            'toiletSiswa',
+            'toiletGuru',
+            'ruangPerpustakaan',
+            'ruangKepalaSekolah',
+            'ruangGuru',
+            'ruangKantorTu',
+            'labIpa',
+            'labKomputer',
+            'unitKesehatanSekolah',
+            'rumahDinas',
+            'rumahIbadah',
+            'lapanganSekolah',
+        ]);
+
         $rkbPeriode = PeriodeLaporan::forKategori('rkb');
         $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
 
-        return view('admin.data.create', compact('rkbPeriode', 'rehabilitasiPeriode'));
+        return view('admin.data.edit', compact('profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
     }
 
-    public function store(Request $request)
+    public function update(Request $request, ProfileSekolah $profileSekolah)
     {
-        // Validasi data dengan tambahan status_sekolah dan akreditasi
         $request->validate([
             'nama_sekolah' => 'required|string|max:255',
-            'NPSN' => 'required|string|unique:profile_sekolahs,NPSN|max:20',
+            'NPSN' => 'required|string|max:20|unique:profile_sekolahs,NPSN,'.$profileSekolah->id,
             'alamat_sekolah' => 'required|string',
             'nama_kepala_sekolah' => 'required|string|max:255',
-            'NIP' => 'required|string|unique:profile_sekolahs,NIP|max:20',
-            'nomor_hp' => 'required|string|unique:profile_sekolahs,nomor_hp|max:15',
+            'NIP' => 'required|string|max:20|unique:profile_sekolahs,NIP,'.$profileSekolah->id,
+            'nomor_hp' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp,'.$profileSekolah->id,
             'status_sekolah' => 'required|in:negeri,swasta',
             'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
 
@@ -430,335 +458,6 @@ class DataController extends Controller
         ]);
 
         try {
-            // 1. Simpan data sekolah menggunakan Model
-            // TAMBAHKAN user_id dari user yang sedang login
-            $profileSekolah = ProfileSekolah::create([
-                'nama_sekolah' => $request->nama_sekolah,
-                'NPSN' => $request->NPSN,
-                'alamat_sekolah' => $request->alamat_sekolah,
-                'nama_kepala_sekolah' => $request->nama_kepala_sekolah,
-                'NIP' => $request->NIP,
-                'nomor_hp' => $request->nomor_hp,
-                'status_sekolah' => $request->status_sekolah,
-                'akreditasi' => $request->akreditasi,
-                'user_id' => Auth::id(), // <- TAMBAHKAN INI
-            ]);
-
-            KondisiGuru::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'pns' => $request->jumlah_guru_pns,
-                'pppk' => $request->jumlah_guru_pppk,
-                'pppk_paruh_waktu' => $request->jumlah_guru_pppk_paruh_waktu,
-                'honor' => $request->jumlah_guru_honor,
-                'i' => $request->jumlah_guru_i,
-                'ii' => $request->jumlah_guru_ii,
-                'iii' => $request->jumlah_guru_iii,
-                'iv' => $request->jumlah_guru_iv,
-            ]);
-
-            // Kondisi Staff Tata Usaha
-            KondisiStaff::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'pns' => $request->jumlah_staff_tu_pns,
-                'pppk' => $request->jumlah_staff_tu_pppk,
-                'pppk_paruh_waktu' => $request->jumlah_staff_tu_pppk_paruh_waktu,
-                'honor' => $request->jumlah_staff_tu_honor,
-                'i' => $request->jumlah_staff_tu_i,
-                'ii' => $request->jumlah_staff_tu_ii,
-                'iii' => $request->jumlah_staff_tu_iii,
-                'iv' => $request->jumlah_staff_tu_iv,
-            ]);
-
-            // 2. Simpan Pagar Sekolah
-            PagarSekolah::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->pagar_ada_tidak,
-                'kondisi' => $request->pagar_kondisi ?? 'nihil',
-            ]);
-
-            // 3. Simpan Air Bersih
-            AirBersih::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->air_ada_tidak,
-                'kondisi' => $request->air_kondisi ?? 'nihil',
-            ]);
-
-            // 4. Simpan Kursi Siswa
-            KursiSiswa::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'baik' => $request->kursi_siswa_baik,
-                'rusak' => $request->kursi_siswa_rusak,
-            ]);
-
-            // 5. Simpan Meja Siswa
-            MejaSiswa::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'baik' => $request->meja_siswa_baik,
-                'rusak' => $request->meja_siswa_rusak,
-            ]);
-
-            // 6. Simpan Kursi Guru
-            KursiGuru::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'baik' => $request->kursi_guru_baik,
-                'rusak' => $request->kursi_guru_rusak,
-            ]);
-
-            // 7. Simpan Meja Guru
-            MejaGuru::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'baik' => $request->meja_guru_baik,
-                'rusak' => $request->meja_guru_rusak,
-            ]);
-
-            // 8. Simpan Laptop
-            Laptop::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'baik' => $request->laptop_baik,
-                'rusak' => $request->laptop_rusak,
-            ]);
-
-            // 9. Simpan Komputer
-            Komputer::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'baik' => $request->komputer_baik,
-                'rusak' => $request->komputer_rusak,
-            ]);
-
-            // Simpan JumlahSiswa
-            JumlahSiswa::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'vii' => $request->jumlah_siswa_vii,
-                'viii' => $request->jumlah_siswa_viii,
-                'ix' => $request->jumlah_siswa_ix,
-            ]);
-
-            // Simpan JumlahRombel
-            JumlahRombel::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'vii' => $request->jumlah_rombel_vii,
-                'viii' => $request->jumlah_rombel_viii,
-                'ix' => $request->jumlah_rombel_ix,
-            ]);
-
-            // Simpan RuangKelasBaru — tahun sekarang global (PeriodeLaporan),
-            // di sini cuma simpan jumlah.
-            RuangKelasBaru::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'jumlah' => $request->rkb_jumlah,
-            ]);
-
-            // Simpan RehabilitasiRuangKelas
-            RehabilitasiRuangKelas::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'jumlah' => $request->rehabilitasi_jumlah,
-            ]);
-
-            // Simpan RuangKelas
-            RuangKelas::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'baik' => $request->ruang_kelas_baik,
-                'rusak' => $request->ruang_kelas_rusak,
-            ]);
-
-            // Simpan ToiletSiswa
-            ToiletSiswa::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'baik' => $request->toilet_siswa_baik,
-                'rusak' => $request->toilet_siswa_rusak,
-            ]);
-
-            // Simpan ToiletGuru
-            ToiletGuru::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'baik' => $request->toilet_guru_baik,
-                'rusak' => $request->toilet_guru_rusak,
-            ]);
-
-            // Simpan RuangPerpustakaan
-            RuangPerpustakaan::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->perpustakaan_ada_tidak,
-                'kondisi' => $request->perpustakaan_kondisi ?? 'nihil',
-            ]);
-
-            // Simpan RuangKepalaSekolah
-            RuangKepalaSekolah::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->kepala_sekolah_ada_tidak,
-                'kondisi' => $request->kepala_sekolah_kondisi ?? 'nihil',
-            ]);
-
-            // Simpan RuangGuru
-            RuangGuru::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->ruang_guru_ada_tidak,
-                'kondisi' => $request->ruang_guru_kondisi ?? 'nihil',
-            ]);
-
-            // Simpan RuangKantorTu
-            RuangKantorTu::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->kantor_tu_ada_tidak,
-                'kondisi' => $request->kantor_tu_kondisi ?? 'nihil',
-            ]);
-
-            // Simpan LabIpa
-            LabIpa::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->lab_ipa_ada_tidak,
-                'kondisi' => $request->lab_ipa_kondisi ?? 'nihil',
-            ]);
-
-            // Simpan LabKomputer
-            LabKomputer::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->lab_komputer_ada_tidak,
-                'kondisi' => $request->lab_komputer_kondisi ?? 'nihil',
-            ]);
-
-            // Simpan UnitKesehatanSekolah
-            UnitKesehatanSekolah::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->uks_ada_tidak,
-                'kondisi' => $request->uks_kondisi ?? 'nihil',
-            ]);
-
-            // Simpan RumahDinas
-            RumahDinas::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->rumah_dinas_ada_tidak,
-                'kondisi' => $request->rumah_dinas_kondisi ?? 'nihil',
-            ]);
-
-            // Simpan RumahIbadah
-            RumahIbadah::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->rumah_ibadah_ada_tidak,
-                'kondisi' => $request->rumah_ibadah_kondisi ?? 'nihil',
-            ]);
-
-            // Simpan LapanganSekolah
-            LapanganSekolah::create([
-                'profile_sekolah_id' => $profileSekolah->id,
-                'ada/tidak_ada' => $request->lapangan_sekolah_ada_tidak,
-                'kondisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
-            ]);
-
-            return redirect()->route('sarana.index')
-                ->with('success', 'Data ProfileSekolah berhasil ditambahkan!');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Gagal menyimpan data: '.$e->getMessage());
-        }
-    }
-
-    public function edit(ProfileSekolah $profileSekolah)
-    {
-        $profileSekolah->load([
-            'pagarSekolah',
-            'airBersih',
-            'kursiSiswa',
-            'mejaSiswa',
-            'kursiGuru',
-            'mejaGuru',
-            'laptop',
-            'komputer',
-            'jumlahSiswa',
-            'jumlahRombel',
-            'ruangKelasBaru',
-            'rehabilitasiRuangKelas',
-            'ruangKelas',
-            'toiletSiswa',
-            'toiletGuru',
-            'ruangPerpustakaan',
-            'ruangKepalaSekolah',
-            'ruangGuru',
-            'ruangKantorTu',
-            'labIpa',
-            'labKomputer',
-            'unitKesehatanSekolah',
-            'rumahDinas',
-            'rumahIbadah',
-            'lapanganSekolah',
-        ]);
-
-        $rkbPeriode = PeriodeLaporan::forKategori('rkb');
-        $rehabilitasiPeriode = PeriodeLaporan::forKategori('rehabilitasi');
-
-        return view('admin.data.edit', compact('profileSekolah', 'rkbPeriode', 'rehabilitasiPeriode'));
-    }
-
-    public function update(Request $request, ProfileSekolah $profileSekolah)
-    {
-        $request->validate([
-            'nama_sekolah' => 'required|string|max:255',
-            'NPSN' => 'required|string|max:20|unique:profile_sekolahs,NPSN,'.$profileSekolah->id,
-            'alamat_sekolah' => 'required|string',
-            'nama_kepala_sekolah' => 'required|string|max:255',
-            'NIP' => 'required|string|max:20|unique:profile_sekolahs,NIP,'.$profileSekolah->id,
-            'nomor_hp' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp,'.$profileSekolah->id,
-            'status_sekolah' => 'required|in:negeri,swasta',
-            'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
-
-            'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
-            'pagar_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'air_ada_tidak' => 'required|in:ada,tidak_ada',
-            'air_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'kursi_siswa_baik' => 'required|integer|min:0',
-            'kursi_siswa_rusak' => 'required|integer|min:0',
-            'meja_siswa_baik' => 'required|integer|min:0',
-            'meja_siswa_rusak' => 'required|integer|min:0',
-            'kursi_guru_baik' => 'required|integer|min:0',
-            'kursi_guru_rusak' => 'required|integer|min:0',
-            'meja_guru_baik' => 'required|integer|min:0',
-            'meja_guru_rusak' => 'required|integer|min:0',
-            'laptop_baik' => 'required|integer|min:0',
-            'laptop_rusak' => 'required|integer|min:0',
-            'komputer_baik' => 'required|integer|min:0',
-            'komputer_rusak' => 'required|integer|min:0',
-            'jumlah_siswa_vii' => 'required|integer|min:0',
-            'jumlah_siswa_viii' => 'required|integer|min:0',
-            'jumlah_siswa_ix' => 'required|integer|min:0',
-            'jumlah_rombel_vii' => 'required|integer|min:0',
-            'jumlah_rombel_viii' => 'required|integer|min:0',
-            'jumlah_rombel_ix' => 'required|integer|min:0',
-
-            // RKB & Rehabilitasi: tahunnya sekarang GLOBAL (lihat
-            // App\Models\PeriodeLaporan, cuma admin yang bisa ubah lewat
-            // PeriodeLaporanController) — form di sini cuma minta jumlah.
-            'rkb_jumlah' => 'required|integer|min:0',
-            'rehabilitasi_jumlah' => 'required|integer|min:0',
-            'ruang_kelas_baik' => 'required|integer|min:0',
-            'ruang_kelas_rusak' => 'required|integer|min:0',
-            'toilet_siswa_baik' => 'required|integer|min:0',
-            'toilet_siswa_rusak' => 'required|integer|min:0',
-            'toilet_guru_baik' => 'required|integer|min:0',
-            'toilet_guru_rusak' => 'required|integer|min:0',
-            'perpustakaan_ada_tidak' => 'required|in:ada,tidak_ada',
-            'perpustakaan_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'kepala_sekolah_ada_tidak' => 'required|in:ada,tidak_ada',
-            'kepala_sekolah_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'ruang_guru_ada_tidak' => 'required|in:ada,tidak_ada',
-            'ruang_guru_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'kantor_tu_ada_tidak' => 'required|in:ada,tidak_ada',
-            'kantor_tu_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'lab_ipa_ada_tidak' => 'required|in:ada,tidak_ada',
-            'lab_ipa_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'lab_komputer_ada_tidak' => 'required|in:ada,tidak_ada',
-            'lab_komputer_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'uks_ada_tidak' => 'required|in:ada,tidak_ada',
-            'uks_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'rumah_dinas_ada_tidak' => 'required|in:ada,tidak_ada',
-            'rumah_dinas_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'rumah_ibadah_ada_tidak' => 'required|in:ada,tidak_ada',
-            'rumah_ibadah_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-            'lapangan_sekolah_ada_tidak' => 'required|in:ada,tidak_ada',
-            'lapangan_sekolah_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
-        ]);
-
-        try {
             // Update data sekolah
             $profileSekolah->update([
                 'nama_sekolah' => $request->nama_sekolah,
@@ -773,6 +472,36 @@ class DataController extends Controller
             ]);
 
             // Update atau create relasi
+            // Kondisi Guru
+            KondisiGuru::updateOrCreate(
+                ['profile_sekolah_id' => $profileSekolah->id],
+                [
+                    'pns' => $request->jumlah_guru_pns,
+                    'pppk' => $request->jumlah_guru_pppk,
+                    'pppk_paruh_waktu' => $request->jumlah_guru_pppk_paruh_waktu,
+                    'honor' => $request->jumlah_guru_honor,
+                    'i' => $request->jumlah_guru_i,
+                    'ii' => $request->jumlah_guru_ii,
+                    'iii' => $request->jumlah_guru_iii,
+                    'iv' => $request->jumlah_guru_iv,
+                ]
+            );
+
+            // Kondisi Staff Tata Usaha
+            KondisiStaff::updateOrCreate(
+                ['profile_sekolah_id' => $profileSekolah->id],
+                [
+                    'pns' => $request->jumlah_staff_tu_pns,
+                    'pppk' => $request->jumlah_staff_tu_pppk,
+                    'pppk_paruh_waktu' => $request->jumlah_staff_tu_pppk_paruh_waktu,
+                    'honor' => $request->jumlah_staff_tu_honor,
+                    'i' => $request->jumlah_staff_tu_i,
+                    'ii' => $request->jumlah_staff_tu_ii,
+                    'iii' => $request->jumlah_staff_tu_iii,
+                    'iv' => $request->jumlah_staff_tu_iv,
+                ]
+            );
+
             PagarSekolah::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
                 [
@@ -992,6 +721,8 @@ class DataController extends Controller
             $profileSekolah->mejaGuru()->delete();
             $profileSekolah->laptop()->delete();
             $profileSekolah->komputer()->delete();
+            $profileSekolah->kondisiGuru()->delete();
+            $profileSekolah->kondisiStaff()->delete();
             $profileSekolah->jumlahSiswa()->delete();
             $profileSekolah->jumlahRombel()->delete();
             $profileSekolah->ruangKelasBaru()->delete();

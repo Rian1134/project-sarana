@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMSARPRAS-SMP - @yield('title')</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<title>SIMSARPRAS-SMP - @yield('title')</title>
+<link rel="icon" type="image/webp" href="{{ asset('assets/img/icon-web.webp') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     {{-- Set dark mode SEBELUM CSS dimuat, supaya tidak ada "flash" warna terang sesaat.
          Default selalu LIGHT — tidak ikut preferensi sistem, dark mode HANYA aktif

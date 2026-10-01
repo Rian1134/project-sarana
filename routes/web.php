@@ -21,10 +21,15 @@ Route::middleware('auth')->group(function () {
     // ---------- ADMIN ----------
     Route::middleware('role:admin')->group(function () {
         Route::prefix('/admin')->group(function () {
-            Route::resource('sarana', AdminDataController::class)->parameters(['sarana' => 'profileSekolah']);
+            Route::resource('sarana', AdminDataController::class)->parameters(['sarana' => 'profileSekolah'])->only([
+                'index',
+                'edit',
+                'update',
+                'destroy',
+            ]);
 
             Route::post('/sarana/export-excel', [AdminDataController::class, 'export_excel'])->name('data.export');
-            
+
             Route::resource('user', AdminUserController::class);
             Route::get('user/{user}/izin', [UserPermissionController::class, 'edit'])->name('user.izin.edit');
             Route::put('user/{user}/izin', [UserPermissionController::class, 'update'])->name('user.izin.update');

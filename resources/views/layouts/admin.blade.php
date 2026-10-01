@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIMSARPRAS-SMP - @yield('title')</title>
+    <link rel="icon" type="image/webp" href="{{ asset('assets/img/icon-web.webp') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
+    
     {{-- Set dark mode SEBELUM CSS dimuat, supaya tidak ada "flash" warna terang sesaat.
          Default selalu LIGHT — tidak ikut preferensi sistem, dark mode HANYA aktif
          kalau user pernah menekan toggle-nya sendiri. --}}
@@ -88,8 +89,7 @@
         {{-- Sidebar biru — overlay drawer di mobile, kolom sticky full-height di
              desktop. Warna disamakan dengan aksen biru (sky) yang dipakai di
              seluruh tabel/halaman lain, supaya identitas visual konsisten. --}}
-        <x-sidebar id="mainSidebar"
-            class="bg-sky-800 dark:bg-sky-950 border-sky-700 dark:border-sky-900 text-sky-100">
+        <x-sidebar id="mainSidebar" class="bg-sky-800 dark:bg-sky-950 border-sky-700 dark:border-sky-900 text-sky-100">
             {{-- Info user --}}
             <div class="flex items-center gap-3 border-b border-sky-700/70 dark:border-sky-800 pb-4 mb-3">
                 @if (Auth::user()->foto)
@@ -160,14 +160,16 @@
                             <i class="bi bi-list text-2xl leading-none"></i>
                         </button>
                         <span class="flex items-center gap-1.5 font-semibold text-gray-800 dark:text-gray-100 truncate">
-                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-sky-700 text-white text-sm shrink-0">
+                            <span
+                                class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-sky-700 text-white text-sm shrink-0">
                                 <i class="bi bi-building"></i>
                             </span>
                             <span class="truncate text-sm sm:text-base">SIMSARPRAS-SMP</span>
                         </span>
                         <x-badge variant="dark" class="hidden sm:inline-flex">Admin</x-badge>
                         @hasSection('title')
-                            <span class="hidden md:flex items-center gap-2 text-gray-400 dark:text-gray-500 text-sm min-w-0">
+                            <span
+                                class="hidden md:flex items-center gap-2 text-gray-400 dark:text-gray-500 text-sm min-w-0">
                                 <span>/</span>
                                 <span class="truncate text-gray-600 dark:text-gray-300">@yield('title')</span>
                             </span>
@@ -186,7 +188,8 @@
                     {{-- Info user & logout --}}
                     <x-dropdown align="right" width="sm">
                         <x-slot:trigger>
-                            <button class="inline-flex items-center gap-2 rounded-md px-1.5 sm:px-2 py-1.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <button
+                                class="inline-flex items-center gap-2 rounded-md px-1.5 sm:px-2 py-1.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                                 @if (Auth::user()->foto)
                                     <img src="{{ Auth::user()->foto_url }}" alt="Foto {{ Auth::user()->name }}"
                                         class="h-8 w-8 shrink-0 rounded-full object-cover">
@@ -199,8 +202,10 @@
                         </x-slot:trigger>
 
                         <div class="px-3 py-2 sm:hidden">
-                            <p class="truncate text-sm font-semibold text-gray-800 dark:text-gray-100">{{ Auth::user()->name }}</p>
-                            <p class="truncate text-xs text-gray-500 dark:text-gray-400">{{ ucfirst(Auth::user()->role ?? 'Admin') }}</p>
+                            <p class="truncate text-sm font-semibold text-gray-800 dark:text-gray-100">
+                                {{ Auth::user()->name }}</p>
+                            <p class="truncate text-xs text-gray-500 dark:text-gray-400">
+                                {{ ucfirst(Auth::user()->role ?? 'Admin') }}</p>
                         </div>
                         <div class="border-t border-gray-200 dark:border-gray-700 my-1 sm:hidden"></div>
 
@@ -219,8 +224,10 @@
                 </div>
             </main>
 
-            <footer class="px-3 sm:px-4 lg:px-6 py-4 text-center text-xs text-gray-400 dark:text-gray-600 border-t border-gray-200 dark:border-gray-800">
-                &copy; {{ date('Y') }} SIMSARPRAS-SMP — Panel Admin, Sistem Informasi Manajemen Sarana &amp; Prasarana Sekolah
+            <footer
+                class="px-3 sm:px-4 lg:px-6 py-4 text-center text-xs text-gray-400 dark:text-gray-600 border-t border-gray-200 dark:border-gray-800">
+                &copy; {{ date('Y') }} SIMSARPRAS-SMP — Panel Admin, Sistem Informasi Manajemen Sarana &amp;
+                Prasarana Sekolah
             </footer>
         </div>
     </div>
