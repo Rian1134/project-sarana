@@ -581,7 +581,7 @@
                     <x-slot:header>
                         <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                             <i class="bi bi-tools"></i>
-                            Rencana Pembangunan &amp; Rehabilitasi Ruang Kelas
+                            Rencana Kegiatan Sarana &amp; Prasarana
                         </div>
                     </x-slot:header>
 

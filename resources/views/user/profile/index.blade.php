@@ -1053,7 +1053,7 @@
                             <div class="flex flex-wrap items-center justify-between gap-2 px-2 md:px-0">
                                 <div class="flex items-center gap-2 text-blue-600 dark:text-blue-400">
                                     <i class="bi bi-list-check"></i>
-                                    Rencana Pembangunan & Rehabilitasi
+                                    Rencana Kegiatna Sarana &amp; Prasarana
                                 </div>
 
                                 <a href="{{ route('user.rencana-pembangunan.create') }}" class="inline-flex">

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Rencana Pembangunan')
+@section('title', 'Rencana Kegiatan')
 @section('content')
 
     {{-- ============================================================
@@ -9,7 +9,7 @@
     <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between mb-5">
         <div>
             <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
-                <i class="bi bi-building-add text-sky-600"></i> Rencana Pembangunan & Rehabilitasi Srana Prasarana
+                <i class="bi bi-building-add text-sky-600"></i> Rencana Kegiantan Sarana &amp; Prasarana
             </h1>
         </div>
 
