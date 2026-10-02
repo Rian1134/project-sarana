@@ -18,7 +18,9 @@ class ProfileSekolah extends Model
         'status_sekolah',
         'akreditasi',
         'website',
-        'nomor_hp',
+        'nomor_hp_kepala_sekolah',
+        'nama_operator',
+        'nomor_operator',
         'user_id',
     ];
 

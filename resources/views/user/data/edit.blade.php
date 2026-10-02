@@ -63,19 +63,6 @@
                         <x-form.input name="NPSN" label="NPSN" placeholder="Masukkan NPSN" required
                             :value="old('NPSN', $profileSekolah->NPSN)" />
 
-                        <div class="md:col-span-2">
-                            <x-form.textarea name="alamat_sekolah" label="Alamat Sekolah" rows="2"
-                                placeholder="Masukkan alamat lengkap sekolah" required :value="old('alamat_sekolah', $profileSekolah->alamat_sekolah)" />
-                        </div>
-
-                        <x-form.input name="nama_kepala_sekolah" label="Nama Kepala Sekolah"
-                            placeholder="Masukkan nama kepala sekolah" required :value="old('nama_kepala_sekolah', $profileSekolah->nama_kepala_sekolah)" />
-
-                        <x-form.input name="NIP" label="NIP" placeholder="Masukkan NIP" required :value="old('NIP', $profileSekolah->NIP)" />
-
-                        <x-form.input name="nomor_hp" label="Nomor HP" placeholder="Masukkan nomor HP" required
-                            :value="old('nomor_hp', $profileSekolah->nomor_hp)" />
-
                         <!-- Status Sekolah -->
                         <div>
                             <x-form.select name="status_sekolah" label="Status Sekolah" placeholder="-- Pilih Status --"
@@ -93,9 +80,34 @@
                                 ]" :value="old('akreditasi', $profileSekolah->akreditasi)" required />
                         </div>
 
-                        <!-- Website -->
-                        <x-form.input name="website" label="Website" placeholder="Masukkan website https://... (jika ada)"
-                            :value="old('website', $profileSekolah->website)" />
+                        <div class="md:col-span-2">
+                            <x-form.textarea name="alamat_sekolah" label="Alamat Sekolah" rows="2"
+                                placeholder="Masukkan alamat lengkap sekolah" required :value="old('alamat_sekolah', $profileSekolah->alamat_sekolah)" />
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <!-- Website -->
+                            <x-form.input name="website" label="Website" placeholder="Masukkan website https://... (jika ada)"
+                                :value="old('website', $profileSekolah->website)" />
+                        </div>
+
+                        <x-form.input name="nama_kepala_sekolah" label="Nama Kepala Sekolah"
+                            placeholder="Masukkan nama kepala sekolah" required :value="old('nama_kepala_sekolah', $profileSekolah->nama_kepala_sekolah)" />
+
+                        <x-form.input name="NIP" label="NIP" placeholder="Masukkan NIP" required :value="old('NIP', $profileSekolah->NIP)" />
+
+                        <div class="md:col-span-2">
+                            <x-form.input name="nomor_hp_kepala_sekolah" label="Nomor HP Kepala Sekolah"
+                                placeholder="Masukkan nomor HP kepala sekolah" required
+                                :value="old('nomor_hp_kepala_sekolah', $profileSekolah->nomor_hp_kepala_sekolah)" />
+                        </div>
+
+                        <x-form.input name="nama_operator" label="Nama Operator" placeholder="Masukkan nama operator"
+                            required :value="old('nama_operator', $profileSekolah->nama_operator)" />
+
+                        <x-form.input name="nomor_operator" label="Nomor HP Operator"
+                            placeholder="Masukkan nomor HP operator" required
+                            :value="old('nomor_operator', $profileSekolah->nomor_operator)" />
                     </div>
                 </x-card>
 

@@ -187,9 +187,15 @@
                                 <p class="text-xs text-gray-500 dark:text-gray-400">NIP: {{ $profileSekolah->NIP }}</p>
                             </div>
                             <div>
-                                <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">Nomor HP</label>
+                                <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">Nomor HP Kepala Sekolah</label>
                                 <p class="text-base font-semibold text-gray-800 dark:text-gray-100">
-                                    {{ $profileSekolah->nomor_hp }}</p>
+                                    {{ $profileSekolah->nomor_hp_kepala_sekolah }}</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500 dark:text-gray-400 font-medium">Operator</label>
+                                <p class="text-base font-semibold text-gray-800 dark:text-gray-100">
+                                    {{ $profileSekolah->nama_operator }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">HP: {{ $profileSekolah->nomor_operator }}</p>
                             </div>
                         </div>
                     </x-card>

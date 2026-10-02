@@ -377,7 +377,9 @@ class DataController extends Controller
             'alamat_sekolah' => 'required|string',
             'nama_kepala_sekolah' => 'required|string|max:255',
             'NIP' => 'required|string|max:20|unique:profile_sekolahs,NIP,'.$profileSekolah->id,
-            'nomor_hp' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp,'.$profileSekolah->id,
+            'nomor_hp_kepala_sekolah' => 'required|string|max:15|unique:profile_sekolahs,nomor_hp_kepala_sekolah,'.$profileSekolah->id,
+            'nama_operator' => 'required|string|max:255',
+            'nomor_operator' => 'required|string|max:15|unique:profile_sekolahs,nomor_operator,'.$profileSekolah->id,
             'status_sekolah' => 'required|in:negeri,swasta',
             'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
 
@@ -465,7 +467,9 @@ class DataController extends Controller
                 'alamat_sekolah' => $request->alamat_sekolah,
                 'nama_kepala_sekolah' => $request->nama_kepala_sekolah,
                 'NIP' => $request->NIP,
-                'nomor_hp' => $request->nomor_hp,
+                'nomor_hp_kepala_sekolah' => $request->nomor_hp_kepala_sekolah,
+                'nama_operator' => $request->nama_operator,
+                'nomor_operator' => $request->nomor_operator,
                 'status_sekolah' => $request->status_sekolah,
                 'akreditasi' => $request->akreditasi,
                 // user_id tidak diupdate agar tetap dengan pembuat awal

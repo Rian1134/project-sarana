@@ -25,11 +25,13 @@ return new class extends Migration
             $table->string('NPSN')->unique();
             $table->string('alamat_sekolah');
             $table->string('nama_kepala_sekolah');
+            $table->string('nomor_hp_kepala_sekolah')->unique();
+            $table->string('nama_operator');
+            $table->string('nomor_operator')->unique();
             $table->string('NIP')->unique();
             $table->string('status_sekolah');
             $table->char('akreditasi');
             $table->string('website')->nullable(true);
-            $table->string('nomor_hp')->unique();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

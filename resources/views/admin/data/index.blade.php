@@ -285,7 +285,7 @@
                          BARIS 1: JUDUL UTAMA
                          ============================================================ --}}
                     <tr class="bg-sky-700 text-white text-center">
-                        {{-- DATA SEKOLAH (7 kolom) --}}
+                        {{-- DATA SEKOLAH (9 kolom) --}}
                         <x-table.heading rowspan="3" class="text-white! align-middle w-7 px-1 py-1">No</x-table.heading>
                         <x-table.heading rowspan="3" class="text-white! align-middle min-w-25 px-1 py-1">Nama
                             Sekolah</x-table.heading>
@@ -297,8 +297,12 @@
                             Sekolah</x-table.heading>
                         <x-table.heading rowspan="3"
                             class="text-white! align-middle min-w-20 px-1 py-1">NIP</x-table.heading>
-                        <x-table.heading rowspan="3" class="text-white! align-middle min-w-17.5 px-1 py-1">No.
-                            HP</x-table.heading>
+                        <x-table.heading rowspan="3" class="text-white! align-middle min-w-22.5 px-1 py-1">No. HP
+                            Kepala Sekolah</x-table.heading>
+                        <x-table.heading rowspan="3" class="text-white! align-middle min-w-22.5 px-1 py-1">Nama
+                            Operator</x-table.heading>
+                        <x-table.heading rowspan="3" class="text-white! align-middle min-w-17.5 px-1 py-1">No. HP
+                            Operator</x-table.heading>
 
                         {{-- SARANA & PRASARANA (55 kolom) --}}
                         <x-table.heading colspan="61" class="text-white! text-center align-middle px-1 py-1">Sarana
@@ -583,7 +587,7 @@
                          ============================================================ --}}
                     <tr class="bg-gray-100 dark:bg-gray-700">
                         {{-- Total Data --}}
-                        <x-table.cell colspan="7" class="font-bold">Total Data:
+                        <x-table.cell colspan="9" class="font-bold">Total Data:
                             {{ $profileSekolahs->count() }}</x-table.cell>
 
                         {{-- URUTAN 1: JUMLAH SISWA --}}
@@ -1248,7 +1252,7 @@
                     @endphp
                     <x-table.row data-sarana-row>
                         {{-- ============================================================
-                             DATA SEKOLAH (7 kolom)
+                             DATA SEKOLAH (9 kolom)
                              ============================================================ --}}
                         <x-table.cell class="text-center font-bold">{{ $loop->iteration }}</x-table.cell>
                         <x-table.cell>
@@ -1260,7 +1264,9 @@
                         <x-table.cell>{{ Str::limit($item->alamat_sekolah, 25) }}</x-table.cell>
                         <x-table.cell>{{ $item->nama_kepala_sekolah }}</x-table.cell>
                         <x-table.cell class="text-center">{{ $item->NIP }}</x-table.cell>
-                        <x-table.cell class="text-center">{{ $item->nomor_hp }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->nomor_hp_kepala_sekolah }}</x-table.cell>
+                        <x-table.cell>{{ $item->nama_operator }}</x-table.cell>
+                        <x-table.cell class="text-center">{{ $item->nomor_operator }}</x-table.cell>
 
                         {{-- URUTAN 1: JUMLAH SISWA (4 kolom) --}}
                         <x-table.cell class="text-center">{{ $item->jumlahSiswa?->vii ?? 0 }}</x-table.cell>
@@ -1432,12 +1438,12 @@
                         </x-table.cell>
                     </x-table.row>
                 @empty
-                    <x-table.empty colspan="69" message="Belum ada data sarana sekolah" />
+                    <x-table.empty colspan="71" message="Belum ada data sarana sekolah" />
                 @endforelse
 
                 {{-- Baris ini disembunyikan (hidden) secara default, dan hanya
                      dimunculkan oleh JS ketika hasil pencarian kosong --}}
-                <x-table.empty id="searchSaranaNoResult" class="hidden" colspan="69"
+                <x-table.empty id="searchSaranaNoResult" class="hidden" colspan="71"
                     message="Tidak ada sekolah yang cocok dengan pencarian" />
             </x-table>
 
