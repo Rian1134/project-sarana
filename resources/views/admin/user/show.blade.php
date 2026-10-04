@@ -17,7 +17,7 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400">Informasi akun dan data sekolah user</p>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <a href="{{ url()->previous() }}" class="inline-flex">
+                    <a href="{{ route('user.index') }}" class="inline-flex">
                         <x-button variant="secondary" size="sm">
                             <i class="bi bi-arrow-left me-1"></i> Kembali
                         </x-button>

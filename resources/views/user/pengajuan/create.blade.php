@@ -211,18 +211,18 @@
                     </x-slot:header>
 
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                        Cari folder dengan <strong>nama sekolah</strong>, lalu upload lewat tombol di samping dokumen.
+                        Cari folder dengan <strong>nama sekolah</strong>, lalu upload lewat tombol di samping dokumen, kemudian kembali ke halaman ini. Dokumen yang sudah diupload ditandai centang hijau.
                     </p>
 
                     <div class="space-y-2 text-sm">
-                        <div class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
-                            <span>Photo Dokumentasi Kerusakan</span>
+                        <div data-dokumen class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
+                            <span>Photo Dokumentasi Kerusakan <i class="bi bi-check-circle-fill text-green-600 hidden"></i></span>
                             <a href="https://bidangsmp.quickconnect.to/sharing/tTENaUcqE" target="_blank" rel="noopener noreferrer">
                                 <x-button type="button" size="sm"><i class="bi bi-cloud-arrow-up"></i> Upload</x-button>
                             </a>
                         </div>
-                        <div class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
-                            <span>Dokumen Perhitungan Tingkat Kerusakan</span>
+                        <div data-dokumen class="flex items-center justify-between gap-2 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-2">
+                            <span>Dokumen Perhitungan Tingkat Kerusakan <i class="bi bi-check-circle-fill text-green-600 hidden"></i></span>
                             <a href="https://bidangsmp.quickconnect.to/sharing/fTbO8oVbn" target="_blank" rel="noopener noreferrer">
                                 <x-button type="button" size="sm"><i class="bi bi-cloud-arrow-up"></i> Upload</x-button>
                             </a>
@@ -325,6 +325,28 @@
                 sembunyikanKategori(btn.dataset.kategori);
             });
 
+            // ---- Lampiran: dokumen ditandai sudah diupload saat user kembali ke tab ini ----
+            let menunggu = null;
+            form.addEventListener('click', function(e) {
+                const row = e.target.closest('[data-dokumen]');
+                if (row && e.target.closest('a')) menunggu = row;
+            });
+            window.addEventListener('focus', function() {
+                if (!menunggu) return;
+                menunggu.dataset.selesai = '1';
+                menunggu.querySelector('.bi-check-circle-fill').classList.remove('hidden');
+                menunggu = null;
+            });
+
+            // Pengajuan hanya bisa dikirim kalau semua dokumen sudah ditandai.
+            form.addEventListener('submit', function(e) {
+                const belum = [...form.querySelectorAll('[data-dokumen]')].filter(r => !r.dataset.selesai);
+                if (belum.length) {
+                    e.preventDefault();
+                    showToast({ type: 'danger', message: 'Upload semua dokumen lampiran terlebih dahulu.' });
+                }
+            });
+
             // ---- Kategori "update_kondisi": Status "Tidak Ada" -> Kondisi otomatis "Nihil" ----
             form.addEventListener('change', function(e) {
                 const sel = e.target;
@@ -351,6 +373,10 @@
                     });
                     select.querySelectorAll('option').forEach(function(opt) {
                         opt.disabled = false;
+                    });
+                    form.querySelectorAll('[data-dokumen]').forEach(function(r) {
+                        delete r.dataset.selesai;
+                        r.querySelector('.bi-check-circle-fill').classList.add('hidden');
                     });
                     updatePesanKosong();
                 }, 0);
