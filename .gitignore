@@ -21,6 +21,7 @@
 /storage/*.key
 /storage/pail
 /database/seeder/UserSeeder.php
+/database/seeder/AdminSeeder.php
 #/vendor
 _ide_helper.php
 Homestead.json
