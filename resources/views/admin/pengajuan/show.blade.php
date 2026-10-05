@@ -111,12 +111,32 @@
                                 <i class="bi bi-x-lg"></i> Tolak
                             </x-button>
                         </form>
-
-                        <x-button href="https://gofile.me/7Hsao/ZjQEsygfo">
-                            <i class="bi bi-cloud-arrow-up"></i> Lihat File
-                        </x-button>
                     </div>
                 @endif
+
+                {{-- Link file, tampil sesuai kategori pengajuan --}}
+                <div class="flex flex-wrap gap-2 mt-2">
+                    @if ($jenisPengajuan === 'Laporan Kerusakan')
+                        <x-button href="https://gofile.me/7Hsao/e7SH7qmLN" target="_blank" variant="info"
+                            size="sm" class="gap-1">
+                            <i class="bi bi-cloud-arrow-up"></i> File Laporan Kerusakan
+                        </x-button>
+                    @endif
+
+                    @if ($jenisPengajuan === 'Rencana Pembangunan')
+                        <x-button href="https://gofile.me/7Hsao/HcpL9coFS" target="_blank" variant="info"
+                            size="sm" class="gap-1">
+                            <i class="bi bi-cloud-arrow-up"></i> File Pembangunan
+                        </x-button>
+                    @endif
+
+                    @if (in_array('rehabilitasi_ruang_kelas', $kategoriKeys))
+                        <x-button href="https://gofile.me/7Hsao/SdSn6hyME" target="_blank" variant="info"
+                            size="sm" class="gap-1">
+                            <i class="bi bi-cloud-arrow-up"></i> File Rehabilitasi
+                        </x-button>
+                    @endif
+                </div>
             </x-card>
 
             {{-- Rincian Perubahan --}}
