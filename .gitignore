@@ -20,8 +20,8 @@
 /public/storage
 /storage/*.key
 /storage/pail
-/database/seeder/UserSeeder.php
-/database/seeder/AdminSeeder.php
+/database/seeders/UserSeeder.php
+/database/seeders/AdminSeeder.php
 #/vendor
 _ide_helper.php
 Homestead.json
