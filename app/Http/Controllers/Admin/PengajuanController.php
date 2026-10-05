@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\User\RencanaPembangunanController;
 use App\Models\Pengajuan;
 
 class PengajuanController extends Controller
@@ -188,7 +189,7 @@ class PengajuanController extends Controller
      */
     public function rencanaPembangunanIndex()
     {
-        $rencanaPembangunanKeys = array_keys(\App\Http\Controllers\User\RencanaPembangunanController::kategoriList());
+        $rencanaPembangunanKeys = array_keys(RencanaPembangunanController::kategoriList());
 
         $rencanaPembangunans = Pengajuan::with('profileSekolah')
             ->where(function ($query) use ($rencanaPembangunanKeys) {
@@ -200,6 +201,13 @@ class PengajuanController extends Controller
             ->paginate(10, ['*'], 'rencana_page');
 
         return view('admin.rencana-pembangunan.index', compact('rencanaPembangunans'));
+    }
+
+    public function rencanaPembangunanShow(Pengajuan $pengajuan)
+    {
+        $pengajuan->load('profileSekolah');
+
+        return view('admin.rencana-pembangunan.show', compact('pengajuan'));
     }
 
     /**

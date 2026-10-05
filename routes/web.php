@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/pengajuan/{pengajuan}/reject', [AdminPengajuanController::class, 'reject'])->name('pengajuan.reject');
 
             Route::get('/rencana-pembangunan', [AdminPengajuanController::class, 'rencanaPembangunanIndex'])->name('rencana.index');
+            Route::get('/rencana-pembangunan/{pengajuan}', [AdminPengajuanController::class, 'rencanaPembangunanShow'])->name('rencana.show');
         });
     });
 

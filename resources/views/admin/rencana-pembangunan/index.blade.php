@@ -148,7 +148,7 @@
                                         </x-button>
                                     @endif
 
-                                    <x-button href="{{ route('pengajuan.show', $item) }}" variant="info" size="xs"
+                                    <x-button href="{{ route('rencana.show', $item) }}" variant="info" size="xs"
                                         class="p-1.5!" title="Lihat Detail">
                                         <i class="bi bi-eye-fill"></i>
                                     </x-button>
