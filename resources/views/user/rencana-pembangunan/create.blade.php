@@ -154,7 +154,10 @@
                         </x-slot:header>
 
                         <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                            Cari folder dengan <strong>nama sekolah</strong>, lalu upload lewat tombol di samping dokumen, kemudian kembali ke halaman ini. Dokumen yang sudah diupload ditandai centang hijau.
+                            <strong>Cara upload dokumen:</strong><br>
+                            <strong>1. Isi kolom "Name" dengan nama sekolah Anda.</strong><br>
+                            <strong>2. Pilih file yang ingin diupload.</strong><br>
+                            <strong>3. Klik tombol "Upload".</strong>
                         </p>
 
                         <div id="lampiranBangun" class="hidden space-y-2 text-sm">
