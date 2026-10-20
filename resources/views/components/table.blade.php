@@ -8,6 +8,8 @@
     - striped : boolean, baris body bergantian warna (default: false)
     - hover   : boolean, highlight baris body saat kursor di atasnya (default: true)
     - bordered: boolean, tambahkan garis antar kolom (default: false)
+    - maxHeight: string CSS, mis. "calc(100vh - 12rem)". Jika diisi, tabel scroll vertikal di dalam
+                kotaknya dan <thead> menempel di atas (freeze header). Default: null (nonaktif)
 
     Slot bernama:
     - head  : isi <thead>. Tulis <tr> sendiri (boleh lebih dari satu baris untuk header
@@ -70,21 +72,33 @@
     'striped' => false,
     'hover' => true,
     'bordered' => false,
+    'maxHeight' => null,
 ])
 
-<div class="w-full overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
-    <table {{ $attributes->class(['w-full text-sm text-left', $bordered ? 'border-collapse' : '']) }}>
+<div @class([
+    'w-full overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700',
+    'overflow-y-auto' => $maxHeight,
+]) @if ($maxHeight) style="max-height: {{ $maxHeight }}" @endif>
+    <table
+        {{ $attributes->class([
+            'w-full text-sm text-left',
+            $bordered && !$maxHeight ? 'border-collapse' : '',
+            // Mode freeze: border-separate supaya garis sel ikut menempel bersama sel sticky
+            $maxHeight
+                ? 'border-separate border-spacing-0 [&_th]:border-r [&_th]:border-b [&_td]:border-r [&_td]:border-b [&_th]:border-gray-300 [&_td]:border-gray-300 dark:[&_th]:border-gray-600 dark:[&_td]:border-gray-600'
+                : '',
+        ]) }}>
         @isset($head)
-            <thead class="bg-gray-50 dark:bg-gray-800">
+            <thead @class([
+                'bg-gray-50 dark:bg-gray-800',
+                'sticky top-0 z-20' => $maxHeight,
+            ])>
                 {{ $head }}
             </thead>
         @endisset
 
-        <tbody
-            class="divide-y divide-gray-100 dark:divide-gray-700 bg-white dark:bg-gray-800"
-            data-table-striped="{{ $striped ? 'true' : 'false' }}"
-            data-table-hover="{{ $hover ? 'true' : 'false' }}"
-        >
+        <tbody class="divide-y divide-gray-100 dark:divide-gray-700 bg-white dark:bg-gray-800"
+            data-table-striped="{{ $striped ? 'true' : 'false' }}" data-table-hover="{{ $hover ? 'true' : 'false' }}">
             {{ $slot }}
         </tbody>
 

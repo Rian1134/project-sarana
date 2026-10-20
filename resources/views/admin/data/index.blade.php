@@ -274,7 +274,7 @@
     <div class="card">
         <div class="card-body">
 
-            <x-table bordered id="tabelSarana" class="text-[11px]">
+            <x-table bordered id="tabelSarana" class="text-[11px]" max-height="calc(100vh - 12rem)">
 
                 {{-- ============================================================
                      HEADER TABEL (3 BARIS DENGAN ROWSPAN & COLSPAN)
@@ -286,8 +286,10 @@
                          ============================================================ --}}
                     <tr class="bg-sky-700 text-white text-center">
                         {{-- DATA SEKOLAH (9 kolom) --}}
-                        <x-table.heading rowspan="3" class="text-white! align-middle w-7 px-1 py-1">No</x-table.heading>
-                        <x-table.heading rowspan="3" class="text-white! align-middle min-w-25 px-1 py-1">Nama
+                        <x-table.heading rowspan="3"
+                            class="text-white! align-middle w-10 min-w-10 max-w-10 px-1 py-1 sticky left-0 z-10 bg-sky-700">No</x-table.heading>
+                        <x-table.heading rowspan="3"
+                            class="text-white! align-middle min-w-25 px-1 py-1 sticky left-10 z-10 bg-sky-700">Nama
                             Sekolah</x-table.heading>
                         <x-table.heading rowspan="3"
                             class="text-white! align-middle min-w-17.5 px-1 py-1">NPSN</x-table.heading>
@@ -359,7 +361,8 @@
                             Sekolah</x-table.heading>
 
                         {{-- URUTAN 10: Ruang GURU (2 kolom) --}}
-                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Ruang Guru</x-table.heading>
+                        <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Ruang
+                            Guru</x-table.heading>
 
                         {{-- URUTAN 11: Ruang KANTOR/TU (2 kolom) --}}
                         <x-table.heading colspan="2" class="text-white! min-w-16 px-1 py-1">Ruang
@@ -587,8 +590,10 @@
                          ============================================================ --}}
                     <tr class="bg-gray-100 dark:bg-gray-700">
                         {{-- Total Data --}}
-                        <x-table.cell colspan="9" class="font-bold">Total Data:
+                        <x-table.cell colspan="2"
+                            class="font-bold sticky left-0 z-10 bg-gray-100 dark:bg-gray-700">Total Data:
                             {{ $profileSekolahs->count() }}</x-table.cell>
+                        <x-table.cell colspan="7"></x-table.cell>
 
                         {{-- URUTAN 1: JUMLAH SISWA --}}
 
@@ -1250,12 +1255,14 @@
                         // 26. KOMPUTER
                         $jmlKomputer = ($item->komputer?->baik ?? 0) + ($item->komputer?->rusak ?? 0);
                     @endphp
-                    <x-table.row data-sarana-row>
+                    <x-table.row data-sarana-row class="group">
                         {{-- ============================================================
                              DATA SEKOLAH (9 kolom)
                              ============================================================ --}}
-                        <x-table.cell class="text-center font-bold">{{ $loop->iteration }}</x-table.cell>
-                        <x-table.cell>
+                        <x-table.cell
+                            class="text-center font-bold w-10 min-w-10 max-w-10 sticky left-0 z-10 bg-white dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-700">{{ $loop->iteration }}</x-table.cell>
+                        <x-table.cell
+                            class="sticky left-10 z-10 bg-white dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-700">
                             <a class="link" href="{{ route('user.show', $item->user_id) }}">
                                 {{ $item->nama_sekolah }}
                             </a>
@@ -1790,6 +1797,17 @@
             chartBaikRusak('adminChartMeja', @json($chartMeja));
             chartBaikRusak('adminChartKursi', @json($chartKursi));
             chartBaikRusak('adminChartElektronik', @json($chartElektronik));
+        });
+
+        // Tinggi kotak tabel = header + 5 baris pertama, sisanya di-scroll
+        window.addEventListener('load', function() {
+            const tabel = document.getElementById('tabelSarana');
+            const baris = tabel.querySelectorAll('tbody [data-sarana-row]');
+            if (baris.length <= 5) return;
+
+            let tinggi = tabel.tHead.offsetHeight + 2; // +2 = border kotak
+            for (let i = 0; i < 5; i++) tinggi += baris[i].offsetHeight;
+            tabel.parentElement.style.maxHeight = tinggi + 'px';
         });
     </script>
 @endpush
