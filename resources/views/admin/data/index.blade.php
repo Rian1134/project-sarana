@@ -1803,10 +1803,10 @@
         window.addEventListener('load', function() {
             const tabel = document.getElementById('tabelSarana');
             const baris = tabel.querySelectorAll('tbody [data-sarana-row]');
-            if (baris.length <= 5) return;
+            if (baris.length <= 4) return;
 
             let tinggi = tabel.tHead.offsetHeight + 2; // +2 = border kotak
-            for (let i = 0; i < 5; i++) tinggi += baris[i].offsetHeight;
+            for (let i = 0; i < 4; i++) tinggi += baris[i].offsetHeight;
             tabel.parentElement.style.maxHeight = tinggi + 'px';
         });
     </script>
