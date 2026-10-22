@@ -13,7 +13,7 @@ class RuangKantorTu extends Model
 
     protected $fillable = [
         'ada/tidak_ada',
-        'kodisi',
+        'kondisi',
         'profile_sekolah_id',
     ];
 

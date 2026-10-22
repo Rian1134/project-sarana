@@ -14,7 +14,7 @@ class AirBersih extends Model
     protected $fillable = [
         'profile_sekolah_id',
         'ada/tidak_ada',
-        'kodisi'
+        'kondisi'
     ];
 
     public function profileSekolah()

@@ -14,7 +14,7 @@ class PagarSekolah extends Model
     protected $fillable = [
         'profile_sekolah_id',
         'ada/tidak_ada',
-        'kodisi'
+        'kondisi'
     ];
 
     // Relasi belongsTo

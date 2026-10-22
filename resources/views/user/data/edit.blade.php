@@ -1241,55 +1241,27 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Select yang disabled tidak ikut terkirim, jadi aktifkan lagi saat submit
-            document.getElementById('profileSekolahForm').addEventListener('submit', function() {
-                this.querySelectorAll('select:disabled').forEach(select => select.disabled = false);
-            });
+            // Saat "Tidak Ada" dipilih, kondisi otomatis "Nihil" dan select dikunci.
+            // Select tidak di-disable supaya nilainya tetap ikut terkirim ke server.
+            function aturKondisi(radio) {
+                const select = document.querySelector(
+                    `select[name="${radio.name.replace('_ada_tidak', '_kondisi')}"]`);
+                if (!select) return;
 
-            // Fungsi untuk mengatur kondisi otomatis (disable select saat "tidak_ada")
-            function setupConditionAuto(radioName, selectId) {
-                const radios = document.querySelectorAll(`input[name="${radioName}"]`);
-                const select = document.getElementById(selectId);
-
-                if (!radios.length || !select) return;
-
-                radios.forEach(radio => {
-                    radio.addEventListener('change', function() {
-                        if (this.value === 'tidak_ada') {
-                            select.value = 'nihil';
-                            select.disabled = true;
-                            select.classList.add('opacity-50', 'cursor-not-allowed');
-                        } else {
-                            select.disabled = false;
-                            select.classList.remove('opacity-50', 'cursor-not-allowed');
-                            if (select.value === 'nihil') {
-                                select.value = '';
-                            }
-                        }
-                    });
-                });
-
-                // Cek kondisi awal
-                const checked = document.querySelector(`input[name="${radioName}"]:checked`);
-                if (checked && checked.value === 'tidak_ada') {
+                const tidakAda = radio.value === 'tidak_ada';
+                if (tidakAda) {
                     select.value = 'nihil';
-                    select.disabled = true;
-                    select.classList.add('opacity-50', 'cursor-not-allowed');
+                } else if (select.value === 'nihil') {
+                    select.value = '';
                 }
+                select.classList.toggle('pointer-events-none', tidakAda);
+                select.classList.toggle('opacity-50', tidakAda);
+                select.tabIndex = tidakAda ? -1 : 0;
             }
 
-            // Setup untuk semua fasilitas
-            const facilities = [
-                'perpustakaan', 'kepala_sekolah', 'ruang_guru', 'kantor_tu',
-                'lab_ipa', 'lab_komputer', 'uks', 'rumah_dinas',
-                'rumah_ibadah', 'lapangan_sekolah', 'pagar', 'air'
-            ];
-
-            facilities.forEach(facility => {
-                setupConditionAuto(
-                    `${facility}_ada_tidak`,
-                    `${facility}_kondisi`
-                );
+            document.querySelectorAll('input[name$="_ada_tidak"]').forEach(radio => {
+                radio.addEventListener('change', () => aturKondisi(radio));
+                if (radio.checked && radio.value === 'tidak_ada') aturKondisi(radio);
             });
 
             // Fungsi untuk menghitung total otomatis (Guru & Staff TU)
