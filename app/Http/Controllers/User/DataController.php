@@ -455,8 +455,6 @@ class DataController extends Controller
                 'kondisi' => $request->lapangan_sekolah_kondisi ?? 'nihil',
             ]);
 
-            dd($request);
-
             return redirect()->route('user.profile.index')
                 ->with('success', 'Data Sarana berhasil ditambahkan!');
         } catch (\Exception $e) {
