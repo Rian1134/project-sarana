@@ -85,8 +85,8 @@
 
                         <div class="md:col-span-2">
                             <!-- website -->
-                            <x-form.input name="website" label="Website" placeholder="Masukkan website https://... (jika ada)"
-                                :value="old('website')" />
+                            <x-form.input name="website" label="Website"
+                                placeholder="Masukkan website https://... (jika ada)" :value="old('website')" />
                         </div>
 
                         <x-form.input name="nama_kepala_sekolah" label="Nama Kepala Sekolah"
@@ -96,8 +96,7 @@
 
                         <div class="md:col-span-2">
                             <x-form.input name="nomor_hp_kepala_sekolah" label="Nomor HP Kepala Sekolah"
-                                placeholder="Masukkan nomor HP kepala sekolah" required
-                                :value="old('nomor_hp_kepala_sekolah')" />
+                                placeholder="Masukkan nomor HP kepala sekolah" required :value="old('nomor_hp_kepala_sekolah')" />
                         </div>
 
                         <x-form.input name="nama_operator" label="Nama Operator" placeholder="Masukkan nama operator"
@@ -189,8 +188,8 @@
                                     <x-form.input name="jumlah_guru_i" label="Golongan I" type="number" min="0"
                                         required :value="old('jumlah_guru_i', $profileSekolah->jumlahGuru->i ?? 0)" />
 
-                                    <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number" min="0"
-                                        required :value="old('jumlah_guru_ii', $profileSekolah->jumlahGuru->ii ?? 0)" />
+                                    <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number"
+                                        min="0" required :value="old('jumlah_guru_ii', $profileSekolah->jumlahGuru->ii ?? 0)" />
 
                                     <x-form.input name="jumlah_guru_iii" label="Golongan III" type="number"
                                         min="0" required :value="old('jumlah_guru_iii', $profileSekolah->jumlahGuru->iii ?? 0)" />
@@ -1123,6 +1122,11 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Select yang disabled tidak ikut terkirim, jadi aktifkan lagi saat submit
+            document.getElementById('saranaForm').addEventListener('submit', function() {
+                this.querySelectorAll('select:disabled').forEach(select => select.disabled = false);
+            });
+
             // Fungsi untuk mengatur kondisi otomatis
             function setupConditionAuto(radioName, selectId) {
                 const radios = document.querySelectorAll(`input[name="${radioName}"]`);

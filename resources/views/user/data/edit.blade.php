@@ -87,8 +87,8 @@
 
                         <div class="md:col-span-2">
                             <!-- Website -->
-                            <x-form.input name="website" label="Website" placeholder="Masukkan website https://... (jika ada)"
-                                :value="old('website', $profileSekolah->website)" />
+                            <x-form.input name="website" label="Website"
+                                placeholder="Masukkan website https://... (jika ada)" :value="old('website', $profileSekolah->website)" />
                         </div>
 
                         <x-form.input name="nama_kepala_sekolah" label="Nama Kepala Sekolah"
@@ -98,16 +98,14 @@
 
                         <div class="md:col-span-2">
                             <x-form.input name="nomor_hp_kepala_sekolah" label="Nomor HP Kepala Sekolah"
-                                placeholder="Masukkan nomor HP kepala sekolah" required
-                                :value="old('nomor_hp_kepala_sekolah', $profileSekolah->nomor_hp_kepala_sekolah)" />
+                                placeholder="Masukkan nomor HP kepala sekolah" required :value="old('nomor_hp_kepala_sekolah', $profileSekolah->nomor_hp_kepala_sekolah)" />
                         </div>
 
                         <x-form.input name="nama_operator" label="Nama Operator" placeholder="Masukkan nama operator"
                             required :value="old('nama_operator', $profileSekolah->nama_operator)" />
 
                         <x-form.input name="nomor_operator" label="Nomor HP Operator"
-                            placeholder="Masukkan nomor HP operator" required
-                            :value="old('nomor_operator', $profileSekolah->nomor_operator)" />
+                            placeholder="Masukkan nomor HP operator" required :value="old('nomor_operator', $profileSekolah->nomor_operator)" />
                     </div>
                 </x-card>
 
@@ -192,8 +190,8 @@
                                     <x-form.input name="jumlah_guru_i" label="Golongan I" type="number" min="0"
                                         required :value="old('jumlah_guru_i', $profileSekolah->kondisiGuru->i ?? 0)" />
 
-                                    <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number" min="0"
-                                        required :value="old('jumlah_guru_ii', $profileSekolah->kondisiGuru->ii ?? 0)" />
+                                    <x-form.input name="jumlah_guru_ii" label="Golongan II" type="number"
+                                        min="0" required :value="old('jumlah_guru_ii', $profileSekolah->kondisiGuru->ii ?? 0)" />
 
                                     <x-form.input name="jumlah_guru_iii" label="Golongan III" type="number"
                                         min="0" required :value="old('jumlah_guru_iii', $profileSekolah->kondisiGuru->iii ?? 0)" />
@@ -1243,6 +1241,11 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Select yang disabled tidak ikut terkirim, jadi aktifkan lagi saat submit
+            document.getElementById('profileSekolahForm').addEventListener('submit', function() {
+                this.querySelectorAll('select:disabled').forEach(select => select.disabled = false);
+            });
+
             // Fungsi untuk mengatur kondisi otomatis (disable select saat "tidak_ada")
             function setupConditionAuto(radioName, selectId) {
                 const radios = document.querySelectorAll(`input[name="${radioName}"]`);
