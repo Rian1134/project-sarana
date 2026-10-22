@@ -792,17 +792,17 @@
                         {{-- KEBERADAAN --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->{'ada/tidak_ada'} ?? null) === 'ada')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labKomputer?->{'ada/tidak_ada'} ?? null) === 'ada')->count() }}</span>
                             / <span
-                                class="text-red-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->{'ada/tidak_ada'} ?? null) === 'tidak_ada')->count() }}</span>
+                                class="text-red-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labKomputer?->{'ada/tidak_ada'} ?? null) === 'tidak_ada')->count() }}</span>
                         </x-table.cell>
 
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labIpa?->kondisi ?? null) === 'baik')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->labKomputer?->kondisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->labIpa?->kondisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->labKomputer?->kondisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 14: UKS --}}
@@ -810,17 +810,17 @@
                         {{-- KEBERADAAN --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->uks?->{'ada/tidak_ada'} ?? null) === 'ada')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->unitKesehatanSekolah?->{'ada/tidak_ada'} ?? null) === 'ada')->count() }}</span>
                             / <span
-                                class="text-red-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->uks?->{'ada/tidak_ada'} ?? null) === 'tidak_ada')->count() }}</span>
+                                class="text-red-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->unitKesehatanSekolah?->{'ada/tidak_ada'} ?? null) === 'tidak_ada')->count() }}</span>
                         </x-table.cell>
 
                         {{-- KONDISI --}}
                         <x-table.cell class="text-center font-bold">
                             <span
-                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->uks?->kondisi ?? null) === 'baik')->count() }}</span>
+                                class="text-emerald-600 font-bold">{{ $profileSekolahs->filter(fn($item) => ($item->unitKesehatanSekolah?->kondisi ?? null) === 'baik')->count() }}</span>
                             / <span
-                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->uks?->kondisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
+                                class="text-amber-600 font-bold">{{ $profileSekolahs->filter(fn($item) => in_array($item->unitKesehatanSekolah?->kondisi ?? null, ['rusak_ringan', 'rusak_sedang', 'rusak_berat']))->count() }}</span>
                         </x-table.cell>
 
                         {{-- URUTAN 15: RUMAH DINAS --}}

@@ -65,8 +65,7 @@
 
                         <div>
                             <x-form.select name="status_sekolah" label="Status Sekolah" placeholder="-- Pilih Status --"
-                                :options="['negeri' => 'Negeri', 'swasta' => 'Swasta']"
-                                :value="old('status_sekolah', $profileSekolah->status_sekolah)" required />
+                                :options="['negeri' => 'Negeri', 'swasta' => 'Swasta']" :value="old('status_sekolah', $profileSekolah->status_sekolah)" required />
                         </div>
 
                         <div>
@@ -81,27 +80,25 @@
 
                         <div class="md:col-span-2">
                             <x-form.textarea name="alamat_sekolah" label="Alamat Sekolah" rows="2"
-                                placeholder="Masukkan alamat lengkap sekolah" required>{{ old('alamat_sekolah', $profileSekolah->alamat_sekolah) }}</x-form.textarea>
+                                placeholder="Masukkan alamat lengkap sekolah"
+                                required>{{ old('alamat_sekolah', $profileSekolah->alamat_sekolah) }}</x-form.textarea>
                         </div>
 
-                        <x-form.input name="nama_kepala_sekolah" label="Nama Kepala Sekolah" placeholder="Masukkan nama kepala sekolah" required
-                            :value="old('nama_kepala_sekolah', $profileSekolah->nama_kepala_sekolah)" />
+                        <x-form.input name="nama_kepala_sekolah" label="Nama Kepala Sekolah"
+                            placeholder="Masukkan nama kepala sekolah" required :value="old('nama_kepala_sekolah', $profileSekolah->nama_kepala_sekolah)" />
 
-                        <x-form.input name="NIP" label="NIP" placeholder="Masukkan NIP" required
-                            :value="old('NIP', $profileSekolah->NIP)" />
+                        <x-form.input name="NIP" label="NIP" placeholder="Masukkan NIP" required :value="old('NIP', $profileSekolah->NIP)" />
 
                         <div class="md:col-span-2">
                             <x-form.input name="nomor_hp_kepala_sekolah" label="Nomor HP Kepala Sekolah"
-                                placeholder="Masukkan nomor HP kepala sekolah" required
-                                :value="old('nomor_hp_kepala_sekolah', $profileSekolah->nomor_hp_kepala_sekolah)" />
+                                placeholder="Masukkan nomor HP kepala sekolah" required :value="old('nomor_hp_kepala_sekolah', $profileSekolah->nomor_hp_kepala_sekolah)" />
                         </div>
 
                         <x-form.input name="nama_operator" label="Nama Operator" placeholder="Masukkan nama operator"
                             required :value="old('nama_operator', $profileSekolah->nama_operator)" />
 
                         <x-form.input name="nomor_operator" label="Nomor HP Operator"
-                            placeholder="Masukkan nomor HP operator" required
-                            :value="old('nomor_operator', $profileSekolah->nomor_operator)" />
+                            placeholder="Masukkan nomor HP operator" required :value="old('nomor_operator', $profileSekolah->nomor_operator)" />
                     </div>
                 </x-card>
 
@@ -176,8 +173,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                         <x-form.input name="rkb_jumlah" label="Jumlah" type="number" min="0" required
                             :value="old('rkb_jumlah', $profileSekolah->ruangKelasBaru?->jumlah ?? 0)" />
-                        <div
-                            class="md:col-span-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 pb-2">
+                        <div class="md:col-span-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 pb-2">
                             <i class="bi bi-calendar-range"></i>
                             Periode pelaporan:
                             <x-badge variant="secondary">{{ $rkbPeriode->label() }}</x-badge>
@@ -198,9 +194,11 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                         <x-form.input name="rehabilitasi_jumlah" label="Jumlah" type="number" min="0" required
-                            :value="old('rehabilitasi_jumlah', $profileSekolah->rehabilitasiRuangKelas?->jumlah ?? 0)" />
-                        <div
-                            class="md:col-span-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 pb-2">
+                            :value="old(
+                                'rehabilitasi_jumlah',
+                                $profileSekolah->rehabilitasiRuangKelas?->jumlah ?? 0,
+                            )" />
+                        <div class="md:col-span-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 pb-2">
                             <i class="bi bi-calendar-range"></i>
                             Periode pelaporan:
                             <x-badge variant="secondary">{{ $rehabilitasiPeriode->label() }}</x-badge>
@@ -222,8 +220,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <x-form.input name="ruang_kelas_baik" label="Jumlah Baik" type="number" min="0" required
                             :value="old('ruang_kelas_baik', $profileSekolah->ruangKelas?->baik ?? 0)" />
-                        <x-form.input name="ruang_kelas_rusak" label="Jumlah Rusak" type="number" min="0" required
-                            :value="old('ruang_kelas_rusak', $profileSekolah->ruangKelas?->rusak ?? 0)" />
+                        <x-form.input name="ruang_kelas_rusak" label="Jumlah Rusak" type="number" min="0"
+                            required :value="old('ruang_kelas_rusak', $profileSekolah->ruangKelas?->rusak ?? 0)" />
                     </div>
                 </x-card>
 
@@ -247,10 +245,10 @@
                     </x-slot:header>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="toilet_siswa_baik" label="Jumlah Baik" type="number" min="0" required
-                            :value="old('toilet_siswa_baik', $profileSekolah->toiletSiswa?->baik ?? 0)" />
-                        <x-form.input name="toilet_siswa_rusak" label="Jumlah Rusak" type="number" min="0" required
-                            :value="old('toilet_siswa_rusak', $profileSekolah->toiletSiswa?->rusak ?? 0)" />
+                        <x-form.input name="toilet_siswa_baik" label="Jumlah Baik" type="number" min="0"
+                            required :value="old('toilet_siswa_baik', $profileSekolah->toiletSiswa?->baik ?? 0)" />
+                        <x-form.input name="toilet_siswa_rusak" label="Jumlah Rusak" type="number" min="0"
+                            required :value="old('toilet_siswa_rusak', $profileSekolah->toiletSiswa?->rusak ?? 0)" />
                     </div>
                 </x-card>
 
@@ -267,8 +265,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <x-form.input name="toilet_guru_baik" label="Jumlah Baik" type="number" min="0" required
                             :value="old('toilet_guru_baik', $profileSekolah->toiletGuru?->baik ?? 0)" />
-                        <x-form.input name="toilet_guru_rusak" label="Jumlah Rusak" type="number" min="0" required
-                            :value="old('toilet_guru_rusak', $profileSekolah->toiletGuru?->rusak ?? 0)" />
+                        <x-form.input name="toilet_guru_rusak" label="Jumlah Rusak" type="number" min="0"
+                            required :value="old('toilet_guru_rusak', $profileSekolah->toiletGuru?->rusak ?? 0)" />
                     </div>
                 </x-card>
 
@@ -298,9 +296,15 @@
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="perpustakaan_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('perpustakaan_ada_tidak', $profileSekolah->ruangPerpustakaan?->{'ada/tidak_ada'}) == 'ada'" />
+                                    :checked="old(
+                                        'perpustakaan_ada_tidak',
+                                        $profileSekolah->ruangPerpustakaan?->{'ada/tidak_ada'},
+                                    ) == 'ada'" />
                                 <x-form.radio name="perpustakaan_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('perpustakaan_ada_tidak', $profileSekolah->ruangPerpustakaan?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old(
+                                        'perpustakaan_ada_tidak',
+                                        $profileSekolah->ruangPerpustakaan?->{'ada/tidak_ada'},
+                                    ) == 'tidak_ada'" />
                             </div>
                             @error('perpustakaan_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -315,8 +319,7 @@
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('perpustakaan_kondisi', $profileSekolah->ruangPerpustakaan?->kodisi)" />
+                                ]" :value="old('perpustakaan_kondisi', $profileSekolah->ruangPerpustakaan?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -338,9 +341,15 @@
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="kepala_sekolah_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('kepala_sekolah_ada_tidak', $profileSekolah->ruangKepalaSekolah?->{'ada/tidak_ada'}) == 'ada'" />
+                                    :checked="old(
+                                        'kepala_sekolah_ada_tidak',
+                                        $profileSekolah->ruangKepalaSekolah?->{'ada/tidak_ada'},
+                                    ) == 'ada'" />
                                 <x-form.radio name="kepala_sekolah_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('kepala_sekolah_ada_tidak', $profileSekolah->ruangKepalaSekolah?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old(
+                                        'kepala_sekolah_ada_tidak',
+                                        $profileSekolah->ruangKepalaSekolah?->{'ada/tidak_ada'},
+                                    ) == 'tidak_ada'" />
                             </div>
                             @error('kepala_sekolah_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -355,8 +364,7 @@
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('kepala_sekolah_kondisi', $profileSekolah->ruangKepalaSekolah?->kodisi)" />
+                                ]" :value="old('kepala_sekolah_kondisi', $profileSekolah->ruangKepalaSekolah?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -378,9 +386,15 @@
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="ruang_guru_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('ruang_guru_ada_tidak', $profileSekolah->ruangGuru?->{'ada/tidak_ada'}) == 'ada'" />
+                                    :checked="old(
+                                        'ruang_guru_ada_tidak',
+                                        $profileSekolah->ruangGuru?->{'ada/tidak_ada'},
+                                    ) == 'ada'" />
                                 <x-form.radio name="ruang_guru_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('ruang_guru_ada_tidak', $profileSekolah->ruangGuru?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old(
+                                        'ruang_guru_ada_tidak',
+                                        $profileSekolah->ruangGuru?->{'ada/tidak_ada'},
+                                    ) == 'tidak_ada'" />
                             </div>
                             @error('ruang_guru_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -395,8 +409,7 @@
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('ruang_guru_kondisi', $profileSekolah->ruangGuru?->kodisi)" />
+                                ]" :value="old('ruang_guru_kondisi', $profileSekolah->ruangGuru?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -418,9 +431,15 @@
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="kantor_tu_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('kantor_tu_ada_tidak', $profileSekolah->ruangKantorTu?->{'ada/tidak_ada'}) == 'ada'" />
+                                    :checked="old(
+                                        'kantor_tu_ada_tidak',
+                                        $profileSekolah->ruangKantorTu?->{'ada/tidak_ada'},
+                                    ) == 'ada'" />
                                 <x-form.radio name="kantor_tu_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('kantor_tu_ada_tidak', $profileSekolah->ruangKantorTu?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old(
+                                        'kantor_tu_ada_tidak',
+                                        $profileSekolah->ruangKantorTu?->{'ada/tidak_ada'},
+                                    ) == 'tidak_ada'" />
                             </div>
                             @error('kantor_tu_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -435,8 +454,7 @@
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('kantor_tu_kondisi', $profileSekolah->ruangKantorTu?->kodisi)" />
+                                ]" :value="old('kantor_tu_kondisi', $profileSekolah->ruangKantorTu?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -458,9 +476,11 @@
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="lab_ipa_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('lab_ipa_ada_tidak', $profileSekolah->labIpa?->{'ada/tidak_ada'}) == 'ada'" />
+                                    :checked="old('lab_ipa_ada_tidak', $profileSekolah->labIpa?->{'ada/tidak_ada'}) ==
+                                        'ada'" />
                                 <x-form.radio name="lab_ipa_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('lab_ipa_ada_tidak', $profileSekolah->labIpa?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old('lab_ipa_ada_tidak', $profileSekolah->labIpa?->{'ada/tidak_ada'}) ==
+                                        'tidak_ada'" />
                             </div>
                             @error('lab_ipa_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -475,8 +495,7 @@
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('lab_ipa_kondisi', $profileSekolah->labIpa?->kodisi)" />
+                                ]" :value="old('lab_ipa_kondisi', $profileSekolah->labIpa?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -498,9 +517,15 @@
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="lab_komputer_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('lab_komputer_ada_tidak', $profileSekolah->labKomputer?->{'ada/tidak_ada'}) == 'ada'" />
+                                    :checked="old(
+                                        'lab_komputer_ada_tidak',
+                                        $profileSekolah->labKomputer?->{'ada/tidak_ada'},
+                                    ) == 'ada'" />
                                 <x-form.radio name="lab_komputer_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('lab_komputer_ada_tidak', $profileSekolah->labKomputer?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old(
+                                        'lab_komputer_ada_tidak',
+                                        $profileSekolah->labKomputer?->{'ada/tidak_ada'},
+                                    ) == 'tidak_ada'" />
                             </div>
                             @error('lab_komputer_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -515,8 +540,7 @@
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('lab_komputer_kondisi', $profileSekolah->labKomputer?->kodisi)" />
+                                ]" :value="old('lab_komputer_kondisi', $profileSekolah->labKomputer?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -537,10 +561,15 @@
                                 Keberadaan UKS <span class="text-danger">*</span>
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="uks_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('uks_ada_tidak', $profileSekolah->unitKesehatanSekolah?->{'ada/tidak_ada'}) == 'ada'" />
+                                <x-form.radio name="uks_ada_tidak" value="ada" label="Ada" :checked="old(
+                                    'uks_ada_tidak',
+                                    $profileSekolah->unitKesehatanSekolah?->{'ada/tidak_ada'},
+                                ) == 'ada'" />
                                 <x-form.radio name="uks_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('uks_ada_tidak', $profileSekolah->unitKesehatanSekolah?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old(
+                                        'uks_ada_tidak',
+                                        $profileSekolah->unitKesehatanSekolah?->{'ada/tidak_ada'},
+                                    ) == 'tidak_ada'" />
                             </div>
                             @error('uks_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -548,15 +577,14 @@
                         </div>
 
                         <div>
-                            <x-form.select name="uks_kondisi" label="Kondisi UKS"
-                                placeholder="-- Pilih Kondisi --" :options="[
+                            <x-form.select name="uks_kondisi" label="Kondisi UKS" placeholder="-- Pilih Kondisi --"
+                                :options="[
                                     'baik' => 'Baik',
                                     'rusak_ringan' => 'Rusak Ringan',
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('uks_kondisi', $profileSekolah->unitKesehatanSekolah?->kodisi)" />
+                                ]" :value="old('uks_kondisi', $profileSekolah->unitKesehatanSekolah?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -578,9 +606,15 @@
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="rumah_dinas_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('rumah_dinas_ada_tidak', $profileSekolah->rumahDinas?->{'ada/tidak_ada'}) == 'ada'" />
+                                    :checked="old(
+                                        'rumah_dinas_ada_tidak',
+                                        $profileSekolah->rumahDinas?->{'ada/tidak_ada'},
+                                    ) == 'ada'" />
                                 <x-form.radio name="rumah_dinas_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('rumah_dinas_ada_tidak', $profileSekolah->rumahDinas?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old(
+                                        'rumah_dinas_ada_tidak',
+                                        $profileSekolah->rumahDinas?->{'ada/tidak_ada'},
+                                    ) == 'tidak_ada'" />
                             </div>
                             @error('rumah_dinas_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -595,8 +629,7 @@
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('rumah_dinas_kondisi', $profileSekolah->rumahDinas?->kodisi)" />
+                                ]" :value="old('rumah_dinas_kondisi', $profileSekolah->rumahDinas?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -618,9 +651,15 @@
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="rumah_ibadah_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('rumah_ibadah_ada_tidak', $profileSekolah->rumahIbadah?->{'ada/tidak_ada'}) == 'ada'" />
+                                    :checked="old(
+                                        'rumah_ibadah_ada_tidak',
+                                        $profileSekolah->rumahIbadah?->{'ada/tidak_ada'},
+                                    ) == 'ada'" />
                                 <x-form.radio name="rumah_ibadah_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('rumah_ibadah_ada_tidak', $profileSekolah->rumahIbadah?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old(
+                                        'rumah_ibadah_ada_tidak',
+                                        $profileSekolah->rumahIbadah?->{'ada/tidak_ada'},
+                                    ) == 'tidak_ada'" />
                             </div>
                             @error('rumah_ibadah_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -635,8 +674,7 @@
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('rumah_ibadah_kondisi', $profileSekolah->rumahIbadah?->kodisi)" />
+                                ]" :value="old('rumah_ibadah_kondisi', $profileSekolah->rumahIbadah?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -658,9 +696,15 @@
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
                                 <x-form.radio name="lapangan_sekolah_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('lapangan_sekolah_ada_tidak', $profileSekolah->lapanganSekolah?->{'ada/tidak_ada'}) == 'ada'" />
+                                    :checked="old(
+                                        'lapangan_sekolah_ada_tidak',
+                                        $profileSekolah->lapanganSekolah?->{'ada/tidak_ada'},
+                                    ) == 'ada'" />
                                 <x-form.radio name="lapangan_sekolah_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('lapangan_sekolah_ada_tidak', $profileSekolah->lapanganSekolah?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old(
+                                        'lapangan_sekolah_ada_tidak',
+                                        $profileSekolah->lapanganSekolah?->{'ada/tidak_ada'},
+                                    ) == 'tidak_ada'" />
                             </div>
                             @error('lapangan_sekolah_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -675,8 +719,7 @@
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('lapangan_sekolah_kondisi', $profileSekolah->lapanganSekolah?->kodisi)" />
+                                ]" :value="old('lapangan_sekolah_kondisi', $profileSekolah->lapanganSekolah?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -697,10 +740,13 @@
                                 Keberadaan Pagar <span class="text-danger">*</span>
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="pagar_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('pagar_ada_tidak', $profileSekolah->pagarSekolah?->{'ada/tidak_ada'}) == 'ada'" />
+                                <x-form.radio name="pagar_ada_tidak" value="ada" label="Ada" :checked="old('pagar_ada_tidak', $profileSekolah->pagarSekolah?->{'ada/tidak_ada'}) ==
+                                    'ada'" />
                                 <x-form.radio name="pagar_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('pagar_ada_tidak', $profileSekolah->pagarSekolah?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old(
+                                        'pagar_ada_tidak',
+                                        $profileSekolah->pagarSekolah?->{'ada/tidak_ada'},
+                                    ) == 'tidak_ada'" />
                             </div>
                             @error('pagar_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -708,15 +754,14 @@
                         </div>
 
                         <div>
-                            <x-form.select name="pagar_kondisi" label="Kondisi Pagar"
-                                placeholder="-- Pilih Kondisi --" :options="[
+                            <x-form.select name="pagar_kondisi" label="Kondisi Pagar" placeholder="-- Pilih Kondisi --"
+                                :options="[
                                     'baik' => 'Baik',
                                     'rusak_ringan' => 'Rusak Ringan',
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('pagar_kondisi', $profileSekolah->pagarSekolah?->kodisi)" />
+                                ]" :value="old('pagar_kondisi', $profileSekolah->pagarSekolah?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -737,10 +782,11 @@
                                 Keberadaan Air <span class="text-danger">*</span>
                             </label>
                             <div class="flex flex-wrap gap-4 mt-1">
-                                <x-form.radio name="air_ada_tidak" value="ada" label="Ada"
-                                    :checked="old('air_ada_tidak', $profileSekolah->airBersih?->{'ada/tidak_ada'}) == 'ada'" />
+                                <x-form.radio name="air_ada_tidak" value="ada" label="Ada" :checked="old('air_ada_tidak', $profileSekolah->airBersih?->{'ada/tidak_ada'}) ==
+                                    'ada'" />
                                 <x-form.radio name="air_ada_tidak" value="tidak_ada" label="Tidak Ada"
-                                    :checked="old('air_ada_tidak', $profileSekolah->airBersih?->{'ada/tidak_ada'}) == 'tidak_ada'" />
+                                    :checked="old('air_ada_tidak', $profileSekolah->airBersih?->{'ada/tidak_ada'}) ==
+                                        'tidak_ada'" />
                             </div>
                             @error('air_ada_tidak')
                                 <p class="invalid-feedback">{{ $message }}</p>
@@ -748,15 +794,14 @@
                         </div>
 
                         <div>
-                            <x-form.select name="air_kondisi" label="Kondisi Air"
-                                placeholder="-- Pilih Kondisi --" :options="[
+                            <x-form.select name="air_kondisi" label="Kondisi Air" placeholder="-- Pilih Kondisi --"
+                                :options="[
                                     'baik' => 'Baik',
                                     'rusak_ringan' => 'Rusak Ringan',
                                     'rusak_sedang' => 'Rusak Sedang',
                                     'rusak_berat' => 'Rusak Berat',
                                     'nihil' => 'Nihil',
-                                ]"
-                                :value="old('air_kondisi', $profileSekolah->airBersih?->kodisi)" />
+                                ]" :value="old('air_kondisi', $profileSekolah->airBersih?->kondisi)" />
                         </div>
                     </div>
                 </x-card>
@@ -783,8 +828,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <x-form.input name="kursi_siswa_baik" label="Jumlah Baik" type="number" min="0" required
                             :value="old('kursi_siswa_baik', $profileSekolah->kursiSiswa?->baik ?? 0)" />
-                        <x-form.input name="kursi_siswa_rusak" label="Jumlah Rusak" type="number" min="0" required
-                            :value="old('kursi_siswa_rusak', $profileSekolah->kursiSiswa?->rusak ?? 0)" />
+                        <x-form.input name="kursi_siswa_rusak" label="Jumlah Rusak" type="number" min="0"
+                            required :value="old('kursi_siswa_rusak', $profileSekolah->kursiSiswa?->rusak ?? 0)" />
                     </div>
                 </x-card>
 
@@ -801,8 +846,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <x-form.input name="meja_siswa_baik" label="Jumlah Baik" type="number" min="0" required
                             :value="old('meja_siswa_baik', $profileSekolah->mejaSiswa?->baik ?? 0)" />
-                        <x-form.input name="meja_siswa_rusak" label="Jumlah Rusak" type="number" min="0" required
-                            :value="old('meja_siswa_rusak', $profileSekolah->mejaSiswa?->rusak ?? 0)" />
+                        <x-form.input name="meja_siswa_rusak" label="Jumlah Rusak" type="number" min="0"
+                            required :value="old('meja_siswa_rusak', $profileSekolah->mejaSiswa?->rusak ?? 0)" />
                     </div>
                 </x-card>
 
@@ -819,8 +864,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <x-form.input name="kursi_guru_baik" label="Jumlah Baik" type="number" min="0" required
                             :value="old('kursi_guru_baik', $profileSekolah->kursiGuru?->baik ?? 0)" />
-                        <x-form.input name="kursi_guru_rusak" label="Jumlah Rusak" type="number" min="0" required
-                            :value="old('kursi_guru_rusak', $profileSekolah->kursiGuru?->rusak ?? 0)" />
+                        <x-form.input name="kursi_guru_rusak" label="Jumlah Rusak" type="number" min="0"
+                            required :value="old('kursi_guru_rusak', $profileSekolah->kursiGuru?->rusak ?? 0)" />
                     </div>
                 </x-card>
 
@@ -912,6 +957,11 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Select yang disabled tidak ikut terkirim, jadi aktifkan lagi saat submit
+            document.getElementById('saranaForm').addEventListener('submit', function() {
+                this.querySelectorAll('select:disabled').forEach(select => select.disabled = false);
+            });
+
             function setupConditionAuto(radioName, selectId) {
                 const radios = document.querySelectorAll(`input[name="${radioName}"]`);
                 const select = document.querySelector(`select[name="${selectId}"]`);
