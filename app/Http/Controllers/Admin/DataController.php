@@ -8,8 +8,6 @@ use App\Models\AirBersih;
 use App\Models\JumlahRombel;
 use App\Models\JumlahSiswa;
 use App\Models\Komputer;
-use App\Models\KondisiGuru;
-use App\Models\KondisiStaff;
 use App\Models\KursiGuru;
 use App\Models\KursiSiswa;
 use App\Models\LabIpa;
@@ -383,26 +381,6 @@ class DataController extends Controller
             'status_sekolah' => 'required|in:negeri,swasta',
             'akreditasi' => 'required|in:A,B,C,belum_terakreditasi',
 
-            // Kondisi Guru
-            'jumlah_guru_pns' => 'required|integer|min:0',
-            'jumlah_guru_pppk' => 'required|integer|min:0',
-            'jumlah_guru_pppk_paruh_waktu' => 'required|integer|min:0',
-            'jumlah_guru_honor' => 'required|integer|min:0',
-            'jumlah_guru_i' => 'required|integer|min:0',
-            'jumlah_guru_ii' => 'required|integer|min:0',
-            'jumlah_guru_iii' => 'required|integer|min:0',
-            'jumlah_guru_iv' => 'required|integer|min:0',
-
-            // Kondisi Staff Tata Usaha
-            'jumlah_staff_tu_pns' => 'required|integer|min:0',
-            'jumlah_staff_tu_pppk' => 'required|integer|min:0',
-            'jumlah_staff_tu_pppk_paruh_waktu' => 'required|integer|min:0',
-            'jumlah_staff_tu_honor' => 'required|integer|min:0',
-            'jumlah_staff_tu_i' => 'required|integer|min:0',
-            'jumlah_staff_tu_ii' => 'required|integer|min:0',
-            'jumlah_staff_tu_iii' => 'required|integer|min:0',
-            'jumlah_staff_tu_iv' => 'required|integer|min:0',
-
             'pagar_ada_tidak' => 'required|in:ada,tidak_ada',
             'pagar_kondisi' => 'nullable|in:baik,rusak_ringan,rusak_sedang,rusak_berat,nihil',
             'air_ada_tidak' => 'required|in:ada,tidak_ada',
@@ -476,35 +454,6 @@ class DataController extends Controller
             ]);
 
             // Update atau create relasi
-            // Kondisi Guru
-            KondisiGuru::updateOrCreate(
-                ['profile_sekolah_id' => $profileSekolah->id],
-                [
-                    'pns' => $request->jumlah_guru_pns,
-                    'pppk' => $request->jumlah_guru_pppk,
-                    'pppk_paruh_waktu' => $request->jumlah_guru_pppk_paruh_waktu,
-                    'honor' => $request->jumlah_guru_honor,
-                    'i' => $request->jumlah_guru_i,
-                    'ii' => $request->jumlah_guru_ii,
-                    'iii' => $request->jumlah_guru_iii,
-                    'iv' => $request->jumlah_guru_iv,
-                ]
-            );
-
-            // Kondisi Staff Tata Usaha
-            KondisiStaff::updateOrCreate(
-                ['profile_sekolah_id' => $profileSekolah->id],
-                [
-                    'pns' => $request->jumlah_staff_tu_pns,
-                    'pppk' => $request->jumlah_staff_tu_pppk,
-                    'pppk_paruh_waktu' => $request->jumlah_staff_tu_pppk_paruh_waktu,
-                    'honor' => $request->jumlah_staff_tu_honor,
-                    'i' => $request->jumlah_staff_tu_i,
-                    'ii' => $request->jumlah_staff_tu_ii,
-                    'iii' => $request->jumlah_staff_tu_iii,
-                    'iv' => $request->jumlah_staff_tu_iv,
-                ]
-            );
 
             PagarSekolah::updateOrCreate(
                 ['profile_sekolah_id' => $profileSekolah->id],
